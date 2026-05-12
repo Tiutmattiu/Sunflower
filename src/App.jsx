@@ -3,6 +3,11 @@ import "./index.css";
 
 const SARDINE = "🥫";
 
+// ---------- 常量 ----------
+const MAX_HEAT = 5;
+const PROFIT_FLIP_THRESHOLD = 2;
+const OVERPAY_THRESHOLD = -3;
+
 const ITEMS = {
   "Blue Glass Marble": { value: 3, icon: "🔵", type: "Blue" },
   "Dead Pigeon": { value: 3, icon: "🐦", type: "Catalyst" },
@@ -87,7 +92,6 @@ const INITIAL_TRADERS = {
 
 const SOUP_FISH = ["Fresh Mackerel", "Salted Cod"];
 
-// NPC preferences (weighted categories for more sensible market behavior)
 const NPC_PREFERENCES = {
   dog: ["Junk", "Catalyst", "Access"],
   fishmonger: ["Soup Fish", "Catalyst", "Weapon", "High Value"],
@@ -97,7 +101,7 @@ const NPC_PREFERENCES = {
   bar: ["Ingredient", "Drink", "Citrus"],
 };
 
-/* ---------- utilities ---------- */
+/* ---------- 通用工具 ---------- */
 const unique = (arr) => [...new Set(arr)];
 const clone = (x) => JSON.parse(JSON.stringify(x));
 const valueOf = (item) => (item ? ITEMS[item]?.value || 0 : 0);
@@ -139,7 +143,7 @@ function buildGame() {
     },
     stats: {
       exactDeliveries: 0, profitableFlips: 0,
-      overpays: 0, totalProfit: 0, tradeCount: 0,
+      overpays: 0, totalProfit: 0, tradeCount: 0, cheats: 0,
     },
     heat: {},
     perishTimer: {},
@@ -152,6 +156,11 @@ function buildGame() {
 }
 
 /* ---------- NPC AI ---------- */
+function pickRandom(arr) {
+  if (!arr.length) return null;
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
 function generateNPCOffers(game) {
   const npcs = Object.values(game.traders).filter((t) => t.id !== "player");
   const offers = [];
@@ -165,15 +174,17 @@ function generateNPCOffers(game) {
       const prefs = NPC_PREFERENCES[npc.id] || [];
       const preferred = target.inventory.filter((i) => prefs.includes(ITEMS[i]?.type));
       const pool = preferred.length ? preferred : target.inventory;
-      // Exclude Blue Glass Marble from NPC wants
-      const wantItem = pool.filter((i) => i !== "Blue Glass Marble")[0] || pool[0];
+      // 严格排除 Blue Glass Marble
+      const safePool = pool.filter((i) => i !== "Blue Glass Marble");
+      const wantItem = pickRandom(safePool);
       if (!wantItem) return;
+
       const useItem = Math.random() < 0.7 && npc.inventory.length > 0;
-      const offerItem = useItem
-        ? npc.inventory.filter((i) => i !== "Blue Glass Marble")[
-            Math.floor(Math.random() * npc.inventory.filter((i) => i !== "Blue Glass Marble").length)
-          ]
-        : null;
+      let offerItem = null;
+      if (useItem) {
+        const validOfferItems = npc.inventory.filter((i) => i !== "Blue Glass Marble");
+        offerItem = pickRandom(validOfferItems);
+      }
       const sardines = useItem ? 0 : Math.floor(Math.random() * 3) + 1;
       if (!offerItem && sardines <= 0) return;
       if (offerItem === wantItem) return;
@@ -193,7 +204,7 @@ function applyNPCTrades(game, npcOffers) {
     if (!to.inventory.includes(o.wantItem)) return;
     if (!canAfford(from, o.offerItem, o.sardines)) return;
     if (o.offerItem && usedPayment.has(o.offerItem)) return;
-    // Block any movement of Blue Glass Marble
+    // 禁止 Blue Glass Marble 移动
     if (o.offerItem === "Blue Glass Marble" || o.wantItem === "Blue Glass Marble") return;
     const price = valueOf(o.wantItem) + (g.heat[o.wantItem] || 0);
     const paid = valueOf(o.offerItem) + o.sardines;
@@ -213,7 +224,7 @@ function applyNPCTrades(game, npcOffers) {
   return g;
 }
 
-/* ---------- Player trade resolution ---------- */
+/* ---------- 玩家交易结算 ---------- */
 function applySpecialRules(game, accepted) {
   const g = clone(game);
   accepted.forEach((t) => {
@@ -221,15 +232,16 @@ function applySpecialRules(game, accepted) {
     const target = g.traders[t.to];
     const profit = valueOf(t.wantItem) - valueOf(t.offerItem) - Number(t.sardines || 0);
     g.stats.totalProfit += profit;
-    if (profit >= 2) g.stats.profitableFlips += 1;
-    if (profit <= -3) g.stats.overpays += 1;
+    if (profit >= PROFIT_FLIP_THRESHOLD) g.stats.profitableFlips += 1;
+    if (profit <= OVERPAY_THRESHOLD) g.stats.overpays += 1;
     g.stats.tradeCount += 1;
 
-    // Cheat detection (Bad Tangerine -> Mechanic claiming Lime Crate)
+    // 欺诈检测
     if (t.to === "mechanic" && t.offerItem === "Bad Tangerine" && target.exactWant === "Lime Crate") {
       g.flags.cheated = true;
-      g.log.unshift("Bad Tangerine passed as Lime Crate — word spreads. Reputation ruined.");
-      g.stats.exactDeliveries += 1; // still counts as successful delivery (fraud)
+      g.stats.cheats += 1;
+      g.log.unshift("Bad Tangerine passed as Lime Crate — your reputation is ruined.");
+      // 欺诈成功，但不计入正直的 exactDelivery
       return;
     }
 
@@ -237,6 +249,7 @@ function applySpecialRules(game, accepted) {
       g.stats.exactDeliveries += 1;
     }
 
+    // 正常交货
     if (t.to === "bar" && t.offerItem === "Orgeat Bottle") {
       g.flags.orgeatDelivered = true;
       if (!g.traders.bar.inventory.includes("Mai Tai")) {
@@ -266,7 +279,6 @@ function applySpecialRules(game, accepted) {
         !g.flags.oneWheelBuilt
       ) {
         g.flags.oneWheelBuilt = true;
-        // Remove materials used
         const mech = g.traders.mechanic;
         mech.inventory = mech.inventory.filter(
           (x) => x !== "Steel Rim" && x !== "Tool Roll"
@@ -338,13 +350,13 @@ function resolvePlayerOffers(game) {
   return g;
 }
 
-/* ---------- Heat & Perish ---------- */
+/* ---------- 热度 & 保鲜 ---------- */
 function updateHeat(game, npcOffers) {
   const nextHeat = { ...game.heat };
   const wanted = npcOffers.map((o) => o.wantItem);
   const uniqueWanted = [...new Set(wanted)];
   uniqueWanted.forEach((item) => {
-    nextHeat[item] = Math.min(5, (nextHeat[item] || 0) + 1);
+    nextHeat[item] = Math.min(MAX_HEAT, (nextHeat[item] || 0) + 1);
   });
   Object.keys(nextHeat).forEach((item) => {
     if (!uniqueWanted.includes(item)) nextHeat[item] = Math.max(0, nextHeat[item] - 1);
@@ -356,21 +368,23 @@ function applyPerish(game) {
   const g = clone(game);
   const p = g.traders.player;
   const timer = { ...g.perishTimer };
-  // Remove timers for items no longer in inventory
+  // 清理不在库存中的计时器
   Object.keys(timer).forEach((item) => {
     if (!p.inventory.includes(item)) delete timer[item];
   });
-  // Spoil first (>=2 full rounds held), then increment
+  // 先检查腐坏（timer>=2）
   p.inventory = p.inventory.filter((item) => {
     if (ITEMS[item]?.perishable && timer[item] >= 2) {
-      if (!p.inventory.includes("Spoiled Fish")) p.inventory.push("Spoiled Fish");
+      if (!p.inventory.includes("Spoiled Fish")) {
+        p.inventory.push("Spoiled Fish");
+      }
       g.log.unshift(`${labelShort(item)} spoiled.`);
       delete timer[item];
-      return false;
+      return false; // 移除该物品
     }
     return true;
   });
-  // Increment timer for remaining perishables
+  // 对剩余易腐品增加计时
   p.inventory.forEach((item) => {
     if (ITEMS[item]?.perishable) {
       timer[item] = (timer[item] || 0) + 1;
@@ -380,12 +394,11 @@ function applyPerish(game) {
   return g;
 }
 
-/* ---------- Events ---------- */
+/* ---------- 事件与判型 ---------- */
 function buildEvents(game) {
   if (game.ended) return [];
   const p = game.traders.player;
   const events = [];
-  // Grandma
   if (
     !game.flags.cheated &&
     game.flags.orgeatDelivered &&
@@ -398,7 +411,6 @@ function buildEvents(game) {
       actions: ["Go to Grandma Supper", "Stay"],
     });
   }
-  // Auction
   const auctionNW = game.flags.cheated ? 22 : 18;
   if (
     game.flags.oilDeliveredToVale &&
@@ -411,7 +423,6 @@ function buildEvents(game) {
       actions: ["Enter Auction", "Stay"],
     });
   }
-  // Cliff Race
   if (
     !game.flags.raced &&
     (p.inventory.includes("Built Onewheel") || p.inventory.includes("Auction Onewheel")) &&
@@ -424,8 +435,7 @@ function buildEvents(game) {
       actions: ["Race", "Decline"],
     });
   }
-  // For now, only show the first available event each round to avoid choice overload
-  return events.slice(0, 1);
+  return events.slice(0, 1); // 每轮只显示一条路线
 }
 
 function classify(game) {
@@ -450,6 +460,14 @@ function classify(game) {
   return { name, description: desc[name] || "Unknown" };
 }
 
+function resetOffers() {
+  return [
+    { to: "", wantItem: "", offerItem: "", sardines: 0 },
+    { to: "", wantItem: "", offerItem: "", sardines: 0 },
+    { to: "", wantItem: "", offerItem: "", sardines: 0 },
+  ];
+}
+
 function processRound(next) {
   const npcOffers = generateNPCOffers(next);
   next.npcIntent = npcOffers.slice(0, 3);
@@ -470,7 +488,7 @@ function processRound(next) {
   return next;
 }
 
-/* ---------- Components ---------- */
+/* ---------- 组件 ---------- */
 function Avatar({ trader, selected, onClick }) {
   return (
     <button className={`avatar ${selected ? "selected" : ""}`} onClick={onClick}>
@@ -592,7 +610,7 @@ function EventPanel({ game, onChoose }) {
   );
 }
 
-/* ---------- Main App ---------- */
+/* ---------- 根组件 ---------- */
 export default function App() {
   const [game, setGame] = useState(() => {
     let g = buildGame();
@@ -624,9 +642,9 @@ export default function App() {
     const chosen = game.offers.map((o) => o.offerItem).filter(Boolean);
     if (!pass && chosen.length !== unique(chosen).length) return alert("Cannot offer same item twice.");
     let next = clone(game);
-    if (pass) next.offers = next.offers.map(() => ({ to: "", wantItem: "", offerItem: "", sardines: 0 }));
+    if (pass) next.offers = resetOffers();
     next = processRound(next);
-    next.offers = next.offers.map(() => ({ to: "", wantItem: "", offerItem: "", sardines: 0 }));
+    next.offers = resetOffers();
     setGame(next);
   }
 
@@ -639,15 +657,16 @@ export default function App() {
       p.inventory.push("Sunflower");
       next.finalText = "You go after close with the fish and the Mai Tai. The grandmother gives you a sunflower from her vase.";
     }
-    if (id === "auction" && action === "Enter Auction") {
+    else if (id === "auction" && action === "Enter Auction") {
       const reserve = next.flags.cheated ? 20 : 16;
       if (p.sardines < reserve) {
         alert(`You need at least ${reserve} sardines to bid.`);
         return;
       }
-      const bid = prompt(`Auction reserve: ${reserve} sardines. How much do you bid? (You have ${p.sardines})`);
-      const amount = Number(bid);
-      if (!bid || amount < reserve || amount > p.sardines) {
+      const bidStr = prompt(`Auction reserve: ${reserve} sardines. How much do you bid? (You have ${p.sardines})`);
+      if (bidStr === null) return; // 用户取消
+      const amount = Number(bidStr);
+      if (isNaN(amount) || amount < reserve || amount > p.sardines) {
         alert("Invalid bid. Auction lost.");
         if (p.sardines >= 10) {
           p.sardines -= 10;
@@ -657,6 +676,7 @@ export default function App() {
           next.log.unshift("Lost auction and couldn't afford the onewheel.");
         }
         next.pendingEvents = [];
+        next.offers = resetOffers();
         next.round += 1;
         setGame(next);
         return;
@@ -666,7 +686,7 @@ export default function App() {
       next.ended = true; next.winner = true;
       next.finalText = "Vale awards you the sunflower at auction.";
     }
-    if (id === "cliff" && action === "Race") {
+    else if (id === "cliff" && action === "Race") {
       next.flags.raced = true;
       p.inventory = p.inventory.filter((x) => x !== "Mai Tai");
       p.inventory = p.inventory.filter((x) => x !== "Built Onewheel" && x !== "Auction Onewheel");
@@ -683,15 +703,22 @@ export default function App() {
         }
         next.log.unshift("Lost the race. Mai Tai and onewheel gone.");
         next.pendingEvents = [];
+        next.offers = resetOffers();
         next.round += 1;
         setGame(next);
         return;
       }
     }
+
     if (!next.ended && (action === "Stay" || action === "Decline")) {
-      next.pendingEvents = []; next.round += 1;
+      next.pendingEvents = [];
+      next.offers = resetOffers();
+      next.round += 1;
     }
-    if (next.ended) next.style = classify(next);
+    if (next.ended) {
+      next.style = classify(next);
+      next.offers = resetOffers();
+    }
     setGame(next);
   }
 
@@ -806,6 +833,7 @@ export default function App() {
                 <div>Profitable flips: {game.stats.profitableFlips}</div>
                 <div>Overpays: {game.stats.overpays}</div>
                 <div>Trades made: {game.stats.tradeCount}</div>
+                <div>Cheats: {game.stats.cheats || 0}</div>
                 <div>Net hidden profit: {game.stats.totalProfit}</div>
               </div>
             </div>
