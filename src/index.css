@@ -1,0 +1,103 @@
+/* ---------- Reset & Base ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Courier New', Courier, monospace;
+  background: #1a1e1b;
+  color: #e4dccd;
+  padding: 16px;
+  min-height: 100vh;
+}
+.app-shell { max-width: 1100px; margin: 0 auto; }
+.container { display: flex; flex-direction: column; gap: 24px; }
+
+/* ---------- Typography ---------- */
+h1 { font-size: 1.8rem; color: #e6c873; }
+h2 { font-size: 1.2rem; margin: 8px 0; }
+.muted { color: #8b8b7a; font-size: 0.9rem; }
+.small { font-size: 0.8rem; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  background: #2e3b2c; border: 1px solid #6b7a5a; color: #e4dccd;
+  padding: 6px 14px; border-radius: 6px; cursor: pointer; font-family: inherit;
+}
+.btn.gold { background: #5a4a2e; border-color: #c9a44b; color: #ffecb3; }
+.btn.ghost { background: transparent; border-color: #4e5a4a; }
+.btn:hover { filter: brightness(1.2); }
+
+/* ---------- Cards ---------- */
+.card {
+  background: #232b24; border: 1px solid #3a4534;
+  border-radius: 12px; padding: 16px; margin-bottom: 16px;
+}
+.section-title { font-weight: bold; color: #b9aa73; margin-bottom: 10px; border-bottom: 1px dashed #4e5a4a; }
+
+/* ---------- Avatar row ---------- */
+.avatar-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+.avatar {
+  background: #2e382a; border: 1px solid #4a543a; border-radius: 14px;
+  padding: 10px; text-align: center; min-width: 70px; cursor: pointer; color: inherit;
+}
+.avatar.selected { border-color: #e6c873; box-shadow: 0 0 8px #e6c87355; }
+.avatar-icon { font-size: 1.8rem; }
+.avatar-name { font-size: 0.75rem; }
+.avatar-money { font-size: 0.7rem; color: #a6a67a; }
+
+/* ---------- Detail card ---------- */
+.detail-head { display: flex; align-items: center; gap: 14px; }
+.big-icon { font-size: 2.5rem; }
+
+/* ---------- Chips ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.chip {
+  background: #2f3a2c; border: 1px solid #5a6846; border-radius: 20px;
+  padding: 4px 10px; font-size: 0.85rem;
+}
+
+/* ---------- Offer Row ---------- */
+.offer-row {
+  display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;
+}
+.offer-row select, .offer-row input {
+  background: #2e382a; border: 1px solid #4a543a; color: #e4dccd;
+  padding: 6px; border-radius: 6px; font-family: inherit; font-size: 0.9rem;
+}
+.offer-row input { width: 70px; }
+
+/* ---------- Route Board ---------- */
+.route { margin-bottom: 12px; }
+.route strong { color: #d3b66e; }
+
+/* ---------- Event Panel ---------- */
+.event-box {
+  background: #2f3522; border: 2px solid #b9aa44; border-radius: 14px;
+  padding: 18px; margin-bottom: 18px; text-align: center;
+}
+.event-card h3 { color: #e6c873; }
+.event-actions { margin-top: 12px; display: flex; gap: 8px; justify-content: center; }
+
+/* ---------- End state ---------- */
+.win-box { border-color: #c9a44b; background: #2f3620; padding: 20px; border-radius: 14px; text-align: center; }
+.lose-box { border-color: #6b4e4e; background: #2b2020; padding: 20px; border-radius: 14px; text-align: center; }
+.style-box { margin-top: 12px; background: #1e241c; border-radius: 10px; padding: 12px; border: 1px solid #5a6a4e; }
+
+/* ---------- Top bar ---------- */
+.top-bar { display: flex; flex-wrap: wrap; gap: 10px; }
+.pill {
+  background: #2e3b2c; border: 1px solid #4e5a4a; border-radius: 20px;
+  padding: 4px 14px; font-size: 0.9rem;
+}
+.pill.bad { border-color: #a6544a; color: #d98b8b; }
+
+/* ---------- Layout ---------- */
+.main-layout { display: flex; gap: 20px; flex-wrap: wrap; }
+.left-col { flex: 2; min-width: 280px; }
+.right-col { flex: 1; min-width: 220px; }
+
+/* ---------- Log ---------- */
+.log-stack { max-height: 200px; overflow-y: auto; font-size: 0.8rem; }
+.log-line { padding: 3px 0; border-bottom: 1px solid #333d2e; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: #4e5a4a; border-radius: 4px; }
