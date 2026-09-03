@@ -28,7 +28,7 @@ import {
   sellInformation,
   unique,
 } from "./gameEngine";
-import { visibleMarketBoard } from "./npcAI";
+import { visibleMarketBoard, visibleSellListings } from "./npcAI";
 
 function itemLabel(item) {
   if (!item) return "nothing";
@@ -135,17 +135,35 @@ function OrderRow({ index, order, setOrder, traders, visibleByTrader, playerInve
 }
 
 function MarketBoard({ game }) {
-  const board = visibleMarketBoard(game);
+  const bids = visibleMarketBoard(game);
+  const listings = visibleSellListings(game);
   return (
     <section className="card market-card">
-      <div className="section-title">Noon board · committed before opening</div>
-      <p className="muted board-note">These are public bids, not a view into anyone's private reasoning. New information can change a Morning plan, but clearing never rerolls it.</p>
+      <div className="section-title">Public market board</div>
+      <p className="muted board-note">Sell listings are public stock. Buy bids are committed intentions. Hidden inventory and private reasoning stay hidden.</p>
+
+      <div className="section-title">For sale</div>
       <div className="stack">
-        {board.length ? board.map((order, index) => (
+        {listings.length ? listings.map((listing) => {
+          const seller = game.traders[listing.sellerId];
+          return (
+            <div className="mini-card" key={`sell-${listing.sellerId}-${listing.item}`}>
+              <div>
+                <strong>{seller.icon} {seller.name}</strong> asks {listing.ask}🥫 for {labelShort(listing.item)}
+              </div>
+              <div className="small muted">Reference {listing.reference}🥫 · ask can differ because the seller has their own use, markup and market heat.</div>
+            </div>
+          );
+        }) : <div className="muted">No public sell listings remain right now.</div>}
+      </div>
+
+      <div className="section-title">Committed buy bids</div>
+      <div className="stack">
+        {bids.length ? bids.map((order, index) => (
           <div className="mini-card" key={`${order.from}-${order.wantItem}-${index}`}>
             <div><strong>{game.traders[order.from].icon} {game.traders[order.from].name}</strong> bids {order.sardines}🥫 for {labelShort(order.wantItem)}</div>
           </div>
-        )) : <div className="muted">No NPC order clears at current prices and current knowledge. That is also market information.</div>}
+        )) : <div className="muted">No NPC buy order clears at current prices and current knowledge. That is also market information.</div>}
       </div>
     </section>
   );
