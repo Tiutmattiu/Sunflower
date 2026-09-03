@@ -1,6 +1,6 @@
 import * as base from "./gameEngine.js";
 import { INFO_BASE_PRICE, INITIAL_TRADERS, ITEMS, NPC_PROFILES } from "./gameData.js";
-import { buyerMax, privateUtility, sellerAsk } from "./npcAI.js";
+import { buyerMax, planNPCMarket, privateUtility, sellerAsk } from "./npcAI.js";
 
 export * from "./gameEngine.js";
 
@@ -26,7 +26,8 @@ function ensureState(game) {
   if (!Number.isFinite(game.stats.informationFavours)) game.stats.informationFavours = 0;
   if (!Number.isFinite(game.stats.inboundTrades)) game.stats.inboundTrades = 0;
   (game.information || []).forEach((info) => {
-    if (!Array.isArray(info.knownBy)) info.knownBy = ["player", ...(info.soldTo || [])];
+    if (!Array.isArray(info.soldTo)) info.soldTo = [];
+    if (!Array.isArray(info.knownBy)) info.knownBy = ["player", ...info.soldTo];
     if (!Number.isFinite(info.diffusionCount)) info.diffusionCount = Math.max(0, info.knownBy.length - 1);
     if (info.personallyVerified == null) info.personallyVerified = info.source === "personal investigation";
     if (!Array.isArray(info.sharedWith)) info.sharedWith = [];
@@ -143,7 +144,7 @@ function inboundInformationOffer(game, buyerId, info) {
 
 export function buildInboundOffers(current, phase = current.phase) {
   const game = ensureState(clone(current));
-  if (!['morning', 'afternoon'].includes(phase) || game.ended) return [];
+  if (!["morning", "afternoon"].includes(phase) || game.ended) return [];
   const candidates = [];
 
   if (phase === "morning") {
@@ -280,31 +281,40 @@ export function shareInformationAsFavor(current, infoId, buyerId) {
   return game;
 }
 
+function maybeProduceMaiTai(game) {
+  const bar = game.traders.bar;
+  const inputs = ["Rum Bottle", "Lime Crate", "Orange Curaçao", "Orgeat Bottle"];
+  if (!inputs.every((ingredient) => bar.inventory.includes(ingredient)) || bar.inventory.includes("Mai Tai")) return;
+  bar.inventory.push("Mai Tai");
+  game.flags.orgeatDelivered = true;
+  game.log.unshift("The Apprentice finally has everything needed to make a proper Mai Tai. One joins the Bar's available stock.");
+}
+
+function maybeBuildOnewheel(game) {
+  const sailor = game.traders.mechanic;
+  const ready = ONEWHEEL_CONSUMED_PARTS.every((part) => sailor.inventory.includes(part)) && sailor.inventory.includes(ONEWHEEL_TOOL);
+  if (!ready || sailor.inventory.includes("Built Onewheel")) return;
+  ONEWHEEL_CONSUMED_PARTS.forEach((part) => { sailor.inventory = removeOne(sailor.inventory, part); });
+  sailor.inventory.push("Built Onewheel");
+  game.flags.oneWheelBuilt = true;
+  game.log.unshift("The Sailor uses the gathered bicycle parts and a torque wrench to assemble a working onewheel.");
+}
+
 function applyWorldReceivedItem(game, receiverId, item) {
   if (!item || !game.traders[receiverId]) return;
-
   if (receiverId === "bar" && item === "Orgeat Bottle") game.flags.orgeatDelivered = true;
   if (receiverId === "vale" && item === "Sperm Whale Oil") {
     game.flags.oilDeliveredToVale = true;
     game.traders.vale.inventory = game.traders.vale.inventory.filter((held) => held !== "Auction Onewheel");
   }
   if (receiverId === "mechanic" && item === "Lime Crate") game.flags.limeDeliveredToMechanic = true;
+  maybeProduceMaiTai(game);
+  maybeBuildOnewheel(game);
+}
 
-  const bar = game.traders.bar;
-  const maiTaiInputs = ["Rum Bottle", "Lime Crate", "Orange Curaçao", "Orgeat Bottle"];
-  if (maiTaiInputs.every((ingredient) => bar.inventory.includes(ingredient)) && !bar.inventory.includes("Mai Tai")) {
-    bar.inventory.push("Mai Tai");
-    game.log.unshift("The Apprentice finally has everything needed to make a proper Mai Tai. One joins the Bar's available stock.");
-  }
-
-  const sailor = game.traders.mechanic;
-  const canBuildWheel = ONEWHEEL_CONSUMED_PARTS.every((part) => sailor.inventory.includes(part)) && sailor.inventory.includes(ONEWHEEL_TOOL);
-  if (canBuildWheel && !sailor.inventory.includes("Built Onewheel")) {
-    ONEWHEEL_CONSUMED_PARTS.forEach((part) => { sailor.inventory = removeOne(sailor.inventory, part); });
-    sailor.inventory.push("Built Onewheel");
-    game.flags.oneWheelBuilt = true;
-    game.log.unshift("The Sailor uses the gathered bicycle parts and a torque wrench to assemble a working onewheel.");
-  }
+function applyWorldProduction(game) {
+  maybeProduceMaiTai(game);
+  maybeBuildOnewheel(game);
 }
 
 export function giveItem(current, targetId, item) {
@@ -324,6 +334,7 @@ export function giveItem(current, targetId, item) {
   addLearningNote(game, "gift-economy", "A good does not have to become cash", "You converted an object into relationship capital instead of selling it.");
   game.lastInteraction = { action: "gift", targetId, text: `You give ${item} to ${game.traders[targetId].name}. They accept it as a gift, not a market settlement.` };
   game.log.unshift(game.lastInteraction.text);
+  if (game.phase === "morning") game.marketPlan = planNPCMarket(game);
   return game;
 }
 
@@ -351,6 +362,8 @@ function applyWorldConsequencesFromNewTrades(game, previousHistoryLength) {
     if (trade.paymentItem) applyWorldReceivedItem(game, trade.to, trade.paymentItem);
     if (trade.to === "player") game.stats.inboundTrades += 1;
   });
+  game.flags.steelDeliveredToMechanic = false;
+  game.flags.toolDeliveredToMechanic = false;
   game.pendingEvents = base.buildEvents(game).filter((event) => {
     if (event.id !== "cliff") return true;
     return game.traders.player.inventory.includes("Built Onewheel");
@@ -368,11 +381,24 @@ function applyBarToolRevenue(game, settledDay) {
 }
 
 function markInboundSettlement(game) {
-  const filledOfferIds = new Set((game.marketOutcome || []).map((trade) => trade.inboundOfferId).filter(Boolean));
   (game.inboundOffers || []).forEach((offer) => {
     if (offer.status !== "accepted" || offer.kind !== "buy-item") return;
-    offer.status = filledOfferIds.has(offer.id) ? "filled" : "failed";
+    const filled = (game.marketOutcome || []).some((trade) =>
+      trade.from === offer.buyerId && trade.to === "player" && trade.wantItem === offer.item && Number(trade.sardines) === Number(offer.price)
+    );
+    offer.status = filled ? "filled" : "failed";
   });
+}
+
+function learnFromSunset(before, game) {
+  const beforeObligations = base.currentObligations(before).length;
+  const afterObligations = base.currentObligations(game).length;
+  if (afterObligations > beforeObligations) addLearningNote(game, "credit", "A relationship can become liquidity", "Someone carried you through a shortfall. The favour survives as an obligation.");
+  if (before.playerState.form !== game.playerState.form) addLearningNote(game, "legal-personhood", "Memory is not legal identity", "You remember the former life, but the market institutions do not automatically recognise its ownership claims.");
+
+  const beforePerishables = (before.traders.player.inventory || []).filter((item) => ITEMS[item]?.shelfLife);
+  const afterInventory = game.traders.player.inventory || [];
+  if (beforePerishables.some((item) => !afterInventory.includes(item))) addLearningNote(game, "perishability", "Inventory can decay while you wait", "A good can lose all saleability simply because time passed.");
 }
 
 export function createGame() {
@@ -395,7 +421,9 @@ export function advancePhase(current) {
   if (oldPhase === "sunrise" && game.phase === "morning") game = refreshInboundOffers(game, "morning");
   if (oldPhase === "noon" && before.marketResolved && game.phase === "afternoon") game = refreshInboundOffers(game, "afternoon");
   if (oldPhase === "sunset") {
+    applyWorldProduction(game);
     applyBarToolRevenue(game, oldDay);
+    learnFromSunset(before, game);
     if (game.day !== oldDay) game.inboundOffers = game.inboundOffers.map((offer) => offer.status === "pending" ? { ...offer, status: "expired" } : offer);
   }
   return game;
@@ -403,6 +431,8 @@ export function advancePhase(current) {
 
 export function resolveNoonMarket(current) {
   const before = ensureState(clone(current));
+  before.flags.steelDeliveredToMechanic = false;
+  before.flags.toolDeliveredToMechanic = false;
   const historyLength = before.history.length;
   const game = ensureState(base.resolveNoonMarket(before));
   applyWorldConsequencesFromNewTrades(game, historyLength);
@@ -422,6 +452,6 @@ export function sellInformation(current, infoId, buyerId) {
   addLearningNote(game, "information-market", "Information is an asset", "You converted a private lead into cash. Its resale value will fall as more people learn it.");
   game.lastInteraction = { action: "sell-information", targetId: buyerId, text: `${game.traders[buyerId].name} pays ${paid}🥫 for your lead: ${info.text}` };
   game.log.unshift(game.lastInteraction.text);
-  if (game.phase === "morning") game.marketPlan = base.createGame ? game.marketPlan : game.marketPlan;
+  if (game.phase === "morning") game.marketPlan = planNPCMarket(game);
   return game;
 }
