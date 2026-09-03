@@ -1,15 +1,19 @@
 import React, { useMemo, useState } from "react";
 import "./index.css";
-import { ITEMS, NPC_PROFILES, PHASE_COPY, SARDINE } from "./gameData";
+import { FORMS, ITEMS, NPC_PROFILES, PHASE_COPY, SARDINE } from "./gameData";
 import {
   advancePhase,
+  canAccessVenue,
   createGame,
+  informationBuyers,
+  knownItemsForTrader,
   labelShort,
   netWorth,
   performFreeAction,
   resetOrders,
   resolveEvent,
   resolveNoonMarket,
+  sellInformation,
   unique,
 } from "./gameEngine";
 import { visibleMarketBoard } from "./npcAI";
@@ -18,28 +22,6 @@ function itemLabel(item) {
   if (!item) return "nothing";
   const data = ITEMS[item];
   return `${data?.icon || "📦"} ${item} · ${data?.value ?? 0}`;
-}
-
-function visibleStockForPlayer(game, trader) {
-  if (trader.id === "player") return trader.inventory;
-
-  const publicStock = (NPC_PROFILES[trader.id]?.publicStock || [])
-    .filter((item) => trader.inventory.includes(item));
-  const known = [...publicStock];
-
-  // A public trade makes the buyer's newly acquired item market knowledge.
-  game.history.forEach((trade) => {
-    if (trade.from === trader.id && trader.inventory.includes(trade.item)) known.push(trade.item);
-  });
-
-  // First-pass investigation rule: spending time on a trader reveals one otherwise hidden holding.
-  // Later this will become source/confidence-based knowledge rather than a binary reveal.
-  if (game.intel[`${trader.id}:clue`]) {
-    const hidden = trader.inventory.find((item) => !known.includes(item));
-    if (hidden) known.push(hidden);
-  }
-
-  return unique(known);
 }
 
 function PhaseStrip({ game }) {
@@ -144,13 +126,14 @@ function MarketBoard({ game }) {
   return (
     <section className="card market-card">
       <div className="section-title">Noon board · committed before opening</div>
-      <p className="muted board-note">These are real NPC intentions for today. They will not be rerolled when you clear the market.</p>
+      <p className="muted board-note">These are real NPC intentions for today. New information can change a Morning plan, but clearing never rerolls it.</p>
       <div className="stack">
         {board.length ? board.map((order, index) => (
           <div className="mini-card" key={`${order.from}-${order.wantItem}-${index}`}>
             <div><strong>{game.traders[order.from].icon} {game.traders[order.from].name}</strong> bids {order.sardines}🥫 for {labelShort(order.wantItem)}</div>
+            <div className="small muted">Why this source is known: {order.knowledgeBasis}</div>
           </div>
-        )) : <div className="muted">No NPC order clears at current prices. That is also market information.</div>}
+        )) : <div className="muted">No NPC order clears at current prices and current knowledge. That is also market information.</div>}
       </div>
     </section>
   );
@@ -212,7 +195,7 @@ function ActionPanel({ game, selectedId, onAction }) {
   return (
     <section className="card">
       <div className="section-title">Free-time actions</div>
-      <p className="muted">Morning and afternoon are free-form, but not infinite. Each meaningful action consumes time.</p>
+      <p className="muted">You communicate through limited language, translation, gesture, written notes and what you actually do. Meaningful contact costs time.</p>
       <div className="action-grid">
         <button className="btn" disabled={!active} onClick={() => onAction("talk", selectedId)}>
           Talk to {selectedId === "player" ? "someone" : selected.name}
@@ -226,15 +209,39 @@ function ActionPanel({ game, selectedId, onAction }) {
   );
 }
 
-function LeadsPanel({ game }) {
-  const entries = Object.entries(game.intel);
+function LeadsPanel({ game, onSell }) {
+  const active = ["morning", "afternoon"].includes(game.phase) && game.actionsRemaining > 0;
+  const entries = [...game.information].reverse();
   return (
     <section className="card">
-      <div className="section-title">Leads</div>
+      <div className="section-title">Information book</div>
       <div className="stack">
-        {entries.length ? entries.map(([key, value]) => (
-          <div className="mini-card" key={key}>{value}</div>
-        )) : <div className="muted">You do not know enough yet to call anything a lead.</div>}
+        {entries.length ? entries.map((info) => {
+          const buyers = informationBuyers(game, info);
+          return (
+            <div className="mini-card" key={info.id}>
+              <div>{info.text}</div>
+              <div className="small muted">
+                {info.source} · confidence {info.confidence} · observed D{info.observedDay}
+                {info.exclusive ? " · probably exclusive" : ""}
+              </div>
+              {!!buyers.length && (
+                <div className="action-grid">
+                  {buyers.map((buyerId) => (
+                    <button
+                      className="btn"
+                      key={`${info.id}-${buyerId}`}
+                      disabled={!active}
+                      onClick={() => onSell(info.id, buyerId)}
+                    >
+                      Sell lead to {game.traders[buyerId].name} · 1🥫
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        }) : <div className="muted">You do not know enough yet to call anything a lead.</div>}
       </div>
     </section>
   );
@@ -255,17 +262,22 @@ export default function App() {
   const player = traders.player;
   const selected = traders[game.selected] || player;
   const phase = PHASE_COPY[game.phase];
+  const form = FORMS[game.playerState.form];
   const usedItems = game.playerOrders.map((order) => order.offerItem).filter(Boolean);
   const plannedSardines = game.playerOrders.reduce((sum, order) => sum + Number(order.sardines || 0), 0);
 
   const visibleByTrader = useMemo(() => Object.fromEntries(
-    Object.values(traders).map((trader) => [trader.id, visibleStockForPlayer(game, trader)])
+    Object.values(traders).map((trader) => [trader.id, knownItemsForTrader(game, trader.id)])
   ), [game, traders]);
 
-  const selectedIntel = useMemo(() => ({
-    style: game.intel[`${selected.id}:style`],
-    clue: game.intel[`${selected.id}:clue`],
-  }), [game.intel, selected.id]);
+  const selectedIntel = useMemo(() => {
+    const styleInfo = game.information.find((info) => info.subjectId === selected.id && info.claimType === "style");
+    const pressureInfo = [...game.information].reverse().find((info) => info.subjectId === selected.id && info.claimType === "pressure");
+    return {
+      style: styleInfo?.text?.replace(`${selected.name} trades like a `, "").replace(/\.$/, "") || game.intel[`${selected.id}:style`],
+      clue: pressureInfo?.text || game.intel[`${selected.id}:clue`],
+    };
+  }, [game.information, game.intel, selected.id, selected.name]);
 
   function setSelected(id) {
     setGame((current) => ({ ...current, selected: id }));
@@ -304,6 +316,10 @@ export default function App() {
     setGame((current) => performFreeAction(current, action, targetId));
   }
 
+  function handleSellInformation(infoId, buyerId) {
+    setGame((current) => sellInformation(current, infoId, buyerId));
+  }
+
   function handleEvent(id, action, bid) {
     setGame((current) => resolveEvent(current, id, action, bid));
   }
@@ -331,6 +347,7 @@ export default function App() {
         <div className="sticky-status">
           <span>Day {game.day}</span>
           <span>{phase.icon} {phase.title}</span>
+          <span>{form.icon} {form.label}</span>
           <span>{SARDINE} {player.sardines}</span>
           <span>NW {netWorth(player)}</span>
         </div>
@@ -339,7 +356,7 @@ export default function App() {
 
         {game.ended && (
           <section className={`end-box ${game.winner ? "win-box" : "lose-box"}`}>
-            <h2>{game.winner ? "🌻 You acquired the sunflower." : "The final sunset passed."}</h2>
+            <h2>{game.winner ? "🌻 You acquired the sunflower." : "This prototype life ended."}</h2>
             <p>{game.finalText}</p>
             {game.style && <div className="style-box"><strong>{game.style.name}</strong><p>{game.style.description}</p></div>}
           </section>
@@ -375,7 +392,7 @@ export default function App() {
             {!game.ended && game.phase === "morning" && (
               <section className="card order-card">
                 <div className="section-title">Your noon orders</div>
-                <p className="muted board-note">Prototype rule: up to three committed offers. You can only target stock you have actually confirmed.</p>
+                <p className="muted board-note">Prototype rule: up to three committed offers. You can target confirmed or still-believed stock; stale information can fail at clearing.</p>
                 <div className="stack">
                   {game.playerOrders.map((order, index) => (
                     <OrderRow
@@ -423,15 +440,24 @@ export default function App() {
           </div>
 
           <aside className="right-col">
-            <LeadsPanel game={game} />
+            <LeadsPanel game={game} onSell={handleSellInformation} />
+
+            <section className="card">
+              <div className="section-title">Current form & access</div>
+              <div className="stack">
+                <div className="mini-card">{form.icon} {form.label} · legal identity {game.playerState.legalIdentity.status}</div>
+                <div className="mini-card">Public Market: {canAccessVenue(game, "formalMarket") ? "direct access" : "proxy required"}</div>
+                <div className="mini-card">The Bar: {canAccessVenue(game, "bar") ? "welcome" : "no direct access"}</div>
+              </div>
+            </section>
 
             <section className="card">
               <div className="section-title">Today so far</div>
               <div className="stat-grid">
                 <div><span>Public trades</span><strong>{game.history.filter((trade) => trade.day === game.day).length}</strong></div>
                 <div><span>Free-time slots</span><strong>{game.actionsRemaining}</strong></div>
-                <div><span>Known clues</span><strong>{Object.keys(game.intel).length}</strong></div>
-                <div><span>Market heat</span><strong>{Object.values(game.heat).reduce((sum, n) => sum + n, 0)}</strong></div>
+                <div><span>Known leads</span><strong>{game.information.length}</strong></div>
+                <div><span>Info sold</span><strong>{game.stats.informationSales}</strong></div>
               </div>
             </section>
 
