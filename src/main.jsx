@@ -53,9 +53,11 @@ class ErrorBoundary extends React.Component {
         }}>
           <h1>💥 Game Crashed</h1>
           <p><strong>Error:</strong> {this.state.error?.message}</p>
-          <pre style={{ whiteSpace: "pre-wrap", fontSize: 14, marginTop: 20 }}>
-            {this.state.error?.stack}
-          </pre>
+          {import.meta.env.DEV && (
+            <pre style={{ whiteSpace: "pre-wrap", fontSize: 14, marginTop: 20 }}>
+              {this.state.error?.stack}
+            </pre>
+          )}
         </div>
       );
     }
