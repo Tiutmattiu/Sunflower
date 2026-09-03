@@ -285,9 +285,22 @@ function applyPerishables(game) {
 
 function settleBusinesses(game) {
   const dog = game.traders.dog;
+  const fishmonger = game.traders.fishmonger;
+
+  // Consumption creates a real sink: Dog buys food because the cat colony actually uses it.
   if (dog.inventory.includes("Fresh Mackerel")) {
     dog.inventory = dog.inventory.filter((item) => item !== "Fresh Mackerel");
     game.log.unshift("Dock Dog's fresh fish disappears into the cat colony by sunset.");
+  }
+
+  // Production / scavenging create bounded recurring sources so the market can keep moving.
+  if (!fishmonger.inventory.includes("Fresh Mackerel")) {
+    fishmonger.inventory.push("Fresh Mackerel");
+    game.log.unshift("Fishmonger lands one fresh market lot for tomorrow.");
+  }
+  if (!dog.inventory.includes("Dead Pigeon")) {
+    dog.inventory.push("Dead Pigeon");
+    game.log.unshift("Dock Dog scavenges another deeply questionable piece of inventory.");
   }
 
   const sailorProfile = NPC_PROFILES.mechanic;
