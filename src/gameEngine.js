@@ -36,10 +36,12 @@ function relationshipMap() {
   return Object.fromEntries(Object.keys(NPC_PROFILES).map((id) => [id, 0]));
 }
 
+function countMap() {
+  return Object.fromEntries(Object.keys(NPC_PROFILES).map((id) => [id, 0]));
+}
+
 function profileWantsItem(profile, item) {
-  return (profile?.goals || []).some((goal) =>
-    goal.item === item || (goal.substitutes || []).some((substitute) => substitute.item === item)
-  );
+  return (profile?.goals || []).some((goal) => goal.item === item);
 }
 
 function informationKey(info) {
@@ -54,6 +56,7 @@ function addInformation(game, payload) {
     item: payload.item || null,
     text: payload.text,
     source: payload.source || "unknown",
+    precision: payload.precision || "context",
     confidence: payload.confidence || "medium",
     observedDay: game.day,
     freshness: payload.freshness || "current",
@@ -68,6 +71,7 @@ function addInformation(game, payload) {
     existing.observedDay = game.day;
     existing.freshness = candidate.freshness;
     existing.confidence = candidate.confidence;
+    existing.precision = candidate.precision;
     return existing;
   }
 
@@ -128,6 +132,7 @@ export function createGame() {
     history: [],
     information: [],
     intel: {},
+    investigationCounts: countMap(),
     relationships: relationshipMap(),
     npcMemory: emptyMemory(),
     heat: {},
@@ -420,11 +425,10 @@ function executePlayerOrders(game) {
 
     const isCheat = normalized.to === "mechanic" && normalized.offerItem === "Bad Tangerine";
     const paymentValue = valueOf(normalized.offerItem) + normalized.sardines;
-    const ask = sellerAsk(game, target.id, normalized.wantItem);
     const usefulDelivery = profileWantsItem(NPC_PROFILES[target.id], normalized.offerItem);
 
-    if (!isCheat && !usefulDelivery && paymentValue < ask) {
-      rejected.push({ ...normalized, reason: `${target.name} would not clear below an estimated ${ask}🥫 of value.` });
+    if (!isCheat && !usefulDelivery && paymentValue < sellerAsk(game, target.id, normalized.wantItem)) {
+      rejected.push({ ...normalized, reason: `${target.name} would not clear below an estimated ${sellerAsk(game, target.id, normalized.wantItem)}🥫 of value.` });
       return;
     }
 
@@ -540,7 +544,7 @@ function applyPerishables(game) {
 
 function consumeBusinessInputs(game) {
   const dog = game.traders.dog;
-  const catFood = ["Fresh Mackerel", "Smoked Eel", "Sea Lettuce Bundle"].find((item) => dog.inventory.includes(item));
+  const catFood = ["Fresh Mackerel"].find((item) => dog.inventory.includes(item));
   if (catFood) {
     dog.inventory = dog.inventory.filter((item) => item !== catFood);
     game.log.unshift(`Dock Dog's ${catFood} disappears into the cat colony by sunset.`);
@@ -753,10 +757,33 @@ function revealHolding(game, targetId) {
     item,
     text: `${target.name} has ${labelShort(item)}.`,
     source: "personal investigation",
+    precision: "exact",
     confidence: "high",
     freshness: "current",
     exclusive: true,
     sellable: true,
+  });
+}
+
+function revealInvestigationStage(game, targetId) {
+  const profile = NPC_PROFILES[targetId];
+  const stages = profile?.investigationStages || [];
+  const index = game.investigationCounts[targetId] || 0;
+  const stage = stages[index];
+  if (!stage) return null;
+
+  game.investigationCounts[targetId] = index + 1;
+  return addInformation(game, {
+    claimType: stage.claimType || "observation",
+    subjectId: targetId,
+    item: stage.item || null,
+    text: stage.text,
+    source: "personal investigation",
+    precision: stage.precision || "context",
+    confidence: stage.confidence || "medium",
+    freshness: "current",
+    exclusive: stage.exclusive ?? false,
+    sellable: stage.sellable ?? false,
   });
 }
 
@@ -777,6 +804,7 @@ export function performFreeAction(current, action, targetId) {
         subjectId: targetId,
         text: `${target.name} trades like a ${NPC_PROFILES[targetId].style.toLowerCase()}.`,
         source: "relationship",
+        precision: "context",
         confidence: "medium",
         sellable: false,
       });
@@ -784,23 +812,29 @@ export function performFreeAction(current, action, targetId) {
   }
 
   if (action === "investigate") {
-    const holding = revealHolding(game, targetId);
-    if (holding) {
-      game.log.unshift(`You investigate ${target.name} and confirm a holding: ${labelShort(holding.item)}.`);
+    const staged = revealInvestigationStage(game, targetId);
+    if (staged) {
+      game.log.unshift(`You investigate ${target.name}: ${staged.text}`);
     } else {
-      const profile = NPC_PROFILES[targetId];
-      const primary = profile.goals?.[0];
-      const clue = primary ? `${profile.clue} Current pressure: ${primary.reason}` : profile.clue;
-      game.intel[`${targetId}:clue`] = clue;
-      addInformation(game, {
-        claimType: "pressure",
-        subjectId: targetId,
-        text: clue,
-        source: "personal investigation",
-        confidence: "medium",
-        sellable: false,
-      });
-      game.log.unshift(`You spend time investigating ${target.name}. Their pressure becomes more legible.`);
+      game.investigationCounts[targetId] = (game.investigationCounts[targetId] || 0) + 1;
+      const holding = revealHolding(game, targetId);
+      if (holding) {
+        game.log.unshift(`You investigate ${target.name} and confirm a holding: ${labelShort(holding.item)}.`);
+      } else {
+        const profile = NPC_PROFILES[targetId];
+        const clue = profile.clue;
+        game.intel[`${targetId}:clue`] = clue;
+        addInformation(game, {
+          claimType: "pressure",
+          subjectId: targetId,
+          text: clue,
+          source: "personal investigation",
+          precision: "context",
+          confidence: "medium",
+          sellable: false,
+        });
+        game.log.unshift(`You spend more time investigating ${target.name}, but nothing more precise becomes legible.`);
+      }
     }
   }
 
@@ -812,7 +846,7 @@ export function buildEvents(game) {
   if (game.ended) return [];
   const player = game.traders.player;
   const events = [];
-  const soupFish = ["Fresh Mackerel", "Salted Cod", "Smoked Eel"];
+  const soupFish = ["Fresh Mackerel", "Salted Cod", "Smoked Eel", "Two Octopus Tentacles"];
 
   if (
     canAccessVenue(game, "bar") &&
