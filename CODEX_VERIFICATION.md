@@ -8,7 +8,7 @@
 
 ### 2026-09-03
 
-Attempted:
+Repeated attempt:
 
 ```bash
 git clone --depth 1 https://github.com/Tiutmattiu/Sunflower.git
@@ -20,66 +20,75 @@ Result:
 fatal: unable to access 'https://github.com/Tiutmattiu/Sunflower.git/': Could not resolve host: github.com
 ```
 
-Therefore the latest commits were **not** verified here with a local `npm run build` or browser run. GitHub file writes succeeded through the connected GitHub tool, but that is not equivalent to a Vite build.
+Therefore the latest `main` has **not** been verified here with a local `npm run build`, Vite dev server, or browser playthrough. GitHub connector reads/writes succeeded, but that is not equivalent to runtime verification.
+
+The repo is structurally a Vite/React app (`npm run dev`, `npm run build`, `npm run preview`). `vite.config.js` now uses `base: "./"` so built asset paths are safer for static/project-page hosting, but deployment itself still needs a real check.
 
 ## Next Codex pass — run these first
 
 1. `npm install` if dependencies are absent.
 2. `npm run build`.
-3. Start the Vite app and do one mobile-width manual run.
-4. If there is a syntax/runtime error, fix it directly before adding features.
+3. Start the Vite app.
+4. Do one desktop and one narrow/mobile manual run.
+5. If there is any syntax/runtime error, fix it directly before adding features.
+6. Do not add CI / Playwright / Jest unless specifically asked.
 
-## Smoke cases that matter now
+---
 
-### A. Day / market integrity
+# Smoke cases that matter now
+
+## A. Day / market integrity
 
 - Start Day 1.
-- Confirm NPC noon intentions are generated before clearing.
+- Confirm NPC noon intentions exist before clearing.
 - Clear noon.
-- Confirm clearing uses the same committed intentions and does not reroll them.
-- Confirm public transaction tape reflects actual inventory movement.
+- Confirm clearing uses the exact same committed intentions and does not reroll them.
+- Confirm public transaction tape reflects actual cash and inventory movement.
+- Confirm information discovered/sold during Morning can causally change a plan before noon, but Resolve itself never rerolls.
 
-### B. Information asymmetry + staged precision
+## B. Information asymmetry + staged precision
 
-- Player should not see every true inventory item.
-- `precision` and `confidence` must remain separate fields.
-- Repeated investigation should deepen information rather than reveal exact truth immediately.
+Player must not see every true inventory item.
 
-Specific Bar check:
+`precision` and `confidence` are separate fields.
+
+### Bar sequence
 
 1. first investigation → Apprentice is learning a Mai Tai and one ingredient is missing;
-2. second investigation → rum / lime / orange curaçao are confirmed present, still no explicit Orgeat name;
-3. third investigation → exact Orgeat need is revealed.
+2. second → rum / lime / orange curaçao are confirmed present, still no explicit Orgeat name;
+3. third → exact Orgeat need is revealed.
 
-Specific Sailor check:
+A player with cocktail knowledge should be able to infer Orgeat before step 3; the game should not require a quiz.
 
-1. first investigation → selective cargo / approaching departure context;
-2. second investigation → oily / medicinal hidden-cargo hint;
-3. third investigation → exact Sperm Whale Oil holding.
+### Sailor sequence
+
+1. selective cargo / approaching departure context;
+2. oily / medicinal hidden-cargo hint;
+3. exact Sperm Whale Oil holding.
 
 Also confirm:
 
-- exact `holding` information becomes known stock for player targeting;
-- broad / specific need clues do **not** magically reveal hidden stock;
-- selling a relevant exact holding lead during Morning changes the buyer's noon plan because beliefs changed;
-- the UI does not expose `knowledgeBasis` or other private NPC reasoning;
-- a knowledgeable player can act on an inference before buying the exact final clue.
+- exact `holding` information becomes targetable known stock;
+- broad/specific need clues do not reveal hidden inventory;
+- selling a relevant holding lead during Morning changes the buyer's beliefs and can change noon positioning;
+- UI does not expose `knowledgeBasis` or hidden NPC reasoning;
+- broad NPC market interests do **not** scan hidden inventories.
 
-### C. No invisible substitutes
+## C. No invisible substitutes
 
-The September 3 hidden-substitute experiment was deliberately removed.
+The hidden-substitute experiment was removed.
 
 Verify:
 
-- Dried Citrus Peel / Almond Paste are no longer required by current data or accepted as secret partial-credit solutions;
-- NPC utility only treats explicitly listed goals as needs;
-- if a future substitute is added, it must be made legible in data / UI / information before use.
+- no Dried Citrus Peel / Almond Paste secret partial-credit behavior remains;
+- NPC needs are exact unless a future category/alternative is explicitly made legible;
+- engine does not award designer-only substitute credit.
 
-### D. Expanded item pool / texture
+## D. 68-item catalogue reachability
 
-Confirm the current 68-item catalogue loads without undefined references.
+Confirm all current `ITEMS` definitions resolve without `undefined` references.
 
-Spot-check named goods requested by the designer:
+Spot-check requested/high-priority goods:
 
 - Chia Seeds
 - Two Octopus Tentacles
@@ -99,105 +108,241 @@ Spot-check named goods requested by the designer:
 - Orange Curaçao
 - Demerara Syrup
 
-Check that each trader's inventory texture is distinct rather than generated from a universal loot pool.
+Static design intent:
 
-### E. Recurring business life
+- most goods begin in some inventory;
+- Dog/Fishmonger/Sailor cycles introduce recurring goods;
+- Pocket Match is no longer a dead definition;
+- Mai Tai, Built Onewheel, auction lots, spoilage and Sunflower are rule/event outputs.
+
+Runtime check:
+
+- every kept item should have a path into play;
+- no item should silently disappear because of a spelling mismatch;
+- the larger catalogue must not force all 68 items onto the player at once.
+
+## E. Stable market interests
+
+Current broad interests:
+
+- Dog → Scavenged / Animal-network / Tiny Utility / Container;
+- Fishmonger → Food Commodity / Cold-chain / Harbour;
+- Sailor → Bicycle / Repair / Tool / Durable;
+- Vale → Prestige / Collectible / Story / Information-bearing / Scarce Curio / Mystery;
+- Clown → Speculative / Vehicle / Bicycle / Mystery / Story;
+- Bar → Cocktail Ingredient / Bar Tool / Barware / Container.
+
+Verify:
+
+1. these interests create some trades beyond exact quest needs;
+2. they only act on public stock / tape / purchased-known holdings;
+3. they do not reveal hidden inventory;
+4. each NPC still commits at most one best noon plan in the current prototype;
+5. Day 1 does not become an over-efficient explosion of six perfect trades;
+6. market remains explainable after several days.
+
+## F. Player barter valuation — P0 exploit check
+
+Current intended rule:
+
+```text
+payment value = reference value of offered item
+              + target NPC private utility for that item
+              + offered sardines
+```
+
+The combined value must meet the seller ask, except the explicit Bad Tangerine deception route.
+
+Verify especially:
+
+- a cheap object that merely matches a broad market interest cannot be swapped for an expensive asset for free;
+- an exact high-utility good can command a real premium without becoming an unconditional quest key;
+- private utility changes willingness to trade rather than bypassing price entirely;
+- Bad Tangerine remains an explicit deception exception, not a generic loophole.
+
+## G. First coordinated price rebase
+
+Current reference values are no longer the old 1–16 compressed scale.
+
+Current rough bands:
+
+- waste / tiny junk: 1–3🥫;
+- small everyday/scavenged: 2–6🥫;
+- common food: 4–9🥫;
+- cocktail ingredient / ordinary part: 5–14🥫;
+- professional durable: 7–18🥫;
+- scarce input / collateral-like durable: 12–20🥫;
+- prestige / collectible / special situation: roughly 9–22+🥫;
+- vehicles: ~28–30+🥫;
+- Auction Sunflower reference/lot placeholder: 52🥫;
+- living `Sunflower`: **unpriced (`value: null`)**.
+
+Starting cash:
+
+- Player 18🥫
+- Dog 18🥫
+- Fishmonger 30🥫
+- Sailor 26🥫
+- Vale 52🥫
+- Clown 22🥫
+- Bar 34🥫
+
+Still small by design:
+
+- nightly sustenance = 1 food unit or 1🥫;
+- information lead base price = 2🥫;
+- Bar proxy fee = 2🥫.
+
+Run several days and record:
+
+- trades/day;
+- percentage spreads;
+- how often cash constraints block otherwise rational trades;
+- time to first liquidity shortage;
+- whether Vale dominates simply because of starting cash;
+- whether Dog actually behaves like a dealer;
+- whether Bar can afford both recurring inputs and tool upgrades;
+- whether expensive tools transact at all;
+- whether prestige/speculative goods become permanent dead inventory;
+- whether player 18🥫 allows meaningful positioning without trivialising sustenance.
+
+Do not rebase again from intuition alone; use the smallest numerical changes that explain observed problems.
+
+## H. Recurring business life
 
 Run several days with minimal player action.
 
 Confirm:
 
-- Bar consumes Ice Block after service, creating recurring demand;
-- Dock Dog consumes Fresh Mackerel for the cats;
+- Bar consumes Ice Block after service;
+- Dock Dog consumes Fresh Mackerel for cats;
 - Fishmonger, Dock Dog and Sailor receive deterministic rotating arrivals;
-- Sailor's imports stop refreshing at / after the provisional departure window;
-- market does not freeze permanently after Day 1–2 simply because everyone acquired one goal item.
+- Sailor imports stop refreshing at/after provisional departure;
+- market does not freeze permanently after Day 1–2 simply because exact goals were acquired.
 
-### F. Perishables
+## I. Perishables
 
-Check multiple shelf lives:
+Check:
 
 - Ice Block disappears quickly;
 - Fresh Mackerel lasts longer than Ice but not indefinitely;
-- Two Octopus Tentacles behave as a short-lived food good;
+- Two Octopus Tentacles are short-lived;
 - Salted Cod lasts substantially longer;
-- player-facing spoilage logs are coherent;
-- perishable timers do not continue aging an item after it has changed owner incorrectly.
+- owner changes do not accidentally preserve/duplicate old perish timers;
+- player spoilage logs make sense.
 
-### G. Nightly sustenance
+## J. Nightly sustenance
 
 Test all branches:
 
-1. Player has an edible inventory item → cheapest available food is consumed.
-2. No food, but player has sardines → 1🥫 is consumed as food.
-3. No food/cash, relationship >=2 with Bar or Dog → meal credit creates an obligation.
-4. No food/cash/credit relationship → player wakes in Animal form.
+1. edible inventory → cheapest edible is consumed;
+2. no food but cash → 1🥫 is opened as food;
+3. no food/cash, relationship >=2 with Bar or Dog → meal credit creates an obligation;
+4. no food/cash/credit relationship → player wakes in Animal form.
 
-After form change confirm:
+After transformation:
 
-- prior inventory and sardines move to an estate;
-- animal has no direct claim to those assets;
-- current legal identity is unrecognised;
-- previous-life open obligations become estate obligations rather than silently disappearing;
-- the game does not crash when the player's inventory becomes empty.
+- prior cash/items move to estate;
+- new animal cannot directly claim them;
+- legal identity becomes unrecognised;
+- old-life open obligations become estate obligations;
+- empty player inventory does not crash UI/market.
 
-### H. Obligations
+## K. Obligations
 
-- Meal credit creates amount, creditor, due day and current-life identity.
-- Repayment consumes one free-time action and moves sardines to creditor.
-- Repayment improves relationship by 1.
-- An unpaid current-life obligation becomes overdue only once and damages relationship only once.
-- Old-life estate obligations do not repeatedly default against the new animal life.
+- meal credit records amount / creditor / due day / current life identity;
+- repayment consumes one free-time action and transfers sardines;
+- repayment improves relationship by 1;
+- unpaid current-life obligation becomes overdue once;
+- relationship is damaged once rather than every subsequent frame/day;
+- old-life estate obligations do not default against new life.
 
-### I. Animal proxy route
+## L. Animal proxy route
 
-Create / force Animal form.
+Force/obtain Animal form.
 
-- Bar remains accessible.
-- Formal Market is inaccessible directly.
-- Build familiarity with Bar Apprentice to >=2.
-- With 1🥫, requesting a proxy should grant formal-market access for that day only.
-- With 0🥫 and familiarity >=3, proxy service can become a credit obligation.
-- Proxy access should expire by the next day.
-- Noon player orders should clear through active proxy access.
+- Bar stays accessible;
+- Formal Market is not directly accessible;
+- familiarity with Apprentice >=2 enables proxy request;
+- with **2🥫**, proxy grants formal-market access for that day;
+- with 0🥫 and familiarity >=3, proxy can become a 2🥫 credit obligation;
+- access expires next day;
+- noon player orders clear while active proxy exists.
 
-### J. Item/UI sanity
+## M. Sunflower acquisition is no longer game over
 
-- New items render without missing icons / `undefined` values.
-- Trader cards do not become unusably long on mobile.
-- The larger inventory pool does not accidentally reveal hidden stock through dropdowns.
-- `Tonight` sustenance copy matches actual settlement behaviour.
-- Long names such as `Three Metres of Stolen Theatre Wire` and `Hotel Sugar Cubes, 23 Count` wrap cleanly.
-- Bar's large internal inventory does not mean the UI exposes every tool immediately.
+Test each current acquisition route if reachable:
 
-### K. Price audit before serious balance testing
+- Grandma Supper;
+- Vale Auction;
+- Cliff route.
 
-Current prices remain provisional and compressed.
+After acquiring the living Sunflower:
 
-Before interpreting profitability metrics as balance evidence:
+- it enters player inventory;
+- it displays as **unpriced**, not `0` or `99`;
+- `game.ended` remains false;
+- `flags.sunflowerAcquired` becomes true;
+- objective changes from `Get a sunflower` to `Go home`;
+- UI displays `Nothing happens. You are still here.`;
+- other sunflower acquisition routes should not immediately retrigger;
+- ordinary market/day progression continues.
 
-- inventory all current reference prices;
-- inspect price distribution and starting cash ratios;
-- test whether +1 heat / markup is disproportionately large for cheap items;
-- propose one coordinated rebase including cash, food, info prices, proxy fee, auction reserve and thresholds;
-- do **not** scale item values in isolation.
+Current provisional rebased route numbers:
 
-## Known provisional rules — do not over-polish yet
+- Vale invitation NW threshold: 70🥫 clean / 90🥫 cheated;
+- Vale reserve: 52🥫 clean / 68🥫 cheated;
+- Cliff simple pre-race NW threshold: 60🥫.
 
-These are deliberately simple and may change after playtesting:
+These need playtesting; they are not canon.
 
-- 14-day prototype cap;
-- 2 Morning + 2 Afternoon actions;
-- nightly sustenance = 1 food unit or 1🥫;
-- information sale price = 1🥫;
-- Bar Apprentice is the only implemented formal-market proxy;
-- proxy fee = 1🥫;
-- hunger-without-credit currently shifts the player to generic Animal form; specific animal / causal transformation mapping is not designed yet;
-- obligation enforcement currently damages relationships rather than seizing collateral;
-- player estate exists but reclaim mechanics are not implemented;
-- item `value` remains a provisional reference number, not intrinsic value;
-- `Sunflower = 99` is an old placeholder and should not be treated as final metaphysics or balance.
+At the prototype life cap, a player who already has the flower should receive the specific text that it did not take them home.
+
+## N. Item/UI sanity
+
+- item chips/dropdowns show `ref X🥫`, not an implied intrinsic value;
+- living Sunflower shows `unpriced`;
+- long names wrap on mobile;
+- Bar's large true inventory is not fully exposed by default;
+- hidden inventory does not leak through dropdowns;
+- Information Book shows both precision and confidence;
+- fee labels match engine constants (info 2🥫, proxy 2🥫);
+- current Objective is visible;
+- post-flower callout does not block ongoing play.
+
+## O. Static hosting / deployment
+
+`vite.config.js` now uses:
+
+```js
+base: "./"
+```
+
+Verify built assets load correctly when served:
+
+- at `/`;
+- and, if used, from a project subpath such as `/Sunflower/`.
+
+Do not assume GitHub Pages is configured merely because the repo is public.
+
+---
+
+# Known provisional rules — do not over-polish yet
+
+- 14-day prototype cap only; not cosmology.
+- 2 Morning + 2 Afternoon actions.
+- nightly sustenance = 1 food unit or 1🥫.
+- info sale base = 2🥫.
+- Apprentice is currently the only implemented formal-market proxy.
+- proxy fee = 2🥫.
+- hunger-without-credit currently produces generic Animal form; exact animal/karma mapping is unresolved.
+- obligation enforcement currently mainly affects relationships rather than collateral seizure.
+- former estate reclaim mechanics are not implemented.
+- all item `value`s are reference prices, not intrinsic value.
+- living Sunflower is unpriced.
+- acquiring Sunflower is only the first objective reveal, not victory.
+- the deeper `Go home` / rebirth game is not implemented yet.
 
 ## Update rule
 
-Whenever ChatGPT makes code changes that cannot be locally run, append the new relevant smoke case or blocker here instead of claiming the build is verified.
+Whenever ChatGPT makes code changes that cannot be locally executed, update this file instead of claiming a build/runtime result that was not observed.
