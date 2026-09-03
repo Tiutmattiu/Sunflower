@@ -17,6 +17,39 @@ These scenarios are implementation and coverage targets, not disposable idea-ban
 
 The game must distinguish **successful outcome** from **sound process**. A reckless poorly informed trade can make a large profit: good outcome, poor process. A well-reasoned trade can lose money: poor outcome, sound process. Wealth alone cannot determine decision quality.
 
+## Canonical coverage families
+
+These are coverage families, not sixteen scripted quests. One scenario may cover several families.
+
+1. Order / settlement / execution basics
+2. Arbitrage & alpha decay
+3. Forward delivery & sourcing risk
+4. Negotiation / BATNA / anchoring
+5. Liquidity vs solvency / financing
+6. Relationship capital / credit / obligations
+7. Private information / event interpretation
+8. Information brokerage / exclusivity / learning
+9. Quality / deception / due diligence / adverse selection
+10. Market making / spread / inventory risk
+11. Execution / market impact / order visibility / venue choice
+12. Auctions / private vs common value / winner's curse
+13. Confidence runs / reflexivity / fire-sale spiral
+14. Leverage / crowding / position sizing / luck
+15. Price vs value / reference points / disposition
+16. Institutions / traceability / formal vs informal markets
+
+Assessment rules:
+
+- Outcome != Process.
+- Style != Skill.
+- No evidence != average.
+- Insufficient evidence remains insufficient evidence.
+- Confidence grows from repeated independent decisions in varied contexts, not button counts.
+- Contradictory behaviour remains visible rather than being averaged away.
+- Badges are realised stories, not points.
+
+Treat **You Got the Flower and Wrecked Everything Else** as the capstone diagnosis situation. Do not build the final archetype taxonomy from these families.
+
 ---
 
 ## Scenario 1 — Selling Tomorrow’s Lime

@@ -186,7 +186,7 @@ for (let step = 0; !game.ended && step < 120; step += 1) {
   assert(Object.values(game.traders).every((trader) => trader.sardines >= 0 && Number.isFinite(trader.sardines)));
 }
 assert(game.ended && game.day === 14);
-assert.equal(game.style.name, "The Bystander");
+assert.equal(game.style, null);
 assert.deepEqual(game.playerOrders, resetOrders());
 assert.equal(sellerAsk(createGame(), "fishmonger", "Fresh Mackerel"), 10);
 assert.equal(game.worldThreads.valeScreening.stage, "aftermath", "Vale's early oil purchase should lead to the screening without player involvement");

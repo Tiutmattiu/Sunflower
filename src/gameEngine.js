@@ -146,7 +146,11 @@ function createObligation(game, payload) {
     note: payload.note || "",
   };
   game.obligations.push(obligation);
-  recordEvidence(game, "credit-created", { obligationId: obligation.id, creditorId: obligation.creditorId, amount: obligation.amount, dueDay: obligation.dueDay, reason: obligation.kind });
+  const evidence = recordEvidence(game, "credit-created", { obligationId: obligation.id, creditorId: obligation.creditorId, amount: obligation.amount, dueDay: obligation.dueDay, reason: obligation.kind });
+  addLearningNote(game, "credit", "Credit creates an obligation", "Credit moves resources through time, but it leaves a claim that must later be repaid or defaulted.", {
+    evidenceIds: [evidence.id],
+    whatHappened: `${game.traders[obligation.creditorId]?.name || obligation.creditorId} advanced ${obligation.amount}🥫. It is due on Day ${obligation.dueDay}.`,
+  });
   return obligation;
 }
 
@@ -354,12 +358,21 @@ function transferInformation(game, info, buyerId, { cash = true, favour = false 
   return cash ? price : true;
 }
 
-function addLearningNote(game, id, title, text) {
-  if (!game.learningNotes.some((note) => note.id === id)) game.learningNotes.push({ id, title, text, day: game.day });
+function addLearningNote(game, id, title, text, occurrence) {
+  const note = game.learningNotes.find((entry) => entry.id === id);
+  const nextOccurrence = { day: game.day, phase: game.phase, evidenceIds: [...new Set(occurrence.evidenceIds.filter(Boolean))], whatHappened: occurrence.whatHappened };
+  if (note) {
+    note.occurrences ||= [];
+    note.occurrences.push(nextOccurrence);
+  } else {
+    game.learningNotes.push({ id, title, text, day: game.day, occurrences: [nextOccurrence] });
+  }
 }
 
 function recordEvidence(game, type, detail = {}) {
-  game.decisionEvidence.push({ id: `decision-${game.decisionEvidence.length + 1}`, day: game.day, phase: game.phase, type, ...detail });
+  const entry = { id: `decision-${game.decisionEvidence.length + 1}`, day: game.day, phase: game.phase, type, ...detail };
+  game.decisionEvidence.push(entry);
+  return entry;
 }
 
 function replanNPCMarket(game) {
@@ -389,8 +402,11 @@ export function sellInformation(current, infoId, buyerId) {
   const paid = transferInformation(game, info, buyerId, { cash: true });
   if (!paid) return game;
   game.actionsRemaining -= 1;
-  recordEvidence(game, "information-sold", { infoId, buyerId, price: paid, channel: "private", source: info.source, precision: info.precision, confidence: info.confidence, freshness: info.freshness, audienceSize: info.knownBy.length });
-  addLearningNote(game, "information-market", "Information is an asset", "You converted a private lead into cash. Its resale value will fall as more people learn it.");
+  const evidence = recordEvidence(game, "information-sold", { infoId, buyerId, price: paid, channel: "private", source: info.source, precision: info.precision, confidence: info.confidence, freshness: info.freshness, audienceSize: info.knownBy.length });
+  addLearningNote(game, "information-market", "Information is an asset", "A useful lead can be sold, but its resale value falls as it diffuses.", {
+    evidenceIds: [evidence.id],
+    whatHappened: `You sold a lead to ${game.traders[buyerId].name} for ${paid}🥫. It is now known by ${info.knownBy.length} market participants.`,
+  });
   game.lastInteraction = { action: "sell-information", targetId: buyerId, text: `${game.traders[buyerId].name} pays ${paid}🥫 for your lead: ${info.text}` };
   game.log.unshift(game.lastInteraction.text);
   if (game.phase === "morning") replanNPCMarket(game);
@@ -403,8 +419,11 @@ export function shareInformationAsFavor(current, infoId, buyerId) {
   const info = game.information.find((entry) => entry.id === infoId);
   if (!info || !informationBuyers(game, info).includes(buyerId) || !transferInformation(game, info, buyerId, { cash: false, favour: true })) return game;
   game.actionsRemaining -= 1;
-  recordEvidence(game, "information-favour", { infoId, buyerId, channel: "private", source: info.source, precision: info.precision, confidence: info.confidence, freshness: info.freshness, audienceSize: info.knownBy.length });
-  addLearningNote(game, "relationship-capital", "Information can become relationship capital", "You gave away something saleable and received familiarity instead of cash.");
+  const evidence = recordEvidence(game, "information-favour", { infoId, buyerId, channel: "private", source: info.source, precision: info.precision, confidence: info.confidence, freshness: info.freshness, audienceSize: info.knownBy.length });
+  addLearningNote(game, "relationship-capital", "Information can become relationship capital", "A saleable lead can be exchanged for familiarity instead of cash.", {
+    evidenceIds: [evidence.id],
+    whatHappened: `You gave ${game.traders[buyerId].name} a lead without charging. Your relationship improved instead.`,
+  });
   game.lastInteraction = { action: "information-favour", targetId: buyerId, text: `You give ${game.traders[buyerId].name} the lead without charging. They remember the favour.` };
   game.log.unshift(game.lastInteraction.text);
   if (game.phase === "morning") replanNPCMarket(game);
@@ -519,8 +538,11 @@ export function acceptInboundOffer(current, offerId) {
     if (!paid) return game;
     offer.status = "accepted";
     game.actionsRemaining -= 1;
-    recordEvidence(game, "inbound-information-accepted", { offerId: offer.id, buyerId: offer.buyerId, infoId: info.id, price: paid, channel: "private", source: info.source, confidence: info.confidence, freshness: info.freshness });
-    addLearningNote(game, "information-market", "Information is an asset", "You converted a private lead into cash. Its resale value will fall as more people learn it.");
+    const evidence = recordEvidence(game, "inbound-information-accepted", { offerId: offer.id, buyerId: offer.buyerId, infoId: info.id, price: paid, channel: "private", source: info.source, confidence: info.confidence, freshness: info.freshness });
+    addLearningNote(game, "information-market", "Information is an asset", "A useful lead can be sold, but its resale value falls as it diffuses.", {
+      evidenceIds: [evidence.id],
+      whatHappened: `${game.traders[offer.buyerId].name} bought your lead for ${paid}🥫. It is no longer exclusive.`,
+    });
     game.lastInteraction = { action: "inbound-information", targetId: offer.buyerId, text: `${game.traders[offer.buyerId].name} pays ${paid}🥫 for your lead. It is no longer exclusive.` };
     game.log.unshift(game.lastInteraction.text);
     if (game.phase === "morning") replanNPCMarket(game);
@@ -592,7 +614,11 @@ export function repayObligation(current, obligationId) {
   obligation.status = "settled";
   obligation.settledDay = game.day;
   game.actionsRemaining -= 1;
-  recordEvidence(game, "credit-repaid", { obligationId, creditorId: obligation.creditorId, amount: obligation.amount, timing: game.day <= obligation.dueDay ? "on-time" : "late" });
+  const evidence = recordEvidence(game, "credit-repaid", { obligationId, creditorId: obligation.creditorId, amount: obligation.amount, timing: game.day <= obligation.dueDay ? "on-time" : "late" });
+  addLearningNote(game, "credit", "Credit creates an obligation", "Credit moves resources through time, but it leaves a claim that must later be repaid or defaulted.", {
+    evidenceIds: [evidence.id],
+    whatHappened: `You repaid ${obligation.amount}🥫 to ${creditor?.name || obligation.creditorId} ${game.day <= obligation.dueDay ? "on time" : "late"}.`,
+  });
   if (game.relationships[obligation.creditorId] !== undefined) game.relationships[obligation.creditorId] += 1;
   game.lastInteraction = { action: "repay", targetId: obligation.creditorId, text: `You settle ${obligation.amount}🥫 owed to ${creditor?.name || obligation.creditorId}.` };
   game.log.unshift(game.lastInteraction.text);
@@ -613,6 +639,7 @@ function recordTrade(game, trade, source) {
     sardines: Number(trade.sardines || 0),
   };
   game.history.push(entry);
+  if (source === "npc-plan") recordEvidence(game, "public-market-trade", { tradeId: entry.id, from: entry.from, to: entry.to, item: entry.item, paymentItem: entry.paymentItem, sardines: entry.sardines, channel: "public" });
 
   Object.keys(game.npcMemory).forEach((npcId) => {
     if (npcId === trade.from || npcId === trade.to) return;
@@ -686,11 +713,14 @@ export function giveItem(current, targetId, item) {
   game.actionsRemaining -= 1;
   game.stats.gifts += 1;
   game.giftHistory.push({ day: game.day, targetId, item, relationshipGain });
-  recordEvidence(game, "item-gift", { targetId, item, channel: "private", referenceValue: valueOf(item), recipientUtility: privateUtility(game, targetId, item) });
+  const evidence = recordEvidence(game, "item-gift", { targetId, item, channel: "private", referenceValue: valueOf(item), recipientUtility: privateUtility(game, targetId, item) });
   applyWorldReceivedItem(game, targetId, item);
   produceIfReady(game, "maiTai");
   produceIfReady(game, "onewheel");
-  addLearningNote(game, "gift-economy", "A good does not have to become cash", "You converted an object into relationship capital instead of selling it.");
+  addLearningNote(game, "gift-economy", "A good can become relationship capital", "A physical good can strengthen access or trust instead of becoming cash.", {
+    evidenceIds: [evidence.id],
+    whatHappened: `You gave ${item} to ${game.traders[targetId].name}. They accepted it as a gift and your relationship improved.`,
+  });
   game.lastInteraction = { action: "gift", targetId, text: `You give ${item} to ${game.traders[targetId].name}. They accept it as a gift, not a market settlement.` };
   game.log.unshift(game.lastInteraction.text);
   if (game.phase === "morning") replanNPCMarket(game);
@@ -840,14 +870,36 @@ function clearCommittedOrders(game) {
 
 function applyExperienceFirstLearning(game) {
   game.rejected.forEach((order) => {
-    if (order.reasonCode === "outbid") addLearningNote(game, "competition", "A valid bid can still lose", "Meeting the ask only gets you into competition. Scarce stock goes to the stronger seller-valued offer.");
-    if (order.reasonCode === "stale-stock") addLearningNote(game, "stale-information", "Information has a half-life", "A fact can be true when learned and useless by the time you trade on it.");
-    if (order.reasonCode === "resource-used") addLearningNote(game, "opening-liquidity", "One sardine cannot fund two promises", "Noon uses only opening resources. Winning one order can make another impossible.");
-    if (order.reasonCode === "below-ask") addLearningNote(game, "reservation-price", "An ask is not a valuation oracle", "A posted ask is the seller's current public minimum, not the object's universal value.");
+    const evidenceIds = game.decisionEvidence.filter((entry) => entry.orderId === order.orderId).map((entry) => entry.id);
+    const seller = game.traders[order.to]?.name || order.to;
+    if (order.reasonCode === "outbid") addLearningNote(game, "competition", "Competition / execution risk", "An order is a commitment, not a fill. Meeting an ask does not guarantee scarce stock.", {
+      evidenceIds,
+      whatHappened: `Your order for ${order.wantItem} did not fill. ${game.traders[order.winnerId]?.name || "Another committed buyer"} offered more seller-valued consideration to ${seller}.`,
+    });
+    else if (order.reasonCode === "stale-stock") addLearningNote(game, "stale-information", "Stale information", "A fact can be true when learned and useless by the time settlement arrives.", {
+      evidenceIds,
+      whatHappened: `Your order for ${order.wantItem} did not fill because ${seller} no longer held it when Noon opened.`,
+    });
+    else if (order.reasonCode === "resource-used") addLearningNote(game, "opening-liquidity", "Opening-resource constraint", "Noon settles only from opening resources, so one fill can make another commitment impossible.", {
+      evidenceIds,
+      whatHappened: `Your order for ${order.wantItem} could not settle because another filled order had already used cash or barter committed at opening.`,
+    });
+    else if (order.reasonCode === "below-ask") addLearningNote(game, "reservation-price", "Reservation price", "A posted ask is a seller's public minimum, not a universal value for every payment package.", {
+      evidenceIds,
+      whatHappened: `${seller} declined your payment package for ${order.wantItem} because they valued it below their minimum.`,
+    });
+    else addLearningNote(game, "commitment-settlement", "Commitment is not settlement", "Submitting or accepting an order does not transfer anything until the market can settle it.", {
+      evidenceIds,
+      whatHappened: `Your order for ${order.wantItem} did not settle: ${order.reason}`,
+    });
   });
-  if (game.marketOutcome.some((trade) => trade.from === "player" && trade.offerItem)) {
-    addLearningNote(game, "private-value", "Reference price is not private value", "A barter item can matter more to one counterparty than its public reference price suggests.");
-  }
+  game.marketOutcome.filter((trade) => trade.from === "player" && trade.offerItem).forEach((trade) => {
+    const evidence = game.decisionEvidence.find((entry) => entry.type === "market-order-outcome" && entry.orderId === trade.orderId);
+    addLearningNote(game, "private-value", "Private utility / barter value", "A barter item can matter more to one counterparty than its public reference price suggests.", {
+      evidenceIds: [evidence?.id],
+      whatHappened: `${game.traders[trade.to].name} accepted ${trade.offerItem}${trade.sardines ? ` plus ${trade.sardines}🥫` : ""} for ${trade.wantItem}.`,
+    });
+  });
 }
 
 function recordMarketOutcomes(game) {
@@ -934,7 +986,13 @@ function applyPerishables(game) {
       nextInventory.push(...Array(surviving.length).fill(item));
       if (spoiled && ITEMS[item]?.foodUnits && trader.id === "player") nextInventory.push(...Array(spoiled).fill("Spoiled Fish"));
       if (spoiled) game.log.unshift(`${trader.name}'s ${spoiled > 1 ? `${spoiled} × ` : ""}${labelShort(item)} spoiled before tomorrow.`);
-      if (spoiled) recordEvidence(game, "world-consequence", { consequence: "perished", traderId: trader.id, item, copies: spoiled });
+      if (spoiled) {
+        const evidence = recordEvidence(game, "world-consequence", { consequence: "perished", traderId: trader.id, item, copies: spoiled });
+        if (trader.id === "player") addLearningNote(game, "perishability", "Perishability", "Inventory can lose all saleability simply because time passes.", {
+          evidenceIds: [evidence.id],
+          whatHappened: `${spoiled > 1 ? `${spoiled} copies of ` : "Your "}${item} spoiled before the next day.`,
+        });
+      }
       if (surviving.length) timer[timerKey] = surviving;
       else delete timer[timerKey];
     });
@@ -1071,19 +1129,6 @@ function applyBarToolRevenue(game, settledDay) {
   game.log.unshift(`The Bar's upgraded professional tools add ${tools}🥫 of service value tonight.`);
 }
 
-function learnFromSunset(before, game) {
-  if (currentObligations(game).length > currentObligations(before).length) {
-    addLearningNote(game, "credit", "A relationship can become liquidity", "Someone carried you through a shortfall. The favour survives as an obligation.");
-  }
-  if (before.playerState.form !== game.playerState.form) {
-    addLearningNote(game, "legal-personhood", "Memory is not legal identity", "You remember the former life, but the market institutions do not automatically recognise its ownership claims.");
-  }
-  const beforePerishables = before.traders.player.inventory.filter((item) => ITEMS[item]?.shelfLife);
-  if (beforePerishables.some((item) => !game.traders.player.inventory.includes(item))) {
-    addLearningNote(game, "perishability", "Inventory can decay while you wait", "A good can lose all saleability simply because time passed.");
-  }
-}
-
 function chooseMealCreditSource(game) {
   return ["bar", "dog"]
     .filter((id) => (game.relationships[id] || 0) >= 2 && (game.traders[id]?.sardines || 0) >= SUSTENANCE_PER_DAY)
@@ -1110,7 +1155,11 @@ function transformPlayerToAnimal(game) {
   game.playerState.form = "animal";
   game.playerState.legalIdentity = { status: "unrecognized", lifeId: `life-${game.playerState.life}`, formerLifeId: oldLifeId };
   game.playerState.proxyAccess = [];
-  recordEvidence(game, "form-transition", { from: "human", to: "animal", cause: "unfunded-sustenance", formerLifeId: oldLifeId });
+  const evidence = recordEvidence(game, "form-transition", { from: "human", to: "animal", cause: "unfunded-sustenance", formerLifeId: oldLifeId });
+  addLearningNote(game, "legal-personhood", "Memory continuity ≠ legal-person continuity", "Memory can continue even when institutions no longer recognise the same ownership claims.", {
+    evidenceIds: [evidence.id],
+    whatHappened: `You kept your memories after changing form, but your former estate remained attached to ${oldLifeId}.`,
+  });
   game.log.unshift("You wake in an animal form. Your old assets still exist, but the law no longer recognises you as their owner.");
 }
 
@@ -1165,7 +1214,11 @@ function markOverdueObligations(game) {
     game.stats.defaults += 1;
     if (game.relationships[obligation.creditorId] !== undefined) game.relationships[obligation.creditorId] -= 1;
     const creditor = game.traders[obligation.creditorId];
-    recordEvidence(game, "credit-default", { obligationId: obligation.id, creditorId: obligation.creditorId, amount: obligation.amount, daysLate: game.day - obligation.dueDay });
+    const evidence = recordEvidence(game, "credit-default", { obligationId: obligation.id, creditorId: obligation.creditorId, amount: obligation.amount, daysLate: game.day - obligation.dueDay });
+    addLearningNote(game, "credit", "Credit creates an obligation", "Credit moves resources through time, but it leaves a claim that must later be repaid or defaulted.", {
+      evidenceIds: [evidence.id],
+      whatHappened: `${obligation.amount}🥫 owed to ${creditor?.name || obligation.creditorId} became overdue and the relationship worsened.`,
+    });
     game.log.unshift(`${obligation.amount}🥫 owed to ${creditor?.name || obligation.creditorId} is now overdue.`);
   });
 }
@@ -1205,7 +1258,6 @@ function snapshotPlayerOrders(game) {
 }
 
 export function advancePhase(current) {
-  const before = clone(current);
   const game = clone(current);
   if (game.ended || game.pendingEvents.length) return game;
 
@@ -1245,15 +1297,12 @@ export function advancePhase(current) {
     produceIfReady(game, "maiTai");
     produceIfReady(game, "onewheel");
     applyBarToolRevenue(game, game.day);
-    learnFromSunset(before, game);
-
     if (game.day >= game.maxDays) {
       game.ended = true;
       game.winner = false;
       game.finalText = game.flags.sunflowerAcquired
         ? "You found the sunflower. It did not take you home. The prototype life window closes here, but the problem did not."
         : "The prototype's current life window closes here. The final life / rebirth pacing is not locked yet.";
-      game.style = classify(game);
       return game;
     }
 
@@ -1542,35 +1591,4 @@ export function resolveEvent(current, id, action, bidAmount = null) {
   recordEvidence(game, "special-situation", { route: id, choice: action, channel: "private", outcome: "declined" });
   removePendingEvent(game, id);
   return game;
-}
-
-export function classify(game) {
-  const stats = game.stats;
-  const noMarketFootprint =
-    stats.tradeCount === 0 && stats.informationSales === 0 && stats.creditUsed === 0 &&
-    stats.defaults === 0 && !game.flags.cheated && game.information.length === 0;
-  if (noMarketFootprint) {
-    return { name: "The Bystander", description: "You passed through the market without leaving enough of a trading footprint to classify." };
-  }
-
-  const scores = {
-    "The Clean Knife": stats.tradeCount + Math.max(0, -stats.overpays),
-    "The Spread Reader": stats.profitableFlips * 4 + Math.max(0, stats.totalProfit),
-    "The Whale": stats.overpays * 4,
-    "The Defector": game.flags.cheated ? 8 : 0,
-    "The Information Broker": stats.informationSales * 4,
-    "The Credit Creature": stats.creditUsed * 3 + stats.defaults,
-    "The Patient Observer": game.information.length * 2,
-  };
-  const [name] = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
-  const descriptions = {
-    "The Clean Knife": "You kept execution relatively disciplined.",
-    "The Spread Reader": "You repeatedly found value in conversion and price differences.",
-    "The Whale": "You forced outcomes by paying heavily.",
-    "The Defector": "You used misrepresentation as a market tool.",
-    "The Information Broker": "You turned private knowledge into a tradable asset.",
-    "The Credit Creature": "You repeatedly turned relationships and future promises into present liquidity.",
-    "The Patient Observer": "You spent meaningful time learning the people around the market.",
-  };
-  return { name, description: descriptions[name] };
 }

@@ -10,6 +10,16 @@ An NPC may only act on information reasonably available to that NPC.
 
 The purpose is not to make NPCs artificially stupid. The purpose is to create a market in which information has time, cost, provenance, precision and competitive value.
 
+## Black-Box Constitution
+
+**IN-WORLD HIDDEN INFORMATION IS GOOD. DESIGNER-HIDDEN CAUSAL RULES ARE NOT.**
+
+The player does not need Vale's exact private utility, every inventory or private relationship, or secret numerical scores. Legitimate hidden information includes private valuation, hidden stock, a private relationship, and a rumour not yet received.
+
+Important outcomes must eventually expose discoverable types of causes. Arbitrary invisible multipliers without a world clue, NPC knowledge caused only by engine omniscience, and diagnosis that asserts player motivation without evidence are illegitimate black boxes.
+
+Decision evidence records information available to the player at commitment time. It does not claim what the player believed unless an explicit player choice establishes that belief.
+
 ---
 
 ## Why this matters

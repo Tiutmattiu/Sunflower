@@ -434,7 +434,7 @@ Core principles:
 - karma is better understood as action that has not finished happening;
 - no visible `ENTANGLEMENT 73/100` meter.
 
-This system is **not yet part of the first living-day engine**. Do not rush it into code until ordinary market play is coherent enough that refusing to disengage would offer a real temptation.
+The existing Sun Moment ontology remains canon. Sufficiently specified mechanics may be implemented; unresolved resistance or transformation details must not be invented. There is no visible entanglement morality meter.
 
 `WORLD_LORE_SUN_RITUAL.md` is archived/superseded and is not current canon.
 
@@ -502,7 +502,15 @@ Final trader archetypes / badges should diagnose behaviour rather than moralise.
 
 ## 16. What Is Deliberately Deferred
 
-Do **not** expand these until the living-day vertical slice survives real playtesting:
+### Implementation rule
+
+- A sufficiently specified, non-superseded mechanic should be implemented.
+- A genuine unresolved design or canon choice should be resolved or prototyped before coding.
+- Complexity alone is not a reason to defer settled design.
+- Final visual polish remains later.
+- Large test or CI architecture is unnecessary unless a real need appears.
+
+The following remain deliberately deferred because their design is unresolved or outside the current slice:
 
 - full conversational negotiation / counteroffer tree;
 - generic contract editor;

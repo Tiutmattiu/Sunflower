@@ -74,7 +74,8 @@ lead.exclusive = true;
 const valeRelationship = game.relationships.vale;
 game = shareInformationAsFavor(game, lead.id, "vale");
 assert.equal(game.relationships.vale, valeRelationship + 1);
-assert(game.learningNotes.some((note) => note.id === "relationship-capital"));
+const relationshipNote = game.learningNotes.find((note) => note.id === "relationship-capital");
+assert(relationshipNote.occurrences[0].evidenceIds.every((id) => game.decisionEvidence.some((entry) => entry.id === id)));
 
 // A physical gift is also a non-market allocation path.
 game = enterMorning();
@@ -83,7 +84,9 @@ game = giveItem(game, "dog", "Chia Seeds");
 assert(game.relationships.dog > dogRelationship);
 assert(!game.traders.player.inventory.includes("Chia Seeds"));
 assert(game.traders.dog.inventory.includes("Chia Seeds"));
-assert(game.learningNotes.some((note) => note.id === "gift-economy"));
+game = giveItem(game, "dog", "Fish Bones");
+assert.equal(game.learningNotes.filter((note) => note.id === "gift-economy").length, 1);
+assert.equal(game.learningNotes.find((note) => note.id === "gift-economy").occurrences.length, 2);
 
 // Onewheel production now uses actual bicycle parts; Lime remains provisioning, not a magic repair ingredient.
 game = enterMorning();
@@ -115,6 +118,7 @@ assert(game.traders.mechanic.inventory.includes("Built Onewheel"), "NPC-delivere
 assert.equal(game.worldThreads.valeScreening.stage, "outcome");
 assert.equal(game.stats.tradeCount, 0, "NPC world consequences must not become player statistics");
 assert(game.decisionEvidence.some((entry) => entry.type === "world-consequence" && entry.thread === "barRecipe"));
+assert(game.decisionEvidence.some((entry) => entry.type === "public-market-trade" && entry.channel === "public"));
 game = advancePhase(game);
 game = advancePhase(game);
 game = advancePhase(game);
@@ -153,6 +157,7 @@ const beforeRepayRelationship = game.relationships.bar;
 game = repayObligation(game, mealDebt.id);
 assert.equal(game.obligations.find((obligation) => obligation.id === mealDebt.id).status, "settled");
 assert.equal(game.relationships.bar, beforeRepayRelationship + 1);
+assert.equal(game.learningNotes.find((note) => note.id === "credit").occurrences.length, 2, "credit creation and repayment should share one concept card");
 
 game = createGame();
 game.phase = "sunset";
@@ -208,5 +213,13 @@ assert(game.traders.player.inventory.includes("Sunflower"));
 assert(!game.traders.player.inventory.includes("Mai Tai") && !game.traders.player.inventory.includes("Fresh Mackerel"));
 assert.equal(game.objective, "Go home");
 assert.equal(game.ended, false);
+
+// Life end is a factual recap state, not an obsolete counter-based archetype.
+game = createGame();
+game.day = game.maxDays;
+game.phase = "sunset";
+game = advancePhase(game);
+assert.equal(game.ended, true);
+assert.equal(game.style, null);
 
 console.log("Living systems smoke passed.");

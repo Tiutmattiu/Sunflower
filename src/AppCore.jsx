@@ -280,6 +280,7 @@ export default function AppCore() {
   const orders = game.playerOrders || resetOrders();
   const phase = game.phase;
   const player = game.traders.player;
+  const referenceNetWorth = player.sardines + player.inventory.reduce((sum, item) => sum + Number(ITEMS[item]?.value || 0), 0);
 
   function setOrders(next) {
     setGame((current) => ({ ...current, playerOrders: next }));
@@ -298,7 +299,8 @@ export default function AppCore() {
   }
 
   if (game.ended) {
-    return <main className="app-shell"><div className="container"><section className="end-box"><h2>This prototype life ended.</h2><p>{game.finalText}</p>{game.style && <p><strong>{game.style.name}</strong> — {game.style.description}</p>}<button className="btn gold" onClick={restart}>Start another life</button></section></div></main>;
+    const openObligations = game.obligations.filter((obligation) => ["open", "overdue"].includes(obligation.status)).length;
+    return <main className="app-shell"><div className="container"><section className="end-box"><h2>This prototype life ended.</h2><p>{game.finalText}</p><h3>What happened</h3><ul><li>Sunflower acquired: {game.flags.sunflowerAcquired ? "yes" : "no"}</li><li>Ending cash: {player.sardines}🥫 · reference net worth: {referenceNetWorth}🥫</li><li>Player trades completed: {game.stats.tradeCount + game.stats.inboundTrades}</li><li>Information sold/shared: {game.stats.informationSales} / {game.stats.informationFavours}</li><li>Open or overdue obligations: {openObligations} · defaults recorded: {game.stats.defaults}</li><li>Formal-market access: {canAccessVenue(game, "formalMarket") ? "available" : "unavailable"}</li></ul><button className="btn gold" onClick={restart}>Start another life</button></section></div></main>;
   }
 
   return (
@@ -337,7 +339,13 @@ export default function AppCore() {
         {phase !== "noon" && <TapeArchive game={game} />}
         {phase === "sunset" && <section className="card"><div className="section-title">Sunset settlement</div><p>Closing the day settles food, promises, perishability and ordinary business activity.</p></section>}
 
-        {!!game.learningNotes?.length && <details className="advanced-details"><summary>Notebook · {game.learningNotes.length} discovered concept(s)</summary>{game.learningNotes.map((note) => <div className="mini-card" key={note.id}><strong>? {note.title}</strong><div>{note.text}</div><small>Discovered on Day {note.day}</small></div>)}</details>}
+        {!!game.learningNotes?.length && <details className="advanced-details"><summary>Notebook · {game.learningNotes.length} discovered concept(s)</summary>{game.learningNotes.map((note) => <div className="mini-card" key={note.id}>
+          <strong>? {note.title}</strong>
+          <p><small>WHAT HAPPENED</small></p>
+          {(note.occurrences?.length ? note.occurrences : [{ day: note.day, whatHappened: "This concept was discovered in an older save before occurrence links were recorded." }]).map((occurrence, index) => <p key={`${note.id}-${index}`}><strong>Day {occurrence.day}{occurrence.phase ? ` · ${PHASE_COPY[occurrence.phase]?.title || occurrence.phase}` : ""}</strong><br />{occurrence.whatHappened}</p>)}
+          <p><small>WHAT PEOPLE CALL THIS</small></p><div>{note.title}</div>
+          <p><small>WHY IT MATTERS</small></p><div>{note.text}</div>
+        </div>)}</details>}
         <details className="advanced-details"><summary>Harbour notes</summary><div className="log-stack">{game.log.slice(0, 10).map((line, index) => <div className="log-line" key={`${line}-${index}`}>{line}</div>)}</div></details>
 
         {!game.pendingEvents?.length && <div className="bottom-action"><button className="btn gold primary-action" onClick={primary}>{phase === "sunrise" ? "Begin morning" : phase === "morning" ? "Lock orders & open Noon" : phase === "noon" && !game.marketResolved ? "Settle Noon" : phase === "noon" ? "Leave Noon" : phase === "afternoon" ? "Go to sunset" : "Close the day"}</button></div>}
