@@ -259,6 +259,8 @@ Check:
 - owner changes do not accidentally preserve/duplicate old perish timers;
 - player spoilage logs make sense.
 
+**Legacy duplicate caveat:** transfer/consumption now removes one matching copy rather than every same-name copy. However, perish timers are still keyed by `traderId:itemName`, not unique item instance. If true duplicate perishables become common, migrate perishability to per-instance ages or an age-bucket/count model instead of pretending the current timer is instance-safe.
+
 ## K. Nightly sustenance
 
 Test all branches:
@@ -320,6 +322,7 @@ Current provisional rebased route numbers:
 
 - Vale invitation NW threshold: 70🥫 clean / 90🥫 cheated;
 - Vale reserve: 52🥫 clean / 68🥫 cheated;
+- invitation now additionally requires enough liquid sardines to meet the current reserve, because auction financing is not implemented yet;
 - Cliff simple pre-race NW threshold: 60🥫.
 
 These need playtesting; they are not canon.
@@ -352,6 +355,42 @@ Verify built assets load correctly when served:
 - and, if used, from a project subpath such as `/Sunflower/`.
 
 No `.github/workflows` directory was present when checked on 2026-09-03. Do not assume GitHub Pages is configured merely because the repo is public.
+
+## Q. Legacy pre-rewrite Codex audit regression checklist
+
+A much older read-only Codex audit from before the engine/world rewrite is useful as a regression list. Current static status:
+
+### Resolved / structurally replaced
+
+- visible NPC intention rerolled at resolve → **resolved**; plans are committed before clearing;
+- event branches bypassed the 14-round cap → **resolved** by central phase/day advancement;
+- spoiled fish vanished because filter/push logic discarded replacement → **resolved** by current `nextInventory` settlement;
+- race wealth was calculated after consuming route items → **resolved**; current race checks pre-race net worth;
+- NPC trades moved items silently → **resolved**; NPC and player trades enter the public tape;
+- one 860-line `App.jsx` held engine/data/AI/UI → **resolved** into `gameData.js`, `npcAI.js`, `gameEngine.js`, `App.jsx`;
+- `Pocket Match` was unreachable → **resolved**; it is now Dog stock/cycle;
+- full inventory omniscience → **replaced** by public stock + tape + information discovery;
+- acquiring canonical Sunflower immediately ended the game → **deliberately replaced**; objective becomes `Go home` and play continues.
+
+### Fixed in the legacy-regression pass
+
+- transferring/consuming one item removed every same-name copy → **fixed for ordinary transfers/consumption with `removeOne()`**;
+- auction invitation could appear with insufficient liquid cash → **fixed provisionally** by requiring current reserve cash until financing exists;
+- no-action run defaulted to `The Clean Knife` → **fixed** with `The Bystander`;
+- production crash page exposed stack trace → **stack now shown only in Vite DEV**;
+- redundant stylesheet link in `index.html` → **removed**;
+- README was effectively empty → **rewritten with current architecture/run/docs status**.
+
+### Still open / intentionally provisional
+
+- **player-order-first priority:** player currently gets first execution against contested inventory; needs batch competition;
+- **route priority:** `buildEvents()` still returns only the first eligible route (`events.slice(0, 1)`); decide whether multiple actionable routes should coexist in UI;
+- **Auction Sunflower legacy definition:** no longer spawned as a normal Vale inventory reward, but the catalogue still contains the old auction-lot placeholder and should be cleaned/repurposed when auction design is rewritten;
+- **perishable duplicates:** timer key is still per trader + item name, not item instance;
+- **persistence:** reload still loses run state; decide later whether this matters for intended session length;
+- **deterministic replay seed:** current core AI is mostly deterministic, but there is still no formal seeded-run/persistence format;
+- **CSS import duplication:** CSS is still imported by both `main.jsx` and `App.jsx`; Vite normally deduplicates it, but one import can be removed next time `App.jsx` is touched;
+- **route/UI single-source-of-truth:** much improved because route conditions live in engine, but current event presentation still only consumes the first pending event.
 
 ---
 
