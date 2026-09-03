@@ -51,7 +51,18 @@ npm run preview
 
 ## Verification status
 
-On 2026-09-04, the local production build, `node scripts/noon-smoke.mjs`, and desktop/narrow-screen browser checks passed. Noon now batches player and NPC bids with seller-side valuation and daily rotating equal-bid priority. The StackBlitz import above remains available as a browser playtest path, but was not verified in this local pass. See `CODEX_VERIFICATION.md` for exact coverage and remaining limits. Public deployment is not verified; reloading still loses the current run.
+On 2026-09-04, the local production build, `node scripts/noon-smoke.mjs`, and desktop/narrow-screen browser checks passed for the seller-valued Noon batch-clearing version committed as `82c5685`.
+
+**Changes after that verified pass still need a fresh build/browser smoke:**
+
+- `82051eb` — sequential first-run UI: Morning shows **Learn / Trade** instead of the full dashboard at once; empty credit/access/info panels are hidden; NPC cash is no longer displayed as primary UI; ended runs no longer keep the whole market visible below the ending.
+- `d1c34c` — styles for the simplified single-flow layout.
+- `15aa2ca` — opening instructions reduced to the first playable decision instead of explaining every subsystem up front.
+- `e08a42c` — NPC broad-interest purchases now preserve working capital instead of spending businesses toward zero cash merely because an item fits a stable interest.
+
+The ChatGPT container attempted to clone after those commits and still hit `Could not resolve host: github.com`, so do **not** treat those four commits as runtime-verified yet. Next code-running pass should pull latest `main`, run `npm run build`, run `node scripts/noon-smoke.mjs`, then manually check Day 1 Morning Learn/Trade switching, one narrow-screen order, and a 14-day no-action cash distribution. Update `CODEX_VERIFICATION.md` with observed results.
+
+The StackBlitz import above remains available as a browser playtest path. Public deployment is not verified; reloading still loses the current run.
 
 ## Scope
 
