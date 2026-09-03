@@ -37,6 +37,8 @@ export function buyerMax(game, buyerId, item) {
 }
 
 function ownersOf(game, item, excludedId) {
+  // Legacy route protection: the Blue Glass Marble stays with Dock Dog unless the player takes it.
+  if (item === "Blue Glass Marble") return [];
   return Object.values(game.traders)
     .filter((trader) => trader.id !== excludedId && trader.id !== "player" && trader.inventory.includes(item));
 }
