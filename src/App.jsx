@@ -126,12 +126,11 @@ function MarketBoard({ game }) {
   return (
     <section className="card market-card">
       <div className="section-title">Noon board · committed before opening</div>
-      <p className="muted board-note">These are real NPC intentions for today. New information can change a Morning plan, but clearing never rerolls it.</p>
+      <p className="muted board-note">These are public bids, not a view into anyone's private reasoning. New information can change a Morning plan, but clearing never rerolls it.</p>
       <div className="stack">
         {board.length ? board.map((order, index) => (
           <div className="mini-card" key={`${order.from}-${order.wantItem}-${index}`}>
             <div><strong>{game.traders[order.from].icon} {game.traders[order.from].name}</strong> bids {order.sardines}🥫 for {labelShort(order.wantItem)}</div>
-            <div className="small muted">Why this source is known: {order.knowledgeBasis}</div>
           </div>
         )) : <div className="muted">No NPC order clears at current prices and current knowledge. That is also market information.</div>}
       </div>
