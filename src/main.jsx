@@ -11,17 +11,12 @@ function StartScreen({ onStart }) {
         <h1>You want a sunflower.</h1>
         <p>There is one problem: nobody will sell you one.</p>
         <p className="muted">You do not know why you want it. You only know that it feels like a way home.</p>
-        <p className="muted">
-          This prototype gives you 14 days. Every sunrise, noon and sunset the harbour stops. The public market opens once each day at noon; the rest of your time is for information, relationships, investigation and positioning.
-        </p>
         <div className="start-rules">
-          <div>🥫 Sardine tins are money — and, if necessary, dinner.</div>
-          <div>🌞 The public market clears once at noon.</div>
-          <div>🕰 Morning and afternoon actions consume time.</div>
-          <div>🍽 By sunset you need food, cash for a tin, or someone willing to extend credit.</div>
-          <div>👀 Other traders commit plans and learn from what they can observe.</div>
+          <div>🥫 You have money and a few strange things.</div>
+          <div>☀️ Before noon, you can learn or prepare a trade.</div>
+          <div>🌞 At noon, the market clears once.</div>
         </div>
-        <p className="muted small">You are not expected to understand the market on your first run.</p>
+        <p className="muted small">That is enough to begin. The rest will appear when it matters.</p>
         <button className="btn gold start-button" onClick={onStart}>Enter the harbour →</button>
       </section>
     </main>
