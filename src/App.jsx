@@ -72,7 +72,12 @@ function TraderDetail({ trader, profile, relationship, intel, visibleStock }) {
           ? visibleStock.map((item) => <span className="chip" key={`${trader.id}-${item}`}>{itemLabel(item)}</span>)
           : <span className="muted">Nothing confirmed. Their real inventory may be larger.</span>}
       </div>
-      {intel?.clue && <div className="intel-note">📝 {intel.clue}</div>}
+      {intel?.clue && (
+        <div className="intel-note">
+          📝 {intel.clue}
+          {intel.precision && <div className="small muted">Precision: {intel.precision}</div>}
+        </div>
+      )}
     </section>
   );
 }
@@ -235,7 +240,7 @@ function LeadsPanel({ game, onSell }) {
             <div className="mini-card" key={info.id}>
               <div>{info.text}</div>
               <div className="small muted">
-                {info.source} · confidence {info.confidence} · observed D{info.observedDay}
+                {info.source} · precision {info.precision || "context"} · confidence {info.confidence} · observed D{info.observedDay}
                 {info.exclusive ? " · probably exclusive" : ""}
               </div>
               {!!buyers.length && (
@@ -315,10 +320,13 @@ export default function App() {
 
   const selectedIntel = useMemo(() => {
     const styleInfo = game.information.find((info) => info.subjectId === selected.id && info.claimType === "style");
-    const pressureInfo = [...game.information].reverse().find((info) => info.subjectId === selected.id && info.claimType === "pressure");
+    const clueInfo = [...game.information].reverse().find((info) =>
+      info.subjectId === selected.id && !["style", "holding"].includes(info.claimType)
+    );
     return {
       style: styleInfo?.text?.replace(`${selected.name} trades like a `, "").replace(/\.$/, "") || game.intel[`${selected.id}:style`],
-      clue: pressureInfo?.text || game.intel[`${selected.id}:clue`],
+      clue: clueInfo?.text || game.intel[`${selected.id}:clue`],
+      precision: clueInfo?.precision,
     };
   }, [game.information, game.intel, selected.id, selected.name]);
 
