@@ -6,9 +6,11 @@
 
 **No trader may read the true world state simply because the engine knows it.**
 
-An NPC may only act on inventory information that is reasonably available to that NPC.
+An NPC may only act on information reasonably available to that NPC.
 
-The purpose is not to make NPCs artificially stupid. The purpose is to create a market in which information has time, cost, provenance and competitive value.
+The purpose is not to make NPCs artificially stupid. The purpose is to create a market in which information has time, cost, provenance, precision and competitive value.
+
+---
 
 ## Why this matters
 
@@ -21,7 +23,93 @@ If every NPC begins Day 1 knowing exactly who owns every item, most private need
 
 That removes both information asymmetry and player agency.
 
-A living market should instead contain traders who know different things at different times.
+A living market should instead contain traders who know **different things at different levels of detail** at different times.
+
+---
+
+# Information precision is NOT confidence
+
+This distinction is now core.
+
+**Precision** answers:
+
+> How specific is the claim?
+
+**Confidence** answers:
+
+> How strongly should I believe it?
+
+These are independent dimensions.
+
+Examples:
+
+### High-confidence, low-precision
+
+> The Apprentice is trying to learn a Mai Tai and the recipe keeps failing because one ingredient is missing.
+
+This may be directly observed and therefore highly reliable, but it does not name the missing ingredient.
+
+### High-confidence, medium-precision
+
+> Rum, fresh lime and orange curaçao are already behind the bar.
+
+A knowledgeable bartender can infer the likely missing component without the game spelling it out.
+
+### High-confidence, exact
+
+> The missing ingredient is orgeat.
+
+This is actionable but costlier to discover.
+
+### Low-confidence, exact
+
+> Dock Dog says Fishmonger has an Orgeat Bottle under the counter.
+
+The claim is precise but the source may be wrong, stale or deceptive.
+
+Do not collapse these states into a single `confidence` number.
+
+Current prototype precision labels:
+
+- `context` — activity / situation / broad pattern;
+- `category` — broad class of need or holding;
+- `specific` — enough details that domain expertise may solve the inference;
+- `exact` — item / person / event explicitly identified.
+
+---
+
+## Domain knowledge should save information actions
+
+The original design was partly a personal menu / game for someone with real cocktail expertise. Preserve that spirit.
+
+A knowledgeable player should occasionally infer the answer **before the game explicitly names it**.
+
+Example — Bar Apprentice:
+
+1. `context`: Apprentice is learning to make a Mai Tai, but one ingredient is missing.
+2. `specific`: rum, fresh lime and orange curaçao are already present.
+3. `exact`: the missing ingredient is Orgeat.
+
+A bartender may infer Orgeat at stage 1 or 2 and spend their next action sourcing it instead of paying for stage 3.
+
+A player who does not know cocktails is not punished permanently; they can spend more time to obtain the exact clue.
+
+This pattern can also apply to:
+
+- bicycle repair;
+- film / projection equipment;
+- fishing / cold chain;
+- shipping / cargo;
+- legal or financial documents;
+- unusual collectibles.
+
+The principle is:
+
+> **Expertise buys time, not a mandatory trivia gate.**
+
+Do not turn the game into a quiz. Every important inference should remain discoverable through play.
+
+---
 
 ## Three legitimate routes to inventory knowledge
 
@@ -56,7 +144,7 @@ The public tape should therefore train both NPCs and the player.
 
 ### 3. Active search / social discovery
 
-An NPC can spend limited time investigating plausible sources.
+An NPC or player can spend limited time investigating plausible sources.
 
 They do **not** search the entire world instantly.
 
@@ -70,6 +158,28 @@ Examples:
 - Clown knows the Bar is the sensible place to investigate a Mai Tai.
 
 A search can fail. Failure consumes time and is still information.
+
+---
+
+## Investigations should usually deepen rather than teleport to truth
+
+Current prototype direction:
+
+Repeated investigation of the same actor progresses through authored information stages before falling through to exact hidden holdings.
+
+For example, investigating Sailor may reveal:
+
+1. only selected cargo is displayed and departure is approaching;
+2. an undeclared lot smells oily / medicinal and Vale's people are watching the ship;
+3. exact confirmation of Sperm Whale Oil.
+
+This is preferable to:
+
+> click Investigate once → receive `Sailor has Whale Oil`.
+
+The exact sequence can differ by character. Some people are transparent about needs but secretive about inventory; others are the reverse.
+
+---
 
 ## Stable differences in information speed
 
@@ -86,15 +196,17 @@ Current first-pass model:
 
 This is not a generic difficulty stat. It is part of each character's stable market style.
 
+---
+
 ## Pre-existing network — confirmed pieces
 
 ### Vale ↔ Sailor
 
-Vale and Sailor **already know each other and have done business before the run begins**.
+Vale and Sailor already know each other and have done business before the run begins.
 
 Vale is socially analogous to a queen bee: elite, central, wealthy, unusually capable of accessing privileged channels.
 
-Sailor's exact class / social archetype remains open, but the economic relationship is already established:
+Sailor's exact metaphysical / class status remains open, but the economic relationship is established:
 
 > Sailor repeatedly brings outside cargo; Vale is an experienced buyer of unusual foreign goods.
 
@@ -112,25 +224,15 @@ Dog also connects to animal-world / informal actors including candidate groups s
 - Squirrels;
 - Mosquitoes.
 
-These actors belong to an animal social world that is close enough to human society to trade with it but remains socially discriminated against by parts of human society.
-
 ### Bar as boundary venue
 
-The Bar is currently the **only confirmed human venue that openly permits animals to enter**.
+The Bar is currently the only confirmed human venue that openly permits animals to enter.
 
 Other human venues may ban or restrict animal people.
 
 This makes the Bar economically and narratively important as a boundary space between human and animal markets, not merely a cocktail shop.
 
-Venue access should eventually affect:
-
-- who can meet whom;
-- who hears which rumours;
-- where private deals can occur;
-- which markets exclude particular actors;
-- why Dock Dog and other animal traders rely on informal networks.
-
-The game should depict this discrimination as a property of the fictional society, not as a moral endorsement by the system.
+---
 
 ## First-day target
 
@@ -145,6 +247,8 @@ A useful target is:
 
 A strong NPC should sometimes beat the player to an opportunity because that NPC had a believable information edge. The whole cast should not do this simultaneously.
 
+---
+
 ## Public vs hidden inventory
 
 Inventory should be represented in layers:
@@ -155,6 +259,8 @@ Inventory should be represented in layers:
 - **private / hidden** — no actor may use it merely because the engine stores it.
 
 The player obeys the same information constitution as NPCs. Clicking an avatar must not reveal true inventory by default.
+
+---
 
 ## Player communication constraint — confirmed direction
 
@@ -167,9 +273,11 @@ Preferred implementation direction:
 - communication relies on some combination of translation, writing, gestures, structured offers, and demonstrated behaviour;
 - trade history and whether the player keeps promises become forms of communication in themselves.
 
-Do not require a medical diagnosis to justify the silent / limited-speaking protagonist. The important gameplay fact is that the player cannot simply interrogate every NPC with unlimited natural-language questions.
+Do not require a medical diagnosis to justify the silent / limited-speaking protagonist.
 
-This helps explain why actions such as `Investigate`, `Offer`, `Show`, `Ask about`, `Introduce`, and later `Sell information` are explicit economic actions rather than free dialogue trees.
+The important gameplay fact is that the player cannot simply interrogate every NPC with unlimited natural-language questions.
+
+---
 
 ## NPC planning sequence
 
@@ -179,11 +287,13 @@ A buyer trying to obtain an item should conceptually do this:
 2. Check remembered public trades / known holdings.
 3. Check pre-existing relationships and profession-based hypotheses.
 4. If no source is known, decide whether discovering a source is worth spending time.
-5. Search one or a few plausible counterparties according to the NPC's information skill and network.
-6. Only after a source becomes known may the NPC form a targeted bid / negotiation plan.
+5. Search one or a few plausible counterparties according to information skill and network.
+6. Only after a source becomes sufficiently known may the NPC form a targeted bid / negotiation plan.
 7. At clearing, stale information may still cause failure because ownership may have changed.
 
 This allows rational failure.
+
+---
 
 ## Important distinction: belief vs truth
 
@@ -205,14 +315,15 @@ or:
 
 Those are different informational states even though the underlying world state is identical.
 
+---
+
 ## Information is a tradeable asset — confirmed
 
-The player may sell information to NPCs.
-
-Information should eventually exist as a real game object with fields such as:
+Information can exist as a real game object with fields such as:
 
 - proposition / claim;
 - source;
+- **precision**;
 - confidence;
 - freshness;
 - who currently knows it;
@@ -223,6 +334,7 @@ Information should eventually exist as a real game object with fields such as:
 Example:
 
 > `Sailor holds Sperm Whale Oil`
+> Precision: exact
 > Source: personally observed
 > Confidence: high
 > Freshness: today
@@ -240,21 +352,26 @@ The player can then choose among economically different actions:
 
 Information value must decay when it spreads.
 
+---
+
 ## Player participation created by information friction
 
 Information friction gives the player economic roles other than simply buying before an NPC does:
 
+- infer a need before it is named;
 - discover a seller and become an intermediary;
-- sell the source information;
+- sell source information;
 - conceal the source;
 - buy first and resell later;
 - tell two buyers and create competition;
 - deliberately provide false information;
-- observe an NPC searching and infer their hidden demand;
+- observe an NPC searching and infer hidden demand;
 - help a weaker NPC find a supplier;
 - teach an NPC enough that they eventually stop needing the player.
 
 This is the desired source of participation.
+
+---
 
 ## Implementation guardrail
 
@@ -262,9 +379,9 @@ Do not solve information asymmetry with hidden dice that simply say an NPC succe
 
 Randomness may affect attention or noisy rumours later, but the primary system should remain reconstructable:
 
-> public knowledge + relationships + limited search time + skill + remembered evidence.
+> public knowledge + relationships + limited search time + expertise + precision + source quality + remembered evidence.
 
-The player should be able to say, after learning enough:
+The player should be able to say:
 
 > "Of course Vale found it before me — she already knew the Sailor, saw the ship arrive, and spent the morning investigating his cargo."
 
