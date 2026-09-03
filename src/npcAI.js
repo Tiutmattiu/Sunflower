@@ -61,9 +61,7 @@ function marketInterestMax(game, buyerId, item, utility) {
   const base = itemValue(item);
   const observedDemand = game.npcMemory?.[buyerId]?.observedDemand?.[item] || 0;
 
-  // A broad taste is not a quest and should not make everyone shop perfectly on Day 1.
-  // On the first day, an interest-only buyer acts only on an obvious bargain. Later,
-  // tape evidence and repeated market exposure can justify paying a modest premium.
+  // Broad taste is not a quest. Day 1 interest-only buying is limited to obvious bargains.
   if (game.day <= 1 && observedDemand <= 0) return Math.max(0, base - 1);
   const tastePremium = Math.min(3, Math.floor(Math.max(0, utility) / 3));
   const tapePremium = Math.min(2, observedDemand);
@@ -79,27 +77,19 @@ function latestPublicOwner(game, item) {
 
 function publicSellersOf(game, item) {
   return Object.entries(NPC_PROFILES)
-    .filter(([id, profile]) =>
-      (profile.publicStock || []).includes(item) && game.traders[id]?.inventory.includes(item)
-    )
+    .filter(([id, profile]) => (profile.publicStock || []).includes(item) && game.traders[id]?.inventory.includes(item))
     .map(([id]) => id);
 }
 
 function searchDepth(profile, day) {
   const tempo = Math.max(1, profile.informationTempo || 3);
-  // Day 1 starts with public knowledge and pre-existing bought leads only. Active source
-  // search begins after at least one day has passed, so the harbour does not solve itself
-  // before the player has seen a single tape.
+  // Day 1 begins with public/tape/pre-existing knowledge. Active hidden-source search starts later.
   return Math.max(0, Math.floor((Math.max(1, day) - 1) / tempo));
 }
 
 function rankedHypotheses(buyerId, likelySources) {
   return [...(likelySources || [])]
-    .map((sellerId, index) => ({
-      sellerId,
-      index,
-      contact: contactBetween(buyerId, sellerId),
-    }))
+    .map((sellerId, index) => ({ sellerId, index, contact: contactBetween(buyerId, sellerId) }))
     .sort((a, b) =>
       (b.contact.familiarity || 0) - (a.contact.familiarity || 0) ||
       (b.contact.trust || 0) - (a.contact.trust || 0) ||
@@ -109,13 +99,10 @@ function rankedHypotheses(buyerId, likelySources) {
 
 function knownSourcesForItem(game, buyerId, item, likelySources = []) {
   if (item === "Blue Glass Marble") return [];
-
   const sources = new Map();
 
   publicSellersOf(game, item).forEach((sellerId) => {
-    if (sellerId !== buyerId && sellerId !== "player") {
-      sources.set(sellerId, "public stock");
-    }
+    if (sellerId !== buyerId && sellerId !== "player") sources.set(sellerId, "public stock");
   });
 
   const tapeOwner = latestPublicOwner(game, item);
@@ -124,12 +111,14 @@ function knownSourcesForItem(game, buyerId, item, likelySources = []) {
   }
 
   const boughtLead = game.npcMemory?.[buyerId]?.knownHoldings?.[item];
-  if (boughtLead?.holderId && boughtLead.holderId !== buyerId && boughtLead.holderId !== "player") {
+  if (
+    boughtLead?.holderId && boughtLead.holderId !== buyerId && boughtLead.holderId !== "player" &&
+    game.day - Number(boughtLead.learnedDay || game.day) <= 2
+  ) {
     sources.set(boughtLead.holderId, boughtLead.source || "bought information");
   }
 
-  // Active search is only allowed for explicit hypotheses attached to a real goal.
-  // Broad market interests can act on public/tape/bought knowledge, but cannot scan hidden inventories.
+  // Active search is reserved for explicit needs and only checks a bounded set of plausible contacts.
   const profile = NPC_PROFILES[buyerId];
   const depth = searchDepth(profile, game.day);
   rankedHypotheses(buyerId, likelySources)
@@ -161,12 +150,12 @@ function pushCandidate(game, candidates, buyerId, item, likelySources, reason, g
 
   knownSourcesForItem(game, buyerId, item, likelySources).forEach(({ sellerId, basis }) => {
     const seller = game.traders[sellerId];
-    if (!seller?.inventory.includes(item)) return;
+    if (!seller) return;
 
+    // Crucial belief/truth separation: a tape record or bought lead may now be stale.
+    // The NPC is still allowed to commit the order; clearing, not planning, discovers that stock vanished.
     const ask = sellerAsk(game, sellerId, item);
-    const max = goalPriority
-      ? buyerMax(game, buyerId, item)
-      : marketInterestMax(game, buyerId, item, utility);
+    const max = goalPriority ? buyerMax(game, buyerId, item) : marketInterestMax(game, buyerId, item, utility);
     const surplus = max - ask;
     if (ask <= spendableCash && surplus >= 0) {
       candidates.push({
@@ -189,37 +178,16 @@ export function planNPCMarket(game) {
     const buyer = game.traders[buyerId];
     const profile = NPC_PROFILES[buyerId];
     if (!buyer || !profile) return;
-
     const candidates = [];
 
-    // Explicit needs can motivate active search of plausible contacts.
     (profile.goals || []).forEach((goal) => {
-      pushCandidate(
-        game,
-        candidates,
-        buyerId,
-        goal.item,
-        goal.likelySources || [],
-        goal.reason,
-        true
-      );
+      pushCandidate(game, candidates, buyerId, goal.item, goal.likelySources || [], goal.reason, true);
     });
 
-    // Stable market interests make more goods economically alive without turning each object into a quest key.
-    // These only use public/tape/purchased information; they do not read hidden inventory, and unlike exact
-    // goals they are opportunistic rather than permission to pay any ask simply because the category is liked.
     Object.keys(ITEMS).forEach((item) => {
       if (goalFor(buyerId, item)) return;
       if (interestUtility(profile, item) <= 0) return;
-      pushCandidate(
-        game,
-        candidates,
-        buyerId,
-        item,
-        [],
-        `Fits ${profile.style.toLowerCase()} market interests.`,
-        false
-      );
+      pushCandidate(game, candidates, buyerId, item, [], `Fits ${profile.style.toLowerCase()} market interests.`, false);
     });
 
     candidates.sort((a, b) => b.score - a.score || a.wantItem.localeCompare(b.wantItem));
@@ -240,25 +208,14 @@ export function visibleMarketBoard(game) {
 
 export function visibleSellListings(game) {
   const listings = [];
-
   Object.entries(NPC_PROFILES).forEach(([sellerId, profile]) => {
     const seller = game.traders[sellerId];
     if (!seller) return;
-
     (profile.publicStock || []).forEach((item) => {
       if (!seller.inventory.includes(item)) return;
-      listings.push({
-        sellerId,
-        item,
-        ask: sellerAsk(game, sellerId, item),
-        reference: itemValue(item),
-      });
+      listings.push({ sellerId, item, ask: sellerAsk(game, sellerId, item), reference: itemValue(item) });
     });
   });
 
-  return listings.sort((a, b) =>
-    a.sellerId.localeCompare(b.sellerId) ||
-    a.ask - b.ask ||
-    a.item.localeCompare(b.item)
-  );
+  return listings.sort((a, b) => a.sellerId.localeCompare(b.sellerId) || a.ask - b.ask || a.item.localeCompare(b.item));
 }
