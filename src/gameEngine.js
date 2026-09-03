@@ -432,13 +432,14 @@ function executePlayerOrders(game) {
 
     const isCheat = normalized.to === "mechanic" && normalized.offerItem === "Bad Tangerine";
     const barterUtility = normalized.offerItem ? privateUtility(game, target.id, normalized.offerItem) : 0;
-    const paymentValue = valueOf(normalized.offerItem) + barterUtility + normalized.sardines;
+    const mistakenCitrusUtility = isCheat ? privateUtility(game, target.id, "Lime Crate") : 0;
+    const paymentValue = valueOf(normalized.offerItem) + barterUtility + mistakenCitrusUtility + normalized.sardines;
     const ask = sellerAsk(game, target.id, normalized.wantItem);
 
-    if (!isCheat && paymentValue < ask) {
+    if (paymentValue < ask) {
       rejected.push({
         ...normalized,
-        reason: `${target.name} values that payment at about ${paymentValue}🥫 against an ask near ${ask}🥫.`,
+        reason: `${target.name} does not accept this offer at the current ask.`,
       });
       return;
     }
