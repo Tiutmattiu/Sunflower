@@ -2,124 +2,126 @@ export const SARDINE = "🥫";
 export const MAX_DAYS = 14; // Prototype pacing cap, not a final cosmological rule.
 export const MORNING_ACTIONS = 2;
 export const AFTERNOON_ACTIONS = 2;
-export const SUSTENANCE_PER_DAY = 1;
-export const PROXY_FEE = 1;
+export const SUSTENANCE_PER_DAY = 1; // One tin is still one tin; survival is not rescaled with asset prices.
+export const PROXY_FEE = 2;
+export const INFO_BASE_PRICE = 2;
 
-// `value` is a provisional reference price, NOT intrinsic value.
-// The current price scale is intentionally still under audit.
+// `value` is a reference price used for first-pass market arithmetic, NOT intrinsic value.
+// Private utility, urgency, liquidity, information and relationships can move actual willingness to trade.
 // `foodUnits` can satisfy nightly sustenance. `shelfLife` is measured in sunsets.
 export const ITEMS = {
-  "Blue Glass Marble": { value: 3, icon: "🔵", type: "Scarce Curio / Access" },
-  "Dead Pigeon": { value: 3, icon: "🐦", type: "Catalyst / Scavenged" },
-  "Collar Tag": { value: 3, icon: "🏷️", type: "Access / Identity" },
-  "Chewed Rope Toy": { value: 1, icon: "🧸", type: "Junk / Liquid" },
-  "Fresh Mackerel": { value: 4, icon: "🐟", type: "Food / Commodity", foodUnits: 1, shelfLife: 2 },
-  "Smoked Eel": { value: 3, icon: "🐍", type: "Food / Commodity", foodUnits: 1, shelfLife: 5 },
-  "Sea Lettuce Bundle": { value: 2, icon: "🥬", type: "Food / Ingredient", foodUnits: 1, shelfLife: 2 },
-  "Two Octopus Tentacles": { value: 4, icon: "🐙", type: "Food / Fish-stall Oddity", foodUnits: 1, shelfLife: 2 },
-  "Ice Block": { value: 2, icon: "🧊", type: "Cold-chain Input", shelfLife: 1 },
-  "Orgeat Bottle": { value: 7, icon: "🥛", type: "Cocktail Ingredient / Scarce" },
-  "Orange Curaçao": { value: 5, icon: "🍊", type: "Cocktail Ingredient" },
-  "Demerara Syrup": { value: 3, icon: "🟤", type: "Cocktail Ingredient" },
-  "Hotel Sugar Cubes, 23 Count": { value: 2, icon: "🍬", type: "Ingredient / Scavenged Hospitality Good" },
-  "Steel Rim": { value: 5, icon: "⭕", type: "Machine Part" },
-  "Three Metres of Stolen Theatre Wire": { value: 4, icon: "🔌", type: "Repair Input / Dubious Provenance" },
-  "Patch Cut from the Ship Mercy": { value: 3, icon: "🧵", type: "Repair Input / Provenance" },
-  "Rusty Harpoon": { value: 6, icon: "🗡️", type: "Tool / Risky Asset" },
-  "Sperm Whale Oil": { value: 6, icon: "🛢️", type: "Fuel / Obsolete Input" },
-  "Salted Cod": { value: 4, icon: "🐡", type: "Food / Commodity", foodUnits: 1, shelfLife: 7 },
-  "Hardtack Tin": { value: 2, icon: "🍞", type: "Food / Durable", foodUnits: 1 },
-  "Brass Compass": { value: 5, icon: "🧭", type: "Durable / Collateral" },
-  "Sealed Parcel": { value: 5, icon: "📦", type: "Mystery / Special Situation" },
+  "Blue Glass Marble": { value: 12, icon: "🔵", type: "Scarce Curio / Access / Story" },
+  "Dead Pigeon": { value: 6, icon: "🐦", type: "Catalyst / Scavenged / Oddity" },
+  "Collar Tag": { value: 9, icon: "🏷️", type: "Access / Identity / Story" },
+  "Chewed Rope Toy": { value: 2, icon: "🧸", type: "Junk / Scavenged / Animal-network" },
+  "Fresh Mackerel": { value: 7, icon: "🐟", type: "Food / Commodity", foodUnits: 1, shelfLife: 2 },
+  "Smoked Eel": { value: 8, icon: "🐍", type: "Food / Commodity", foodUnits: 1, shelfLife: 5 },
+  "Sea Lettuce Bundle": { value: 5, icon: "🥬", type: "Food / Ingredient", foodUnits: 1, shelfLife: 2 },
+  "Two Octopus Tentacles": { value: 9, icon: "🐙", type: "Food / Fish-stall Oddity", foodUnits: 1, shelfLife: 2 },
+  "Ice Block": { value: 5, icon: "🧊", type: "Cold-chain Input / Bar Input", shelfLife: 1 },
+  "Orgeat Bottle": { value: 14, icon: "🥛", type: "Cocktail Ingredient / Scarce" },
+  "Orange Curaçao": { value: 12, icon: "🍊", type: "Cocktail Ingredient" },
+  "Demerara Syrup": { value: 5, icon: "🟤", type: "Cocktail Ingredient" },
+  "Hotel Sugar Cubes, 23 Count": { value: 4, icon: "🍬", type: "Ingredient / Scavenged Hospitality Good" },
+  "Steel Rim": { value: 12, icon: "⭕", type: "Machine Part / Durable" },
+  "Three Metres of Stolen Theatre Wire": { value: 9, icon: "🔌", type: "Repair Input / Dubious Provenance / Story" },
+  "Patch Cut from the Ship Mercy": { value: 8, icon: "🧵", type: "Repair Input / Provenance / Story" },
+  "Rusty Harpoon": { value: 14, icon: "🗡️", type: "Tool / Risky Asset / Harbour" },
+  "Sperm Whale Oil": { value: 18, icon: "🛢️", type: "Fuel / Obsolete Input / Scarce" },
+  "Salted Cod": { value: 8, icon: "🐡", type: "Food / Commodity / Durable", foodUnits: 1, shelfLife: 7 },
+  "Hardtack Tin": { value: 4, icon: "🍞", type: "Food / Durable", foodUnits: 1 },
+  "Brass Compass": { value: 16, icon: "🧭", type: "Durable / Collateral / Sailor" },
+  "Sealed Parcel": { value: 20, icon: "📦", type: "Mystery / Special Situation / Information-bearing" },
 
-  // Bicycle / mechanical goods. These are ordinary market goods first, route ingredients only when a rule says so.
-  "Presta Inner Tube": { value: 4, icon: "🚲", type: "Bicycle Part / Consumable Repair" },
-  "Chain Quick-Link": { value: 3, icon: "🔗", type: "Bicycle Part / Repair" },
-  "Brake Cable": { value: 3, icon: "🪢", type: "Bicycle Part / Repair" },
-  "Handlebar Tape": { value: 2, icon: "🎗️", type: "Bicycle Part / Cosmetic-Functional" },
-  "Tiny Torque Wrench": { value: 6, icon: "🔧", type: "Bicycle Tool / Durable" },
-  "Bicycle Bell": { value: 2, icon: "🔔", type: "Bicycle Part / Scavenged" },
+  // Bicycle / mechanical goods.
+  "Presta Inner Tube": { value: 8, icon: "🚲", type: "Bicycle Part / Consumable Repair" },
+  "Chain Quick-Link": { value: 6, icon: "🔗", type: "Bicycle Part / Repair" },
+  "Brake Cable": { value: 7, icon: "🪢", type: "Bicycle Part / Repair" },
+  "Handlebar Tape": { value: 5, icon: "🎗️", type: "Bicycle Part / Cosmetic-Functional" },
+  "Tiny Torque Wrench": { value: 18, icon: "🔧", type: "Bicycle Tool / Durable / Collateral" },
+  "Bicycle Bell": { value: 4, icon: "🔔", type: "Bicycle Part / Scavenged" },
 
   // Vale / prestige / story-bearing goods.
-  "Valentino Still": { value: 5, icon: "🎞️", type: "Prestige" },
-  "Film Canister": { value: 4, icon: "🎥", type: "Prestige / Input" },
-  "Hand Mirror": { value: 3, icon: "🪞", type: "Prestige" },
-  "Velvet Sleeve": { value: 2, icon: "🧤", type: "Liquid / Prestige" },
-  "Bent Silver Fork": { value: 3, icon: "🍴", type: "Collateral / Liquid" },
-  "One White Glove": { value: 4, icon: "🧤", type: "Prestige / Story Fragment" },
-  "Numbered Funeral Ticket": { value: 5, icon: "🎫", type: "Collectible / Event-linked" },
-  "Taxidermied Moth": { value: 6, icon: "🦋", type: "Collectible / Illiquid" },
-  "Unsent Letter": { value: 1, icon: "✉️", type: "Sentimental / Information-bearing" },
+  "Valentino Still": { value: 18, icon: "🎞️", type: "Prestige / Collectible" },
+  "Film Canister": { value: 14, icon: "🎥", type: "Prestige / Film Input" },
+  "Hand Mirror": { value: 9, icon: "🪞", type: "Prestige / Durable" },
+  "Velvet Sleeve": { value: 7, icon: "🧤", type: "Prestige / Fashion" },
+  "Bent Silver Fork": { value: 10, icon: "🍴", type: "Collateral / Silver / Story" },
+  "One White Glove": { value: 13, icon: "🧤", type: "Prestige / Story Fragment / Collectible" },
+  "Numbered Funeral Ticket": { value: 20, icon: "🎫", type: "Collectible / Event-linked / Story" },
+  "Taxidermied Moth": { value: 22, icon: "🦋", type: "Collectible / Illiquid / Story" },
+  "Unsent Letter": { value: 5, icon: "✉️", type: "Sentimental / Information-bearing / Story" },
 
-  "Auction Sunflower": { value: 16, icon: "🌻", type: "Auction Goal" },
-  "Auction Onewheel": { value: 8, icon: "🛞", type: "Vehicle" },
+  "Auction Sunflower": { value: 52, icon: "🌻", type: "Auction Lot / Living" },
+  "Auction Onewheel": { value: 28, icon: "🛞", type: "Vehicle / Auction Lot" },
 
   // Clown / speculative junk / everyday-surreal goods.
-  "Lollipop": { value: 1, icon: "🍭", type: "Treat / Liquid" },
-  "Glitter Tape": { value: 2, icon: "✨", type: "Speculative Junk" },
-  "Tool Roll": { value: 3, icon: "🧰", type: "Tool" },
-  "Lucky Sticker": { value: 1, icon: "⭐", type: "Speculative Junk" },
-  "Wax Candle Stub": { value: 1, icon: "🕯️", type: "Fuel / Scavenged" },
-  "Key That Opens Nothing": { value: 2, icon: "🗝️", type: "Speculative Junk / Story" },
+  "Lollipop": { value: 2, icon: "🍭", type: "Treat / Liquid" },
+  "Glitter Tape": { value: 4, icon: "✨", type: "Speculative Junk / Cosmetic" },
+  "Tool Roll": { value: 10, icon: "🧰", type: "Tool / Repair / Durable" },
+  "Lucky Sticker": { value: 2, icon: "⭐", type: "Speculative Junk / Story" },
+  "Wax Candle Stub": { value: 2, icon: "🕯️", type: "Fuel / Scavenged" },
+  "Key That Opens Nothing": { value: 3, icon: "🗝️", type: "Speculative Junk / Story / Collectible" },
 
   // Dog / animal-network / low-value daily oddities.
-  "Red Ribbon": { value: 2, icon: "🎀", type: "Social / Scavenged" },
-  "Empty Green Bottle": { value: 1, icon: "🍾", type: "Container / Reusable" },
-  "Glasses Wipe": { value: 1, icon: "👓", type: "Tiny Utility / Scavenged" },
-  "Chia Seeds": { value: 2, icon: "🌱", type: "Dry Food / Seed / Animal-network Good", foodUnits: 1 },
+  "Red Ribbon": { value: 3, icon: "🎀", type: "Social / Scavenged / Animal-network" },
+  "Empty Green Bottle": { value: 2, icon: "🍾", type: "Container / Reusable / Scavenged" },
+  "Glasses Wipe": { value: 2, icon: "👓", type: "Tiny Utility / Scavenged / Animal-network" },
+  "Chia Seeds": { value: 4, icon: "🌱", type: "Dry Food / Seed / Animal-network", foodUnits: 1 },
 
-  // Professional bar goods. Many are durable tools, not magical quest keys.
-  "Rum Bottle": { value: 4, icon: "🥃", type: "Drink / Cocktail Ingredient" },
-  "Bruised Mint": { value: 1, icon: "🌿", type: "Cocktail Ingredient", shelfLife: 2 },
-  "Cracked Shaker": { value: 2, icon: "🥤", type: "Bar Tool / Liquid" },
-  "Hawthorne Strainer": { value: 4, icon: "🌀", type: "Bar Tool / Durable" },
-  "30/45 Jigger": { value: 4, icon: "🥃", type: "Bar Tool / Durable" },
-  "Long Bar Spoon": { value: 3, icon: "🥄", type: "Bar Tool / Durable" },
-  "Fine Mesh Strainer": { value: 3, icon: "🫖", type: "Bar Tool / Durable" },
-  "Hand Citrus Press": { value: 5, icon: "🍋", type: "Bar Tool / Durable" },
-  "Lewis Bag": { value: 3, icon: "🧺", type: "Bar Tool / Ice Preparation" },
-  "Chipped Nick & Nora Glass": { value: 3, icon: "🍸", type: "Barware / Social" },
-  "Lime Crate": { value: 4, icon: "🍋", type: "Citrus / Perishable Input", shelfLife: 4 },
-  "Mai Tai": { value: 8, icon: "🍹", type: "Drink / Goal" },
+  // Professional bar goods. Expertise can make their significance legible before the game explains it.
+  "Rum Bottle": { value: 10, icon: "🥃", type: "Drink / Cocktail Ingredient" },
+  "Bruised Mint": { value: 3, icon: "🌿", type: "Cocktail Ingredient", shelfLife: 2 },
+  "Cracked Shaker": { value: 5, icon: "🥤", type: "Bar Tool / Damaged" },
+  "Hawthorne Strainer": { value: 9, icon: "🌀", type: "Bar Tool / Durable" },
+  "30/45 Jigger": { value: 9, icon: "🥃", type: "Bar Tool / Durable" },
+  "Long Bar Spoon": { value: 7, icon: "🥄", type: "Bar Tool / Durable" },
+  "Fine Mesh Strainer": { value: 8, icon: "🫖", type: "Bar Tool / Durable" },
+  "Hand Citrus Press": { value: 11, icon: "🍋", type: "Bar Tool / Durable" },
+  "Lewis Bag": { value: 7, icon: "🧺", type: "Bar Tool / Ice Preparation" },
+  "Chipped Nick & Nora Glass": { value: 6, icon: "🍸", type: "Barware / Social / Story" },
+  "Lime Crate": { value: 8, icon: "🍋", type: "Cocktail Ingredient / Citrus / Perishable Input", shelfLife: 4 },
+  "Mai Tai": { value: 18, icon: "🍹", type: "Drink / Cocktail / Social" },
 
-  "Bad Tangerine": { value: 1, icon: "🍊", type: "Toxic / Misrepresentation" },
-  "Old Coupon": { value: 2, icon: "🎟️", type: "Claim / Dubious" },
-  "Pocket Match": { value: 1, icon: "🔥", type: "Liquid" },
-  "Fish Bones": { value: 2, icon: "🦴", type: "Junk / Animal-network Good" },
-  "Built Onewheel": { value: 8, icon: "🛞", type: "Vehicle" },
-  "Spoiled Fish": { value: 1, icon: "🐟", type: "Waste" },
-  Sunflower: { value: 99, icon: "🌻", type: "Goal / Living" },
+  "Bad Tangerine": { value: 2, icon: "🍊", type: "Toxic / Misrepresentation / Food-like" },
+  "Old Coupon": { value: 4, icon: "🎟️", type: "Claim / Dubious / Information-bearing" },
+  "Pocket Match": { value: 2, icon: "🔥", type: "Tiny Utility / Scavenged" },
+  "Fish Bones": { value: 3, icon: "🦴", type: "Junk / Animal-network / Scavenged" },
+  "Built Onewheel": { value: 30, icon: "🛞", type: "Vehicle / Durable / Speculative" },
+  "Spoiled Fish": { value: 1, icon: "🐟", type: "Waste / Scavenged" },
+  Sunflower: { value: null, icon: "🌻", type: "Goal / Living / Unpriced" },
 };
 
 export const INITIAL_TRADERS = {
   dog: {
     id: "dog", name: "Dock Dog", icon: "🐕", role: "Scavenger dealer / harbour gossip", form: "animal",
-    sardines: 6,
+    sardines: 18,
     inventory: [
       "Blue Glass Marble", "Dead Pigeon", "Collar Tag", "Chewed Rope Toy",
-      "Red Ribbon", "Glasses Wipe", "Bicycle Bell",
+      "Red Ribbon", "Glasses Wipe", "Bicycle Bell", "Pocket Match",
     ],
   },
   fishmonger: {
     id: "fishmonger", name: "Fishmonger", icon: "🐠", role: "Fish producer / steady operator", form: "human",
-    sardines: 10,
+    sardines: 30,
     inventory: [
       "Fresh Mackerel", "Smoked Eel", "Ice Block", "Two Octopus Tentacles",
-      "Orgeat Bottle", "Steel Rim", "Rusty Harpoon",
+      "Orgeat Bottle", "Steel Rim", "Rusty Harpoon", "Hawthorne Strainer",
     ],
   },
   mechanic: {
     id: "mechanic", name: "Sailor", icon: "⚙️", role: "Travelling merchant / repair-capable sailor", form: "sailor",
-    sardines: 5,
+    sardines: 26,
     inventory: [
       "Sperm Whale Oil", "Salted Cod", "Hardtack Tin", "Brass Compass", "Sealed Parcel",
       "Three Metres of Stolen Theatre Wire", "Patch Cut from the Ship Mercy",
       "Presta Inner Tube", "Chain Quick-Link", "Brake Cable", "Tiny Torque Wrench",
+      "30/45 Jigger", "Fine Mesh Strainer",
     ],
   },
   vale: {
     id: "vale", name: "Mirelle Vale", icon: "🎬", role: "Auctioneer / capital allocator", form: "human",
-    sardines: 12,
+    sardines: 52,
     inventory: [
       "Valentino Still", "Film Canister", "Hand Mirror", "Velvet Sleeve", "Bent Silver Fork",
       "One White Glove", "Numbered Funeral Ticket", "Taxidermied Moth", "Unsent Letter",
@@ -127,7 +129,7 @@ export const INITIAL_TRADERS = {
   },
   clown: {
     id: "clown", name: "Onewheel Clown", icon: "🤡", role: "Speculator / racer", form: "human",
-    sardines: 4,
+    sardines: 22,
     inventory: [
       "Lollipop", "Glitter Tape", "Tool Roll", "Lucky Sticker", "Wax Candle Stub",
       "Handlebar Tape", "Key That Opens Nothing",
@@ -135,17 +137,16 @@ export const INITIAL_TRADERS = {
   },
   bar: {
     id: "bar", name: "Bar Apprentice", icon: "🍸", role: "Relationship trader / novice investor", form: "human",
-    sardines: 8,
+    sardines: 34,
     inventory: [
       "Rum Bottle", "Bruised Mint", "Cracked Shaker", "Lime Crate", "Orange Curaçao",
       "Demerara Syrup", "Hotel Sugar Cubes, 23 Count", "Empty Green Bottle",
-      "Hawthorne Strainer", "30/45 Jigger", "Long Bar Spoon", "Fine Mesh Strainer",
-      "Hand Citrus Press", "Lewis Bag", "Chipped Nick & Nora Glass",
+      "Long Bar Spoon", "Hand Citrus Press", "Lewis Bag", "Chipped Nick & Nora Glass",
     ],
   },
   player: {
     id: "player", name: "You", icon: "🧍", role: "Outsider", form: "human",
-    sardines: 6,
+    sardines: 18,
     inventory: ["Fish Bones", "Bad Tangerine", "Chia Seeds", "Old Coupon"],
   },
 };
@@ -153,162 +154,142 @@ export const INITIAL_TRADERS = {
 export const NPC_PROFILES = {
   dog: {
     style: "High-turnover dealer",
-    markup: 0,
+    markup: 1,
     cashPreference: 0.35,
     informationTempo: 1,
-    publicStock: ["Chewed Rope Toy", "Red Ribbon", "Glasses Wipe", "Bicycle Bell", "Empty Green Bottle"],
+    publicStock: ["Chewed Rope Toy", "Red Ribbon", "Glasses Wipe", "Bicycle Bell", "Pocket Match", "Empty Green Bottle"],
+    interests: [
+      { typeIncludes: "Scavenged", utility: 3 },
+      { typeIncludes: "Animal-network", utility: 4 },
+      { typeIncludes: "Tiny Utility", utility: 2 },
+      { typeIncludes: "Container", utility: 2 },
+    ],
     goals: [
-      { item: "Fresh Mackerel", utility: 4, likelySources: ["fishmonger", "bar"], reason: "Fresh fish disappears quickly around the cats." },
-      { item: "Fish Bones", utility: 3, likelySources: ["fishmonger", "mechanic"], reason: "Even scraps have a use at the dock." },
+      { item: "Fresh Mackerel", utility: 9, likelySources: ["fishmonger", "bar"], reason: "Fresh fish disappears quickly around the cats." },
+      { item: "Fish Bones", utility: 6, likelySources: ["fishmonger", "mechanic"], reason: "Even scraps have a use at the dock." },
     ],
     investigationStages: [
-      {
-        claimType: "activity", precision: "context",
-        text: "Dog crosses the docks, the bar alley and animal routes before noon. Much of his edge is knowing who might know someone.",
-        confidence: "high",
-      },
-      {
-        claimType: "need", precision: "category",
-        text: "The cat colony is eating through fresh food quickly enough that Dog keeps checking the fish stalls.",
-        confidence: "high",
-      },
+      { claimType: "activity", precision: "context", text: "Dog crosses the docks, the bar alley and animal routes before noon. Much of his edge is knowing who might know someone.", confidence: "high" },
+      { claimType: "need", precision: "category", text: "The cat colony is eating through fresh food quickly enough that Dog keeps checking the fish stalls.", confidence: "high" },
     ],
     clue: "Dog sees a lot of the harbour, but does not always know what the information is worth.",
   },
   fishmonger: {
     style: "Conservative operator",
-    markup: 1,
+    markup: 2,
     cashPreference: 0.7,
     informationTempo: 3,
     publicStock: ["Fresh Mackerel", "Smoked Eel", "Two Octopus Tentacles", "Ice Block"],
+    interests: [
+      { typeIncludes: "Food / Commodity", utility: 3 },
+      { typeIncludes: "Cold-chain", utility: 4 },
+      { typeIncludes: "Harbour", utility: 2 },
+    ],
     goals: [
-      { item: "Dead Pigeon", utility: 4, likelySources: ["dog", "mechanic"], reason: "The fish stall has a strange standing use for it." },
+      { item: "Dead Pigeon", utility: 10, likelySources: ["dog", "mechanic"], reason: "The fish stall has a strange standing use for it." },
     ],
     investigationStages: [
-      {
-        claimType: "activity", precision: "context",
-        text: "Most things at the fish stall are exactly what they look like. The strange non-fish goods usually arrived through barter, debt or a misdelivered crate.",
-        confidence: "high",
-      },
-      {
-        claimType: "holding-hint", precision: "category",
-        text: "A sealed restaurant-supply bottle is being kept below the fish counter rather than displayed with the catch.",
-        confidence: "high",
-      },
-      {
-        claimType: "holding", precision: "exact", item: "Orgeat Bottle",
-        text: "Fishmonger has an Orgeat Bottle under the counter.",
-        confidence: "high", sellable: true, exclusive: true,
-      },
+      { claimType: "activity", precision: "context", text: "Most things at the fish stall are exactly what they look like. The strange non-fish goods usually arrived through barter, debt or a misdelivered crate.", confidence: "high" },
+      { claimType: "holding-hint", precision: "category", text: "A sealed restaurant-supply bottle is being kept below the fish counter rather than displayed with the catch.", confidence: "high" },
+      { claimType: "holding", precision: "exact", item: "Orgeat Bottle", text: "Fishmonger has an Orgeat Bottle under the counter.", confidence: "high", sellable: true, exclusive: true },
     ],
     clue: "Fishmonger understands fish far better than fashionable assets and rarely changes business just because another trade looks exciting.",
   },
   mechanic: {
     style: "Deadline merchant",
-    markup: 0,
+    markup: 2,
     cashPreference: 0.55,
     informationTempo: 2,
     departureDay: 8,
-    publicStock: ["Hardtack Tin", "Salted Cod", "Brake Cable", "Chain Quick-Link"],
+    publicStock: ["Hardtack Tin", "Salted Cod", "Brake Cable", "Chain Quick-Link", "30/45 Jigger", "Fine Mesh Strainer"],
+    interests: [
+      { typeIncludes: "Bicycle", utility: 6 },
+      { typeIncludes: "Repair", utility: 5 },
+      { typeIncludes: "Tool", utility: 4 },
+      { typeIncludes: "Durable", utility: 3 },
+    ],
     goals: [
-      { item: "Lime Crate", utility: 7, urgencyPerDay: 1.3, likelySources: ["bar", "fishmonger", "dog"], reason: "The ship must provision fresh citrus before departure." },
+      { item: "Lime Crate", utility: 16, urgencyPerDay: 2, likelySources: ["bar", "fishmonger", "dog"], reason: "The ship must provision fresh citrus before departure." },
     ],
     investigationStages: [
-      {
-        claimType: "activity", precision: "context",
-        text: "Sailor is unloading only the cargo he intends to sell openly. The rest stays below deck, and departure is getting closer.",
-        confidence: "high",
-      },
-      {
-        claimType: "holding-hint", precision: "category",
-        text: "One undeclared cargo lot smells oily and medicinal. Vale's people have already looked toward the ship twice.",
-        confidence: "medium",
-      },
-      {
-        claimType: "holding", precision: "exact", item: "Sperm Whale Oil",
-        text: "Sailor has Sperm Whale Oil below deck.",
-        confidence: "high", sellable: true, exclusive: true,
-      },
+      { claimType: "activity", precision: "context", text: "Sailor is unloading only the cargo he intends to sell openly. The rest stays below deck, and departure is getting closer.", confidence: "high" },
+      { claimType: "holding-hint", precision: "category", text: "One undeclared cargo lot smells oily and medicinal. Vale's people have already looked toward the ship twice.", confidence: "medium" },
+      { claimType: "holding", precision: "exact", item: "Sperm Whale Oil", text: "Sailor has Sperm Whale Oil below deck.", confidence: "high", sellable: true, exclusive: true },
     ],
     clue: "The Sailor is leaving. A need that can wait today may become very expensive tomorrow.",
   },
   vale: {
     style: "Sophisticated opportunist",
-    markup: 2,
+    markup: 5,
     cashPreference: 0.45,
     informationTempo: 1,
     publicStock: ["Velvet Sleeve", "Film Canister", "One White Glove"],
+    interests: [
+      { typeIncludes: "Prestige", utility: 7 },
+      { typeIncludes: "Collectible", utility: 8 },
+      { typeIncludes: "Story", utility: 6 },
+      { typeIncludes: "Information-bearing", utility: 5 },
+      { typeIncludes: "Scarce Curio", utility: 7 },
+      { typeIncludes: "Mystery", utility: 6 },
+    ],
     goals: [
-      { item: "Sperm Whale Oil", utility: 9, likelySources: ["mechanic", "fishmonger", "dog"], reason: "A private screening needs an obsolete fuel." },
-      { item: "Sealed Parcel", utility: 4, likelySources: ["mechanic", "dog"], reason: "Vale likes situations where provenance can be priced before contents are understood." },
-      { item: "Blue Glass Marble", utility: 4, likelySources: ["dog", "fishmonger"], reason: "Vale notices objects with story and scarcity." },
+      { item: "Sperm Whale Oil", utility: 22, likelySources: ["mechanic", "fishmonger", "dog"], reason: "A private screening needs an obsolete fuel." },
+      { item: "Sealed Parcel", utility: 12, likelySources: ["mechanic", "dog"], reason: "Vale likes situations where provenance can be priced before contents are understood." },
+      { item: "Blue Glass Marble", utility: 10, likelySources: ["dog", "fishmonger"], reason: "Vale notices objects with story and scarcity." },
     ],
     investigationStages: [
-      {
-        claimType: "activity", precision: "context",
-        text: "Vale is preparing a private screening and quietly contacting people who deal in obsolete projection equipment and fuel.",
-        confidence: "high",
-      },
-      {
-        claimType: "need", precision: "exact", item: "Sperm Whale Oil",
-        text: "Vale's screening specifically needs Sperm Whale Oil.",
-        confidence: "medium",
-      },
+      { claimType: "activity", precision: "context", text: "Vale is preparing a private screening and quietly contacting people who deal in obsolete projection equipment and fuel.", confidence: "high" },
+      { claimType: "need", precision: "exact", item: "Sperm Whale Oil", text: "Vale's screening specifically needs Sperm Whale Oil.", confidence: "medium" },
     ],
     clue: "Vale is manipulative, but settlement reliability is excellent. She is usually happy to let the other person reveal urgency first.",
   },
   clown: {
     style: "High-risk speculator",
-    markup: -1,
+    markup: -2,
     cashPreference: 0.15,
     informationTempo: 2,
-    publicStock: ["Lollipop", "Wax Candle Stub", "Handlebar Tape", "Key That Opens Nothing"],
+    publicStock: ["Lollipop", "Wax Candle Stub", "Handlebar Tape", "Key That Opens Nothing", "Glitter Tape"],
+    interests: [
+      { typeIncludes: "Speculative", utility: 8 },
+      { typeIncludes: "Vehicle", utility: 9 },
+      { typeIncludes: "Bicycle", utility: 5 },
+      { typeIncludes: "Mystery", utility: 7 },
+      { typeIncludes: "Story", utility: 4 },
+    ],
     goals: [
-      { item: "Mai Tai", utility: 8, likelySources: ["bar"], reason: "Clown will pay irrational-looking prices for the right drink and the right night." },
-      { item: "Built Onewheel", utility: 7, likelySources: ["mechanic", "vale"], reason: "A working onewheel creates wagers other people cannot take." },
-      { item: "Sealed Parcel", utility: 5, likelySources: ["mechanic", "dog"], reason: "An opaque payoff distribution is exactly the sort of thing Clown cannot leave alone." },
+      { item: "Mai Tai", utility: 20, likelySources: ["bar"], reason: "Clown will pay irrational-looking prices for the right drink and the right night." },
+      { item: "Built Onewheel", utility: 20, likelySources: ["mechanic", "vale"], reason: "A working onewheel creates wagers other people cannot take." },
+      { item: "Sealed Parcel", utility: 14, likelySources: ["mechanic", "dog"], reason: "An opaque payoff distribution is exactly the sort of thing Clown cannot leave alone." },
     ],
     investigationStages: [
-      {
-        claimType: "activity", precision: "context",
-        text: "Clown keeps asking whether the Apprentice has finally learned the old rum drink properly, then changes the subject to wheels.",
-        confidence: "high",
-      },
-      {
-        claimType: "need", precision: "exact", item: "Mai Tai",
-        text: "Clown is specifically waiting for a proper Mai Tai.",
-        confidence: "high",
-      },
+      { claimType: "activity", precision: "context", text: "Clown keeps asking whether the Apprentice has finally learned the old rum drink properly, then changes the subject to wheels.", confidence: "high" },
+      { claimType: "need", precision: "exact", item: "Mai Tai", text: "Clown is specifically waiting for a proper Mai Tai.", confidence: "high" },
     ],
     clue: "Clown is not random. He simply values upside and extreme outcomes more than most people do.",
   },
   bar: {
     style: "Relationship-first novice",
-    markup: 0,
+    markup: 1,
     cashPreference: 0.25,
     informationTempo: 3,
     publicStock: ["Rum Bottle", "Bruised Mint", "Orange Curaçao", "Demerara Syrup", "Hotel Sugar Cubes, 23 Count", "Empty Green Bottle"],
+    interests: [
+      { typeIncludes: "Cocktail Ingredient", utility: 6 },
+      { typeIncludes: "Bar Tool", utility: 7 },
+      { typeIncludes: "Barware", utility: 5 },
+      { typeIncludes: "Container", utility: 2 },
+    ],
     goals: [
-      { item: "Orgeat Bottle", utility: 8, likelySources: ["fishmonger", "mechanic", "dog"], reason: "The Apprentice is trying to learn a proper Mai Tai but one ingredient is missing." },
-      { item: "Ice Block", utility: 3, likelySources: ["fishmonger", "mechanic"], reason: "Cold drinks are a recurring operating input, not a one-time quest." },
-      { item: "Lime Crate", utility: 5, likelySources: ["fishmonger", "dog"], reason: "Fresh citrus is both an input and a rarity." },
+      { item: "Orgeat Bottle", utility: 20, likelySources: ["fishmonger", "mechanic", "dog"], reason: "The Apprentice is trying to learn a proper Mai Tai but one ingredient is missing." },
+      { item: "Ice Block", utility: 8, likelySources: ["fishmonger", "mechanic"], reason: "Cold drinks are a recurring operating input, not a one-time quest." },
+      { item: "Hawthorne Strainer", utility: 8, likelySources: ["fishmonger", "mechanic"], reason: "The Apprentice is replacing damaged service tools while learning professional technique." },
+      { item: "30/45 Jigger", utility: 7, likelySources: ["mechanic", "fishmonger"], reason: "Accurate measures matter when the Apprentice stops free-pouring everything." },
+      { item: "Fine Mesh Strainer", utility: 6, likelySources: ["mechanic", "fishmonger"], reason: "A finer strain is a technique upgrade, not a route requirement." },
     ],
     investigationStages: [
-      {
-        claimType: "activity", precision: "context",
-        text: "The Apprentice is learning to make a Mai Tai. The recipe keeps stalling because one ingredient is missing.",
-        confidence: "high",
-      },
-      {
-        claimType: "need-hint", precision: "specific",
-        text: "Rum, fresh lime and orange curaçao are already behind the bar. Whatever is missing is not one of those.",
-        confidence: "high",
-      },
-      {
-        claimType: "need", precision: "exact", item: "Orgeat Bottle",
-        text: "If you press further, the missing Mai Tai ingredient is orgeat.",
-        confidence: "high",
-      },
+      { claimType: "activity", precision: "context", text: "The Apprentice is learning to make a Mai Tai. The recipe keeps stalling because one ingredient is missing.", confidence: "high" },
+      { claimType: "need-hint", precision: "specific", text: "Rum, fresh lime and orange curaçao are already behind the bar. Whatever is missing is not one of those.", confidence: "high" },
+      { claimType: "need", precision: "exact", item: "Orgeat Bottle", text: "If you press further, the missing Mai Tai ingredient is orgeat.", confidence: "high" },
     ],
     clue: "The Apprentice is not a strong trader yet. People still like dealing with them, which is an economic advantage of its own.",
   },
@@ -316,11 +297,11 @@ export const NPC_PROFILES = {
 
 // Deterministic recurring arrivals keep the small market alive without random loot fountains.
 export const BUSINESS_CYCLES = {
-  dog: ["Empty Green Bottle", "Wax Candle Stub", "Red Ribbon", "Dead Pigeon", "Glasses Wipe", "Bicycle Bell", "Chia Seeds"],
+  dog: ["Empty Green Bottle", "Wax Candle Stub", "Red Ribbon", "Dead Pigeon", "Glasses Wipe", "Bicycle Bell", "Chia Seeds", "Pocket Match"],
   fishmonger: ["Fresh Mackerel", "Ice Block", "Smoked Eel", "Sea Lettuce Bundle", "Two Octopus Tentacles"],
   mechanic: [
     "Sealed Parcel", "Three Metres of Stolen Theatre Wire", "Patch Cut from the Ship Mercy",
-    "Presta Inner Tube", "Chain Quick-Link", "Brake Cable", "Tiny Torque Wrench",
+    "Presta Inner Tube", "Chain Quick-Link", "Brake Cable", "Tiny Torque Wrench", "30/45 Jigger", "Fine Mesh Strainer",
   ],
 };
 
@@ -356,65 +337,17 @@ export const SOCIAL_GRAPH = {
 };
 
 export const FORMS = {
-  human: {
-    id: "human",
-    icon: "🧍",
-    label: "Human",
-    formalPersonhood: true,
-    note: "Strong institutional access; identity and ownership are formally legible.",
-  },
-  animal: {
-    id: "animal",
-    icon: "🐾",
-    label: "Animal",
-    formalPersonhood: false,
-    note: "Informal networks remain available, but many human institutions refuse direct recognition.",
-  },
-  sailor: {
-    id: "sailor",
-    icon: "⚓",
-    label: "Sailor",
-    formalPersonhood: true,
-    note: "A provisional liminal form: mobile and cross-boundary, but not necessarily liberated.",
-  },
-  plant: {
-    id: "plant",
-    icon: "🌱",
-    label: "Plant",
-    formalPersonhood: false,
-    note: "Future experimental form. Agency and value would work very differently.",
-  },
+  human: { id: "human", icon: "🧍", label: "Human", formalPersonhood: true, note: "Strong institutional access; identity and ownership are formally legible." },
+  animal: { id: "animal", icon: "🐾", label: "Animal", formalPersonhood: false, note: "Informal networks remain available, but many human institutions refuse direct recognition." },
+  sailor: { id: "sailor", icon: "⚓", label: "Sailor", formalPersonhood: true, note: "A provisional liminal form: mobile and cross-boundary, but not necessarily liberated." },
+  plant: { id: "plant", icon: "🌱", label: "Plant", formalPersonhood: false, note: "Future experimental form. Agency and value would work very differently." },
 };
 
 export const VENUES = {
-  bar: {
-    name: "The Bar",
-    allowedForms: ["human", "animal", "sailor"],
-    requiresLegalIdentity: false,
-    proxyable: false,
-    note: "Currently the only confirmed human venue that openly allows animal people inside.",
-  },
-  formalMarket: {
-    name: "Public Market",
-    allowedForms: ["human", "sailor"],
-    requiresLegalIdentity: true,
-    proxyable: true,
-    note: "Animal traders may need a recognised proxy rather than direct institutional access.",
-  },
-  valeGallery: {
-    name: "Vale's Auction Rooms",
-    allowedForms: ["human", "sailor"],
-    requiresLegalIdentity: true,
-    proxyable: true,
-    note: "Elite formal access. Recognition and invitation matter as much as cash.",
-  },
-  blackMarket: {
-    name: "Cross-form Informal Network",
-    allowedForms: ["human", "animal", "sailor"],
-    requiresLegalIdentity: false,
-    proxyable: false,
-    note: "Not one evil shop: an intermediary network between excluded animal society and formal human markets.",
-  },
+  bar: { name: "The Bar", allowedForms: ["human", "animal", "sailor"], requiresLegalIdentity: false, proxyable: false, note: "Currently the only confirmed human venue that openly allows animal people inside." },
+  formalMarket: { name: "Public Market", allowedForms: ["human", "sailor"], requiresLegalIdentity: true, proxyable: true, note: "Animal traders may need a recognised proxy rather than direct institutional access." },
+  valeGallery: { name: "Vale's Auction Rooms", allowedForms: ["human", "sailor"], requiresLegalIdentity: true, proxyable: true, note: "Elite formal access. Recognition and invitation matter as much as cash." },
+  blackMarket: { name: "Cross-form Informal Network", allowedForms: ["human", "animal", "sailor"], requiresLegalIdentity: false, proxyable: false, note: "Not one evil shop: an intermediary network between excluded animal society and formal human markets." },
 };
 
 export const PLAYER_CONTEXT = {
@@ -430,29 +363,9 @@ export const PLAYER_CONTEXT = {
 export const PHASES = ["sunrise", "morning", "noon", "afternoon", "sunset"];
 
 export const PHASE_COPY = {
-  sunrise: {
-    icon: "🌅",
-    title: "Sunrise",
-    subtitle: "The harbour stops. The day has not begun trading yet.",
-  },
-  morning: {
-    icon: "☀️",
-    title: "Morning",
-    subtitle: "Gather information, build relationships and prepare for the noon market.",
-  },
-  noon: {
-    icon: "🌞",
-    title: "Noon Market",
-    subtitle: "The public market opens once. Goods and sardines actually change hands now.",
-  },
-  afternoon: {
-    icon: "🌤️",
-    title: "Afternoon",
-    subtitle: "Interpret the tape, investigate what happened and position for tomorrow.",
-  },
-  sunset: {
-    icon: "🌇",
-    title: "Sunset",
-    subtitle: "The harbour stops again. Obligations, perishables and memory settle into the next day.",
-  },
+  sunrise: { icon: "🌅", title: "Sunrise", subtitle: "The harbour stops. The day has not begun trading yet." },
+  morning: { icon: "☀️", title: "Morning", subtitle: "Gather information, build relationships and prepare for the noon market." },
+  noon: { icon: "🌞", title: "Noon Market", subtitle: "The public market opens once. Goods and sardines actually change hands now." },
+  afternoon: { icon: "🌤️", title: "Afternoon", subtitle: "Interpret the tape, investigate what happened and position for tomorrow." },
+  sunset: { icon: "🌇", title: "Sunset", subtitle: "The harbour stops again. Obligations, perishables and memory settle into the next day." },
 };
