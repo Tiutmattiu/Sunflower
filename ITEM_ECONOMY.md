@@ -31,7 +31,7 @@ The engine should not award hidden partial credit for designer-only associations
 
 ## Current catalogue size
 
-As of the September 3 live audit, `ITEMS` contains **68 item definitions**.
+As of the September 4 live audit, `ITEMS` contains **67 item definitions** after deleting the obsolete `Auction Sunflower` pseudo-item.
 
 That is enough for the current design phase.
 
@@ -69,7 +69,9 @@ The current pool now has a live path:
 - Dock Dog cycles scavenged / animal-network goods, including the previously dead `Pocket Match`;
 - Fishmonger cycles fresh catch, ice and sea produce;
 - Sailor cycles imported repair, bicycle, bar-tool and mystery cargo until departure;
-- `Mai Tai`, `Built Onewheel`, auction lots, spoilage and `Sunflower` are produced by rules/events rather than normal supply.
+- `Mai Tai`, `Built Onewheel`, `Auction Onewheel`, spoilage and the living `Sunflower` are produced by rules/events rather than normal supply.
+
+The living Sunflower is **not** represented by a separate ordinary `Auction Sunflower` asset anymore. Vale's reserve is event-level pricing, not an intrinsic/reference price attached to a flower item.
 
 This should still be rechecked by Codex/runtime smoke because static reachability is not the same as a fun market.
 
@@ -95,8 +97,9 @@ A tin still has literal survival meaning: nightly sustenance can still consume *
 | scarce input / collateral-like durable | 12–20🥫 |
 | prestige / collectible / special situation | 9–22+🥫 |
 | vehicle / major route asset | 28–30+🥫 |
-| auction sunflower estimate placeholder | 52🥫 |
 | living `Sunflower` | **unpriced** |
+
+Vale's current auction reserve is a **provisional event price**, not the Sunflower's reference value.
 
 These are **reference prices**, not intrinsic value.
 
