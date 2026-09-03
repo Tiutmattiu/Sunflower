@@ -1,9 +1,17 @@
 import { ITEMS, NPC_PROFILES, SOCIAL_GRAPH } from "./gameData";
 
-const itemValue = (item) => ITEMS[item]?.value ?? 0;
+const itemValue = (item) => Number.isFinite(ITEMS[item]?.value) ? ITEMS[item].value : 0;
 
 function goalFor(npcId, item) {
   return (NPC_PROFILES[npcId]?.goals || []).find((goal) => goal.item === item) || null;
+}
+
+function interestUtility(profile, item) {
+  const type = ITEMS[item]?.type || "";
+  return (profile?.interests || []).reduce((best, interest) => {
+    if (!interest?.typeIncludes || !type.includes(interest.typeIncludes)) return best;
+    return Math.max(best, Number(interest.utility || 0));
+  }, 0);
 }
 
 function contactBetween(fromId, toId) {
@@ -12,11 +20,12 @@ function contactBetween(fromId, toId) {
 
 export function privateUtility(game, npcId, item) {
   const profile = NPC_PROFILES[npcId];
-  const goal = goalFor(npcId, item);
-  if (!profile || !goal) return 0;
+  if (!profile) return 0;
 
-  let utility = goal.utility || 0;
-  if (profile.departureDay && goal.urgencyPerDay) {
+  const goal = goalFor(npcId, item);
+  let utility = goal ? Number(goal.utility || 0) : interestUtility(profile, item);
+
+  if (goal && profile.departureDay && goal.urgencyPerDay) {
     const daysLeft = Math.max(0, profile.departureDay - game.day);
     const urgencyWindow = Math.max(0, 5 - daysLeft);
     utility += urgencyWindow * goal.urgencyPerDay;
@@ -30,14 +39,14 @@ export function sellerAsk(game, sellerId, item) {
   const heat = game.heat[item] || 0;
   const holdPremium = ownUtility > 0 ? Math.ceil(ownUtility * 0.65) : 0;
   const liquidityDiscount = profile.cashPreference > 0.65 ? -1 : 0;
-  return Math.max(1, itemValue(item) + profile.markup + heat + holdPremium + liquidityDiscount);
+  return Math.max(1, itemValue(item) + Number(profile.markup || 0) + heat + holdPremium + liquidityDiscount);
 }
 
 export function buyerMax(game, buyerId, item) {
   const base = itemValue(item);
   const utility = privateUtility(game, buyerId, item);
   const observedDemand = game.npcMemory?.[buyerId]?.observedDemand?.[item] || 0;
-  return Math.max(0, Math.floor(base + utility + Math.min(2, observedDemand)));
+  return Math.max(0, Math.floor(base + utility + Math.min(4, observedDemand)));
 }
 
 function latestPublicOwner(game, item) {
@@ -46,9 +55,11 @@ function latestPublicOwner(game, item) {
   return trades[trades.length - 1].from;
 }
 
-function publicSellersOf(item) {
+function publicSellersOf(game, item) {
   return Object.entries(NPC_PROFILES)
-    .filter(([, profile]) => (profile.publicStock || []).includes(item))
+    .filter(([id, profile]) =>
+      (profile.publicStock || []).includes(item) && game.traders[id]?.inventory.includes(item)
+    )
     .map(([id]) => id);
 }
 
@@ -66,17 +77,17 @@ function rankedHypotheses(buyerId, likelySources) {
     }))
     .sort((a, b) =>
       (b.contact.familiarity || 0) - (a.contact.familiarity || 0) ||
-      b.contact.trust - a.contact.trust ||
+      (b.contact.trust || 0) - (a.contact.trust || 0) ||
       a.index - b.index
     );
 }
 
-function knownSourcesForItem(game, buyerId, item, likelySources) {
+function knownSourcesForItem(game, buyerId, item, likelySources = []) {
   if (item === "Blue Glass Marble") return [];
 
   const sources = new Map();
 
-  publicSellersOf(item).forEach((sellerId) => {
+  publicSellersOf(game, item).forEach((sellerId) => {
     if (sellerId !== buyerId && sellerId !== "player") {
       sources.set(sellerId, "public stock");
     }
@@ -92,6 +103,8 @@ function knownSourcesForItem(game, buyerId, item, likelySources) {
     sources.set(boughtLead.holderId, boughtLead.source || "bought information");
   }
 
+  // Active search is only allowed for explicit hypotheses attached to a real goal.
+  // Broad market interests can act on public/tape/bought knowledge, but cannot scan hidden inventories.
   const profile = NPC_PROFILES[buyerId];
   const depth = searchDepth(profile, game.day);
   rankedHypotheses(buyerId, likelySources)
@@ -110,36 +123,71 @@ function knownSourcesForItem(game, buyerId, item, likelySources) {
   return [...sources.entries()].map(([sellerId, basis]) => ({ sellerId, basis }));
 }
 
+function pushCandidate(game, candidates, buyerId, item, likelySources, reason, goalPriority = false) {
+  const buyer = game.traders[buyerId];
+  if (!buyer || buyer.inventory.includes(item)) return;
+
+  const utility = privateUtility(game, buyerId, item);
+  if (utility <= 0) return;
+
+  knownSourcesForItem(game, buyerId, item, likelySources).forEach(({ sellerId, basis }) => {
+    const seller = game.traders[sellerId];
+    if (!seller?.inventory.includes(item)) return;
+
+    const ask = sellerAsk(game, sellerId, item);
+    const max = buyerMax(game, buyerId, item);
+    const surplus = max - ask;
+    if (ask <= buyer.sardines && surplus >= 0) {
+      candidates.push({
+        from: buyerId,
+        to: sellerId,
+        wantItem: item,
+        sardines: ask,
+        score: surplus + utility + (goalPriority ? 12 : 0),
+        reason,
+        knowledgeBasis: basis,
+      });
+    }
+  });
+}
+
 export function planNPCMarket(game) {
   const plans = [];
 
   Object.keys(NPC_PROFILES).forEach((buyerId) => {
     const buyer = game.traders[buyerId];
-    if (!buyer) return;
+    const profile = NPC_PROFILES[buyerId];
+    if (!buyer || !profile) return;
 
     const candidates = [];
-    (NPC_PROFILES[buyerId].goals || []).forEach((goal) => {
-      if (buyer.inventory.includes(goal.item)) return;
 
-      knownSourcesForItem(game, buyerId, goal.item, goal.likelySources || []).forEach(({ sellerId, basis }) => {
-        const seller = game.traders[sellerId];
-        if (!seller) return;
+    // Explicit needs can motivate active search of plausible contacts.
+    (profile.goals || []).forEach((goal) => {
+      pushCandidate(
+        game,
+        candidates,
+        buyerId,
+        goal.item,
+        goal.likelySources || [],
+        goal.reason,
+        true
+      );
+    });
 
-        const ask = sellerAsk(game, sellerId, goal.item);
-        const max = buyerMax(game, buyerId, goal.item);
-        const surplus = max - ask;
-        if (ask <= buyer.sardines && surplus >= 0) {
-          candidates.push({
-            from: buyerId,
-            to: sellerId,
-            wantItem: goal.item,
-            sardines: ask,
-            score: surplus + privateUtility(game, buyerId, goal.item),
-            reason: goal.reason,
-            knowledgeBasis: basis,
-          });
-        }
-      });
+    // Stable market interests make more goods economically alive without turning each object into a quest key.
+    // These only use public/tape/purchased information; they do not read hidden inventory.
+    Object.keys(ITEMS).forEach((item) => {
+      if (goalFor(buyerId, item)) return;
+      if (interestUtility(profile, item) <= 0) return;
+      pushCandidate(
+        game,
+        candidates,
+        buyerId,
+        item,
+        [],
+        `Fits ${profile.style.toLowerCase()} market interests.`,
+        false
+      );
     });
 
     candidates.sort((a, b) => b.score - a.score || a.wantItem.localeCompare(b.wantItem));
