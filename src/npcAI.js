@@ -57,6 +57,19 @@ export function buyerMax(game, buyerId, item) {
   return Math.max(0, Math.floor(base + utility + Math.min(4, observedDemand)));
 }
 
+function marketInterestMax(game, buyerId, item, utility) {
+  const base = itemValue(item);
+  const observedDemand = game.npcMemory?.[buyerId]?.observedDemand?.[item] || 0;
+
+  // A broad taste is not a quest and should not make everyone shop perfectly on Day 1.
+  // On the first day, an interest-only buyer acts only on an obvious bargain. Later,
+  // tape evidence and repeated market exposure can justify paying a modest premium.
+  if (game.day <= 1 && observedDemand <= 0) return Math.max(0, base - 1);
+  const tastePremium = Math.min(3, Math.floor(Math.max(0, utility) / 3));
+  const tapePremium = Math.min(2, observedDemand);
+  return Math.max(0, base + tastePremium + tapePremium);
+}
+
 function latestPublicOwner(game, item) {
   const trades = game.history.filter((trade) => trade.item === item || trade.paymentItem === item);
   if (!trades.length) return null;
@@ -74,7 +87,10 @@ function publicSellersOf(game, item) {
 
 function searchDepth(profile, day) {
   const tempo = Math.max(1, profile.informationTempo || 3);
-  return Math.floor(day / tempo);
+  // Day 1 starts with public knowledge and pre-existing bought leads only. Active source
+  // search begins after at least one day has passed, so the harbour does not solve itself
+  // before the player has seen a single tape.
+  return Math.max(0, Math.floor((Math.max(1, day) - 1) / tempo));
 }
 
 function rankedHypotheses(buyerId, likelySources) {
@@ -148,7 +164,9 @@ function pushCandidate(game, candidates, buyerId, item, likelySources, reason, g
     if (!seller?.inventory.includes(item)) return;
 
     const ask = sellerAsk(game, sellerId, item);
-    const max = buyerMax(game, buyerId, item);
+    const max = goalPriority
+      ? buyerMax(game, buyerId, item)
+      : marketInterestMax(game, buyerId, item, utility);
     const surplus = max - ask;
     if (ask <= spendableCash && surplus >= 0) {
       candidates.push({
@@ -188,7 +206,8 @@ export function planNPCMarket(game) {
     });
 
     // Stable market interests make more goods economically alive without turning each object into a quest key.
-    // These only use public/tape/purchased information; they do not read hidden inventory.
+    // These only use public/tape/purchased information; they do not read hidden inventory, and unlike exact
+    // goals they are opportunistic rather than permission to pay any ask simply because the category is liked.
     Object.keys(ITEMS).forEach((item) => {
       if (goalFor(buyerId, item)) return;
       if (interestUtility(profile, item) <= 0) return;
