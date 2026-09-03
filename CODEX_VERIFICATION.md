@@ -24,6 +24,8 @@ Therefore the latest `main` has **not** been verified here with a local `npm run
 
 The repo is structurally a Vite/React app (`npm run dev`, `npm run build`, `npm run preview`). `vite.config.js` now uses `base: "./"` so built asset paths are safer for static/project-page hosting, but deployment itself still needs a real check.
 
+A repository check on 2026-09-03 found **no `.github/workflows` directory**, so there is currently no repository Actions workflow proving or automatically deploying the build. This does not rule out a manually configured Pages branch, but no live Pages deployment has been verified.
+
 ## Next Codex pass — run these first
 
 1. `npm install` if dependencies are absent.
@@ -45,6 +47,10 @@ The repo is structurally a Vite/React app (`npm run dev`, `npm run build`, `npm 
 - Confirm clearing uses the exact same committed intentions and does not reroll them.
 - Confirm public transaction tape reflects actual cash and inventory movement.
 - Confirm information discovered/sold during Morning can causally change a plan before noon, but Resolve itself never rerolls.
+
+### Important current clearing caveat
+
+The prototype still executes player orders before NPC plans. That gives the player priority when both target the same unit. This is **not final market design**; a future pass should likely batch competing orders for the same public unit instead of giving hero priority. Do not silently preserve this as canon simply because it currently works.
 
 ## B. Information asymmetry + staged precision
 
@@ -141,9 +147,27 @@ Verify:
 5. Day 1 does not become an over-efficient explosion of six perfect trades;
 6. market remains explainable after several days.
 
-## F. Player barter valuation — P0 exploit check
+## F. Public sell-side listings
 
-Current intended rule:
+The market UI now shows two different public surfaces:
+
+- **For sale** — current public stock with seller ask and item reference price;
+- **Committed buy bids** — NPC purchase intentions committed before noon.
+
+Verify:
+
+- only `publicStock` actually still held by that seller appears in sell listings;
+- hidden holdings never leak into this list;
+- an item disappears from the listing after it is sold / consumed;
+- newly arrived cycle goods appear only when they are part of that trader's declared public stock;
+- displayed ask matches `sellerAsk()` at the current state;
+- long listing names remain usable on mobile;
+- the board is not so long that the actual trade controls become unusable;
+- public listings become targetable through the player's order dropdown because public stock is known stock.
+
+## G. Player barter valuation — exploit check
+
+Current intended ordinary rule:
 
 ```text
 payment value = reference value of offered item
@@ -151,16 +175,20 @@ payment value = reference value of offered item
               + offered sardines
 ```
 
-The combined value must meet the seller ask, except the explicit Bad Tangerine deception route.
+That combined seller-side valuation must meet the current ask.
+
+For the explicit **Bad Tangerine** deception route, the Sailor temporarily values the tangerine as if it satisfied the Lime need, but the resulting mistaken valuation **still has to meet the ask**. Deception changes beliefs; it does not provide an unlimited free-item bypass.
 
 Verify especially:
 
 - a cheap object that merely matches a broad market interest cannot be swapped for an expensive asset for free;
 - an exact high-utility good can command a real premium without becoming an unconditional quest key;
 - private utility changes willingness to trade rather than bypassing price entirely;
-- Bad Tangerine remains an explicit deception exception, not a generic loophole.
+- Bad Tangerine cannot buy an arbitrarily expensive Sailor asset;
+- successful Bad Tangerine deception still sets the cheated flag / reputation consequence;
+- failed-order UI does not reveal the target's exact hidden private utility number.
 
-## G. First coordinated price rebase
+## H. First coordinated price rebase
 
 Current reference values are no longer the old 1–16 compressed scale.
 
@@ -208,7 +236,7 @@ Run several days and record:
 
 Do not rebase again from intuition alone; use the smallest numerical changes that explain observed problems.
 
-## H. Recurring business life
+## I. Recurring business life
 
 Run several days with minimal player action.
 
@@ -220,7 +248,7 @@ Confirm:
 - Sailor imports stop refreshing at/after provisional departure;
 - market does not freeze permanently after Day 1–2 simply because exact goals were acquired.
 
-## I. Perishables
+## J. Perishables
 
 Check:
 
@@ -231,7 +259,7 @@ Check:
 - owner changes do not accidentally preserve/duplicate old perish timers;
 - player spoilage logs make sense.
 
-## J. Nightly sustenance
+## K. Nightly sustenance
 
 Test all branches:
 
@@ -248,7 +276,7 @@ After transformation:
 - old-life open obligations become estate obligations;
 - empty player inventory does not crash UI/market.
 
-## K. Obligations
+## L. Obligations
 
 - meal credit records amount / creditor / due day / current life identity;
 - repayment consumes one free-time action and transfers sardines;
@@ -257,7 +285,7 @@ After transformation:
 - relationship is damaged once rather than every subsequent frame/day;
 - old-life estate obligations do not default against new life.
 
-## L. Animal proxy route
+## M. Animal proxy route
 
 Force/obtain Animal form.
 
@@ -269,7 +297,7 @@ Force/obtain Animal form.
 - access expires next day;
 - noon player orders clear while active proxy exists.
 
-## M. Sunflower acquisition is no longer game over
+## N. Sunflower acquisition is no longer game over
 
 Test each current acquisition route if reachable:
 
@@ -298,7 +326,7 @@ These need playtesting; they are not canon.
 
 At the prototype life cap, a player who already has the flower should receive the specific text that it did not take them home.
 
-## N. Item/UI sanity
+## O. Item/UI sanity
 
 - item chips/dropdowns show `ref X🥫`, not an implied intrinsic value;
 - living Sunflower shows `unpriced`;
@@ -310,7 +338,7 @@ At the prototype life cap, a player who already has the flower should receive th
 - current Objective is visible;
 - post-flower callout does not block ongoing play.
 
-## O. Static hosting / deployment
+## P. Static hosting / deployment
 
 `vite.config.js` now uses:
 
@@ -323,7 +351,7 @@ Verify built assets load correctly when served:
 - at `/`;
 - and, if used, from a project subpath such as `/Sunflower/`.
 
-Do not assume GitHub Pages is configured merely because the repo is public.
+No `.github/workflows` directory was present when checked on 2026-09-03. Do not assume GitHub Pages is configured merely because the repo is public.
 
 ---
 
@@ -342,6 +370,7 @@ Do not assume GitHub Pages is configured merely because the repo is public.
 - living Sunflower is unpriced.
 - acquiring Sunflower is only the first objective reveal, not victory.
 - the deeper `Go home` / rebirth game is not implemented yet.
+- player-order-first clearing remains a provisional implementation detail and should be replaced by fair batch competition once runtime is available to test it safely.
 
 ## Update rule
 
