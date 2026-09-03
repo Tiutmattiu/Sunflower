@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import "./index.css";
 
 function StartScreen({ onStart }) {
   return (
@@ -53,6 +52,13 @@ class ErrorBoundary extends React.Component {
         }}>
           <h1>💥 Game Crashed</h1>
           <p><strong>Error:</strong> {this.state.error?.message}</p>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            style={{ marginTop: 12, padding: "10px 14px", cursor: "pointer" }}
+          >
+            Reload game
+          </button>
           {import.meta.env.DEV && (
             <pre style={{ whiteSpace: "pre-wrap", fontSize: 14, marginTop: 20 }}>
               {this.state.error?.stack}
