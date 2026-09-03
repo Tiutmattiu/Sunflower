@@ -16,9 +16,10 @@ function StartScreen({ onStart }) {
           This prototype gives you 14 days. Every sunrise, noon and sunset the harbour stops. The public market opens once each day at noon; the rest of your time is for information, relationships, investigation and positioning.
         </p>
         <div className="start-rules">
-          <div>🥫 Sardine tins are money.</div>
+          <div>🥫 Sardine tins are money — and, if necessary, dinner.</div>
           <div>🌞 The public market clears once at noon.</div>
           <div>🕰 Morning and afternoon actions consume time.</div>
+          <div>🍽 By sunset you need food, cash for a tin, or someone willing to extend credit.</div>
           <div>👀 Other traders commit plans and learn from what they can observe.</div>
         </div>
         <p className="muted small">You are not expected to understand the market on your first run.</p>
