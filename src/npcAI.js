@@ -31,6 +31,17 @@ export function privateUtility(game, npcId, item) {
   if (!profile || !match) return 0;
 
   let utility = match.option.utility || 0;
+
+  // Owning a substitute does not erase the primary need, but it lowers the pressure to upgrade.
+  if (item === match.goal.item) {
+    const ownedSubstitute = (match.goal.substitutes || []).find((substitute) =>
+      game.traders[npcId]?.inventory.includes(substitute.item)
+    );
+    if (ownedSubstitute) {
+      utility = Math.max(1, utility - Math.ceil((ownedSubstitute.utility || 0) * 0.5));
+    }
+  }
+
   if (profile.departureDay && match.goal.urgencyPerDay) {
     const daysLeft = Math.max(0, profile.departureDay - game.day);
     const urgencyWindow = Math.max(0, 5 - daysLeft);
@@ -141,8 +152,6 @@ export function planNPCMarket(game) {
       if (primaryGoalCovered(buyer, goal)) return;
 
       goalOptions(goal).forEach((option) => {
-        // A substitute reduces current pressure because the buyer will not buy another copy of it,
-        // but it does not erase the buyer's preference for the primary good.
         if (buyer.inventory.includes(option.item)) return;
 
         knownSourcesForItem(game, buyerId, option.item, option.likelySources).forEach(({ sellerId, basis }) => {
