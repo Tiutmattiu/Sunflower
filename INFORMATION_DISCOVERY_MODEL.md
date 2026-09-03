@@ -29,12 +29,12 @@ A living market should instead contain traders who know different things at diff
 
 Some inventory is openly offered because it is part of the trader's ordinary business.
 
-Examples:
+Confirmed direction:
 
-- Fishmonger's fresh fish can be obvious public stock;
-- Dock Dog may openly display cheap junk;
-- the Bar may visibly sell ordinary drinks;
-- a Sailor may display some cargo without revealing every rare item in the hold.
+- Fishmonger's ordinary fish is obvious public stock;
+- Dock Dog may openly display some cheap junk;
+- the Bar visibly sells ordinary drinks;
+- **Sailor only displays selected cargo. Rare / strange cargo can remain in the hold and must be discovered.**
 
 Public stock is knowable without spending an information action.
 
@@ -75,7 +75,7 @@ A search can fail. Failure consumes time and is still information.
 
 NPCs should differ in how rapidly they investigate.
 
-Provisional first-pass model:
+Current first-pass model:
 
 - **Dock Dog:** very high information tempo; goes everywhere and hears things quickly.
 - **Vale:** very high deliberate information tempo; actively researches economically important needs.
@@ -85,6 +85,52 @@ Provisional first-pass model:
 - **Bar Apprentice:** initially slow / naive; improves through experience and relationships.
 
 This is not a generic difficulty stat. It is part of each character's stable market style.
+
+## Pre-existing network — confirmed pieces
+
+### Vale ↔ Sailor
+
+Vale and Sailor **already know each other and have done business before the run begins**.
+
+Vale is socially analogous to a queen bee: elite, central, wealthy, unusually capable of accessing privileged channels.
+
+Sailor's exact class / social archetype remains open, but the economic relationship is already established:
+
+> Sailor repeatedly brings outside cargo; Vale is an experienced buyer of unusual foreign goods.
+
+Therefore Vale can rationally investigate Sailor unusually early without knowing the exact contents of the hold.
+
+### Dock Dog — wide but shallow network
+
+Dock Dog knows almost everyone a little.
+
+Dog has unusually broad network reach across social strata but does not possess deep trust with everyone and is not automatically told the truth.
+
+Dog also connects to animal-world / informal actors including candidate groups such as:
+
+- Seagulls;
+- Squirrels;
+- Mosquitoes.
+
+These actors belong to an animal social world that is close enough to human society to trade with it but remains socially discriminated against by parts of human society.
+
+### Bar as boundary venue
+
+The Bar is currently the **only confirmed human venue that openly permits animals to enter**.
+
+Other human venues may ban or restrict animal people.
+
+This makes the Bar economically and narratively important as a boundary space between human and animal markets, not merely a cocktail shop.
+
+Venue access should eventually affect:
+
+- who can meet whom;
+- who hears which rumours;
+- where private deals can occur;
+- which markets exclude particular actors;
+- why Dock Dog and other animal traders rely on informal networks.
+
+The game should depict this discrimination as a property of the fictional society, not as a moral endorsement by the system.
 
 ## First-day target
 
@@ -101,14 +147,29 @@ A strong NPC should sometimes beat the player to an opportunity because that NPC
 
 ## Public vs hidden inventory
 
-Inventory should eventually be represented in layers:
+Inventory should be represented in layers:
 
 - **publicly offered** — anyone can see it;
 - **known to a specific actor** — learned through a conversation, inspection, prior trade or investigation;
 - **rumoured** — source and confidence matter;
 - **private / hidden** — no actor may use it merely because the engine stores it.
 
-The player should obey the same information constitution as NPCs. The UI must eventually stop showing every true inventory item by default.
+The player obeys the same information constitution as NPCs. Clicking an avatar must not reveal true inventory by default.
+
+## Player communication constraint — confirmed direction
+
+The player is an outsider with a substantial communication barrier.
+
+Preferred implementation direction:
+
+- the player can understand at least some local speech / signals;
+- the player cannot fluently speak the local language;
+- communication relies on some combination of translation, writing, gestures, structured offers, and demonstrated behaviour;
+- trade history and whether the player keeps promises become forms of communication in themselves.
+
+Do not require a medical diagnosis to justify the silent / limited-speaking protagonist. The important gameplay fact is that the player cannot simply interrogate every NPC with unlimited natural-language questions.
+
+This helps explain why actions such as `Investigate`, `Offer`, `Show`, `Ask about`, `Introduce`, and later `Sell information` are explicit economic actions rather than free dialogue trees.
 
 ## NPC planning sequence
 
@@ -116,10 +177,11 @@ A buyer trying to obtain an item should conceptually do this:
 
 1. Check whether the item is publicly offered.
 2. Check remembered public trades / known holdings.
-3. If no source is known, decide whether discovering a source is worth spending time.
-4. Search one or a few plausible counterparties according to the NPC's information skill and network.
-5. Only after a source becomes known may the NPC form a targeted bid / negotiation plan.
-6. At clearing, stale information may still cause failure because ownership may have changed.
+3. Check pre-existing relationships and profession-based hypotheses.
+4. If no source is known, decide whether discovering a source is worth spending time.
+5. Search one or a few plausible counterparties according to the NPC's information skill and network.
+6. Only after a source becomes known may the NPC form a targeted bid / negotiation plan.
+7. At clearing, stale information may still cause failure because ownership may have changed.
 
 This allows rational failure.
 
@@ -142,6 +204,41 @@ or:
 > "I saw the Lime in the Bar this morning. Confidence: high."
 
 Those are different informational states even though the underlying world state is identical.
+
+## Information is a tradeable asset — confirmed
+
+The player may sell information to NPCs.
+
+Information should eventually exist as a real game object with fields such as:
+
+- proposition / claim;
+- source;
+- confidence;
+- freshness;
+- who currently knows it;
+- whether it was personally verified;
+- whether it has already diffused;
+- whether resale is possible / permitted.
+
+Example:
+
+> `Sailor holds Sperm Whale Oil`
+> Source: personally observed
+> Confidence: high
+> Freshness: today
+> Known by: player
+
+The player can then choose among economically different actions:
+
+- buy the oil personally;
+- sell the source information to Vale;
+- tell Vale for relationship value rather than cash;
+- tell multiple buyers and create competition;
+- conceal the information;
+- fabricate a false source claim;
+- sell exclusivity and then violate it.
+
+Information value must decay when it spreads.
 
 ## Player participation created by information friction
 
@@ -169,7 +266,7 @@ Randomness may affect attention or noisy rumours later, but the primary system s
 
 The player should be able to say, after learning enough:
 
-> "Of course Vale found it before me — the Sailor arrived yesterday and she spent the morning investigating his cargo."
+> "Of course Vale found it before me — she already knew the Sailor, saw the ship arrive, and spent the morning investigating his cargo."
 
 not:
 
