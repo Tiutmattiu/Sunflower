@@ -1,6 +1,5 @@
 import {
   AFTERNOON_ACTIONS,
-  BUSINESS_CYCLES,
   INFO_BASE_PRICE,
   INITIAL_TRADERS,
   ITEMS,
@@ -30,29 +29,28 @@ const emptyOrder = () => ({ to: "", wantItem: "", offerItem: "", sardines: 0 });
 export const resetOrders = () => [emptyOrder(), emptyOrder(), emptyOrder()];
 
 function emptyMemory() {
-  return Object.fromEntries(
-    Object.keys(NPC_PROFILES).map((id) => [id, {
-      observedDemand: {},
-      observations: [],
-      knownHoldings: {},
-    }])
-  );
+  return Object.fromEntries(Object.keys(NPC_PROFILES).map((id) => [id, {
+    observedDemand: {},
+    observations: [],
+    knownHoldings: {},
+  }]));
 }
 
-function relationshipMap() {
-  return Object.fromEntries(Object.keys(NPC_PROFILES).map((id) => [id, 0]));
-}
-
-function countMap() {
+function zeroMap() {
   return Object.fromEntries(Object.keys(NPC_PROFILES).map((id) => [id, 0]));
 }
 
 function profileWantsItem(profile, item) {
   if ((profile?.goals || []).some((goal) => goal.item === item)) return true;
   const type = ITEMS[item]?.type || "";
-  return (profile?.interests || []).some((interest) =>
-    interest?.typeIncludes && type.includes(interest.typeIncludes)
-  );
+  return (profile?.interests || []).some((interest) => interest?.typeIncludes && type.includes(interest.typeIncludes));
+}
+
+function freshnessFor(day, observedDay) {
+  const age = Math.max(0, Number(day) - Number(observedDay || day));
+  if (age <= 1) return "current";
+  if (age === 2) return "aging";
+  return "stale";
 }
 
 function informationKey(info) {
@@ -62,7 +60,7 @@ function informationKey(info) {
 function addInformation(game, payload) {
   const candidate = {
     id: `info-${game.information.length + 1}`,
-    claimType: payload.claimType,
+    claimType: payload.claimType || "observation",
     subjectId: payload.subjectId || null,
     item: payload.item || null,
     text: payload.text,
@@ -70,7 +68,7 @@ function addInformation(game, payload) {
     precision: payload.precision || "context",
     confidence: payload.confidence || "medium",
     observedDay: game.day,
-    freshness: payload.freshness || "current",
+    freshness: "current",
     exclusive: payload.exclusive ?? false,
     sellable: payload.sellable ?? false,
     soldTo: [],
@@ -80,14 +78,21 @@ function addInformation(game, payload) {
   const existing = game.information.find((info) => informationKey(info) === key);
   if (existing) {
     existing.observedDay = game.day;
-    existing.freshness = candidate.freshness;
+    existing.freshness = "current";
     existing.confidence = candidate.confidence;
     existing.precision = candidate.precision;
+    existing.sellable = candidate.sellable;
     return existing;
   }
 
   game.information.push(candidate);
   return candidate;
+}
+
+function refreshInformation(game) {
+  game.information.forEach((info) => {
+    info.freshness = freshnessFor(game.day, info.observedDay);
+  });
 }
 
 function createObligation(game, payload) {
@@ -126,10 +131,7 @@ export function createGame() {
     playerState: {
       life: 1,
       form: PLAYER_CONTEXT.startingForm,
-      legalIdentity: {
-        status: PLAYER_CONTEXT.startingLegalIdentity,
-        lifeId: "life-1",
-      },
+      legalIdentity: { status: PLAYER_CONTEXT.startingLegalIdentity, lifeId: "life-1" },
       proxyAccess: [],
       lastMeal: null,
     },
@@ -137,6 +139,7 @@ export function createGame() {
     obligations: [],
     selected: "player",
     playerOrders: resetOrders(),
+    lockedPlayerOrders: [],
     marketPlan: [],
     marketResolved: false,
     marketOutcome: [],
@@ -144,8 +147,10 @@ export function createGame() {
     history: [],
     information: [],
     intel: {},
-    investigationCounts: countMap(),
-    relationships: relationshipMap(),
+    investigationCounts: zeroMap(),
+    talkCounts: zeroMap(),
+    relationships: zeroMap(),
+    lastInteraction: null,
     npcMemory: emptyMemory(),
     heat: {},
     perishTimer: {},
@@ -191,14 +196,11 @@ export function createGame() {
 export function canAccessVenue(game, venueId) {
   const venue = VENUES[venueId];
   if (!venue) return false;
-
   const activeProxy = game.playerState.proxyAccess.some((access) =>
     access.venueId === venueId && access.expiresDay >= game.day
   );
   if (activeProxy) return true;
-
-  const formAllowed = venue.allowedForms.includes(game.playerState.form);
-  if (!formAllowed) return false;
+  if (!venue.allowedForms.includes(game.playerState.form)) return false;
   if (!venue.requiresLegalIdentity) return true;
   return game.playerState.legalIdentity.status === "recognized";
 }
@@ -228,18 +230,20 @@ export function knownItemsForTrader(game, traderId) {
   });
 
   game.information
-    .filter((info) => info.claimType === "holding" && info.subjectId === traderId && info.item)
+    .filter((info) =>
+      info.claimType === "holding" && info.subjectId === traderId && info.item &&
+      freshnessFor(game.day, info.observedDay) !== "stale"
+    )
     .forEach((info) => known.push(info.item));
 
   return unique(known);
 }
 
 export function informationBuyers(game, info) {
-  if (!info?.sellable || info.claimType !== "holding" || !info.item) return [];
+  if (!info?.sellable || info.claimType !== "holding" || !info.item || freshnessFor(game.day, info.observedDay) === "stale") return [];
   return Object.entries(NPC_PROFILES)
     .filter(([buyerId, profile]) => {
-      if (buyerId === info.subjectId) return false;
-      if (info.soldTo.includes(buyerId)) return false;
+      if (buyerId === info.subjectId || info.soldTo.includes(buyerId)) return false;
       if (game.traders[buyerId]?.inventory.includes(info.item)) return false;
       return profileWantsItem(profile, info.item);
     })
@@ -255,15 +259,19 @@ export function sellInformation(current, infoId, buyerId) {
 
   const buyer = game.traders[buyerId];
   const player = game.traders.player;
-  const price = INFO_BASE_PRICE;
-  if (!buyer || buyer.sardines < price) return game;
+  if (!buyer || buyer.sardines < INFO_BASE_PRICE) return game;
 
-  buyer.sardines -= price;
-  player.sardines += price;
+  buyer.sardines -= INFO_BASE_PRICE;
+  player.sardines += INFO_BASE_PRICE;
   info.soldTo.push(buyerId);
   info.exclusive = false;
   game.stats.informationSales += 1;
   game.actionsRemaining -= 1;
+  game.lastInteraction = {
+    action: "sell-information",
+    targetId: buyerId,
+    text: `${buyer.name} pays ${INFO_BASE_PRICE}🥫 for the lead: ${info.text}`,
+  };
 
   game.npcMemory[buyerId].knownHoldings[info.item] = {
     holderId: info.subjectId,
@@ -271,7 +279,7 @@ export function sellInformation(current, infoId, buyerId) {
     source: `bought from player (${info.confidence} confidence)`,
   };
 
-  game.log.unshift(`${buyer.name} pays ${price}🥫 for your lead: ${info.text}`);
+  game.log.unshift(game.lastInteraction.text);
   if (game.phase === "morning") game.marketPlan = planNPCMarket(game);
   return game;
 }
@@ -289,7 +297,7 @@ export function requestMarketProxy(current, targetId = "bar") {
   if (player.sardines >= PROXY_FEE) {
     player.sardines -= PROXY_FEE;
     target.sardines += PROXY_FEE;
-    game.log.unshift(`${target.name} agrees to settle today's formal-market orders for ${PROXY_FEE}🥫.`);
+    game.lastInteraction = { action: "proxy", targetId, text: `${target.name} agrees to settle today's formal-market orders for ${PROXY_FEE}🥫.` };
   } else if (relationship >= 3) {
     createObligation(game, {
       kind: "proxy-fee",
@@ -299,15 +307,16 @@ export function requestMarketProxy(current, targetId = "bar") {
       note: "Formal-market proxy fee.",
     });
     game.stats.creditUsed += 1;
-    game.log.unshift(`${target.name} agrees to proxy today's market on credit.`);
+    game.lastInteraction = { action: "proxy", targetId, text: `${target.name} agrees to proxy today's market on credit.` };
   } else {
-    game.log.unshift(`${target.name} will proxy, but not on credit yet.`);
+    game.lastInteraction = { action: "proxy", targetId, text: `${target.name} will proxy, but not on credit yet.` };
     return game;
   }
 
   game.playerState.proxyAccess.push({ venueId: "formalMarket", via: targetId, expiresDay: game.day });
   game.stats.proxyUses += 1;
   game.actionsRemaining -= 1;
+  game.log.unshift(game.lastInteraction.text);
   return game;
 }
 
@@ -317,7 +326,6 @@ export function repayObligation(current, obligationId) {
 
   const obligation = currentObligations(game).find((entry) => entry.id === obligationId);
   if (!obligation) return game;
-
   const player = game.traders.player;
   if (player.sardines < obligation.amount) return game;
 
@@ -327,10 +335,9 @@ export function repayObligation(current, obligationId) {
   obligation.status = "settled";
   obligation.settledDay = game.day;
   game.actionsRemaining -= 1;
-  if (game.relationships[obligation.creditorId] !== undefined) {
-    game.relationships[obligation.creditorId] += 1;
-  }
-  game.log.unshift(`You settle ${obligation.amount}🥫 owed to ${creditor?.name || obligation.creditorId}.`);
+  if (game.relationships[obligation.creditorId] !== undefined) game.relationships[obligation.creditorId] += 1;
+  game.lastInteraction = { action: "repay", targetId: obligation.creditorId, text: `You settle ${obligation.amount}🥫 owed to ${creditor?.name || obligation.creditorId}.` };
+  game.log.unshift(game.lastInteraction.text);
   return game;
 }
 
@@ -381,7 +388,7 @@ function applySpecialRules(game, trade) {
   if (trade.to === "vale" && trade.offerItem === "Sperm Whale Oil") {
     game.flags.oilDeliveredToVale = true;
     if (!game.traders.vale.inventory.includes("Auction Onewheel")) game.traders.vale.inventory.push("Auction Onewheel");
-    game.log.unshift("Vale quietly adds two lots to an upcoming auction.");
+    game.log.unshift("Vale quietly adds an onewheel lot to an upcoming auction.");
   }
 
   if (trade.to === "mechanic" && !game.flags.cheated) {
@@ -389,10 +396,8 @@ function applySpecialRules(game, trade) {
     if (trade.offerItem === "Steel Rim") game.flags.steelDeliveredToMechanic = true;
     if (trade.offerItem === "Tool Roll") game.flags.toolDeliveredToMechanic = true;
     if (
-      game.flags.limeDeliveredToMechanic &&
-      game.flags.steelDeliveredToMechanic &&
-      game.flags.toolDeliveredToMechanic &&
-      !game.flags.oneWheelBuilt
+      game.flags.limeDeliveredToMechanic && game.flags.steelDeliveredToMechanic &&
+      game.flags.toolDeliveredToMechanic && !game.flags.oneWheelBuilt
     ) {
       game.flags.oneWheelBuilt = true;
       const sailor = game.traders.mechanic;
@@ -403,62 +408,86 @@ function applySpecialRules(game, trade) {
   }
 }
 
+function publicPostedAsk(game, sellerId, item) {
+  const isPublic = (NPC_PROFILES[sellerId]?.publicStock || []).includes(item) && game.traders[sellerId]?.inventory.includes(item);
+  return isPublic ? sellerAsk(game, sellerId, item) : null;
+}
+
+function clearingPlayerOrders(game) {
+  if (game.lockedPlayerOrders?.length) return game.lockedPlayerOrders;
+  // Compatibility for direct engine smoke calls that construct a Noon state manually.
+  return game.playerOrders.filter((order) => order.to && order.wantItem);
+}
+
 function clearCommittedOrders(game) {
   const orders = [
-    ...game.playerOrders.filter((order) => order.to && order.wantItem).map((order) => ({ ...order, from: "player" })),
+    ...clearingPlayerOrders(game).map((order) => ({ ...order, from: "player" })),
     ...game.marketPlan,
   ];
   const groups = new Map();
-  // Only opening resources can fund this batch; receipts are delivered after allocation.
   const available = clone(game.traders);
-  const reject = (order, reason) => {
-    // Failed NPC plans and seller valuations are not public information.
-    if (order.from === "player") game.rejected.push({ ...order, sardines: Number.isFinite(order.sardines) ? order.sardines : null, reason });
+
+  const reject = (order, reasonCode, reason, metadata = {}) => {
+    if (order.from !== "player") return;
+    game.rejected.push({
+      ...order,
+      sardines: Number.isFinite(order.sardines) ? order.sardines : null,
+      reasonCode,
+      reason,
+      ...metadata,
+    });
   };
 
   orders.forEach((order) => {
     const trade = {
-      from: order.from, to: order.to, wantItem: order.wantItem,
-      offerItem: order.offerItem || null, sardines: Number(order.sardines ?? 0),
+      from: order.from,
+      to: order.to,
+      wantItem: order.wantItem,
+      offerItem: order.offerItem || null,
+      sardines: Number(order.sardines ?? 0),
     };
     const buyer = game.traders[trade.from];
     const seller = game.traders[trade.to];
+    const postedAsk = publicPostedAsk(game, trade.to, trade.wantItem);
+
     if (!buyer || !seller || trade.from === trade.to || !ITEMS[trade.wantItem] ||
-        (trade.offerItem && !ITEMS[trade.offerItem]) ||
-        order.sardines == null || !Number.isFinite(trade.sardines) || trade.sardines < 0) {
-      reject(trade, "Invalid noon order.");
+        (trade.offerItem && !ITEMS[trade.offerItem]) || order.sardines == null ||
+        !Number.isFinite(trade.sardines) || trade.sardines < 0) {
+      reject(trade, "invalid", "This order was not valid.", { postedAsk });
       return;
     }
     if (trade.from === "player" && !canAccessVenue(game, "formalMarket")) {
-      reject(trade, "Your current form / legal identity cannot settle directly in the formal market without a proxy.");
+      reject(trade, "no-access", "Your current legal form cannot settle directly in the formal market without a proxy.", { postedAsk });
       return;
     }
     if (trade.from === "player" && !knownItemsForTrader(game, trade.to).includes(trade.wantItem)) {
-      reject(trade, "You have no known holding to target with this order.");
+      reject(trade, "unknown-holding", "You did not have a current enough holding to target this seller with this order.", { postedAsk });
       return;
     }
     if (!seller.inventory.includes(trade.wantItem)) {
-      reject(trade, "The item was not available when the noon market cleared.");
+      reject(trade, "stale-stock", "The seller no longer had the item when Noon opened.", { postedAsk });
       return;
     }
     if (buyer.sardines < trade.sardines || (trade.offerItem && !buyer.inventory.includes(trade.offerItem))) {
-      reject(trade, "You do not own the opening cash or payment item for this order.");
+      reject(trade, "unfunded", "You did not own the opening cash or barter item written into this order.", { postedAsk });
       return;
     }
+
     const isCheat = trade.to === "mechanic" && trade.offerItem === "Bad Tangerine";
     const utility = trade.offerItem ? privateUtility(game, trade.to, trade.offerItem) : 0;
     const mistakenCitrusUtility = isCheat ? privateUtility(game, trade.to, "Lime Crate") : 0;
     const paymentValue = valueOf(trade.offerItem) + utility + mistakenCitrusUtility + trade.sardines;
-    if (paymentValue < sellerAsk(game, trade.to, trade.wantItem)) {
-      reject(trade, `${seller.name} does not accept this offer at the current ask.`);
+    const ask = sellerAsk(game, trade.to, trade.wantItem);
+    if (paymentValue < ask) {
+      reject(trade, "below-ask", "The seller valued your payment package below the minimum they would accept.", { postedAsk });
       return;
     }
+
     const key = `${trade.to}:${trade.wantItem}`;
     if (!groups.has(key)) groups.set(key, []);
-    groups.get(key).push({ trade, paymentValue });
+    groups.get(key).push({ trade, paymentValue, postedAsk });
   });
 
-  // ponytail: independent lots, not combinatorial clearing; linked/package bids would need a different allocator.
   [...groups.keys()].sort().forEach((key) => {
     const candidates = groups.get(key);
     const tieRanks = new Map();
@@ -469,21 +498,29 @@ function clearCommittedOrders(game) {
     candidates.sort((a, b) => b.paymentValue - a.paymentValue ||
       tieRanks.get(`${a.paymentValue}:${a.trade.from}`) - tieRanks.get(`${b.paymentValue}:${b.trade.from}`));
 
-    candidates.forEach(({ trade }) => {
+    const acceptedForLot = [];
+    candidates.forEach(({ trade, postedAsk }) => {
       const buyer = available[trade.from];
       const seller = available[trade.to];
       if (buyer.sardines < trade.sardines || (trade.offerItem && !buyer.inventory.includes(trade.offerItem))) {
-        reject(trade, "Your opening cash or payment item is unavailable or already committed to a filled order.");
+        reject(trade, "resource-used", "Another filled order already consumed opening resources this order needed.", { postedAsk });
         return;
       }
       if (!seller.inventory.includes(trade.wantItem)) {
-        reject(trade, "Another committed offer won the available stock (equal offers use daily rotating priority).");
+        const winner = acceptedForLot[0] || null;
+        reject(trade, "outbid", "Another eligible committed offer won the available stock.", {
+          postedAsk,
+          winnerId: winner?.from || null,
+          winnerSardines: winner?.sardines ?? null,
+          winnerPaymentItem: winner?.offerItem || null,
+        });
         return;
       }
       buyer.sardines -= trade.sardines;
       if (trade.offerItem) buyer.inventory = removeOne(buyer.inventory, trade.offerItem);
       seller.inventory = removeOne(seller.inventory, trade.wantItem);
       game.marketOutcome.push(trade);
+      acceptedForLot.push(trade);
     });
   });
 
@@ -520,14 +557,13 @@ export function resolveNoonMarket(current) {
   updateHeatFromHistory(game);
   game.marketResolved = true;
   game.playerOrders = resetOrders();
-  game.log.unshift(`Day ${game.day} noon market cleared: ${game.marketOutcome.length} trade(s).`);
+  game.log.unshift(`Day ${game.day} noon market settled: ${game.marketOutcome.length} trade(s).`);
   game.pendingEvents = buildEvents(game);
   return game;
 }
 
 function applyPerishables(game) {
   const timer = { ...game.perishTimer };
-
   Object.values(game.traders).forEach((trader) => {
     const nextInventory = [];
     trader.inventory.forEach((item) => {
@@ -538,12 +574,9 @@ function applyPerishables(game) {
         delete timer[timerKey];
         return;
       }
-
       const age = (timer[timerKey] || 0) + 1;
       if (age >= shelfLife) {
-        if (ITEMS[item]?.foodUnits && trader.id === "player" && !nextInventory.includes("Spoiled Fish")) {
-          nextInventory.push("Spoiled Fish");
-        }
+        if (ITEMS[item]?.foodUnits && trader.id === "player" && !nextInventory.includes("Spoiled Fish")) nextInventory.push("Spoiled Fish");
         if (trader.id === "player") game.log.unshift(`${labelShort(item)} did not survive the sunset.`);
         delete timer[timerKey];
       } else {
@@ -553,64 +586,91 @@ function applyPerishables(game) {
     });
     trader.inventory = nextInventory;
   });
-
   game.perishTimer = timer;
 }
 
-function consumeBusinessInputs(game) {
-  const dog = game.traders.dog;
-  const catFood = ["Fresh Mackerel"].find((item) => dog.inventory.includes(item));
-  if (catFood) {
-    dog.inventory = removeOne(dog.inventory, catFood);
-    game.log.unshift(`Dock Dog's ${catFood} disappears into the cat colony by sunset.`);
-  }
+function consumeConfiguredInputs(game) {
+  Object.entries(NPC_PROFILES).forEach(([traderId, profile]) => {
+    const business = profile.business;
+    const trader = game.traders[traderId];
+    if (!business || !trader) return;
 
-  const bar = game.traders.bar;
-  if (bar.inventory.includes("Ice Block")) {
-    bar.inventory = removeOne(bar.inventory, "Ice Block");
-    game.log.unshift("The Bar uses up its ice during service. Tomorrow's cold drinks need fresh supply.");
+    if (traderId === "bar") {
+      const hadIce = trader.inventory.includes("Ice Block");
+      const revenue = hadIce ? business.serviceRevenueWithIce : business.serviceRevenueBase;
+      if (Number(revenue) > 0) {
+        trader.sardines += Number(revenue);
+        game.log.unshift(`The Bar closes service with ${revenue}🥫 of outside-customer revenue${hadIce ? " after a full cold-drink service" : " despite running short of ice"}.`);
+      }
+    }
+
+    if (business.consumeAny?.length) {
+      const item = business.consumeAny.find((candidate) => trader.inventory.includes(candidate));
+      if (item) {
+        trader.inventory = removeOne(trader.inventory, item);
+        game.log.unshift(`${trader.name}'s ${labelShort(item)} ${business.consumeText || "is used up by sunset"}.`);
+      }
+    }
+
+    (business.consume || []).forEach((item) => {
+      if (!trader.inventory.includes(item)) return;
+      trader.inventory = removeOne(trader.inventory, item);
+      game.log.unshift(`${trader.name} uses ${labelShort(item)} during today's business.`);
+    });
+
+    if (business.outsideSaleAny?.length) {
+      const item = business.outsideSaleAny.find((candidate) => trader.inventory.includes(candidate));
+      if (item) {
+        const proceeds = Math.max(1, Math.round(valueOf(item) * Number(business.outsideSaleRate || 0.75)));
+        trader.inventory = removeOne(trader.inventory, item);
+        trader.sardines += proceeds;
+        game.log.unshift(`${trader.name} sells ${labelShort(item)} to ordinary outside customers for ${proceeds}🥫 after the public market closes.`);
+      }
+    }
+  });
+}
+
+function settleBusinessArrivals(game) {
+  Object.entries(NPC_PROFILES).forEach(([traderId, profile]) => {
+    const business = profile.business;
+    const trader = game.traders[traderId];
+    if (!business?.arrivals?.length || !trader) return;
+    if (business.stopsAtDeparture && game.day >= (profile.departureDay || Infinity)) return;
+
+    const item = business.arrivals[(game.day - 1) % business.arrivals.length];
+    if (trader.inventory.includes(item)) return;
+
+    const rate = Number(business.arrivalCostRate || 0);
+    const cost = rate > 0 ? Math.max(1, Math.round(valueOf(item) * rate)) : 0;
+    if (trader.sardines < cost) {
+      game.log.unshift(`${trader.name} cannot fund the next ${labelShort(item)} arrival tonight.`);
+      return;
+    }
+    trader.sardines -= cost;
+    trader.inventory.push(item);
+    const verb = traderId === "dog" ? "scavenges" : traderId === "fishmonger" ? "sources" : "unloads";
+    game.log.unshift(`${trader.name} ${verb} ${labelShort(item)} for tomorrow${cost ? ` at a ${cost}🥫 sourcing cost` : ""}.`);
+  });
+
+  if (game.day === NPC_PROFILES.mechanic.departureDay) {
+    game.log.unshift("The Sailor's departure window has arrived. Local cargo will stop refreshing after today.");
   }
 }
 
 function settleBusinesses(game) {
-  consumeBusinessInputs(game);
-
-  Object.entries(BUSINESS_CYCLES).forEach(([traderId, cycle]) => {
-    const trader = game.traders[traderId];
-    if (!trader || !cycle.length) return;
-    if (traderId === "mechanic" && game.day >= (NPC_PROFILES.mechanic.departureDay || Infinity)) return;
-
-    const item = cycle[(game.day - 1) % cycle.length];
-    if (!trader.inventory.includes(item)) {
-      trader.inventory.push(item);
-      const verbs = {
-        dog: "scavenges",
-        fishmonger: "brings in",
-        mechanic: "unloads",
-      };
-      game.log.unshift(`${trader.name} ${verbs[traderId] || "receives"} ${labelShort(item)} for tomorrow.`);
-    }
-  });
-
-  if (game.day === NPC_PROFILES.mechanic.departureDay) {
-    game.log.unshift("The Sailor's departure window has arrived. Their local inventory will stop refreshing after today.");
-  }
+  consumeConfiguredInputs(game);
+  settleBusinessArrivals(game);
 }
 
 function chooseMealCreditSource(game) {
-  const candidates = ["bar", "dog"]
+  return ["bar", "dog"]
     .filter((id) => (game.relationships[id] || 0) >= 2 && (game.traders[id]?.sardines || 0) >= SUSTENANCE_PER_DAY)
-    .sort((a, b) =>
-      (game.relationships[b] || 0) - (game.relationships[a] || 0) ||
-      a.localeCompare(b)
-    );
-  return candidates[0] || null;
+    .sort((a, b) => (game.relationships[b] || 0) - (game.relationships[a] || 0) || a.localeCompare(b))[0] || null;
 }
 
 function transformPlayerToAnimal(game) {
   const player = game.traders.player;
   const oldLifeId = game.playerState.legalIdentity.lifeId;
-
   game.estates.push({
     lifeId: oldLifeId,
     endedDay: game.day,
@@ -618,23 +678,15 @@ function transformPlayerToAnimal(game) {
     inventory: [...player.inventory],
     note: "Former legal identity. The current animal form cannot directly claim this estate.",
   });
-
   game.obligations.forEach((obligation) => {
-    if (obligation.debtorLifeId === oldLifeId && ["open", "overdue"].includes(obligation.status)) {
-      obligation.status = "estate";
-    }
+    if (obligation.debtorLifeId === oldLifeId && ["open", "overdue"].includes(obligation.status)) obligation.status = "estate";
   });
-
   player.sardines = 0;
   player.inventory = [];
   game.playerState.life += 1;
   game.stats.lives = game.playerState.life;
   game.playerState.form = "animal";
-  game.playerState.legalIdentity = {
-    status: "unrecognized",
-    lifeId: `life-${game.playerState.life}`,
-    formerLifeId: oldLifeId,
-  };
+  game.playerState.legalIdentity = { status: "unrecognized", lifeId: `life-${game.playerState.life}`, formerLifeId: oldLifeId };
   game.playerState.proxyAccess = [];
   game.log.unshift("You wake in an animal form. Your old assets still exist, but the law no longer recognises you as their owner.");
 }
@@ -652,7 +704,6 @@ function settleSustenance(game) {
     game.log.unshift(`You eat ${labelShort(meal)} before sleep.`);
     return;
   }
-
   if (player.sardines >= SUSTENANCE_PER_DAY) {
     player.sardines -= SUSTENANCE_PER_DAY;
     game.playerState.lastMeal = { day: game.day, source: "sardine-tin", amount: SUSTENANCE_PER_DAY };
@@ -676,23 +727,31 @@ function settleSustenance(game) {
     game.log.unshift(`${creditor.name} feeds you on credit. You now owe ${SUSTENANCE_PER_DAY}🥫.`);
     return;
   }
-
   transformPlayerToAnimal(game);
 }
 
 function markOverdueObligations(game) {
   const currentLife = game.playerState.legalIdentity.lifeId;
   game.obligations.forEach((obligation) => {
-    if (obligation.debtorLifeId !== currentLife || obligation.status !== "open") return;
-    if (obligation.dueDay > game.day) return;
+    if (obligation.debtorLifeId !== currentLife || obligation.status !== "open" || obligation.dueDay > game.day) return;
     obligation.status = "overdue";
     game.stats.defaults += 1;
-    if (game.relationships[obligation.creditorId] !== undefined) {
-      game.relationships[obligation.creditorId] -= 1;
-    }
+    if (game.relationships[obligation.creditorId] !== undefined) game.relationships[obligation.creditorId] -= 1;
     const creditor = game.traders[obligation.creditorId];
     game.log.unshift(`${obligation.amount}🥫 owed to ${creditor?.name || obligation.creditorId} is now overdue.`);
   });
+}
+
+function snapshotPlayerOrders(game) {
+  return game.playerOrders
+    .filter((order) => order.to && order.wantItem)
+    .map((order) => ({
+      ...clone(order),
+      offerItem: order.offerItem || "",
+      sardines: Number(order.sardines || 0),
+      postedAsk: publicPostedAsk(game, order.to, order.wantItem),
+      lockedDay: game.day,
+    }));
 }
 
 export function advancePhase(current) {
@@ -702,22 +761,27 @@ export function advancePhase(current) {
   if (game.phase === "sunrise") {
     game.phase = "morning";
     game.actionsRemaining = MORNING_ACTIONS;
+    game.lastInteraction = null;
     return game;
   }
   if (game.phase === "morning") {
+    game.lockedPlayerOrders = snapshotPlayerOrders(game);
     game.phase = "noon";
     game.actionsRemaining = 0;
+    game.lastInteraction = null;
     return game;
   }
   if (game.phase === "noon") {
     if (!game.marketResolved) return game;
     game.phase = "afternoon";
     game.actionsRemaining = AFTERNOON_ACTIONS;
+    game.lastInteraction = null;
     return game;
   }
   if (game.phase === "afternoon") {
     game.phase = "sunset";
     game.actionsRemaining = 0;
+    game.lastInteraction = null;
     return game;
   }
   if (game.phase === "sunset") {
@@ -741,9 +805,12 @@ export function advancePhase(current) {
     game.marketResolved = false;
     game.marketOutcome = [];
     game.rejected = [];
+    game.lockedPlayerOrders = [];
     game.pendingEvents = [];
     game.actionsRemaining = 0;
+    game.lastInteraction = null;
     game.playerState.proxyAccess = game.playerState.proxyAccess.filter((access) => access.expiresDay >= game.day);
+    refreshInformation(game);
     game.marketPlan = planNPCMarket(game);
     game.log.unshift(`Day ${game.day}. New positions form before the noon market.`);
     return game;
@@ -767,7 +834,6 @@ function revealHolding(game, targetId) {
     .sort((a, b) => hiddenItemScore(b, targetId) - hiddenItemScore(a, targetId));
   const item = hidden[0];
   if (!item) return null;
-
   return addInformation(game, {
     claimType: "holding",
     subjectId: targetId,
@@ -776,19 +842,16 @@ function revealHolding(game, targetId) {
     source: "personal investigation",
     precision: "exact",
     confidence: "high",
-    freshness: "current",
     exclusive: true,
     sellable: true,
   });
 }
 
 function revealInvestigationStage(game, targetId) {
-  const profile = NPC_PROFILES[targetId];
-  const stages = profile?.investigationStages || [];
+  const stages = NPC_PROFILES[targetId]?.investigationStages || [];
   const index = game.investigationCounts[targetId] || 0;
   const stage = stages[index];
   if (!stage) return null;
-
   game.investigationCounts[targetId] = index + 1;
   return addInformation(game, {
     claimType: stage.claimType || "observation",
@@ -798,10 +861,83 @@ function revealInvestigationStage(game, targetId) {
     source: "personal investigation",
     precision: stage.precision || "context",
     confidence: stage.confidence || "medium",
-    freshness: "current",
     exclusive: stage.exclusive ?? false,
     sellable: stage.sellable ?? false,
   });
+}
+
+function talkTo(game, targetId) {
+  const target = game.traders[targetId];
+  const profile = NPC_PROFILES[targetId];
+  const count = game.talkCounts[targetId] || 0;
+  const stages = profile?.talkStages || [];
+  const stage = stages[Math.min(count, Math.max(0, stages.length - 1))] || { text: `${target.name} spends a little time with you.` };
+  game.talkCounts[targetId] = count + 1;
+  game.relationships[targetId] = (game.relationships[targetId] || 0) + 1;
+
+  let note = null;
+  if (stage.info) {
+    note = addInformation(game, {
+      ...stage.info,
+      subjectId: stage.info.subjectId || targetId,
+      source: "conversation",
+      sellable: stage.info.sellable ?? false,
+    });
+  }
+
+  const relationship = game.relationships[targetId];
+  if (relationship >= 2 && !game.intel[`${targetId}:style`]) {
+    game.intel[`${targetId}:style`] = profile.style;
+    addInformation(game, {
+      claimType: "style",
+      subjectId: targetId,
+      text: `After dealing with ${target.name} more than once, their market style is becoming legible: ${profile.style.toLowerCase()}.`,
+      source: "relationship",
+      precision: "context",
+      confidence: "medium",
+      sellable: false,
+    });
+  }
+
+  game.lastInteraction = {
+    action: "talk",
+    targetId,
+    text: stage.text,
+    note: note?.text || null,
+    relationship,
+  };
+  game.log.unshift(`Conversation with ${target.name}: ${stage.text}`);
+}
+
+function investigate(game, targetId) {
+  const target = game.traders[targetId];
+  let info = revealInvestigationStage(game, targetId);
+  if (!info) {
+    game.investigationCounts[targetId] = (game.investigationCounts[targetId] || 0) + 1;
+    info = revealHolding(game, targetId);
+  }
+  if (!info) {
+    const clue = NPC_PROFILES[targetId].clue;
+    game.intel[`${targetId}:clue`] = clue;
+    info = addInformation(game, {
+      claimType: "pressure",
+      subjectId: targetId,
+      text: clue,
+      source: "personal investigation",
+      precision: "context",
+      confidence: "medium",
+      sellable: false,
+    });
+  }
+
+  game.lastInteraction = {
+    action: "investigate",
+    targetId,
+    text: info.text,
+    note: `${info.precision} precision · ${info.confidence} confidence`,
+    informationId: info.id,
+  };
+  game.log.unshift(`Investigation of ${target.name}: ${info.text}`);
 }
 
 export function performFreeAction(current, action, targetId) {
@@ -810,50 +946,9 @@ export function performFreeAction(current, action, targetId) {
   const target = game.traders[targetId];
   if (!target || targetId === "player") return game;
 
-  if (action === "talk") {
-    game.relationships[targetId] = (game.relationships[targetId] || 0) + 1;
-    const relationship = game.relationships[targetId];
-    game.log.unshift(`${target.name}: relationship contact +1. Current familiarity ${relationship}.`);
-    if (relationship >= 2 && !game.intel[`${targetId}:style`]) {
-      game.intel[`${targetId}:style`] = NPC_PROFILES[targetId].style;
-      addInformation(game, {
-        claimType: "style",
-        subjectId: targetId,
-        text: `${target.name} trades like a ${NPC_PROFILES[targetId].style.toLowerCase()}.`,
-        source: "relationship",
-        precision: "context",
-        confidence: "medium",
-        sellable: false,
-      });
-    }
-  }
-
-  if (action === "investigate") {
-    const staged = revealInvestigationStage(game, targetId);
-    if (staged) {
-      game.log.unshift(`You investigate ${target.name}: ${staged.text}`);
-    } else {
-      game.investigationCounts[targetId] = (game.investigationCounts[targetId] || 0) + 1;
-      const holding = revealHolding(game, targetId);
-      if (holding) {
-        game.log.unshift(`You investigate ${target.name} and confirm a holding: ${labelShort(holding.item)}.`);
-      } else {
-        const profile = NPC_PROFILES[targetId];
-        const clue = profile.clue;
-        game.intel[`${targetId}:clue`] = clue;
-        addInformation(game, {
-          claimType: "pressure",
-          subjectId: targetId,
-          text: clue,
-          source: "personal investigation",
-          precision: "context",
-          confidence: "medium",
-          sellable: false,
-        });
-        game.log.unshift(`You spend more time investigating ${target.name}, but nothing more precise becomes legible.`);
-      }
-    }
-  }
+  if (action === "talk") talkTo(game, targetId);
+  else if (action === "investigate") investigate(game, targetId);
+  else return game;
 
   game.actionsRemaining -= 1;
   return game;
@@ -868,27 +963,21 @@ export function buildEvents(game) {
   const auctionReserve = game.flags.cheated ? 68 : 52;
 
   if (
-    !alreadyHasFlower &&
-    canAccessVenue(game, "bar") &&
-    !game.flags.cheated &&
-    game.flags.orgeatDelivered &&
-    player.inventory.includes("Mai Tai") &&
-    player.inventory.some((item) => soupFish.includes(item))
+    !alreadyHasFlower && canAccessVenue(game, "bar") && !game.flags.cheated &&
+    game.flags.orgeatDelivered && player.inventory.includes("Mai Tai") &&
+    player.inventory.some((item) => soupFish.includes(item)) && (game.relationships.bar || 0) >= 2
   ) {
     events.push({
       id: "grandma",
       title: "After closing",
-      text: "The Apprentice asks if you want to bring the fish and Mai Tai downstairs after the bar closes.",
+      text: "The Apprentice asks if you want to bring the fish and Mai Tai downstairs after the bar closes. This feels like an invitation, not a transaction.",
       actions: ["Go", "Not tonight"],
     });
   }
 
   if (
-    !alreadyHasFlower &&
-    canAccessVenue(game, "valeGallery") &&
-    game.flags.oilDeliveredToVale &&
-    player.inventory.includes("Blue Glass Marble") &&
-    netWorth(player) >= (game.flags.cheated ? 90 : 70) &&
+    !alreadyHasFlower && canAccessVenue(game, "valeGallery") && game.flags.oilDeliveredToVale &&
+    player.inventory.includes("Blue Glass Marble") && netWorth(player) >= (game.flags.cheated ? 90 : 70) &&
     player.sardines >= auctionReserve
   ) {
     events.push({
@@ -900,20 +989,23 @@ export function buildEvents(game) {
   }
 
   if (
-    !alreadyHasFlower &&
-    !game.flags.raced &&
+    !alreadyHasFlower && !game.flags.raced &&
     (player.inventory.includes("Built Onewheel") || player.inventory.includes("Auction Onewheel")) &&
-    player.inventory.includes("Mai Tai")
+    player.inventory.includes("Mai Tai") && (game.relationships.clown || 0) >= 1
   ) {
     events.push({
       id: "cliff",
       title: "The cliff wager",
-      text: "Clown proposes one race at sunset. The wager is not explained very well.",
+      text: "Clown proposes one race at sunset. By now you have enough reason to suspect the cliff matters to him for more than the wager.",
       actions: ["Race", "Decline"],
     });
   }
 
-  return events.slice(0, 1);
+  return events;
+}
+
+function removePendingEvent(game, id) {
+  game.pendingEvents = game.pendingEvents.filter((event) => event.id !== id);
 }
 
 function acquireSunflower(game, sourceText) {
@@ -921,6 +1013,7 @@ function acquireSunflower(game, sourceText) {
   if (!player.inventory.includes("Sunflower")) player.inventory.push("Sunflower");
   game.flags.sunflowerAcquired = true;
   game.objective = "Go home";
+  game.pendingEvents = [];
   game.log.unshift("Objective updated: Go home.");
   game.log.unshift("Nothing happens.");
   game.log.unshift(sourceText);
@@ -929,56 +1022,49 @@ function acquireSunflower(game, sourceText) {
 export function resolveEvent(current, id, action, bidAmount = null) {
   const game = clone(current);
   const player = game.traders.player;
+  if (!game.pendingEvents.some((event) => event.id === id)) return game;
 
   if (id === "grandma" && action === "Go") {
     acquireSunflower(game, "After closing, a meal ends with a sunflower changing hands without a market price.");
-  } else if (id === "auction" && action === "Attend") {
+    return game;
+  }
+  if (id === "auction" && action === "Attend") {
     const reserve = game.flags.cheated ? 68 : 52;
     const amount = Number(bidAmount);
     if (!Number.isFinite(amount) || amount < reserve || amount > player.sardines) {
-      game.log.unshift(`Vale's reserve was ${reserve}🥫. Your bid did not clear.`);
-      game.pendingEvents = [];
+      game.log.unshift(`Vale's published reserve was ${reserve}🥫. Your bid did not clear.`);
+      removePendingEvent(game, id);
       return game;
     }
     player.sardines -= amount;
     acquireSunflower(game, `Vale settles the sunflower lot at ${amount}🥫.`);
-  } else if (id === "cliff" && action === "Race") {
+    return game;
+  }
+  if (id === "cliff" && action === "Race") {
     game.flags.raced = true;
     const preRaceWorth = netWorth(player);
     const wheelItem = player.inventory.includes("Built Onewheel") ? "Built Onewheel" : "Auction Onewheel";
     player.inventory = removeOne(removeOne(player.inventory, "Mai Tai"), wheelItem);
-    const won = preRaceWorth >= 60;
-    if (won) {
+    if (preRaceWorth >= 60) {
       acquireSunflower(game, "You cross the cliff route with Clown. What you find is, unmistakably, a sunflower.");
     } else {
-      game.log.unshift("The cliff wager fails. The uncertainty model is deliberately simple in this milestone.");
-      game.pendingEvents = [];
-      return game;
+      game.log.unshift("The cliff wager fails. You had enough to enter the special situation, not enough margin for the current crude prototype odds model.");
+      removePendingEvent(game, id);
     }
-  } else {
-    game.pendingEvents = [];
     return game;
   }
 
-  game.pendingEvents = [];
+  removePendingEvent(game, id);
   return game;
 }
 
 export function classify(game) {
   const stats = game.stats;
   const noMarketFootprint =
-    stats.tradeCount === 0 &&
-    stats.informationSales === 0 &&
-    stats.creditUsed === 0 &&
-    stats.defaults === 0 &&
-    !game.flags.cheated &&
-    game.information.length === 0;
-
+    stats.tradeCount === 0 && stats.informationSales === 0 && stats.creditUsed === 0 &&
+    stats.defaults === 0 && !game.flags.cheated && game.information.length === 0;
   if (noMarketFootprint) {
-    return {
-      name: "The Bystander",
-      description: "You passed through the market without leaving enough of a trading footprint to classify.",
-    };
+    return { name: "The Bystander", description: "You passed through the market without leaving enough of a trading footprint to classify." };
   }
 
   const scores = {
