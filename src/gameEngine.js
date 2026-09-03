@@ -20,6 +20,12 @@ export const labelShort = (item) => item ? `${ITEMS[item]?.icon || "📦"} ${ite
 export const netWorth = (trader) => trader.sardines + trader.inventory.reduce((sum, item) => sum + valueOf(item), 0);
 export const unique = (arr) => [...new Set(arr)];
 
+function removeOne(inventory, item) {
+  const index = inventory.indexOf(item);
+  if (index < 0) return [...inventory];
+  return [...inventory.slice(0, index), ...inventory.slice(index + 1)];
+}
+
 const emptyOrder = () => ({ to: "", wantItem: "", offerItem: "", sardines: 0 });
 export const resetOrders = () => [emptyOrder(), emptyOrder(), emptyOrder()];
 
@@ -373,7 +379,6 @@ function applySpecialRules(game, trade) {
 
   if (trade.to === "vale" && trade.offerItem === "Sperm Whale Oil") {
     game.flags.oilDeliveredToVale = true;
-    if (!game.traders.vale.inventory.includes("Auction Sunflower")) game.traders.vale.inventory.push("Auction Sunflower");
     if (!game.traders.vale.inventory.includes("Auction Onewheel")) game.traders.vale.inventory.push("Auction Onewheel");
     game.log.unshift("Vale quietly adds two lots to an upcoming auction.");
   }
@@ -390,7 +395,7 @@ function applySpecialRules(game, trade) {
     ) {
       game.flags.oneWheelBuilt = true;
       const sailor = game.traders.mechanic;
-      sailor.inventory = sailor.inventory.filter((item) => item !== "Steel Rim" && item !== "Tool Roll");
+      sailor.inventory = removeOne(removeOne(sailor.inventory, "Steel Rim"), "Tool Roll");
       sailor.inventory.push("Built Onewheel");
       game.log.unshift("The Sailor has enough parts to assemble a working onewheel.");
     }
@@ -445,7 +450,7 @@ function executePlayerOrders(game) {
     }
 
     if (normalized.offerItem) {
-      player.inventory = player.inventory.filter((item) => item !== normalized.offerItem);
+      player.inventory = removeOne(player.inventory, normalized.offerItem);
       target.inventory.push(normalized.offerItem);
       usedPaymentItems.add(normalized.offerItem);
     }
@@ -453,7 +458,7 @@ function executePlayerOrders(game) {
       player.sardines -= normalized.sardines;
       target.sardines += normalized.sardines;
     }
-    target.inventory = target.inventory.filter((item) => item !== normalized.wantItem);
+    target.inventory = removeOne(target.inventory, normalized.wantItem);
     player.inventory.push(normalized.wantItem);
     accepted.push(normalized);
     recordTrade(game, normalized, "player-order");
@@ -487,7 +492,7 @@ function executeCommittedNPCPlan(game) {
 
     buyer.sardines -= plan.sardines;
     seller.sardines += plan.sardines;
-    seller.inventory = seller.inventory.filter((item) => item !== plan.wantItem);
+    seller.inventory = removeOne(seller.inventory, plan.wantItem);
     buyer.inventory.push(plan.wantItem);
     recordTrade(game, plan, "npc-plan");
     game.marketOutcome.push(plan);
@@ -558,13 +563,13 @@ function consumeBusinessInputs(game) {
   const dog = game.traders.dog;
   const catFood = ["Fresh Mackerel"].find((item) => dog.inventory.includes(item));
   if (catFood) {
-    dog.inventory = dog.inventory.filter((item) => item !== catFood);
+    dog.inventory = removeOne(dog.inventory, catFood);
     game.log.unshift(`Dock Dog's ${catFood} disappears into the cat colony by sunset.`);
   }
 
   const bar = game.traders.bar;
   if (bar.inventory.includes("Ice Block")) {
-    bar.inventory = bar.inventory.filter((item) => item !== "Ice Block");
+    bar.inventory = removeOne(bar.inventory, "Ice Block");
     game.log.unshift("The Bar uses up its ice during service. Tomorrow's cold drinks need fresh supply.");
   }
 }
@@ -644,7 +649,7 @@ function settleSustenance(game) {
 
   if (edible.length) {
     const meal = edible[0];
-    player.inventory = player.inventory.filter((item) => item !== meal);
+    player.inventory = removeOne(player.inventory, meal);
     game.playerState.lastMeal = { day: game.day, source: "inventory", item: meal };
     game.log.unshift(`You eat ${labelShort(meal)} before sleep.`);
     return;
@@ -862,6 +867,7 @@ export function buildEvents(game) {
   const events = [];
   const soupFish = ["Fresh Mackerel", "Salted Cod", "Smoked Eel", "Two Octopus Tentacles"];
   const alreadyHasFlower = player.inventory.includes("Sunflower") || game.flags.sunflowerAcquired;
+  const auctionReserve = game.flags.cheated ? 68 : 52;
 
   if (
     !alreadyHasFlower &&
@@ -884,7 +890,8 @@ export function buildEvents(game) {
     canAccessVenue(game, "valeGallery") &&
     game.flags.oilDeliveredToVale &&
     player.inventory.includes("Blue Glass Marble") &&
-    netWorth(player) >= (game.flags.cheated ? 90 : 70)
+    netWorth(player) >= (game.flags.cheated ? 90 : 70) &&
+    player.sardines >= auctionReserve
   ) {
     events.push({
       id: "auction",
@@ -940,7 +947,8 @@ export function resolveEvent(current, id, action, bidAmount = null) {
   } else if (id === "cliff" && action === "Race") {
     game.flags.raced = true;
     const preRaceWorth = netWorth(player);
-    player.inventory = player.inventory.filter((item) => item !== "Mai Tai" && item !== "Built Onewheel" && item !== "Auction Onewheel");
+    const wheelItem = player.inventory.includes("Built Onewheel") ? "Built Onewheel" : "Auction Onewheel";
+    player.inventory = removeOne(removeOne(player.inventory, "Mai Tai"), wheelItem);
     const won = preRaceWorth >= 60;
     if (won) {
       acquireSunflower(game, "You cross the cliff route with Clown. What you find is, unmistakably, a sunflower.");
@@ -960,6 +968,21 @@ export function resolveEvent(current, id, action, bidAmount = null) {
 
 export function classify(game) {
   const stats = game.stats;
+  const noMarketFootprint =
+    stats.tradeCount === 0 &&
+    stats.informationSales === 0 &&
+    stats.creditUsed === 0 &&
+    stats.defaults === 0 &&
+    !game.flags.cheated &&
+    game.information.length === 0;
+
+  if (noMarketFootprint) {
+    return {
+      name: "The Bystander",
+      description: "You passed through the market without leaving enough of a trading footprint to classify.",
+    };
+  }
+
   const scores = {
     "The Clean Knife": stats.tradeCount + Math.max(0, -stats.overpays),
     "The Spread Reader": stats.profitableFlips * 4 + Math.max(0, stats.totalProfit),
