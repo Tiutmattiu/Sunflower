@@ -20,6 +20,28 @@ function itemLabel(item) {
   return `${data?.icon || "📦"} ${item} · ${data?.value ?? 0}`;
 }
 
+function visibleStockForPlayer(game, trader) {
+  if (trader.id === "player") return trader.inventory;
+
+  const publicStock = (NPC_PROFILES[trader.id]?.publicStock || [])
+    .filter((item) => trader.inventory.includes(item));
+  const known = [...publicStock];
+
+  // A public trade makes the buyer's newly acquired item market knowledge.
+  game.history.forEach((trade) => {
+    if (trade.from === trader.id && trader.inventory.includes(trade.item)) known.push(trade.item);
+  });
+
+  // First-pass investigation rule: spending time on a trader reveals one otherwise hidden holding.
+  // Later this will become source/confidence-based knowledge rather than a binary reveal.
+  if (game.intel[`${trader.id}:clue`]) {
+    const hidden = trader.inventory.find((item) => !known.includes(item));
+    if (hidden) known.push(hidden);
+  }
+
+  return unique(known);
+}
+
 function PhaseStrip({ game }) {
   const phases = ["sunrise", "morning", "noon", "afternoon", "sunset"];
   return (
@@ -47,7 +69,7 @@ function Avatar({ trader, selected, onClick }) {
   );
 }
 
-function TraderDetail({ trader, profile, relationship, intel }) {
+function TraderDetail({ trader, profile, relationship, intel, visibleStock }) {
   return (
     <section className="card detail-card">
       <div className="detail-head">
@@ -59,19 +81,20 @@ function TraderDetail({ trader, profile, relationship, intel }) {
           {profile && <div className="small muted">Familiarity: {relationship}</div>}
         </div>
       </div>
-      <div className="section-title">Market-facing stock</div>
+      <div className="section-title">What you know they have</div>
       <div className="chips">
-        {trader.inventory.length
-          ? trader.inventory.map((item) => <span className="chip" key={`${trader.id}-${item}`}>{itemLabel(item)}</span>)
-          : <span className="muted">Nothing visible.</span>}
+        {visibleStock.length
+          ? visibleStock.map((item) => <span className="chip" key={`${trader.id}-${item}`}>{itemLabel(item)}</span>)
+          : <span className="muted">Nothing confirmed. Their real inventory may be larger.</span>}
       </div>
       {intel?.clue && <div className="intel-note">📝 {intel.clue}</div>}
     </section>
   );
 }
 
-function OrderRow({ index, order, setOrder, traders, playerInventory, usedItems, disabled }) {
+function OrderRow({ index, order, setOrder, traders, visibleByTrader, playerInventory, usedItems, disabled }) {
   const target = traders[order.to];
+  const targetStock = order.to ? (visibleByTrader[order.to] || []) : [];
   return (
     <div className="offer-row">
       <select
@@ -90,7 +113,7 @@ function OrderRow({ index, order, setOrder, traders, playerInventory, usedItems,
         onChange={(event) => setOrder(index, { ...order, wantItem: event.target.value })}
       >
         <option value="">Want</option>
-        {target?.inventory.map((item) => <option key={item} value={item}>{itemLabel(item)}</option>)}
+        {targetStock.map((item) => <option key={item} value={item}>{itemLabel(item)}</option>)}
       </select>
       <select
         value={order.offerItem}
@@ -126,7 +149,6 @@ function MarketBoard({ game }) {
         {board.length ? board.map((order, index) => (
           <div className="mini-card" key={`${order.from}-${order.wantItem}-${index}`}>
             <div><strong>{game.traders[order.from].icon} {game.traders[order.from].name}</strong> bids {order.sardines}🥫 for {labelShort(order.wantItem)}</div>
-            <div className="small muted">Current holder: {game.traders[order.to].name}</div>
           </div>
         )) : <div className="muted">No NPC order clears at current prices. That is also market information.</div>}
       </div>
@@ -236,6 +258,10 @@ export default function App() {
   const usedItems = game.playerOrders.map((order) => order.offerItem).filter(Boolean);
   const plannedSardines = game.playerOrders.reduce((sum, order) => sum + Number(order.sardines || 0), 0);
 
+  const visibleByTrader = useMemo(() => Object.fromEntries(
+    Object.values(traders).map((trader) => [trader.id, visibleStockForPlayer(game, trader)])
+  ), [game, traders]);
+
   const selectedIntel = useMemo(() => ({
     style: game.intel[`${selected.id}:style`],
     clue: game.intel[`${selected.id}:clue`],
@@ -339,6 +365,7 @@ export default function App() {
               profile={NPC_PROFILES[selected.id]}
               relationship={game.relationships[selected.id] || 0}
               intel={selectedIntel}
+              visibleStock={visibleByTrader[selected.id] || []}
             />
 
             {!game.ended && <ActionPanel game={game} selectedId={selected.id} onAction={handleFreeAction} />}
@@ -348,7 +375,7 @@ export default function App() {
             {!game.ended && game.phase === "morning" && (
               <section className="card order-card">
                 <div className="section-title">Your noon orders</div>
-                <p className="muted board-note">Prototype rule: up to three committed offers. These lock when you leave Morning.</p>
+                <p className="muted board-note">Prototype rule: up to three committed offers. You can only target stock you have actually confirmed.</p>
                 <div className="stack">
                   {game.playerOrders.map((order, index) => (
                     <OrderRow
@@ -357,6 +384,7 @@ export default function App() {
                       order={order}
                       setOrder={updateOrder}
                       traders={traders}
+                      visibleByTrader={visibleByTrader}
                       playerInventory={player.inventory}
                       usedItems={usedItems}
                       disabled={game.phase !== "morning"}
