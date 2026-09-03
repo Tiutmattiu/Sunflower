@@ -36,11 +36,54 @@ export function buyerMax(game, buyerId, item) {
   return Math.max(0, Math.floor(base + utility + Math.min(2, observedDemand)));
 }
 
-function ownersOf(game, item, excludedId) {
-  // Legacy route protection: the Blue Glass Marble stays with Dock Dog unless the player takes it.
-  if (item === "Blue Glass Marble") return [];
-  return Object.values(game.traders)
-    .filter((trader) => trader.id !== excludedId && trader.id !== "player" && trader.inventory.includes(item));
+function latestPublicOwner(game, item) {
+  const trades = game.history.filter((trade) => trade.item === item);
+  if (!trades.length) return null;
+  return trades[trades.length - 1].from;
+}
+
+function publicSellersOf(item) {
+  return Object.entries(NPC_PROFILES)
+    .filter(([, profile]) => (profile.publicStock || []).includes(item))
+    .map(([id]) => id);
+}
+
+function searchDepth(profile, day) {
+  const tempo = Math.max(1, profile.informationTempo || 3);
+  return Math.floor(day / tempo);
+}
+
+function knownSourcesForGoal(game, buyerId, goal) {
+  if (goal.item === "Blue Glass Marble") return [];
+
+  const sources = new Map();
+
+  // Public-facing stock is common knowledge. It may still be stale by clearing time.
+  publicSellersOf(goal.item).forEach((sellerId) => {
+    if (sellerId !== buyerId && sellerId !== "player") {
+      sources.set(sellerId, "public stock");
+    }
+  });
+
+  // Public trades reveal a recent owner. Consumption or private transfers may later make this stale.
+  const tapeOwner = latestPublicOwner(game, goal.item);
+  if (tapeOwner && tapeOwner !== buyerId && tapeOwner !== "player") {
+    sources.set(tapeOwner, "public tape");
+  }
+
+  // Hidden inventory requires active search. Better information traders search plausible sources faster.
+  const profile = NPC_PROFILES[buyerId];
+  const depth = searchDepth(profile, game.day);
+  const hypotheses = (goal.likelySources || []).slice(0, depth);
+  hypotheses.forEach((sellerId) => {
+    if (sellerId === buyerId || sellerId === "player") return;
+    const seller = game.traders[sellerId];
+    if (seller?.inventory.includes(goal.item)) {
+      sources.set(sellerId, "active search");
+    }
+  });
+
+  return [...sources.entries()].map(([sellerId, basis]) => ({ sellerId, basis }));
 }
 
 export function planNPCMarket(game) {
@@ -53,18 +96,23 @@ export function planNPCMarket(game) {
     const candidates = [];
     (NPC_PROFILES[buyerId].goals || []).forEach((goal) => {
       if (buyer.inventory.includes(goal.item)) return;
-      ownersOf(game, goal.item, buyerId).forEach((seller) => {
-        const ask = sellerAsk(game, seller.id, goal.item);
+
+      knownSourcesForGoal(game, buyerId, goal).forEach(({ sellerId, basis }) => {
+        const seller = game.traders[sellerId];
+        if (!seller) return;
+
+        const ask = sellerAsk(game, sellerId, goal.item);
         const max = buyerMax(game, buyerId, goal.item);
         const surplus = max - ask;
         if (ask <= buyer.sardines && surplus >= 0) {
           candidates.push({
             from: buyerId,
-            to: seller.id,
+            to: sellerId,
             wantItem: goal.item,
             sardines: ask,
             score: surplus + privateUtility(game, buyerId, goal.item),
             reason: goal.reason,
+            knowledgeBasis: basis,
           });
         }
       });
