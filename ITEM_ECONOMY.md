@@ -1,137 +1,320 @@
 # Sunflower — Item Economy
 
-> Status: active system design. Keep this document focused on what goods *do economically*, not on collecting a giant catalogue for its own sake.
+> Status: active system design. Keep this document focused on what goods *do economically* and how the market feels. Do not collect objects merely to inflate the catalogue.
 
 ## Core rule
 
-**More items are only useful when they create more decisions.**
+**More items are only useful when they create more decisions, more market texture, or more inference.**
 
-Sunflower should not become a key-and-lock adventure where every NPC wants exactly one bespoke quest object and then stops participating in the economy.
+Sunflower is a trading game, not a key-and-lock adventure.
 
-A good item should usually do at least one of the following:
+An NPC wanting `X` should normally mean `X`, unless a broader category or substitute relationship has been made legible to the player through ordinary world knowledge, professional expertise, explicit dialogue, public listings, or acquired information.
 
-- satisfy recurring consumption;
-- substitute imperfectly for another good;
-- act as a production input;
-- store value or serve as plausible collateral;
-- perish and create timing pressure;
-- expose the holder to price / information risk;
-- move differently through formal and informal markets;
-- carry social, access or identity meaning;
-- support resale / arbitrage rather than only one scripted delivery;
-- create competition between multiple buyers.
+### No invisible substitute puzzles
+
+Do **not** silently implement rules such as:
+
+> Sailor says Lime, but Dried Citrus Peel secretly counts as 60% Lime.
+
+That makes the player guess the designer rather than read a market.
+
+A substitute is valid only when at least one of these is true:
+
+- the need was stated as a category (`citrus provisions`, not `Lime Crate`);
+- the NPC explicitly says alternatives are acceptable;
+- the relationship is ordinary enough to infer from real knowledge;
+- the player can discover the substitution rule as information before committing the trade.
+
+The engine should not award hidden partial credit for designer-only associations.
+
+---
+
+## Catalogue size
+
+As of the September 3 expansion, `ITEMS` contains **68 provisional item definitions**.
+
+That is already enough for the current design phase.
+
+Target range for the eventual game:
+
+- **60–80 total goods** across all forms / routes is probably sufficient;
+- only roughly **20–30 should be economically legible in an early Human run**;
+- another **10–15 can enter through later arrivals, relationships, events and hidden stock**;
+- form-specific / black-market / Sailor goods can make the same world feel new on replay without putting 70 objects on one screen.
+
+Do not add another 30 items until the current pool has been playtested and cut.
+
+An item that remains mechanically interchangeable with another item after several runs should usually be deleted, merged or given a stronger reason to exist.
+
+---
+
+## Market texture by trader
+
+The world should contain all four broad object aesthetics, but **not in equal proportions from every trader**.
+
+### Dock Dog — harbour reality + surreal everyday debris
+
+Typical texture:
+
+- Dead Pigeon
+- Chewed Rope Toy
+- Red Ribbon
+- Empty Green Bottle
+- Glasses Wipe
+- Bicycle Bell
+- Chia Seeds
+
+Dog should make low-value objects feel surprisingly connected to people, animals and information.
+
+### Fishmonger — material harbour goods + accidental oddities
+
+Typical texture:
+
+- Fresh Mackerel
+- Smoked Eel
+- Two Octopus Tentacles
+- Ice Block
+- Rusty Harpoon
+- an inexplicable Orgeat Bottle acquired through barter / debt / misdelivery
+
+Fishmonger's weird items should feel weird **because they do not belong in an otherwise comprehensible operating business**.
+
+### Sailor — cross-border material goods + professional equipment + strange cargo
+
+Typical texture:
+
+- Brass Compass
+- Sperm Whale Oil
+- Sealed Parcel
+- Presta Inner Tube
+- Chain Quick-Link
+- Brake Cable
+- Tiny Torque Wrench
+- Three Metres of Stolen Theatre Wire
+- Patch Cut from the Ship Mercy
+
+Sailor stock should carry geography, provenance and mobility.
+
+### Mirelle Vale — story fragments + elite / illiquid collectibles
+
+Typical texture:
+
+- Valentino Still
+- Film Canister
+- One White Glove
+- Numbered Funeral Ticket
+- Taxidermied Moth
+- Unsent Letter
+
+Vale's inventory should make the player ask whether the price comes from use, scarcity, provenance, fashion, status or somebody else's willingness to pay.
+
+### Bar Apprentice — real professional bar equipment + relationship objects
+
+Typical texture:
+
+- Hawthorne Strainer
+- 30/45 Jigger
+- Long Bar Spoon
+- Fine Mesh Strainer
+- Hand Citrus Press
+- Lewis Bag
+- Orange Curaçao
+- Demerara Syrup
+- Chipped Nick & Nora Glass
+
+The Bar should reward actual cocktail knowledge without becoming a recipe quiz. A knowledgeable player may infer more from incomplete observations and therefore spend fewer information actions.
+
+### Onewheel Clown — surreal everyday goods + speculative junk + mobility debris
+
+Typical texture:
+
+- Lollipop
+- Lucky Sticker
+- Glitter Tape
+- Handlebar Tape
+- Key That Opens Nothing
+- Tool Roll
+
+Clown can assign coherent private utility to things other traders dismiss without turning every weird item into a secret quest key.
+
+---
 
 ## Current economic item families
 
 ### Food / sustenance
 
 Examples:
+
 - Fresh Mackerel
 - Smoked Eel
+- Two Octopus Tentacles
 - Sea Lettuce Bundle
 - Salted Cod
 - Hardtack Tin
+- Chia Seeds
 
-These are not decorative. A player must eat at sunset. Holding food can therefore preserve cash, while selling food can improve liquidity at the cost of future survival.
+The player may eat inventory rather than preserve it for resale. That gives ordinary goods a real opportunity cost.
 
 ### Perishable / timing-sensitive inputs
 
 Examples:
+
 - Ice Block
 - Bruised Mint
 - Lime Crate
 - Fresh Mackerel
+- Two Octopus Tentacles
 
-These decay on different schedules. Their value is partly a function of time and who currently needs them.
-
-### Substitutes
-
-Current first-pass examples:
-- Sailor prefers Lime Crate but can accept Dried Citrus Peel at lower utility.
-- Bar prefers Orgeat Bottle but can temporarily make do with Almond Paste Jar.
-- Dock Dog prefers Fresh Mackerel but can feed the cats with Smoked Eel or Sea Lettuce.
-
-Substitution is important because `NPC wants X` should not always mean `find exact key X`.
+These create timing, storage and fire-sale pressure.
 
 ### Recurring operating inputs
 
-The Bar repeatedly consumes Ice Block.
+The Bar repeatedly consumes ice.
 
-Dock Dog repeatedly consumes food for the cat colony.
+Dock Dog repeatedly consumes fresh fish for the cat colony.
 
-This makes demand return after a purchase instead of disappearing permanently.
+Demand should return because businesses and bodies continue doing things, not because a quest flag resets arbitrarily.
 
-### Repair / productive capital
+### Professional durable tools
 
 Examples:
-- Steel Rim
-- Copper Wire Coil
-- Sailcloth Patch
+
+- Hawthorne Strainer
+- Jigger
+- Citrus Press
+- Tiny Torque Wrench
 - Tool Roll
 
-These should increasingly feed repair, transport and production systems rather than function only as price tags.
+Durable tools should increasingly affect capability, production, verification or access rather than act only as resale tokens.
 
 ### Durable / collateral-like goods
 
 Examples:
-- Brass Compass
-- Bent Silver Fork
-- Blue Glass Marble
 
-Their usefulness is that they can hold value when cash is scarce and later support collateral / distressed-sale mechanics.
+- Brass Compass
+- Blue Glass Marble
+- some professional tools / collectible goods
+
+Their value can diverge from cash because liquidation speed and counterparty interest differ.
 
 ### High-uncertainty / special situations
 
-Example:
-- Sealed Parcel
+Examples:
 
-Both Vale and Clown can value it for very different reasons. This creates buyer competition without requiring the item to have one objectively correct use.
+- Sealed Parcel
+- Numbered Funeral Ticket
+- Unsent Letter
+- Key That Opens Nothing
+
+These should create information and belief problems rather than contain a guaranteed designer reward.
 
 ### Animal-network / informal goods
 
 Examples:
+
+- Chia Seeds
 - Red Ribbon
 - Empty Green Bottle
 - Fish Bones
-- Sugar Cube Tin
-- scavenged oddities
+- Glasses Wipe
+- scavenged bicycle debris
 
-These should eventually have different liquidity and meaning in animal society than in the formal human market.
+Their liquidity and social meaning may differ sharply across human and animal networks.
 
-## Recurring supply
+---
 
-The prototype now uses deterministic business cycles rather than random loot fountains:
+## Information can be embedded in goods
 
-- Fishmonger repeatedly lands fish / ice / sea produce.
-- Dock Dog repeatedly scavenges low-value but socially connected goods.
-- Sailor unloads rotating imported goods until the departure window.
+Some objects are valuable partly because possession tells you something.
 
-This is deliberately deterministic for now so market changes remain explainable.
+Examples:
 
-## Design target
+- a shipping label reveals origin;
+- a sealed parcel has uncertain contents but known provenance;
+- an Unsent Letter may contain private information;
+- a specialist bicycle part suggests who is repairing what;
+- professional bar stock lets an experienced player infer what the Apprentice is trying to make.
+
+This is preferable to treating `Information` and `Items` as completely separate universes.
+
+---
+
+## Price audit — current values are NOT canon
+
+The current ordinary reference-price range is mostly **1–16🥫**, with `Sunflower = 99` as an old prototype placeholder.
+
+This scale is too compressed to support the eventual market cleanly.
+
+Examples of the problem:
+
+- 2🥫 → 3🥫 is a 50% move;
+- a +1 urgency premium can dominate the entire reference price;
+- spread, relationship discount, liquidity discount, reputation premium and market heat collapse into the same one-tin increment.
+
+Therefore current `ITEMS[item].value` should be understood as a **provisional reference number**, not intrinsic value and not final balance.
+
+Before serious balance playtesting, do one coordinated rebase covering:
+
+- item reference prices;
+- initial NPC/player cash;
+- nightly sustenance cost;
+- information prices;
+- proxy fees;
+- auction reserves;
+- route net-worth thresholds;
+- NPC markups / urgency increments / heat increments.
+
+Do not scale item prices alone or the economy will become incoherent.
+
+Likely desirable result: a wider ordinary price band so that +1 is a small signal, +several tins is meaningful, and a desperation premium can be visibly large without automatically doubling the asset price.
+
+Also reconsider whether a living `Sunflower` should have any universal numeric reference price at all.
+
+---
+
+## Three-question item test
+
+Before keeping a new good, ask:
+
+1. **Who might want it, and for what different reasons?**
+2. **Why could its value / liquidity differ tomorrow?**
+3. **What can the player do with it besides immediately sell it?**
+
+Possible answers include:
+
+- eat;
+- hold;
+- inspect;
+- use;
+- pledge;
+- gift;
+- repair with;
+- infer information from;
+- move across markets;
+- sell under time pressure;
+- keep because another actor may value it privately.
+
+Not every item needs all three dimensions, but an item that has none is probably filler.
+
+---
+
+## Current design target
 
 A healthy small market should contain at the same time:
 
 - obvious low-margin commodity trades;
-- at least one perishable timing problem;
-- at least one substitution decision;
+- at least one perishability / timing problem;
 - one or two illiquid / mysterious assets;
-- a recurring operating need;
-- a possible information edge;
-- goods whose value differs sharply by counterparty.
+- recurring operating demand;
+- professional goods whose significance rewards domain knowledge;
+- information edges of different precision;
+- goods whose value differs sharply by counterparty;
+- some objects that are funny, intimate or inexplicable before they are economically useful.
 
-The player should sometimes ask:
+The player should ask:
 
-> Do I eat this, sell it, hold it, use it as an input, reveal who has it, or keep the information private?
+> Do I eat this, sell it, hold it, investigate it, use it, show it to someone, or keep quiet about who has it?
 
-That is preferable to:
+not:
 
-> Which NPC is the scripted owner of the next quest key?
-
-## Current item-pool judgement
-
-The original prototype pool had charming names but was economically too thin. Many items were route-specific and many NPC needs could be solved once and permanently.
-
-The September 3 expansion adds more goods, but **future expansion should be driven by missing economic roles rather than a target item count**.
-
-Do not add ten objects just to make the bag look full.
+> Which bespoke key opens the next NPC?
