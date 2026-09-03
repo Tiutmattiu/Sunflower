@@ -1,494 +1,42 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import "./index.css";
+import { ITEMS, NPC_PROFILES, PHASE_COPY, SARDINE } from "./gameData";
+import {
+  advancePhase,
+  createGame,
+  labelShort,
+  netWorth,
+  performFreeAction,
+  resetOrders,
+  resolveEvent,
+  resolveNoonMarket,
+  unique,
+} from "./gameEngine";
+import { visibleMarketBoard } from "./npcAI";
 
-const SARDINE = "🥫";
-
-// ---------- 常量 ----------
-const MAX_HEAT = 5;
-const PROFIT_FLIP_THRESHOLD = 2;
-const OVERPAY_THRESHOLD = -3;
-
-const ITEMS = {
-  "Blue Glass Marble": { value: 3, icon: "🔵", type: "Blue" },
-  "Dead Pigeon": { value: 3, icon: "🐦", type: "Catalyst" },
-  "Collar Tag": { value: 3, icon: "🏷️", type: "Access" },
-  "Chewed Rope Toy": { value: 1, icon: "🧸", type: "Liquid" },
-
-  "Fresh Mackerel": { value: 4, icon: "🐟", type: "Soup Fish", perishable: true },
-  "Orgeat Bottle": { value: 7, icon: "🥛", type: "Ingredient" },
-  "Steel Rim": { value: 5, icon: "⭕", type: "Machine Part" },
-  "Rusty Harpoon": { value: 6, icon: "🗡️", type: "Weapon" },
-
-  "Sperm Whale Oil": { value: 6, icon: "🛢️", type: "Fuel" },
-  "Salted Cod": { value: 4, icon: "🐡", type: "Soup Fish", perishable: true },
-  "Hardtack Tin": { value: 2, icon: "🍞", type: "Liquid" },
-  "Brass Compass": { value: 5, icon: "🧭", type: "High Value" },
-
-  "Valentino Still": { value: 5, icon: "🎞️", type: "Prestige" },
-  "Hand Mirror": { value: 3, icon: "🪞", type: "Prestige" },
-  "Velvet Sleeve": { value: 2, icon: "🧤", type: "Liquid" },
-  "Auction Sunflower": { value: 16, icon: "🌻", type: "Auction Goal" },
-  "Auction Onewheel": { value: 8, icon: "🛞", type: "Vehicle" },
-
-  "Lollipop": { value: 1, icon: "🍭", type: "Liquid" },
-  "Glitter Tape": { value: 2, icon: "✨", type: "Liquid" },
-  "Tool Roll": { value: 3, icon: "🧰", type: "Tool" },
-  "Lucky Sticker": { value: 1, icon: "⭐", type: "Liquid" },
-
-  "Rum Bottle": { value: 4, icon: "🍾", type: "Drink" },
-  "Bruised Mint": { value: 1, icon: "🌿", type: "Liquid" },
-  "Cracked Shaker": { value: 2, icon: "🥤", type: "Liquid" },
-  "Lime Crate": { value: 4, icon: "🍋", type: "Citrus" },
-  "Mai Tai": { value: 8, icon: "🍹", type: "Drink / Goal" },
-
-  "Bad Tangerine": { value: 1, icon: "🍊", type: "Toxic" },
-  "Tin Spoon": { value: 1, icon: "🥄", type: "Liquid" },
-  "Old Coupon": { value: 2, icon: "🎟️", type: "Liquid" },
-  "Pocket Match": { value: 1, icon: "🔥", type: "Liquid" },
-
-  "Fish Bones": { value: 2, icon: "🦴", type: "Junk" },
-  "Built Onewheel": { value: 8, icon: "🛞", type: "Vehicle" },
-  "Spoiled Fish": { value: 1, icon: "🐟", type: "Waste" },
-  Sunflower: { value: 99, icon: "🌻", type: "Goal" },
-};
-
-const INITIAL_TRADERS = {
-  dog: {
-    id: "dog", name: "Dock Dog", icon: "🐕", role: "Dock scavenger",
-    need: "Fish Bones", exactWant: "Fish Bones", sardines: 3,
-    inventory: ["Blue Glass Marble", "Dead Pigeon", "Collar Tag", "Chewed Rope Toy"],
-  },
-  fishmonger: {
-    id: "fishmonger", name: "Fishmonger", icon: "🐠", role: "Commodity broker",
-    need: "Dead Pigeon", exactWant: "Dead Pigeon", sardines: 3,
-    inventory: ["Fresh Mackerel", "Orgeat Bottle", "Steel Rim", "Rusty Harpoon"],
-  },
-  mechanic: {
-    id: "mechanic", name: "Ship Mechanic", icon: "⚙️", role: "Ship mechanic",
-    need: "Lime Crate", exactWant: "Lime Crate", sardines: 3,
-    inventory: ["Sperm Whale Oil", "Salted Cod", "Hardtack Tin", "Brass Compass"],
-  },
-  vale: {
-    id: "vale", name: "Mirelle Vale", icon: "🎬", role: "Auction host",
-    need: "Sperm Whale Oil", exactWant: "Sperm Whale Oil", sardines: 5,
-    inventory: ["Valentino Still", "Hand Mirror", "Velvet Sleeve"],
-  },
-  clown: {
-    id: "clown", name: "Onewheel Clown", icon: "🤡", role: "Shortcut racer",
-    need: "Mai Tai", exactWant: "Mai Tai", sardines: 4,
-    inventory: ["Lollipop", "Glitter Tape", "Tool Roll", "Lucky Sticker"],
-  },
-  bar: {
-    id: "bar", name: "Bar Apprentice", icon: "🍸", role: "Cocktail apprentice",
-    need: "Orgeat Bottle", exactWant: "Orgeat Bottle", sardines: 4,
-    inventory: ["Rum Bottle", "Bruised Mint", "Cracked Shaker", "Lime Crate"],
-  },
-  player: {
-    id: "player", name: "You", icon: "🧍", role: "Market trader",
-    need: "Sunflower", exactWant: "Sunflower", sardines: 6,
-    inventory: ["Fish Bones", "Bad Tangerine", "Tin Spoon", "Old Coupon"],
-  },
-};
-
-const SOUP_FISH = ["Fresh Mackerel", "Salted Cod"];
-
-const NPC_PREFERENCES = {
-  dog: ["Junk", "Catalyst", "Access"],
-  fishmonger: ["Soup Fish", "Catalyst", "Weapon", "High Value"],
-  mechanic: ["Citrus", "Machine Part", "Tool", "High Value"],
-  vale: ["Fuel", "Prestige", "Blue", "High Value"],
-  clown: ["Drink / Goal", "Vehicle", "Liquid"],
-  bar: ["Ingredient", "Drink", "Citrus"],
-};
-
-/* ---------- 通用工具 ---------- */
-const unique = (arr) => [...new Set(arr)];
-const clone = (x) => JSON.parse(JSON.stringify(x));
-const valueOf = (item) => (item ? ITEMS[item]?.value || 0 : 0);
-const label = (item) =>
-  item ? `${ITEMS[item]?.icon || "📦"} ${item} · ${ITEMS[item]?.value ?? 0}` : "nothing";
-const labelShort = (item) =>
-  item ? `${ITEMS[item]?.icon || "📦"} ${item}` : "nothing";
-const netWorth = (t) =>
-  t.sardines + t.inventory.reduce((s, i) => s + valueOf(i), 0);
-
-const reservePrice = (target, item, heat, flags) => {
-  let price = valueOf(item);
-  if (item === target.exactWant && !(target.id === "mechanic" && flags.cheated)) price += 2;
-  price += heat[item] || 0;
-  return price;
-};
-
-const canAfford = (actor, offerItem, sardines) =>
-  actor.sardines >= sardines && (!offerItem || actor.inventory.includes(offerItem));
-
-function buildGame() {
-  return {
-    round: 1, maxRounds: 14,
-    traders: clone(INITIAL_TRADERS),
-    selected: "player",
-    offers: [
-      { to: "", wantItem: "", offerItem: "", sardines: 0 },
-      { to: "", wantItem: "", offerItem: "", sardines: 0 },
-      { to: "", wantItem: "", offerItem: "", sardines: 0 },
-    ],
-    npcIntent: [],
-    outcome: [], rejected: [], pendingEvents: [],
-    ended: false, winner: false, finalText: "", style: null,
-    flags: {
-      orgeatDelivered: false, oilDeliveredToVale: false,
-      limeDeliveredToMechanic: false, steelDeliveredToMechanic: false,
-      toolDeliveredToMechanic: false, oneWheelBuilt: false,
-      cheated: false, raced: false,
-    },
-    stats: {
-      exactDeliveries: 0, profitableFlips: 0,
-      overpays: 0, totalProfit: 0, tradeCount: 0, cheats: 0,
-    },
-    heat: {},
-    perishTimer: {},
-    log: [
-      "The sunflower is not for sale.",
-      "Routes: Grandma Supper, Vale Auction, Cliff Race.",
-      "Blue Glass Marble only from Dock Dog; NPCs don't trade it.",
-    ],
-  };
+function itemLabel(item) {
+  if (!item) return "nothing";
+  const data = ITEMS[item];
+  return `${data?.icon || "📦"} ${item} · ${data?.value ?? 0}`;
 }
 
-/* ---------- NPC AI ---------- */
-function pickRandom(arr) {
-  if (!arr.length) return null;
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
-function generateNPCOffers(game) {
-  const npcs = Object.values(game.traders).filter((t) => t.id !== "player");
-  const offers = [];
-  npcs.forEach((npc) => {
-    const targets = npcs
-      .filter((t) => t.id !== npc.id)
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 1 + Math.floor(Math.random() * 2));
-    targets.forEach((target) => {
-      if (!target.inventory.length) return;
-      const prefs = NPC_PREFERENCES[npc.id] || [];
-      const preferred = target.inventory.filter((i) => prefs.includes(ITEMS[i]?.type));
-      const pool = preferred.length ? preferred : target.inventory;
-      // 严格排除 Blue Glass Marble
-      const safePool = pool.filter((i) => i !== "Blue Glass Marble");
-      const wantItem = pickRandom(safePool);
-      if (!wantItem) return;
-
-      const useItem = Math.random() < 0.7 && npc.inventory.length > 0;
-      let offerItem = null;
-      if (useItem) {
-        const validOfferItems = npc.inventory.filter((i) => i !== "Blue Glass Marble");
-        offerItem = pickRandom(validOfferItems);
-      }
-      const sardines = useItem ? 0 : Math.floor(Math.random() * 3) + 1;
-      if (!offerItem && sardines <= 0) return;
-      if (offerItem === wantItem) return;
-      if (!canAfford(npc, offerItem, sardines)) return;
-      offers.push({ from: npc.id, to: target.id, wantItem, offerItem, sardines });
-    });
-  });
-  return offers;
-}
-
-function applyNPCTrades(game, npcOffers) {
-  const g = clone(game);
-  const usedPayment = new Set();
-  npcOffers.forEach((o) => {
-    const from = g.traders[o.from];
-    const to = g.traders[o.to];
-    if (!to.inventory.includes(o.wantItem)) return;
-    if (!canAfford(from, o.offerItem, o.sardines)) return;
-    if (o.offerItem && usedPayment.has(o.offerItem)) return;
-    // 禁止 Blue Glass Marble 移动
-    if (o.offerItem === "Blue Glass Marble" || o.wantItem === "Blue Glass Marble") return;
-    const price = valueOf(o.wantItem) + (g.heat[o.wantItem] || 0);
-    const paid = valueOf(o.offerItem) + o.sardines;
-    if (paid < price) return;
-    if (o.offerItem) {
-      from.inventory = from.inventory.filter((x) => x !== o.offerItem);
-      to.inventory.push(o.offerItem);
-      usedPayment.add(o.offerItem);
-    }
-    if (o.sardines > 0) {
-      from.sardines -= o.sardines;
-      to.sardines += o.sardines;
-    }
-    to.inventory = to.inventory.filter((x) => x !== o.wantItem);
-    from.inventory.push(o.wantItem);
-  });
-  return g;
-}
-
-/* ---------- 玩家交易结算 ---------- */
-function applySpecialRules(game, accepted) {
-  const g = clone(game);
-  accepted.forEach((t) => {
-    if (t.from !== "player") return;
-    const target = g.traders[t.to];
-    const profit = valueOf(t.wantItem) - valueOf(t.offerItem) - Number(t.sardines || 0);
-    g.stats.totalProfit += profit;
-    if (profit >= PROFIT_FLIP_THRESHOLD) g.stats.profitableFlips += 1;
-    if (profit <= OVERPAY_THRESHOLD) g.stats.overpays += 1;
-    g.stats.tradeCount += 1;
-
-    // 欺诈检测
-    if (t.to === "mechanic" && t.offerItem === "Bad Tangerine" && target.exactWant === "Lime Crate") {
-      g.flags.cheated = true;
-      g.stats.cheats += 1;
-      g.log.unshift("Bad Tangerine passed as Lime Crate — your reputation is ruined.");
-      // 欺诈成功，但不计入正直的 exactDelivery
-      return;
-    }
-
-    if (t.offerItem === target.exactWant) {
-      g.stats.exactDeliveries += 1;
-    }
-
-    // 正常交货
-    if (t.to === "bar" && t.offerItem === "Orgeat Bottle") {
-      g.flags.orgeatDelivered = true;
-      if (!g.traders.bar.inventory.includes("Mai Tai")) {
-        g.traders.bar.inventory.push("Mai Tai");
-        g.log.unshift("Bar Apprentice added Mai Tai.");
-      }
-    }
-    if (t.to === "vale" && t.offerItem === "Sperm Whale Oil") {
-      g.flags.oilDeliveredToVale = true;
-      if (!g.traders.vale.inventory.includes("Auction Sunflower"))
-        g.traders.vale.inventory.push("Auction Sunflower");
-      if (!g.traders.vale.inventory.includes("Auction Onewheel"))
-        g.traders.vale.inventory.push("Auction Onewheel");
-      g.log.unshift("Vale opened auction lots.");
-    }
-    if (t.to === "mechanic" && !g.flags.cheated) {
-      if (t.offerItem === "Lime Crate") {
-        g.flags.limeDeliveredToMechanic = true;
-        g.log.unshift("Ship Mechanic received citrus for crew health.");
-      }
-      if (t.offerItem === "Steel Rim") g.flags.steelDeliveredToMechanic = true;
-      if (t.offerItem === "Tool Roll") g.flags.toolDeliveredToMechanic = true;
-      if (
-        g.flags.limeDeliveredToMechanic &&
-        g.flags.steelDeliveredToMechanic &&
-        g.flags.toolDeliveredToMechanic &&
-        !g.flags.oneWheelBuilt
-      ) {
-        g.flags.oneWheelBuilt = true;
-        const mech = g.traders.mechanic;
-        mech.inventory = mech.inventory.filter(
-          (x) => x !== "Steel Rim" && x !== "Tool Roll"
+function PhaseStrip({ game }) {
+  const phases = ["sunrise", "morning", "noon", "afternoon", "sunset"];
+  return (
+    <div className="phase-strip" aria-label="Day phases">
+      {phases.map((phase) => {
+        const meta = PHASE_COPY[phase];
+        return (
+          <div key={phase} className={`phase-node ${game.phase === phase ? "active" : ""}`}>
+            <span>{meta.icon}</span>
+            <small>{meta.title}</small>
+          </div>
         );
-        mech.inventory.push("Built Onewheel");
-        g.log.unshift("Ship Mechanic used Steel Rim & Tool Roll to build Built Onewheel.");
-      }
-    }
-  });
-  return g;
+      })}
+    </div>
+  );
 }
 
-function resolvePlayerOffers(game) {
-  let g = clone(game);
-  const accepted = [];
-  const rejected = [];
-  const usedPayment = new Set();
-  const valid = g.offers
-    .filter((o) => o.to && o.wantItem)
-    .map((o) => ({
-      from: "player", to: o.to, wantItem: o.wantItem,
-      offerItem: o.offerItem || null, sardines: Number(o.sardines || 0),
-    }));
-
-  for (const offer of valid) {
-    const player = g.traders.player;
-    const target = g.traders[offer.to];
-    if (!target.inventory.includes(offer.wantItem)) {
-      rejected.push({ ...offer, reason: "Target no longer has that item." }); continue;
-    }
-    if (!canAfford(player, offer.offerItem, offer.sardines)) {
-      rejected.push({ ...offer, reason: "You cannot pay that offer." }); continue;
-    }
-    if (offer.offerItem && usedPayment.has(offer.offerItem)) {
-      rejected.push({ ...offer, reason: "Payment item already used." }); continue;
-    }
-
-    const isCheat = offer.to === "mechanic" && offer.offerItem === "Bad Tangerine" && target.exactWant === "Lime Crate";
-    let exact = offer.offerItem === target.exactWant;
-    if (isCheat) exact = true;
-    else if (g.flags.cheated && offer.to === "mechanic") exact = false;
-
-    const price = reservePrice(target, offer.wantItem, g.heat, g.flags);
-    const paid = valueOf(offer.offerItem) + offer.sardines;
-    if (!exact && paid < price) {
-      rejected.push({
-        ...offer,
-        reason: `${target.name} wants at least value ${price} for ${labelShort(offer.wantItem)}.`,
-      });
-      continue;
-    }
-
-    if (offer.offerItem) {
-      player.inventory = player.inventory.filter((x) => x !== offer.offerItem);
-      target.inventory.push(offer.offerItem);
-      usedPayment.add(offer.offerItem);
-    }
-    if (offer.sardines > 0) {
-      player.sardines -= offer.sardines;
-      target.sardines += offer.sardines;
-    }
-    target.inventory = target.inventory.filter((x) => x !== offer.wantItem);
-    player.inventory.push(offer.wantItem);
-    accepted.push({ ...offer, exact, profit: valueOf(offer.wantItem) - valueOf(offer.offerItem) - offer.sardines });
-  }
-  g.outcome = accepted;
-  g.rejected = rejected;
-  g = applySpecialRules(g, accepted);
-  return g;
-}
-
-/* ---------- 热度 & 保鲜 ---------- */
-function updateHeat(game, npcOffers) {
-  const nextHeat = { ...game.heat };
-  const wanted = npcOffers.map((o) => o.wantItem);
-  const uniqueWanted = [...new Set(wanted)];
-  uniqueWanted.forEach((item) => {
-    nextHeat[item] = Math.min(MAX_HEAT, (nextHeat[item] || 0) + 1);
-  });
-  Object.keys(nextHeat).forEach((item) => {
-    if (!uniqueWanted.includes(item)) nextHeat[item] = Math.max(0, nextHeat[item] - 1);
-  });
-  return nextHeat;
-}
-
-function applyPerish(game) {
-  const g = clone(game);
-  const p = g.traders.player;
-  const timer = { ...g.perishTimer };
-  // 清理不在库存中的计时器
-  Object.keys(timer).forEach((item) => {
-    if (!p.inventory.includes(item)) delete timer[item];
-  });
-  // 先检查腐坏（timer>=2）
-  p.inventory = p.inventory.filter((item) => {
-    if (ITEMS[item]?.perishable && timer[item] >= 2) {
-      if (!p.inventory.includes("Spoiled Fish")) {
-        p.inventory.push("Spoiled Fish");
-      }
-      g.log.unshift(`${labelShort(item)} spoiled.`);
-      delete timer[item];
-      return false; // 移除该物品
-    }
-    return true;
-  });
-  // 对剩余易腐品增加计时
-  p.inventory.forEach((item) => {
-    if (ITEMS[item]?.perishable) {
-      timer[item] = (timer[item] || 0) + 1;
-    }
-  });
-  g.perishTimer = timer;
-  return g;
-}
-
-/* ---------- 事件与判型 ---------- */
-function buildEvents(game) {
-  if (game.ended) return [];
-  const p = game.traders.player;
-  const events = [];
-  if (
-    !game.flags.cheated &&
-    game.flags.orgeatDelivered &&
-    p.inventory.includes("Mai Tai") &&
-    p.inventory.some((x) => SOUP_FISH.includes(x) && x !== "Spoiled Fish")
-  ) {
-    events.push({
-      id: "grandma", title: "Grandma Supper",
-      text: "Bar Apprentice: “Bring the fish and the Mai Tai. Grandmother will love it.”",
-      actions: ["Go to Grandma Supper", "Stay"],
-    });
-  }
-  const auctionNW = game.flags.cheated ? 22 : 18;
-  if (
-    game.flags.oilDeliveredToVale &&
-    netWorth(p) >= auctionNW &&
-    p.inventory.includes("Blue Glass Marble")
-  ) {
-    events.push({
-      id: "auction", title: "Vale Auction",
-      text: `Vale: “Auction open. Minimum bid for sunflower: ${game.flags.cheated ? 20 : 16} sardines.”`,
-      actions: ["Enter Auction", "Stay"],
-    });
-  }
-  if (
-    !game.flags.raced &&
-    (p.inventory.includes("Built Onewheel") || p.inventory.includes("Auction Onewheel")) &&
-    p.inventory.includes("Mai Tai") &&
-    (p.sardines >= 6 || p.inventory.some((x) => valueOf(x) >= 6))
-  ) {
-    events.push({
-      id: "cliff", title: "Cliff Race",
-      text: "Clown: “Race me to the cliff. Winner sees the sunflower field.” (One attempt only)",
-      actions: ["Race", "Decline"],
-    });
-  }
-  return events.slice(0, 1); // 每轮只显示一条路线
-}
-
-function classify(game) {
-  const s = game.stats;
-  const scores = {
-    "The Clean Knife": s.exactDeliveries * 4 - s.overpays,
-    "The Spread Reader": s.profitableFlips * 5 + Math.max(0, s.totalProfit),
-    "The Whale": s.overpays * 4,
-    "The Bagholder": game.traders.player.inventory.includes("Bad Tangerine") ? 5 : 0,
-    "The Defector": game.flags.cheated && s.totalProfit > 0 ? 10 : 0,
-    "The Market Maker": s.tradeCount >= 6 ? 5 : 0,
-  };
-  const name = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
-  const desc = {
-    "The Clean Knife": "Precision deliveries, minimal waste.",
-    "The Spread Reader": "Profited from asset conversion.",
-    "The Whale": "Paid heavily to force outcomes.",
-    "The Bagholder": "Held toxic assets too long.",
-    "The Defector": "Cheated and survived the market's fury.",
-    "The Market Maker": "High trade volume, liquidity provider.",
-  };
-  return { name, description: desc[name] || "Unknown" };
-}
-
-function resetOffers() {
-  return [
-    { to: "", wantItem: "", offerItem: "", sardines: 0 },
-    { to: "", wantItem: "", offerItem: "", sardines: 0 },
-    { to: "", wantItem: "", offerItem: "", sardines: 0 },
-  ];
-}
-
-function processRound(next) {
-  const npcOffers = generateNPCOffers(next);
-  next.npcIntent = npcOffers.slice(0, 3);
-  next = resolvePlayerOffers(next);
-  next = applyNPCTrades(next, npcOffers);
-  next.heat = updateHeat(next, npcOffers);
-  next = applyPerish(next);
-  next.pendingEvents = buildEvents(next);
-  if (!next.pendingEvents.length) {
-    next.round += 1;
-    if (next.round > next.maxRounds) {
-      next.ended = true; next.winner = false;
-      next.finalText = "The market closes. The sunflower remains out of reach.";
-      next.style = classify(next);
-    }
-  }
-  next.log.unshift(`Round ${next.round} resolved.`);
-  return next;
-}
-
-/* ---------- 组件 ---------- */
 function Avatar({ trader, selected, onClick }) {
   return (
     <button className={`avatar ${selected ? "selected" : ""}`} onClick={onClick}>
@@ -499,362 +47,383 @@ function Avatar({ trader, selected, onClick }) {
   );
 }
 
-function TraderDetail({ trader }) {
+function TraderDetail({ trader, profile, relationship, intel }) {
   return (
-    <div className="card detail-card">
+    <section className="card detail-card">
       <div className="detail-head">
         <div className="big-icon">{trader.icon}</div>
-        <div>
+        <div className="detail-copy">
           <h2>{trader.name}</h2>
-          <div className="muted">Role: {trader.role}</div>
-          <div className="muted">Need: {trader.need}</div>
-          <div className="muted">Sardines: {SARDINE} {trader.sardines}</div>
+          <div className="muted">{trader.role}</div>
+          {profile && <div className="tag">Observed style: {intel?.style || "not yet understood"}</div>}
+          {profile && <div className="small muted">Familiarity: {relationship}</div>}
         </div>
       </div>
-      <div className="section-title">Inventory</div>
+      <div className="section-title">Market-facing stock</div>
       <div className="chips">
         {trader.inventory.length
-          ? trader.inventory.map((item) => (
-              <span className="chip" key={`${trader.id}-${item}`}>{label(item)}</span>
-            ))
-          : <span className="muted">No items</span>}
+          ? trader.inventory.map((item) => <span className="chip" key={`${trader.id}-${item}`}>{itemLabel(item)}</span>)
+          : <span className="muted">Nothing visible.</span>}
       </div>
-    </div>
+      {intel?.clue && <div className="intel-note">📝 {intel.clue}</div>}
+    </section>
   );
 }
 
-function OfferRow({ index, offer, setOffer, traders, usedItems, playerInventory }) {
-  const target = traders[offer.to];
+function OrderRow({ index, order, setOrder, traders, playerInventory, usedItems, disabled }) {
+  const target = traders[order.to];
   return (
     <div className="offer-row">
-      <select value={offer.to} onChange={(e) => setOffer(index, { to: e.target.value, wantItem: "", offerItem: "", sardines: 0 })}>
-        <option value="">Target</option>
-        {Object.values(traders).filter((t) => t.id !== "player").map((t) => (
-          <option key={t.id} value={t.id}>{t.icon} {t.name}</option>
+      <select
+        value={order.to}
+        disabled={disabled}
+        onChange={(event) => setOrder(index, { to: event.target.value, wantItem: "", offerItem: "", sardines: 0 })}
+      >
+        <option value="">Counterparty</option>
+        {Object.values(traders).filter((trader) => trader.id !== "player").map((trader) => (
+          <option key={trader.id} value={trader.id}>{trader.icon} {trader.name}</option>
         ))}
       </select>
-      <select value={offer.wantItem} onChange={(e) => setOffer(index, { ...offer, wantItem: e.target.value })}>
-        <option value="">Want item</option>
-        {target?.inventory.map((item) => <option key={item} value={item}>{label(item)}</option>)}
+      <select
+        value={order.wantItem}
+        disabled={disabled || !target}
+        onChange={(event) => setOrder(index, { ...order, wantItem: event.target.value })}
+      >
+        <option value="">Want</option>
+        {target?.inventory.map((item) => <option key={item} value={item}>{itemLabel(item)}</option>)}
       </select>
-      <select value={offer.offerItem} onChange={(e) => setOffer(index, { ...offer, offerItem: e.target.value })}>
-        <option value="">Offer no item</option>
-        {playerInventory.filter((i) => !usedItems.includes(i) || i === offer.offerItem).map((i) => (
-          <option key={i} value={i}>{label(i)}</option>
-        ))}
+      <select
+        value={order.offerItem}
+        disabled={disabled}
+        onChange={(event) => setOrder(index, { ...order, offerItem: event.target.value })}
+      >
+        <option value="">No barter item</option>
+        {playerInventory
+          .filter((item) => !usedItems.includes(item) || item === order.offerItem)
+          .map((item) => <option key={item} value={item}>{itemLabel(item)}</option>)}
       </select>
-      <input type="number" min="0" value={offer.sardines}
-        onChange={(e) => setOffer(index, { ...offer, sardines: Math.max(0, Number(e.target.value || 0)) })} />
+      <label className="sardine-input">
+        <span>🥫</span>
+        <input
+          type="number"
+          min="0"
+          disabled={disabled}
+          value={order.sardines}
+          onChange={(event) => setOrder(index, { ...order, sardines: Math.max(0, Number(event.target.value || 0)) })}
+        />
+      </label>
     </div>
   );
 }
 
-function RouteBoard({ game }) {
-  const p = game.traders.player;
-  const cheated = game.flags.cheated;
+function MarketBoard({ game }) {
+  const board = visibleMarketBoard(game);
   return (
-    <div className="card">
-      <div className="section-title">Route Board</div>
-      <div className="route">
-        <strong>Grandma Supper</strong>
-        <div>{game.flags.orgeatDelivered ? "✓" : "□"} Orgeat delivered</div>
-        <div>{p.inventory.includes("Mai Tai") ? "✓" : "□"} Mai Tai held</div>
-        <div>{
-          p.inventory.some((x) => SOUP_FISH.includes(x) && x !== "Spoiled Fish") ? "✓" : "□"
-        } Soup fish held</div>
-        {cheated && <div className="muted">❌ Closed (cheat)</div>}
+    <section className="card market-card">
+      <div className="section-title">Noon board · committed before opening</div>
+      <p className="muted board-note">These are real NPC intentions for today. They will not be rerolled when you clear the market.</p>
+      <div className="stack">
+        {board.length ? board.map((order, index) => (
+          <div className="mini-card" key={`${order.from}-${order.wantItem}-${index}`}>
+            <div><strong>{game.traders[order.from].icon} {game.traders[order.from].name}</strong> bids {order.sardines}🥫 for {labelShort(order.wantItem)}</div>
+            <div className="small muted">Current holder: {game.traders[order.to].name}</div>
+          </div>
+        )) : <div className="muted">No NPC order clears at current prices. That is also market information.</div>}
       </div>
-      <div className="route">
-        <strong>Vale Auction</strong>
-        <div>{game.flags.oilDeliveredToVale ? "✓" : "□"} Oil delivered</div>
-        <div>{netWorth(p) >= (cheated ? 22 : 18) ? "✓" : "□"} Net Worth ≥ {cheated ? 22 : 18}</div>
-        <div>{p.inventory.includes("Blue Glass Marble") ? "✓" : "□"} Blue Glass Marble held</div>
-        <div className="small">Min bid: {cheated ? 20 : 16} 🥫</div>
+    </section>
+  );
+}
+
+function TransactionTape({ game }) {
+  const tape = [...game.history].reverse().slice(0, 12);
+  return (
+    <section className="card">
+      <div className="section-title">Public tape</div>
+      <div className="stack">
+        {tape.length ? tape.map((trade) => (
+          <div className="tape-row" key={trade.id}>
+            <span>D{trade.day}</span>
+            <span>{game.traders[trade.from]?.icon} → {game.traders[trade.to]?.icon}</span>
+            <span>{labelShort(trade.item)}</span>
+            <span>{trade.paymentItem ? `${labelShort(trade.paymentItem)} + ` : ""}{trade.sardines}🥫</span>
+          </div>
+        )) : <div className="muted">No public trades yet.</div>}
       </div>
-      <div className="route">
-        <strong>Cliff Race</strong>
-        <div>{(p.inventory.includes("Built Onewheel") || p.inventory.includes("Auction Onewheel")) ? "✓" : "□"} Onewheel held</div>
-        <div>{p.inventory.includes("Mai Tai") ? "✓" : "□"} Mai Tai held</div>
-        <div>{p.sardines >= 6 || p.inventory.some((x) => valueOf(x) >= 6) ? "✓" : "□"} Stake available</div>
-        <div>{game.flags.raced ? "❌ Already raced" : "✓ Available"}</div>
-      </div>
-      <div className="route">
-        <strong>Ship Mechanic Production</strong>
-        <div>{game.flags.limeDeliveredToMechanic ? "✓" : "□"} Lime Crate delivered</div>
-        <div>{game.flags.steelDeliveredToMechanic ? "✓" : "□"} Steel Rim delivered</div>
-        <div>{game.flags.toolDeliveredToMechanic ? "✓" : "□"} Tool Roll delivered</div>
-        <div>{game.flags.oneWheelBuilt ? "✓" : "□"} Onewheel built</div>
-        {cheated && <div className="muted">❌ Mechanic refuses (cheat)</div>}
-      </div>
-    </div>
+    </section>
   );
 }
 
 function EventPanel({ game, onChoose }) {
+  const [bid, setBid] = useState(16);
   if (!game.pendingEvents.length) return null;
+  const event = game.pendingEvents[0];
   return (
-    <div className="event-box">
-      <h2>Route available</h2>
-      {game.pendingEvents.map((ev) => (
-        <div className="event-card" key={ev.id}>
-          <h3>{ev.title}</h3>
-          <p>{ev.text}</p>
-          <div className="event-actions">
-            {ev.actions.map((a) => (
-              <button className="btn gold" key={a} onClick={() => onChoose(ev.id, a)}>{a}</button>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
+    <section className="event-box">
+      <div className="eyebrow">A lead became actionable</div>
+      <h2>{event.title}</h2>
+      <p>{event.text}</p>
+      {event.id === "auction" && (
+        <label className="bid-box">
+          Your bid
+          <input type="number" min="0" value={bid} onChange={(e) => setBid(Number(e.target.value || 0))} />
+          <span>🥫</span>
+        </label>
+      )}
+      <div className="event-actions">
+        {event.actions.map((action) => (
+          <button
+            className={`btn ${action === event.actions[0] ? "gold" : "ghost"}`}
+            key={action}
+            onClick={() => onChoose(event.id, action, bid)}
+          >
+            {action}
+          </button>
+        ))}
+      </div>
+    </section>
   );
 }
 
-/* ---------- 根组件 ---------- */
-export default function App() {
-  const [game, setGame] = useState(() => {
-    let g = buildGame();
-    g.npcIntent = generateNPCOffers(g).slice(0, 3);
-    return g;
-  });
+function ActionPanel({ game, selectedId, onAction }) {
+  const selected = game.traders[selectedId];
+  const active = ["morning", "afternoon"].includes(game.phase) && game.actionsRemaining > 0 && selectedId !== "player";
+  return (
+    <section className="card">
+      <div className="section-title">Free-time actions</div>
+      <p className="muted">Morning and afternoon are free-form, but not infinite. Each meaningful action consumes time.</p>
+      <div className="action-grid">
+        <button className="btn" disabled={!active} onClick={() => onAction("talk", selectedId)}>
+          Talk to {selectedId === "player" ? "someone" : selected.name}
+        </button>
+        <button className="btn" disabled={!active} onClick={() => onAction("investigate", selectedId)}>
+          Investigate {selectedId === "player" ? "someone" : selected.name}
+        </button>
+      </div>
+      <div className="small muted action-count">Time slots left this phase: {game.actionsRemaining}</div>
+    </section>
+  );
+}
 
+function LeadsPanel({ game }) {
+  const entries = Object.entries(game.intel);
+  return (
+    <section className="card">
+      <div className="section-title">Leads</div>
+      <div className="stack">
+        {entries.length ? entries.map(([key, value]) => (
+          <div className="mini-card" key={key}>{value}</div>
+        )) : <div className="muted">You do not know enough yet to call anything a lead.</div>}
+      </div>
+    </section>
+  );
+}
+
+function phaseButton(game) {
+  if (game.phase === "sunrise") return "Begin morning →";
+  if (game.phase === "morning") return "Commit orders & go to noon →";
+  if (game.phase === "noon" && !game.marketResolved) return "Clear the noon market";
+  if (game.phase === "noon") return "Leave the market →";
+  if (game.phase === "afternoon") return "Go to sunset →";
+  return `Close Day ${game.day} →`;
+}
+
+export default function App() {
+  const [game, setGame] = useState(() => createGame());
   const traders = game.traders;
   const player = traders.player;
-  const selectedTrader = traders[game.selected] || player;
-  const usedItems = game.offers.map((o) => o.offerItem).filter(Boolean);
-  const plannedSardines = game.offers.reduce((s, o) => s + Number(o.sardines || 0), 0);
+  const selected = traders[game.selected] || player;
+  const phase = PHASE_COPY[game.phase];
+  const usedItems = game.playerOrders.map((order) => order.offerItem).filter(Boolean);
+  const plannedSardines = game.playerOrders.reduce((sum, order) => sum + Number(order.sardines || 0), 0);
 
-  function updateOffer(i, next) {
-    const copy = [...game.offers];
-    copy[i] = next;
-    setGame({ ...game, offers: copy });
+  const selectedIntel = useMemo(() => ({
+    style: game.intel[`${selected.id}:style`],
+    clue: game.intel[`${selected.id}:clue`],
+  }), [game.intel, selected.id]);
+
+  function setSelected(id) {
+    setGame((current) => ({ ...current, selected: id }));
+  }
+
+  function updateOrder(index, next) {
+    setGame((current) => {
+      const orders = [...current.playerOrders];
+      orders[index] = next;
+      return { ...current, playerOrders: orders };
+    });
+  }
+
+  function handlePrimaryAction() {
+    if (game.ended || game.pendingEvents.length) return;
+    if (game.phase === "morning") {
+      const chosen = game.playerOrders.map((order) => order.offerItem).filter(Boolean);
+      if (chosen.length !== unique(chosen).length) {
+        window.alert("You cannot commit the same payment item to two noon orders.");
+        return;
+      }
+      if (plannedSardines > player.sardines) {
+        window.alert("Your committed noon orders require more sardines than you currently have.");
+        return;
+      }
+    }
+
+    if (game.phase === "noon" && !game.marketResolved) {
+      setGame((current) => resolveNoonMarket(current));
+      return;
+    }
+    setGame((current) => advancePhase(current));
+  }
+
+  function handleFreeAction(action, targetId) {
+    setGame((current) => performFreeAction(current, action, targetId));
+  }
+
+  function handleEvent(id, action, bid) {
+    setGame((current) => resolveEvent(current, id, action, bid));
   }
 
   function restart() {
-    let g = buildGame();
-    g.npcIntent = generateNPCOffers(g).slice(0, 3);
-    setGame(g);
+    setGame(createGame());
   }
 
-  function submitRound(pass = false) {
-    if (game.ended || game.pendingEvents.length) return;
-    if (!pass && plannedSardines > player.sardines) return alert("Too many sardines planned.");
-    const chosen = game.offers.map((o) => o.offerItem).filter(Boolean);
-    if (!pass && chosen.length !== unique(chosen).length) return alert("Cannot offer same item twice.");
-    let next = clone(game);
-    if (pass) next.offers = resetOffers();
-    next = processRound(next);
-    next.offers = resetOffers();
-    setGame(next);
-  }
-
-  function chooseEvent(id, action) {
-    let next = clone(game);
-    const p = next.traders.player;
-
-    if (id === "grandma" && action === "Go to Grandma Supper") {
-      next.ended = true; next.winner = true;
-      p.inventory.push("Sunflower");
-      next.finalText = "You go after close with the fish and the Mai Tai. The grandmother gives you a sunflower from her vase.";
-    }
-    else if (id === "auction" && action === "Enter Auction") {
-      const reserve = next.flags.cheated ? 20 : 16;
-      if (p.sardines < reserve) {
-        alert(`You need at least ${reserve} sardines to bid.`);
-        return;
-      }
-      const bidStr = prompt(`Auction reserve: ${reserve} sardines. How much do you bid? (You have ${p.sardines})`);
-      if (bidStr === null) return; // 用户取消
-      const amount = Number(bidStr);
-      if (isNaN(amount) || amount < reserve || amount > p.sardines) {
-        alert("Invalid bid. Auction lost.");
-        if (p.sardines >= 10) {
-          p.sardines -= 10;
-          if (!p.inventory.includes("Auction Onewheel")) p.inventory.push("Auction Onewheel");
-          next.log.unshift("Lost auction, bought Auction Onewheel for 10 sardines.");
-        } else {
-          next.log.unshift("Lost auction and couldn't afford the onewheel.");
-        }
-        next.pendingEvents = [];
-        next.offers = resetOffers();
-        next.round += 1;
-        setGame(next);
-        return;
-      }
-      p.sardines -= amount;
-      p.inventory.push("Sunflower");
-      next.ended = true; next.winner = true;
-      next.finalText = "Vale awards you the sunflower at auction.";
-    }
-    else if (id === "cliff" && action === "Race") {
-      next.flags.raced = true;
-      p.inventory = p.inventory.filter((x) => x !== "Mai Tai");
-      p.inventory = p.inventory.filter((x) => x !== "Built Onewheel" && x !== "Auction Onewheel");
-      const won = Math.random() < (netWorth(p) >= 14 ? 0.75 : 0.55);
-      if (won) {
-        p.inventory.push("Sunflower");
-        next.ended = true; next.winner = true;
-        next.finalText = "You beat the clown through the cliff path. Sunflowers everywhere.";
-      } else {
-        if (p.sardines >= 6) p.sardines -= 6;
-        else {
-          const stake = p.inventory.find((x) => valueOf(x) >= 6);
-          if (stake) p.inventory = p.inventory.filter((x) => x !== stake);
-        }
-        next.log.unshift("Lost the race. Mai Tai and onewheel gone.");
-        next.pendingEvents = [];
-        next.offers = resetOffers();
-        next.round += 1;
-        setGame(next);
-        return;
-      }
-    }
-
-    if (!next.ended && (action === "Stay" || action === "Decline")) {
-      next.pendingEvents = [];
-      next.offers = resetOffers();
-      next.round += 1;
-    }
-    if (next.ended) {
-      next.style = classify(next);
-      next.offers = resetOffers();
-    }
-    setGame(next);
+  function clearOrders() {
+    setGame((current) => ({ ...current, playerOrders: resetOrders() }));
   }
 
   return (
-    <div className="app-shell">
+    <main className="app-shell">
       <div className="container">
         <header className="hero">
           <div>
-            <h1>🌻 Sunflower Market</h1>
-            <p>Click an avatar, read the whispers, then make up to 3 offers. You are the needle that moves this market.</p>
+            <div className="eyebrow">Sunflower · living market prototype</div>
+            <h1>🌻 Day {game.day} / {game.maxDays}</h1>
+            <p>{phase.icon} <strong>{phase.title}</strong> — {phase.subtitle}</p>
           </div>
-          <div className="hero-actions">
-            <button className="btn ghost" onClick={restart}>New Game</button>
-            {!game.ended && !game.pendingEvents.length && (
-              <>
-                <button className="btn ghost" onClick={() => submitRound(true)}>Pass</button>
-                <button className="btn gold" onClick={() => submitRound(false)}>Resolve</button>
-              </>
-            )}
-          </div>
+          <button className="btn ghost" onClick={restart}>New Game</button>
         </header>
 
-        <div className="top-bar">
-          <span className="pill">Round {game.round}/{game.maxRounds}</span>
-          <span className="pill">{SARDINE} {player.sardines}</span>
-          <span className="pill">Net Worth: {netWorth(player)}</span>
-          {game.flags.cheated && <span className="pill bad">⚠ CHEAT</span>}
+        <div className="sticky-status">
+          <span>Day {game.day}</span>
+          <span>{phase.icon} {phase.title}</span>
+          <span>{SARDINE} {player.sardines}</span>
+          <span>NW {netWorth(player)}</span>
         </div>
 
+        <PhaseStrip game={game} />
+
         {game.ended && (
-          <div className={`end-box ${game.winner ? "win-box" : "lose-box"}`}>
-            <h2>{game.winner ? "🌻 You got the sunflower." : "Market closed."}</h2>
+          <section className={`end-box ${game.winner ? "win-box" : "lose-box"}`}>
+            <h2>{game.winner ? "🌻 You acquired the sunflower." : "The final sunset passed."}</h2>
             <p>{game.finalText}</p>
-            {game.style && (
-              <div className="style-box">
-                <h3>{game.style.name}</h3>
-                <p>{game.style.description}</p>
-              </div>
-            )}
-          </div>
+            {game.style && <div className="style-box"><strong>{game.style.name}</strong><p>{game.style.description}</p></div>}
+          </section>
         )}
 
-        <EventPanel game={game} onChoose={chooseEvent} />
+        <EventPanel game={game} onChoose={handleEvent} />
 
         <section className="main-layout">
           <div className="left-col">
             <div className="avatar-row">
-              {Object.values(traders).map((t) => (
-                <Avatar key={t.id} trader={t} selected={game.selected === t.id}
-                  onClick={() => setGame({ ...game, selected: t.id })} />
+              {Object.values(traders).map((trader) => (
+                <Avatar
+                  key={trader.id}
+                  trader={trader}
+                  selected={selected.id === trader.id}
+                  onClick={() => setSelected(trader.id)}
+                />
               ))}
             </div>
-            <TraderDetail trader={selectedTrader} />
 
-            {!game.ended && !game.pendingEvents.length && (
-              <>
-                <div className="card">
-                  <div className="section-title">Market whispers (first 3 NPCs)</div>
-                  <div className="stack">
-                    {game.npcIntent.length ? game.npcIntent.map((o, i) => (
-                      <div className="mini-card" key={i}>
-                        {traders[o.from]?.icon} {traders[o.from]?.name} wants {labelShort(o.wantItem)}
-                        {o.offerItem ? ` for ${labelShort(o.offerItem)}` : ""}{o.sardines > 0 ? ` +${o.sardines}🥫` : ""}
-                      </div>
-                    )) : <div className="muted">No open calls yet.</div>}
-                  </div>
+            <TraderDetail
+              trader={selected}
+              profile={NPC_PROFILES[selected.id]}
+              relationship={game.relationships[selected.id] || 0}
+              intel={selectedIntel}
+            />
+
+            {!game.ended && <ActionPanel game={game} selectedId={selected.id} onAction={handleFreeAction} />}
+
+            <MarketBoard game={game} />
+
+            {!game.ended && game.phase === "morning" && (
+              <section className="card order-card">
+                <div className="section-title">Your noon orders</div>
+                <p className="muted board-note">Prototype rule: up to three committed offers. These lock when you leave Morning.</p>
+                <div className="stack">
+                  {game.playerOrders.map((order, index) => (
+                    <OrderRow
+                      key={index}
+                      index={index}
+                      order={order}
+                      setOrder={updateOrder}
+                      traders={traders}
+                      playerInventory={player.inventory}
+                      usedItems={usedItems}
+                      disabled={game.phase !== "morning"}
+                    />
+                  ))}
                 </div>
-                <div className="card">
-                  <div className="section-title">Your offers</div>
-                  <div className="stack">
-                    {game.offers.map((offer, i) => (
-                      <OfferRow key={i} index={i} offer={offer} setOffer={updateOffer}
-                        traders={traders} usedItems={usedItems.filter((_, idx) => idx !== i)}
-                        playerInventory={player.inventory} />
-                    ))}
-                  </div>
-                  <div className="small muted">Planned sardines: {SARDINE} {plannedSardines} / {player.sardines}</div>
+                <div className="order-footer">
+                  <span className="small muted">Committed cash: {plannedSardines} / {player.sardines}🥫</span>
+                  <button className="btn ghost" onClick={clearOrders}>Clear</button>
                 </div>
-              </>
+              </section>
             )}
 
-            <div className="card">
-              <div className="section-title">Round outcome</div>
-              <div className="stack">
-                {game.outcome.length ? game.outcome.map((o, i) => (
-                  <div className="mini-card" key={i}>
-                    {traders[o.from].icon} {traders[o.from].name} took {labelShort(o.wantItem)} from{" "}
-                    {traders[o.to].icon} {traders[o.to].name}
-                  </div>
-                )) : <div className="muted">No round resolved yet.</div>}
-              </div>
-            </div>
-            <div className="card">
-              <div className="section-title">Failed bids</div>
-              <div className="stack">
-                {game.rejected.length ? game.rejected.map((r, i) => (
-                  <div className="mini-card" key={i}>
-                    Wanted {labelShort(r.wantItem)} from {traders[r.to]?.name}
-                    <div className="muted small">{r.reason}</div>
-                  </div>
-                )) : <div className="muted">No failed bids yet.</div>}
-              </div>
-            </div>
+            {game.phase === "noon" && !game.marketResolved && (
+              <section className="card noon-callout">
+                <div className="section-title">The market is open</div>
+                <p>Your morning orders and the NPC orders above are now committed. Clearing moves actual inventory and sardines.</p>
+              </section>
+            )}
+
+            <TransactionTape game={game} />
+
+            {!!game.rejected.length && (
+              <section className="card">
+                <div className="section-title">Orders that did not clear</div>
+                <div className="stack">
+                  {game.rejected.map((order, index) => (
+                    <div className="mini-card" key={index}>
+                      {labelShort(order.wantItem)} from {traders[order.to]?.name}
+                      <div className="small muted">{order.reason}</div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
 
-          <div className="right-col">
-            <RouteBoard game={game} />
-            <div className="card">
-              <div className="section-title">Market Diagnosis</div>
-              <div className="diagnosis">
-                <div>Exact deliveries: {game.stats.exactDeliveries}</div>
-                <div>Profitable flips: {game.stats.profitableFlips}</div>
-                <div>Overpays: {game.stats.overpays}</div>
-                <div>Trades made: {game.stats.tradeCount}</div>
-                <div>Cheats: {game.stats.cheats || 0}</div>
-                <div>Net hidden profit: {game.stats.totalProfit}</div>
+          <aside className="right-col">
+            <LeadsPanel game={game} />
+
+            <section className="card">
+              <div className="section-title">Today so far</div>
+              <div className="stat-grid">
+                <div><span>Public trades</span><strong>{game.history.filter((trade) => trade.day === game.day).length}</strong></div>
+                <div><span>Free-time slots</span><strong>{game.actionsRemaining}</strong></div>
+                <div><span>Known clues</span><strong>{Object.keys(game.intel).length}</strong></div>
+                <div><span>Market heat</span><strong>{Object.values(game.heat).reduce((sum, n) => sum + n, 0)}</strong></div>
               </div>
-            </div>
-            <div className="card">
-              <div className="section-title">Market Heat</div>
-              <div className="stack">
-                {Object.entries(game.heat).map(([item, h]) => (
-                  <div key={item} className="mini-card">{labelShort(item)} · Heat {h}</div>
-                ))}
-                {!Object.keys(game.heat).length && <div className="muted">No heat yet.</div>}
-              </div>
-            </div>
-            <div className="card log-card">
-              <div className="section-title">Log</div>
+            </section>
+
+            <section className="card log-card">
+              <div className="section-title">Harbour log</div>
               <div className="log-stack">
-                {game.log.map((line, i) => <div className="log-line" key={i}>{line}</div>)}
+                {game.log.map((line, index) => <div className="log-line" key={`${line}-${index}`}>{line}</div>)}
               </div>
-            </div>
-          </div>
+            </section>
+          </aside>
         </section>
+
+        {!game.ended && !game.pendingEvents.length && (
+          <div className="bottom-action">
+            <button className="btn gold primary-action" onClick={handlePrimaryAction}>
+              {phaseButton(game)}
+            </button>
+          </div>
+        )}
       </div>
-    </div>
+    </main>
   );
 }
