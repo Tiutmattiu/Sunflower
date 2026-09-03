@@ -2,23 +2,8 @@ import { ITEMS, NPC_PROFILES, SOCIAL_GRAPH } from "./gameData";
 
 const itemValue = (item) => ITEMS[item]?.value ?? 0;
 
-function goalOptions(goal) {
-  return [
-    { item: goal.item, utility: goal.utility, likelySources: goal.likelySources || [] },
-    ...(goal.substitutes || []).map((substitute) => ({
-      item: substitute.item,
-      utility: substitute.utility,
-      likelySources: substitute.likelySources || goal.likelySources || [],
-    })),
-  ];
-}
-
-function goalMatchFor(npcId, item) {
-  for (const goal of NPC_PROFILES[npcId]?.goals || []) {
-    const option = goalOptions(goal).find((candidate) => candidate.item === item);
-    if (option) return { goal, option };
-  }
-  return null;
+function goalFor(npcId, item) {
+  return (NPC_PROFILES[npcId]?.goals || []).find((goal) => goal.item === item) || null;
 }
 
 function contactBetween(fromId, toId) {
@@ -27,25 +12,14 @@ function contactBetween(fromId, toId) {
 
 export function privateUtility(game, npcId, item) {
   const profile = NPC_PROFILES[npcId];
-  const match = goalMatchFor(npcId, item);
-  if (!profile || !match) return 0;
+  const goal = goalFor(npcId, item);
+  if (!profile || !goal) return 0;
 
-  let utility = match.option.utility || 0;
-
-  // Owning a substitute does not erase the primary need, but it lowers the pressure to upgrade.
-  if (item === match.goal.item) {
-    const ownedSubstitute = (match.goal.substitutes || []).find((substitute) =>
-      game.traders[npcId]?.inventory.includes(substitute.item)
-    );
-    if (ownedSubstitute) {
-      utility = Math.max(1, utility - Math.ceil((ownedSubstitute.utility || 0) * 0.5));
-    }
-  }
-
-  if (profile.departureDay && match.goal.urgencyPerDay) {
+  let utility = goal.utility || 0;
+  if (profile.departureDay && goal.urgencyPerDay) {
     const daysLeft = Math.max(0, profile.departureDay - game.day);
     const urgencyWindow = Math.max(0, 5 - daysLeft);
-    utility += urgencyWindow * match.goal.urgencyPerDay;
+    utility += urgencyWindow * goal.urgencyPerDay;
   }
   return utility;
 }
@@ -136,10 +110,6 @@ function knownSourcesForItem(game, buyerId, item, likelySources) {
   return [...sources.entries()].map(([sellerId, basis]) => ({ sellerId, basis }));
 }
 
-function primaryGoalCovered(buyer, goal) {
-  return buyer.inventory.includes(goal.item);
-}
-
 export function planNPCMarket(game) {
   const plans = [];
 
@@ -149,30 +119,26 @@ export function planNPCMarket(game) {
 
     const candidates = [];
     (NPC_PROFILES[buyerId].goals || []).forEach((goal) => {
-      if (primaryGoalCovered(buyer, goal)) return;
+      if (buyer.inventory.includes(goal.item)) return;
 
-      goalOptions(goal).forEach((option) => {
-        if (buyer.inventory.includes(option.item)) return;
+      knownSourcesForItem(game, buyerId, goal.item, goal.likelySources || []).forEach(({ sellerId, basis }) => {
+        const seller = game.traders[sellerId];
+        if (!seller) return;
 
-        knownSourcesForItem(game, buyerId, option.item, option.likelySources).forEach(({ sellerId, basis }) => {
-          const seller = game.traders[sellerId];
-          if (!seller) return;
-
-          const ask = sellerAsk(game, sellerId, option.item);
-          const max = buyerMax(game, buyerId, option.item);
-          const surplus = max - ask;
-          if (ask <= buyer.sardines && surplus >= 0) {
-            candidates.push({
-              from: buyerId,
-              to: sellerId,
-              wantItem: option.item,
-              sardines: ask,
-              score: surplus + privateUtility(game, buyerId, option.item),
-              reason: goal.reason,
-              knowledgeBasis: basis,
-            });
-          }
-        });
+        const ask = sellerAsk(game, sellerId, goal.item);
+        const max = buyerMax(game, buyerId, goal.item);
+        const surplus = max - ask;
+        if (ask <= buyer.sardines && surplus >= 0) {
+          candidates.push({
+            from: buyerId,
+            to: sellerId,
+            wantItem: goal.item,
+            sardines: ask,
+            score: surplus + privateUtility(game, buyerId, goal.item),
+            reason: goal.reason,
+            knowledgeBasis: basis,
+          });
+        }
       });
     });
 
