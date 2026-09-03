@@ -1,10 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./index.css";
 import {
   FORMS,
   INFO_BASE_PRICE,
   ITEMS,
-  NPC_PROFILES,
   PHASE_COPY,
   PROXY_FEE,
   SARDINE,
@@ -18,7 +17,6 @@ import {
   informationBuyers,
   knownItemsForTrader,
   labelShort,
-  netWorth,
   performFreeAction,
   repayObligation,
   requestMarketProxy,
@@ -30,483 +28,464 @@ import {
 } from "./gameEngine";
 import { visibleMarketBoard, visibleSellListings } from "./npcAI";
 
+const SAVE_KEY = "sunflower-living-market-v4";
+const phases = ["sunrise", "morning", "noon", "afternoon", "sunset"];
+
+function loadGame() {
+  try {
+    const saved = window.localStorage.getItem(SAVE_KEY);
+    if (!saved) return createGame();
+    const parsed = JSON.parse(saved);
+    if (!parsed?.game?.traders?.player || parsed.version !== 4) return createGame();
+    return parsed.game;
+  } catch {
+    return createGame();
+  }
+}
+
+function hadSavedGame() {
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(SAVE_KEY) || "null");
+    return Boolean(parsed?.version === 4 && parsed?.game?.traders?.player);
+  } catch {
+    return false;
+  }
+}
+
 function itemName(item) {
   if (!item) return "nothing";
   return `${ITEMS[item]?.icon || "📦"} ${item}`;
 }
 
-function itemWithReference(item) {
-  if (!item) return "nothing";
-  const data = ITEMS[item];
-  const price = Number.isFinite(data?.value) ? `ref ${data.value}🥫` : "unpriced";
-  return `${data?.icon || "📦"} ${item} · ${price}`;
+function itemReference(item) {
+  const value = ITEMS[item]?.value;
+  return Number.isFinite(value) ? `${value}🥫 ref` : "unpriced";
+}
+
+function relationshipLabel(value) {
+  if (value <= 0) return "stranger";
+  if (value === 1) return "recognises you";
+  if (value === 2) return "familiar";
+  return "knows you well";
+}
+
+function phaseButton(game) {
+  if (game.phase === "sunrise") return "Begin morning →";
+  if (game.phase === "morning") {
+    const count = game.playerOrders.filter((order) => order.to && order.wantItem).length;
+    return count ? `Lock ${count} order${count === 1 ? "" : "s"} & open noon →` : "Open noon without an order →";
+  }
+  if (game.phase === "noon" && !game.marketResolved) return "Settle the locked noon market →";
+  if (game.phase === "noon") return "Leave noon →";
+  if (game.phase === "afternoon") return "Go to sunset →";
+  return `Close Day ${game.day} →`;
 }
 
 function PhaseStrip({ game }) {
-  const phases = ["sunrise", "morning", "noon", "afternoon", "sunset"];
   return (
     <div className="phase-strip" aria-label="Day phases">
-      {phases.map((phase) => {
-        const meta = PHASE_COPY[phase];
-        return (
-          <div key={phase} className={`phase-node ${game.phase === phase ? "active" : ""}`}>
-            <span>{meta.icon}</span>
-            <small>{meta.title}</small>
+      {phases.map((id) => (
+        <div key={id} className={`phase-node ${game.phase === id ? "active" : ""}`}>
+          <span>{PHASE_COPY[id].icon}</span>
+          <small>{PHASE_COPY[id].title}</small>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function RightNow({ game }) {
+  let text = "";
+  if (game.phase === "sunrise") text = "No trade has started. Open the morning when you are ready.";
+  if (game.phase === "morning") text = game.actionsRemaining > 0
+    ? `Learn spends time. Trade only writes orders. ${game.actionsRemaining} time action${game.actionsRemaining === 1 ? "" : "s"} left before noon.`
+    : "Your morning time is spent. You may still edit written orders before locking noon.";
+  if (game.phase === "noon" && !game.marketResolved) text = "Orders are locked. Nothing has traded yet. Settle once when you are ready.";
+  if (game.phase === "noon" && game.marketResolved) text = "Noon has settled. Read your result before leaving the market.";
+  if (game.phase === "afternoon") text = game.actionsRemaining > 0
+    ? `The public tape now exists. You have ${game.actionsRemaining} follow-up action${game.actionsRemaining === 1 ? "" : "s"}.`
+    : "The afternoon is finished. Go to sunset when you are ready.";
+  if (game.phase === "sunset") text = "Closing the day settles food, obligations, perishables and business activity.";
+  return <section className="now-card"><strong>Right now</strong><span>{text}</span></section>;
+}
+
+function PlayerDesk({ game }) {
+  const player = game.traders.player;
+  const edible = player.inventory.find((item) => (ITEMS[item]?.foodUnits || 0) >= SUSTENANCE_PER_DAY);
+  return (
+    <section className="player-bar">
+      <div className="player-balance"><strong>{SARDINE} {player.sardines}</strong><span>cash</span></div>
+      <div className="player-inventory">
+        <span className="small muted">On your side of the desk</span>
+        <div className="chips">
+          {player.inventory.length
+            ? player.inventory.map((item, index) => <span className="chip" key={`${item}-${index}`}>{itemName(item)}</span>)
+            : <span className="muted">nothing</span>}
+        </div>
+      </div>
+      {(game.phase === "sunset" || player.sardines <= 2) && (
+        <div className="tonight-note small">
+          Tonight: {edible ? `${itemName(edible)} can feed you.` : player.sardines ? "you can open 1🥫 as food." : "you will need food or credit."}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function PeopleStrip({ game, selectedId, onSelect }) {
+  return (
+    <div className="avatar-row" aria-label="People in the harbour">
+      {Object.values(game.traders).filter((trader) => trader.id !== "player").map((trader) => (
+        <button key={trader.id} className={`avatar ${selectedId === trader.id ? "selected" : ""}`} onClick={() => onSelect(trader.id)}>
+          <div className="avatar-icon">{trader.icon}</div>
+          <div className="avatar-name">{trader.name}</div>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function PersonDesk({ game, selectedId, onAction, onProxy }) {
+  const trader = game.traders[selectedId];
+  const visible = knownItemsForTrader(game, selectedId);
+  const relationship = game.relationships[selectedId] || 0;
+  const active = ["morning", "afternoon"].includes(game.phase) && game.actionsRemaining > 0;
+  const proxyAvailable = active && game.playerState.form === "animal" && selectedId === "bar" && relationship >= 2 && !canAccessVenue(game, "formalMarket");
+  const interaction = game.lastInteraction?.targetId === selectedId ? game.lastInteraction : null;
+
+  return (
+    <section className="focus-desk">
+      <section className="card detail-card">
+        <div className="detail-head">
+          <div className="big-icon">{trader.icon}</div>
+          <div className="detail-copy">
+            <h2>{trader.name}</h2>
+            <div className="muted">{trader.role}</div>
+            <div className="small muted">With you: {relationshipLabel(relationship)}</div>
           </div>
-        );
+        </div>
+        <div className="section-title">What you can actually confirm</div>
+        <div className="chips">
+          {visible.length ? visible.map((item) => <span className="chip" key={item}>{itemName(item)}</span>) : <span className="muted">Nothing yet.</span>}
+        </div>
+      </section>
+
+      <section className="card action-card">
+        <div className="section-title">Choose how to spend time</div>
+        <div className="verb-explainer">
+          <div><strong>Talk</strong><span>Know the person. Builds a relationship. What they volunteer depends on who they are and how well they know you.</span></div>
+          <div><strong>Investigate</strong><span>Look for trade-relevant facts. Better for holdings, needs, deadlines and anomalies; it does not make you closer.</span></div>
+        </div>
+        <div className="action-grid">
+          <button className="btn" disabled={!active} onClick={() => onAction("talk", selectedId)}>Talk to {trader.name}</button>
+          <button className="btn" disabled={!active} onClick={() => onAction("investigate", selectedId)}>Investigate {trader.name}</button>
+          {proxyAvailable && <button className="btn" onClick={() => onProxy(selectedId)}>Ask for market proxy · {PROXY_FEE}🥫</button>}
+        </div>
+        <div className="small muted action-count">Time actions left: {game.actionsRemaining}</div>
+      </section>
+
+      {interaction && (
+        <section className={`card interaction-result ${interaction.action === "investigate" ? "investigation-result" : "conversation-result"}`}>
+          <div className="section-title">{interaction.action === "talk" ? "Conversation" : interaction.action === "investigate" ? "What you found" : "What happened"}</div>
+          <p>{interaction.text}</p>
+          {interaction.note && <div className="intel-note">{interaction.note}</div>}
+        </section>
+      )}
+    </section>
+  );
+}
+
+function Notebook({ game, onSell }) {
+  if (!game.information.length) return null;
+  const active = ["morning", "afternoon"].includes(game.phase) && game.actionsRemaining > 0;
+  return (
+    <details className="notebook-drawer">
+      <summary>Your notebook · {game.information.length} note{game.information.length === 1 ? "" : "s"}</summary>
+      <div className="stack notebook-stack">
+        {[...game.information].reverse().map((info) => {
+          const buyers = informationBuyers(game, info);
+          return (
+            <div className="mini-card note-card" key={info.id}>
+              <div>{info.text}</div>
+              <div className="small muted">{info.precision} precision · {info.confidence} confidence · {info.freshness} · source: {info.source}</div>
+              {!!buyers.length && <div className="action-grid">{buyers.map((buyerId) => (
+                <button className="btn" disabled={!active} key={`${info.id}-${buyerId}`} onClick={() => onSell(info.id, buyerId)}>
+                  Sell this lead to {game.traders[buyerId].name} · {INFO_BASE_PRICE}🥫
+                </button>
+              ))}</div>}
+            </div>
+          );
+        })}
+      </div>
+    </details>
+  );
+}
+
+function SellerStrip({ game, selectedId, onSelect }) {
+  const listings = visibleSellListings(game);
+  const sellers = unique(listings.map((listing) => listing.sellerId));
+  return (
+    <div className="seller-tabs" aria-label="Public sellers">
+      {sellers.map((id) => {
+        const trader = game.traders[id];
+        const count = listings.filter((listing) => listing.sellerId === id).length;
+        return <button key={id} className={`seller-tab ${selectedId === id ? "selected" : ""}`} onClick={() => onSelect(id)}>{trader.icon} {trader.name}<small>{count} listed</small></button>;
       })}
     </div>
   );
 }
 
-function NowPanel({ game }) {
-  let text = "";
-  if (game.phase === "sunrise") {
-    text = "Start the morning. Before noon you can learn about people or prepare a trade.";
-  } else if (game.phase === "morning") {
-    text = game.actionsRemaining > 0
-      ? `Before noon: learn or trade. You have ${game.actionsRemaining} time action${game.actionsRemaining === 1 ? "" : "s"} left.`
-      : "Your morning time is spent. Review any order you want to place, then go to noon.";
-  } else if (game.phase === "noon" && !game.marketResolved) {
-    text = "Everything is committed. Clear the market once; competing orders are settled together.";
-  } else if (game.phase === "noon") {
-    text = "The market cleared. Read what actually traded, then leave the market.";
-  } else if (game.phase === "afternoon") {
-    text = game.actionsRemaining > 0
-      ? `The tape is public now. You have ${game.actionsRemaining} time action${game.actionsRemaining === 1 ? "" : "s"} to follow up.`
-      : "You are done for the afternoon. Go to sunset when you are ready.";
-  } else {
-    text = "The trading day is over. Food, obligations and perishables settle when you close the day.";
-  }
-
-  return (
-    <section className="now-card" aria-live="polite">
-      <strong>What now?</strong>
-      <span>{text}</span>
-    </section>
-  );
-}
-
-function PlayerBar({ game }) {
-  const player = game.traders.player;
-  const edibleItems = player.inventory.filter((item) => (ITEMS[item]?.foodUnits || 0) >= SUSTENANCE_PER_DAY);
-  const showTonight = game.phase === "sunset" || player.sardines <= 2;
-
-  return (
-    <section className="player-bar">
-      <div className="player-balance"><strong>{SARDINE} {player.sardines}</strong><span>cash</span></div>
-      <div className="player-inventory">
-        <span className="small muted">You have</span>
-        <div className="chips">
-          {player.inventory.length
-            ? player.inventory.map((item, index) => <span className="chip" key={`${item}-${index}`}>{itemName(item)}</span>)
-            : <span className="muted">nothing in your hands</span>}
-        </div>
-      </div>
-      {showTonight && (
-        <div className="tonight-note small">
-          Tonight: {edibleItems.length
-            ? `${itemName(edibleItems[0])} can feed you.`
-            : player.sardines >= SUSTENANCE_PER_DAY
-              ? `${SUSTENANCE_PER_DAY}🥫 can be opened as food.`
-              : "you will need food or credit."}
-        </div>
-      )}
-    </section>
-  );
-}
-
-function Avatar({ trader, selected, onClick }) {
-  return (
-    <button className={`avatar ${selected ? "selected" : ""}`} onClick={onClick}>
-      <div className="avatar-icon">{trader.icon}</div>
-      <div className="avatar-name">{trader.name}</div>
-    </button>
-  );
-}
-
-function TraderDetail({ trader, profile, relationship, intel, visibleStock }) {
-  return (
-    <section className="card detail-card">
-      <div className="detail-head">
-        <div className="big-icon">{trader.icon}</div>
-        <div className="detail-copy">
-          <h2>{trader.name}</h2>
-          <div className="muted">{trader.role}</div>
-          {relationship > 0 && <div className="small muted">Familiarity: {relationship}</div>}
-          {profile && intel?.style && <div className="tag">Observed style: {intel.style}</div>}
-        </div>
-      </div>
-      <div className="section-title">What you know they have</div>
-      <div className="chips">
-        {visibleStock.length
-          ? visibleStock.map((item) => <span className="chip" key={`${trader.id}-${item}`}>{itemName(item)}</span>)
-          : <span className="muted">Nothing confirmed. Their real inventory may be larger.</span>}
-      </div>
-      {intel?.clue && <div className="intel-note">📝 {intel.clue}</div>}
-    </section>
-  );
-}
-
-function ActionPanel({ game, selectedId, onAction, onProxy }) {
-  const selected = game.traders[selectedId];
-  const active = ["morning", "afternoon"].includes(game.phase) && game.actionsRemaining > 0;
-  const proxyAvailable = active &&
-    game.playerState.form === "animal" &&
-    selectedId === "bar" &&
-    (game.relationships.bar || 0) >= 2 &&
-    !canAccessVenue(game, "formalMarket");
-
-  return (
-    <section className="card action-card">
-      <div className="section-title">Spend time on {selected.name}</div>
-      <div className="action-grid">
-        <button className="btn" disabled={!active} onClick={() => onAction("talk", selectedId)}>
-          Talk
-        </button>
-        <button className="btn" disabled={!active} onClick={() => onAction("investigate", selectedId)}>
-          Investigate
-        </button>
-        {proxyAvailable && (
-          <button className="btn" onClick={() => onProxy(selectedId)}>
-            Ask for market proxy · {PROXY_FEE}🥫
-          </button>
-        )}
-      </div>
-      <div className="small muted action-count">Time actions left: {game.actionsRemaining}</div>
-    </section>
-  );
-}
-
-function LeadsPanel({ game, onSell }) {
-  const active = ["morning", "afternoon"].includes(game.phase) && game.actionsRemaining > 0;
-  const entries = [...game.information].reverse();
-  if (!entries.length) return null;
-
-  return (
-    <section className="card">
-      <div className="section-title">What you have learned</div>
-      <div className="stack">
-        {entries.map((info) => {
-          const buyers = informationBuyers(game, info);
-          return (
-            <div className="mini-card" key={info.id}>
-              <div>{info.text}</div>
-              <details className="micro-details">
-                <summary>How solid is this?</summary>
-                <div className="small muted">
-                  precision {info.precision} · confidence {info.confidence} · {info.source} · observed D{info.observedDay}
-                  {info.exclusive ? " · probably exclusive" : ""}
-                </div>
-              </details>
-              {!!buyers.length && (
-                <div className="action-grid">
-                  {buyers.map((buyerId) => (
-                    <button
-                      className="btn"
-                      key={`${info.id}-${buyerId}`}
-                      disabled={!active}
-                      onClick={() => onSell(info.id, buyerId)}
-                    >
-                      Sell this lead to {game.traders[buyerId].name} · {INFO_BASE_PRICE}🥫
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-function MarketBoard({ game }) {
-  const bids = visibleMarketBoard(game);
-  const listings = visibleSellListings(game);
-  const grouped = listings.reduce((acc, listing) => {
-    if (!acc[listing.sellerId]) acc[listing.sellerId] = [];
-    acc[listing.sellerId].push(listing);
-    return acc;
-  }, {});
-
+function StallSheet({ game, sellerId, onBid }) {
+  const seller = game.traders[sellerId];
+  const listings = visibleSellListings(game).filter((listing) => listing.sellerId === sellerId);
   return (
     <section className="card market-card">
-      <div className="section-title">Today's public stalls</div>
-      <div className="seller-lines">
-        {Object.entries(grouped).length ? Object.entries(grouped).map(([sellerId, sellerListings]) => {
-          const seller = game.traders[sellerId];
-          return (
-            <div className="seller-line" key={sellerId}>
-              <strong>{seller.icon} {seller.name}</strong>
-              <div className="market-chips">
-                {sellerListings.map((listing) => (
-                  <span className="market-chip" key={`${sellerId}-${listing.item}`}>
-                    {itemName(listing.item)} <b>{listing.ask}🥫</b>
-                  </span>
-                ))}
-              </div>
-            </div>
-          );
-        }) : <div className="muted">Nothing is publicly listed right now.</div>}
+      <div className="section-title">{seller.icon} {seller.name}'s public stall</div>
+      <p className="muted small">Only publicly offered stock appears here. A price marked <strong>ask</strong> is the cash price the seller is currently posting.</p>
+      <div className="listing-stack">
+        {listings.length ? listings.map((listing) => (
+          <div className="listing-row" key={listing.item}>
+            <div><strong>{itemName(listing.item)}</strong><small>{itemReference(listing.item)}</small></div>
+            <div className="listing-price">ask <strong>{listing.ask}🥫</strong></div>
+            <button className="btn write-bid" onClick={() => onBid(listing)}>Write bid</button>
+          </div>
+        )) : <div className="muted">Nothing publicly listed.</div>}
       </div>
-
-      <details className="market-disclosure" open={game.phase === "noon"}>
-        <summary>Other traders' announced bids ({bids.length})</summary>
-        <div className="stack disclosure-stack">
-          {bids.length ? bids.map((order, index) => (
-            <div className="mini-card" key={`${order.from}-${order.wantItem}-${index}`}>
-              <strong>{game.traders[order.from].icon} {game.traders[order.from].name}</strong> bids {order.sardines}🥫 for {itemName(order.wantItem)}
-            </div>
-          )) : <div className="muted">No announced NPC buy bids at current prices and knowledge.</div>}
-        </div>
-      </details>
     </section>
   );
 }
 
-function OrderRow({ index, order, setOrder, traders, visibleByTrader, playerInventory, usedItems, disabled }) {
-  const target = traders[order.to];
-  const targetStock = order.to ? (visibleByTrader[order.to] || []) : [];
+function OrderSlip({ game, order, index, updateOrder, usedItems }) {
+  const targetStock = order.to ? knownItemsForTrader(game, order.to) : [];
+  const publicListing = visibleSellListings(game).find((listing) => listing.sellerId === order.to && listing.item === order.wantItem);
+  const cashOnlyBelowAsk = publicListing && !order.offerItem && Number(order.sardines || 0) < publicListing.ask;
+  const cashOnlyMeetsAsk = publicListing && !order.offerItem && Number(order.sardines || 0) >= publicListing.ask;
 
   return (
     <div className="order-box">
       <div className="order-number">Order {index + 1}</div>
       <div className="order-fields-simple">
-        <label>
-          <span>Buy from</span>
-          <select
-            value={order.to}
-            disabled={disabled}
-            onChange={(event) => setOrder(index, { to: event.target.value, wantItem: "", offerItem: "", sardines: 0 })}
-          >
-            <option value="">Choose seller</option>
-            {Object.values(traders).filter((trader) => trader.id !== "player").map((trader) => (
-              <option key={trader.id} value={trader.id}>{trader.icon} {trader.name}</option>
-            ))}
-          </select>
-        </label>
-        <label>
-          <span>Item</span>
-          <select
-            value={order.wantItem}
-            disabled={disabled || !target}
-            onChange={(event) => setOrder(index, { ...order, wantItem: event.target.value })}
-          >
-            <option value="">Choose item</option>
-            {targetStock.map((item) => <option key={item} value={item}>{itemWithReference(item)}</option>)}
-          </select>
-        </label>
-        <label>
-          <span>Cash bid</span>
-          <div className="cash-field">
-            <span>🥫</span>
-            <input
-              type="number"
-              min="0"
-              disabled={disabled}
-              value={order.sardines}
-              onChange={(event) => setOrder(index, { ...order, sardines: Math.max(0, Number(event.target.value || 0)) })}
-            />
-          </div>
-        </label>
+        <label><span>Seller</span><select value={order.to} onChange={(event) => updateOrder(index, { to: event.target.value, wantItem: "", offerItem: "", sardines: 0 })}>
+          <option value="">Choose seller</option>
+          {Object.values(game.traders).filter((trader) => trader.id !== "player").map((trader) => <option key={trader.id} value={trader.id}>{trader.icon} {trader.name}</option>)}
+        </select></label>
+        <label><span>Item</span><select value={order.wantItem} disabled={!order.to} onChange={(event) => updateOrder(index, { ...order, wantItem: event.target.value })}>
+          <option value="">Choose item</option>
+          {targetStock.map((item) => <option key={item} value={item}>{itemName(item)} · {itemReference(item)}</option>)}
+        </select></label>
+        <label><span>Your cash bid</span><div className="cash-field"><span>🥫</span><input type="number" min="0" value={order.sardines} onChange={(event) => updateOrder(index, { ...order, sardines: Math.max(0, Number(event.target.value || 0)) })} /></div></label>
       </div>
-      <details className="micro-details barter-details">
-        <summary>Optional: add one barter item</summary>
-        <select
-          aria-label={`Order ${index + 1} payment item`}
-          value={order.offerItem}
-          disabled={disabled}
-          onChange={(event) => setOrder(index, { ...order, offerItem: event.target.value })}
-        >
-          <option value="">No barter item</option>
-          {unique(playerInventory)
-            .filter((item) => item === order.offerItem ||
-              playerInventory.filter((held) => held === item).length > usedItems.filter((used) => used === item).length)
-            .map((item) => <option key={item} value={item}>{itemWithReference(item)}</option>)}
-        </select>
-      </details>
+      {publicListing && <p className="small muted">Posted ask: <strong>{publicListing.ask}🥫</strong>.</p>}
+      {cashOnlyBelowAsk && <div className="order-warning">Below the posted ask. On cash alone this order will be rejected before it competes.</div>}
+      {cashOnlyMeetsAsk && <div className="order-ok">Cash meets the current ask. The unit is still not yours: another eligible order may beat or tie yours at Noon.</div>}
+      <details className="micro-details barter-details"><summary>Optional barter item</summary><select value={order.offerItem} onChange={(event) => updateOrder(index, { ...order, offerItem: event.target.value })}>
+        <option value="">No barter item</option>
+        {unique(game.traders.player.inventory)
+          .filter((item) => item === order.offerItem || game.traders.player.inventory.filter((held) => held === item).length > usedItems.filter((used) => used === item).length)
+          .map((item) => <option key={item} value={item}>{itemName(item)} · {itemReference(item)}</option>)}
+      </select><p className="small muted">A seller can value your barter item above or below its reference price. Their private valuation is not shown.</p></details>
     </div>
   );
 }
 
-function OrderPanel({ game, traders, visibleByTrader, player, usedItems, plannedSardines, updateOrder, clearOrders, visibleOrderCount, setVisibleOrderCount }) {
+function OrderWriter({ game, updateOrder, clearOrders, visibleOrderCount, setVisibleOrderCount }) {
+  const usedItems = game.playerOrders.map((order) => order.offerItem).filter(Boolean);
+  const committedCash = game.playerOrders.reduce((sum, order) => sum + Number(order.sardines || 0), 0);
   return (
     <section className="card order-card">
-      <div className="section-title">Your noon order</div>
-      <p className="muted board-note">Pick something publicly known, then choose what you are willing to pay. If someone else wants the same unit, the seller compares offers at noon.</p>
-      <div className="stack">
-        {game.playerOrders.slice(0, visibleOrderCount).map((order, index) => (
-          <OrderRow
-            key={index}
-            index={index}
-            order={order}
-            setOrder={updateOrder}
-            traders={traders}
-            visibleByTrader={visibleByTrader}
-            playerInventory={player.inventory}
-            usedItems={usedItems}
-            disabled={game.phase !== "morning"}
-          />
-        ))}
-      </div>
+      <div className="section-title">Your order sheet</div>
+      <p className="board-note"><strong>Nothing trades while you write this.</strong> The sheet becomes binding only when you lock the morning and open Noon.</p>
+      <div className="stack">{game.playerOrders.slice(0, visibleOrderCount).map((order, index) => (
+        <OrderSlip key={index} game={game} order={order} index={index} updateOrder={updateOrder} usedItems={usedItems} />
+      ))}</div>
       <div className="order-footer">
-        <span className="small muted">Cash committed: {plannedSardines} / {player.sardines}🥫</span>
+        <span className="small muted">Cash written into orders: {committedCash} / {game.traders.player.sardines}🥫</span>
         <div className="inline-actions">
-          {visibleOrderCount < 3 && (
-            <button className="btn ghost" onClick={() => setVisibleOrderCount((count) => Math.min(3, count + 1))}>
-              Add another order
-            </button>
-          )}
-          <button className="btn ghost" onClick={clearOrders}>Clear</button>
+          {visibleOrderCount < 3 && <button className="btn ghost" onClick={() => setVisibleOrderCount((count) => Math.min(3, count + 1))}>Add another order</button>}
+          <button className="btn ghost" onClick={clearOrders}>Clear sheet</button>
         </div>
       </div>
     </section>
   );
 }
 
-function TransactionTape({ game }) {
-  const tape = [...game.history].reverse().slice(0, 8);
-  if (!tape.length) return null;
-
+function AnnouncedBids({ game, open = false }) {
+  const bids = visibleMarketBoard(game);
   return (
-    <section className="card">
-      <div className="section-title">What actually traded</div>
-      <div className="stack">
-        {tape.map((trade) => (
-          <div className="tape-row" key={trade.id}>
-            <span>D{trade.day}</span>
-            <span title="Goods move from seller to buyer">{game.traders[trade.to]?.icon} → {game.traders[trade.from]?.icon}</span>
-            <span>{labelShort(trade.item)}</span>
-            <span>{trade.paymentItem ? `${labelShort(trade.paymentItem)} + ` : ""}{trade.sardines}🥫</span>
-          </div>
-        ))}
+    <details className="market-disclosure" open={open}>
+      <summary>Other traders' announced buy orders · {bids.length}</summary>
+      <div className="stack disclosure-stack">
+        {bids.length ? bids.map((bid, index) => (
+          <div className="mini-card" key={`${bid.from}-${bid.wantItem}-${index}`}>{game.traders[bid.from].icon} <strong>{game.traders[bid.from].name}</strong> bids {bid.sardines}🥫 for {itemName(bid.wantItem)}</div>
+        )) : <div className="muted">No announced buy orders.</div>}
       </div>
+    </details>
+  );
+}
+
+function LockedOrders({ game }) {
+  return (
+    <section className="card locked-sheet">
+      <div className="lock-stamp">NOT SETTLED</div>
+      <div className="section-title">Your locked Noon orders</div>
+      {game.lockedPlayerOrders.length ? <div className="stack">{game.lockedPlayerOrders.map((order, index) => (
+        <div className="mini-card" key={index}>
+          <strong>{itemName(order.wantItem)}</strong> from {game.traders[order.to]?.name}
+          <div className="small muted">Your bid: {order.sardines}🥫{order.offerItem ? ` + ${itemName(order.offerItem)}` : ""}{Number.isFinite(order.postedAsk) ? ` · posted ask when locked: ${order.postedAsk}🥫` : ""}</div>
+        </div>
+      ))}</div> : <p>You locked no order. You can still watch the market settle without you.</p>}
     </section>
   );
 }
 
-function ObligationsPanel({ game, onRepay }) {
+function publicPaymentText(game, rejected) {
+  if (!rejected.winnerId) return null;
+  return `${game.traders[rejected.winnerId]?.name || "Another bidder"} paid ${rejected.winnerSardines || 0}🥫${rejected.winnerPaymentItem ? ` + ${itemName(rejected.winnerPaymentItem)}` : ""}.`;
+}
+
+function rejectionText(game, order) {
+  if (order.reasonCode === "below-ask") {
+    if (!order.offerItem && Number.isFinite(order.postedAsk)) return `You offered ${order.sardines}🥫 against a posted ask of ${order.postedAsk}🥫. It was below the seller's public minimum, so the order never entered competition.`;
+    if (Number.isFinite(order.postedAsk)) return `The seller valued your cash + barter package below the posted ask of ${order.postedAsk}🥫. Their private value for your barter item is not public.`;
+    return "The seller valued your payment package below the minimum they would accept.";
+  }
+  if (order.reasonCode === "outbid") return `Your order was eligible, but another committed offer got the available unit. ${publicPaymentText(game, order) || ""} Equal seller-valued offers use the day's rotating priority.`;
+  if (order.reasonCode === "resource-used") return "Another filled order already used opening cash or the barter item this order needed. Noon does not recycle newly received cash or goods.";
+  if (order.reasonCode === "stale-stock") return "Your information was stale: the seller no longer had the item when Noon opened.";
+  if (order.reasonCode === "unknown-holding") return "You tried to target a holding that was no longer current enough to treat as known stock.";
+  if (order.reasonCode === "no-access") return "Your current legal form cannot settle directly in the formal market. You need recognised access or a proxy.";
+  if (order.reasonCode === "unfunded") return "You did not have the opening cash or barter item written into this order.";
+  if (order.reasonCode === "invalid") return "The order was malformed and could not enter the market.";
+  return order.reason || "This order did not settle.";
+}
+
+function NoonResults({ game }) {
+  const fills = game.marketOutcome.filter((trade) => trade.from === "player");
+  return (
+    <section className="card result-sheet">
+      <div className="section-title">Your Noon result</div>
+      {!fills.length && !game.rejected.length && <p>You submitted no order, so nothing on your sheet could fill.</p>}
+      {!!fills.length && <div className="stack result-group"><strong>Filled</strong>{fills.map((trade, index) => (
+        <div className="result-row success-result" key={index}>You bought <strong>{itemName(trade.wantItem)}</strong> from {game.traders[trade.to]?.name} for {trade.sardines}🥫{trade.offerItem ? ` + ${itemName(trade.offerItem)}` : ""}.</div>
+      ))}</div>}
+      {!!game.rejected.length && <div className="stack result-group"><strong>Did not fill</strong>{game.rejected.map((order, index) => (
+        <div className="result-row failure-result" key={index}><strong>{itemName(order.wantItem)}</strong> from {game.traders[order.to]?.name}<div>{rejectionText(game, order)}</div></div>
+      ))}</div>}
+    </section>
+  );
+}
+
+function PublicTape({ game }) {
+  const trades = [...game.history].filter((trade) => trade.day === game.day).reverse();
+  if (!trades.length) return null;
+  return (
+    <details className="tape-drawer" open={game.phase === "afternoon"}>
+      <summary>Today's public transaction tape · {trades.length} trade{trades.length === 1 ? "" : "s"}</summary>
+      <div className="stack tape-stack">{trades.map((trade) => (
+        <div className="tape-row" key={trade.id}>
+          <span>{game.traders[trade.to]?.icon} → {game.traders[trade.from]?.icon}</span>
+          <span>{labelShort(trade.item)}</span>
+          <span>{trade.paymentItem ? `${labelShort(trade.paymentItem)} + ` : ""}{trade.sardines}🥫</span>
+        </div>
+      ))}</div>
+    </details>
+  );
+}
+
+function Obligations({ game, onRepay }) {
   const obligations = currentObligations(game);
-  const active = ["morning", "afternoon"].includes(game.phase) && game.actionsRemaining > 0;
   if (!obligations.length) return null;
-
+  const active = ["morning", "afternoon"].includes(game.phase) && game.actionsRemaining > 0;
   return (
-    <section className="card">
-      <div className="section-title">Promises you owe</div>
-      <div className="stack">
-        {obligations.map((obligation) => {
-          const creditor = game.traders[obligation.creditorId];
-          return (
-            <div className="mini-card" key={obligation.id}>
-              <div><strong>{obligation.amount}🥫</strong> owed to {creditor?.name || obligation.creditorId}</div>
-              <div className="small muted">due D{obligation.dueDay} · {obligation.status}</div>
-              <button
-                className="btn"
-                disabled={!active || game.traders.player.sardines < obligation.amount}
-                onClick={() => onRepay(obligation.id)}
-              >
-                Repay · {obligation.amount}🥫
-              </button>
-            </div>
-          );
-        })}
-      </div>
+    <section className="card obligation-sheet">
+      <div className="section-title">Promises now matter</div>
+      <div className="stack">{obligations.map((obligation) => (
+        <div className="mini-card" key={obligation.id}>
+          <strong>{obligation.amount}🥫 owed to {game.traders[obligation.creditorId]?.name || obligation.creditorId}</strong>
+          <div className="small muted">Due Day {obligation.dueDay} · {obligation.status}</div>
+          <button className="btn" disabled={!active || game.traders.player.sardines < obligation.amount} onClick={() => onRepay(obligation.id)}>Repay</button>
+        </div>
+      ))}</div>
     </section>
   );
 }
 
-function AccessPanel({ game }) {
+function AccessNotice({ game }) {
+  const unusual = game.playerState.form !== "human" || game.playerState.legalIdentity.status !== "recognized" || !canAccessVenue(game, "formalMarket") || game.estates.length;
+  if (!unusual) return null;
   const form = FORMS[game.playerState.form];
-  const exceptional = game.playerState.form !== "human" ||
-    game.playerState.legalIdentity.status !== "recognized" ||
-    game.estates.length > 0 ||
-    !canAccessVenue(game, "formalMarket");
-  if (!exceptional) return null;
-
   return (
-    <section className="card">
-      <div className="section-title">Your current access</div>
-      <div className="stack">
-        <div className="mini-card">{form.icon} {form.label} · legal identity {game.playerState.legalIdentity.status}</div>
-        <div className="mini-card">Public Market: {canAccessVenue(game, "formalMarket") ? "direct access" : "proxy required"}</div>
-        {!!game.estates.length && <div className="mini-card">Former estates remembered but not currently claimable: {game.estates.length}</div>}
-      </div>
+    <section className="card access-sheet">
+      <div className="section-title">The rules recognise you differently now</div>
+      <p>{form.icon} {form.label} · legal identity {game.playerState.legalIdentity.status}</p>
+      <p className="muted">Formal market: {canAccessVenue(game, "formalMarket") ? "access available" : "direct access unavailable; a recognised proxy can bridge it"}.</p>
+      {!!game.estates.length && <p className="muted">You remember {game.estates.length} former estate{game.estates.length === 1 ? "" : "s"}, but this legal identity cannot simply claim them.</p>}
     </section>
   );
 }
 
-function EventPanel({ game, onChoose }) {
+function EventDesk({ game, onChoose }) {
   const [bid, setBid] = useState(52);
   if (!game.pendingEvents.length) return null;
-  const event = game.pendingEvents[0];
-
   return (
-    <section className="event-box">
-      <div className="eyebrow">Something became possible</div>
-      <h2>{event.title}</h2>
-      <p>{event.text}</p>
-      {event.id === "auction" && (
-        <label className="bid-box">
-          Your bid
-          <input type="number" min="0" value={bid} onChange={(e) => setBid(Number(e.target.value || 0))} />
-          <span>🥫</span>
-        </label>
-      )}
-      <div className="event-actions">
-        {event.actions.map((action) => (
-          <button
-            className={`btn ${action === event.actions[0] ? "gold" : "ghost"}`}
-            key={action}
-            onClick={() => onChoose(event.id, action, bid)}
-          >
-            {action}
-          </button>
-        ))}
-      </div>
+    <section className="opportunity-stack">
+      {game.pendingEvents.map((event) => (
+        <section className="event-box" key={event.id}>
+          <div className="eyebrow">An opportunity became real</div>
+          <h2>{event.title}</h2>
+          <p>{event.text}</p>
+          {event.id === "auction" && <label className="bid-box">Your bid<input type="number" min="0" value={bid} onChange={(e) => setBid(Number(e.target.value || 0))} /><span>🥫</span></label>}
+          <div className="event-actions">{event.actions.map((action, index) => (
+            <button className={`btn ${index === 0 ? "gold" : "ghost"}`} key={action} onClick={() => onChoose(event.id, action, bid)}>{action}</button>
+          ))}</div>
+        </section>
+      ))}
     </section>
   );
 }
 
-function phaseButton(game) {
-  if (game.phase === "sunrise") return "Begin morning →";
-  if (game.phase === "morning") return "Go to noon →";
-  if (game.phase === "noon" && !game.marketResolved) return "Clear the noon market";
-  if (game.phase === "noon") return "Leave the market →";
-  if (game.phase === "afternoon") return "Go to sunset →";
-  return `Close Day ${game.day} →`;
+function DeveloperDrawer({ game }) {
+  return (
+    <details className="advanced-details">
+      <summary>Developer / notebook details</summary>
+      <div className="advanced-inner">
+        <div>Known information objects: {game.information.length}</div>
+        <div>Public trades recorded: {game.history.length}</div>
+        <div>Legal identity: {game.playerState.legalIdentity.status}</div>
+        <details className="log-details"><summary>Harbour log</summary><div className="log-stack">{game.log.map((line, index) => <div className="log-line" key={`${line}-${index}`}>{line}</div>)}</div></details>
+      </div>
+    </details>
+  );
 }
 
 export default function App() {
-  const [game, setGame] = useState(() => createGame());
-  const [morningView, setMorningView] = useState("learn");
+  const [game, setGame] = useState(loadGame);
+  const [entered, setEntered] = useState(hadSavedGame);
+  const [mode, setMode] = useState("learn");
+  const [selectedPerson, setSelectedPerson] = useState("dog");
+  const [selectedSeller, setSelectedSeller] = useState(() => visibleSellListings(loadGame())[0]?.sellerId || "fishmonger");
   const [visibleOrderCount, setVisibleOrderCount] = useState(1);
-  const traders = game.traders;
-  const player = traders.player;
-  const selectedId = game.selected && game.selected !== "player" ? game.selected : "dog";
-  const selected = traders[selectedId];
-  const phase = PHASE_COPY[game.phase];
-  const form = FORMS[game.playerState.form];
-  const usedItems = game.playerOrders.map((order) => order.offerItem).filter(Boolean);
-  const plannedSardines = game.playerOrders.reduce((sum, order) => sum + Number(order.sardines || 0), 0);
+  const [uiError, setUiError] = useState("");
+
+  useEffect(() => {
+    if (!entered) return;
+    try {
+      window.localStorage.setItem(SAVE_KEY, JSON.stringify({ version: 4, game }));
+    } catch {
+      // Persistence is convenience only; a full storage failure must not stop play.
+    }
+  }, [game, entered]);
+
+  const player = game.traders.player;
+  const writtenOrders = game.playerOrders.filter((order) => order.to && order.wantItem);
+  const plannedCash = game.playerOrders.reduce((sum, order) => sum + Number(order.sardines || 0), 0);
   const obligations = currentObligations(game);
+  const sellerIds = useMemo(() => unique(visibleSellListings(game).map((listing) => listing.sellerId)), [game]);
 
-  const visibleByTrader = useMemo(() => Object.fromEntries(
-    Object.values(traders).map((trader) => [trader.id, knownItemsForTrader(game, trader.id)])
-  ), [game, traders]);
-
-  const selectedIntel = useMemo(() => {
-    const styleInfo = game.information.find((info) => info.subjectId === selected.id && info.claimType === "style");
-    const pressureInfo = [...game.information].reverse().find((info) => info.subjectId === selected.id && info.claimType === "pressure");
-    return {
-      style: styleInfo?.text?.replace(`${selected.name} trades like a `, "").replace(/\.$/, "") || game.intel[`${selected.id}:style`],
-      clue: pressureInfo?.text || game.intel[`${selected.id}:clue`],
-    };
-  }, [game.information, game.intel, selected.id, selected.name]);
-
-  function setSelected(id) {
-    setGame((current) => ({ ...current, selected: id }));
-  }
+  useEffect(() => {
+    if (!sellerIds.length) return;
+    if (!sellerIds.includes(selectedSeller)) setSelectedSeller(sellerIds[0]);
+  }, [sellerIds, selectedSeller]);
 
   function updateOrder(index, next) {
     setGame((current) => {
@@ -514,18 +493,33 @@ export default function App() {
       orders[index] = next;
       return { ...current, playerOrders: orders };
     });
+    setUiError("");
   }
 
-  function handlePrimaryAction() {
+  function writeBid(listing) {
+    const index = Math.min(visibleOrderCount - 1, 2);
+    updateOrder(index, { to: listing.sellerId, wantItem: listing.item, offerItem: "", sardines: listing.ask });
+    setMode("trade");
+  }
+
+  function clearOrders() {
+    setGame((current) => ({ ...current, playerOrders: resetOrders() }));
+    setVisibleOrderCount(1);
+    setUiError("");
+  }
+
+  function handlePrimary() {
     if (game.ended || game.pendingEvents.length) return;
+    setUiError("");
     if (game.phase === "morning") {
-      const chosen = game.playerOrders.map((order) => order.offerItem).filter(Boolean);
-      if (chosen.some((item) => chosen.filter((payment) => payment === item).length > player.inventory.filter((held) => held === item).length)) {
-        window.alert("You cannot commit more copies of a payment item than you own.");
+      const used = game.playerOrders.map((order) => order.offerItem).filter(Boolean);
+      const oversubscribedItem = used.find((item) => used.filter((usedItem) => usedItem === item).length > player.inventory.filter((held) => held === item).length);
+      if (oversubscribedItem) {
+        setUiError(`You wrote ${itemName(oversubscribedItem)} into more orders than you physically own.`);
         return;
       }
-      if (plannedSardines > player.sardines) {
-        window.alert("Your committed noon orders require more sardines than you currently have.");
+      if (plannedCash > player.sardines) {
+        setUiError(`Your order sheet commits ${plannedCash}🥫 but you only have ${player.sardines}🥫 at the opening bell.`);
         return;
       }
     }
@@ -534,218 +528,107 @@ export default function App() {
       setGame((current) => resolveNoonMarket(current));
       return;
     }
-
     setGame((current) => advancePhase(current));
     if (game.phase === "sunset") {
-      setMorningView("learn");
+      setMode("learn");
       setVisibleOrderCount(1);
+      setSelectedPerson("dog");
     }
   }
 
-  function handleFreeAction(action, targetId) {
-    setGame((current) => performFreeAction(current, action, targetId));
-  }
-
-  function handleSellInformation(infoId, buyerId) {
-    setGame((current) => sellInformation(current, infoId, buyerId));
-  }
-
-  function handleProxy(targetId) {
-    setGame((current) => requestMarketProxy(current, targetId));
-  }
-
-  function handleRepay(obligationId) {
-    setGame((current) => repayObligation(current, obligationId));
-  }
-
-  function handleEvent(id, action, bid) {
-    setGame((current) => resolveEvent(current, id, action, bid));
-  }
-
   function restart() {
-    setGame(createGame());
-    setMorningView("learn");
+    const fresh = createGame();
+    setGame(fresh);
+    setMode("learn");
+    setSelectedPerson("dog");
+    setSelectedSeller(visibleSellListings(fresh)[0]?.sellerId || "fishmonger");
     setVisibleOrderCount(1);
+    setUiError("");
+    setEntered(true);
   }
 
-  function clearOrders() {
-    setGame((current) => ({ ...current, playerOrders: resetOrders() }));
-    setVisibleOrderCount(1);
+  function enterHarbour() {
+    setEntered(true);
   }
 
-  const showPeople = game.phase === "morning" && morningView === "learn" || game.phase === "afternoon";
-  const showTradePrep = game.phase === "morning" && morningView === "trade";
-  const showMarket = showTradePrep || game.phase === "noon";
-  const showTape = game.phase === "noon" && game.marketResolved || game.phase === "afternoon" || game.phase === "sunset";
-
-  if (game.ended) {
+  if (!entered) {
     return (
-      <main className="app-shell">
-        <div className="container end-container">
-          <header className="hero compact-hero">
-            <div>
-              <div className="eyebrow">Sunflower · living market prototype</div>
-              <h1>🌇 Day {game.day}</h1>
-            </div>
-            <button className="btn ghost" onClick={restart}>New Game</button>
-          </header>
-          <section className={`end-box ${game.winner ? "win-box" : "lose-box"}`}>
-            <h2>This prototype life ended.</h2>
-            <p>{game.finalText}</p>
-            {game.style && <div className="style-box"><strong>{game.style.name}</strong><p>{game.style.description}</p></div>}
-          </section>
-          <section className="card end-summary">
-            <div className="section-title">What you ended with</div>
-            <div className="chips">
-              <span className="chip">{SARDINE} {player.sardines}</span>
-              {player.inventory.map((item, index) => <span className="chip" key={`${item}-${index}`}>{itemName(item)}</span>)}
-            </div>
-          </section>
-          <button className="btn gold restart-large" onClick={restart}>Start another life →</button>
-        </div>
+      <main className="start-screen">
+        <section className="start-card">
+          <div className="start-flower">🌻</div>
+          <div className="eyebrow">Sunflower</div>
+          <h1>You want a sunflower.</h1>
+          <p>You do not know why.</p>
+          <p>You only know that it feels like a way home.</p>
+          <div className="start-rules">
+            <div>You arrive with {SARDINE} {player.sardines} and a few strange things in your pocket.</div>
+            <div>The harbour trades once each day, at Noon.</div>
+            <div>You are not expected to understand this market yet.</div>
+          </div>
+          <button className="btn gold start-button" onClick={enterHarbour}>Enter the harbour →</button>
+        </section>
       </main>
     );
   }
+
+  if (game.ended) {
+    return (
+      <main className="app-shell"><div className="container end-container">
+        <header className="hero compact-hero"><div><div className="eyebrow">Sunflower · prototype life</div><h1>🌇 Day {game.day}</h1></div></header>
+        <section className="end-box"><h2>This prototype life ended.</h2><p>{game.finalText}</p>{game.style && <div className="style-box"><strong>{game.style.name}</strong><p>{game.style.description}</p></div>}</section>
+        <section className="card end-summary"><div className="section-title">What remained on your desk</div><div className="chips"><span className="chip">{SARDINE} {player.sardines}</span>{player.inventory.map((item, index) => <span className="chip" key={`${item}-${index}`}>{itemName(item)}</span>)}</div></section>
+        <button className="btn gold restart-large" onClick={restart}>Start another life →</button>
+      </div></main>
+    );
+  }
+
+  const showLearn = (game.phase === "morning" && mode === "learn") || game.phase === "afternoon";
+  const showTrade = game.phase === "morning" && mode === "trade";
 
   return (
     <main className="app-shell">
       <div className="container">
         <header className="hero compact-hero">
-          <div>
-            <div className="eyebrow">Sunflower · living market prototype</div>
-            <h1>🌻 Day {game.day}</h1>
-            <p className="muted small">Objective: <strong>{game.objective}</strong></p>
-          </div>
+          <div><div className="eyebrow">Sunflower · living market prototype</div><h1>🌻 Day {game.day}</h1><p className="muted small">Objective: <strong>{game.objective}</strong></p></div>
           <button className="btn ghost" onClick={restart}>New Game</button>
         </header>
 
-        <div className="sticky-status">
-          <span>Day {game.day}</span>
-          <span>{phase.icon} {phase.title}</span>
-          <span>{SARDINE} {player.sardines}</span>
-          {game.playerState.form !== "human" && <span>{form.icon} {form.label}</span>}
-        </div>
-
+        <div className="sticky-status"><span>Day {game.day}</span><span>{PHASE_COPY[game.phase].icon} {PHASE_COPY[game.phase].title}</span><span>{SARDINE} {player.sardines}</span>{game.playerState.form !== "human" && <span>{FORMS[game.playerState.form].icon} {FORMS[game.playerState.form].label}</span>}</div>
         <PhaseStrip game={game} />
-        <NowPanel game={game} />
-        <PlayerBar game={game} />
+        <RightNow game={game} />
+        <PlayerDesk game={game} />
 
-        {game.flags.sunflowerAcquired && (
-          <section className="card noon-callout">
-            <div className="section-title">🌻 You have a sunflower.</div>
-            <p><strong>Nothing happens.</strong> It is in your inventory. You are still here.</p>
-            <p className="muted">Objective: {game.objective}</p>
-          </section>
-        )}
+        {game.flags.sunflowerAcquired && <section className="card flower-reveal"><div className="section-title">🌻 You have a sunflower.</div><p><strong>Nothing happens.</strong></p><p>It is on your side of the desk. You are still here.</p><p className="muted">Objective: {game.objective}</p></section>}
 
-        <EventPanel game={game} onChoose={handleEvent} />
+        <EventDesk game={game} onChoose={(id, action, bid) => setGame((current) => resolveEvent(current, id, action, bid))} />
 
-        {game.phase === "morning" && (
-          <div className="mode-switch" role="group" aria-label="Morning activity">
-            <button className={`btn ${morningView === "learn" ? "gold" : "ghost"}`} onClick={() => setMorningView("learn")}>Learn</button>
-            <button className={`btn ${morningView === "trade" ? "gold" : "ghost"}`} onClick={() => setMorningView("trade")}>Trade</button>
-          </div>
-        )}
+        {game.phase === "morning" && <div className="mode-switch" role="group" aria-label="Morning activity"><button className={`btn ${mode === "learn" ? "gold" : "ghost"}`} onClick={() => setMode("learn")}>Learn</button><button className={`btn ${mode === "trade" ? "gold" : "ghost"}`} onClick={() => setMode("trade")}>Trade</button></div>}
 
-        {showPeople && (
-          <section className="play-flow">
-            <div className="avatar-row" aria-label="People in the harbour">
-              {Object.values(traders).filter((trader) => trader.id !== "player").map((trader) => (
-                <Avatar
-                  key={trader.id}
-                  trader={trader}
-                  selected={selected.id === trader.id}
-                  onClick={() => setSelected(trader.id)}
-                />
-              ))}
-            </div>
-            <TraderDetail
-              trader={selected}
-              profile={NPC_PROFILES[selected.id]}
-              relationship={game.relationships[selected.id] || 0}
-              intel={selectedIntel}
-              visibleStock={visibleByTrader[selected.id] || []}
-            />
-            <ActionPanel game={game} selectedId={selected.id} onAction={handleFreeAction} onProxy={handleProxy} />
-            <LeadsPanel game={game} onSell={handleSellInformation} />
-            <ObligationsPanel game={game} onRepay={handleRepay} />
-            <AccessPanel game={game} />
-          </section>
-        )}
+        {showLearn && <section className="play-flow">
+          <PeopleStrip game={game} selectedId={selectedPerson} onSelect={setSelectedPerson} />
+          <PersonDesk game={game} selectedId={selectedPerson} onAction={(action, targetId) => setGame((current) => performFreeAction(current, action, targetId))} onProxy={(targetId) => setGame((current) => requestMarketProxy(current, targetId))} />
+          <Notebook game={game} onSell={(infoId, buyerId) => setGame((current) => sellInformation(current, infoId, buyerId))} />
+          <Obligations game={game} onRepay={(id) => setGame((current) => repayObligation(current, id))} />
+          <AccessNotice game={game} />
+          {game.phase === "afternoon" && <PublicTape game={game} />}
+        </section>}
 
-        {showMarket && (
-          <section className="play-flow">
-            <MarketBoard game={game} />
-            {showTradePrep && (
-              <OrderPanel
-                game={game}
-                traders={traders}
-                visibleByTrader={visibleByTrader}
-                player={player}
-                usedItems={usedItems}
-                plannedSardines={plannedSardines}
-                updateOrder={updateOrder}
-                clearOrders={clearOrders}
-                visibleOrderCount={visibleOrderCount}
-                setVisibleOrderCount={setVisibleOrderCount}
-              />
-            )}
-            {game.phase === "noon" && !game.marketResolved && (
-              <section className="card noon-callout">
-                <div className="section-title">The market is ready to clear</div>
-                <p>Your order and the announced NPC bids are now fixed for this noon.</p>
-              </section>
-            )}
-          </section>
-        )}
+        {showTrade && <section className="play-flow">
+          <SellerStrip game={game} selectedId={selectedSeller} onSelect={setSelectedSeller} />
+          {sellerIds.length ? <StallSheet game={game} sellerId={selectedSeller} onBid={writeBid} /> : <section className="card"><p>No public seller is posting stock this morning.</p></section>}
+          <OrderWriter game={game} updateOrder={updateOrder} clearOrders={clearOrders} visibleOrderCount={visibleOrderCount} setVisibleOrderCount={setVisibleOrderCount} />
+          <AnnouncedBids game={game} />
+        </section>}
 
-        {showTape && <TransactionTape game={game} />}
+        {game.phase === "noon" && !game.marketResolved && <section className="play-flow"><LockedOrders game={game} /><AnnouncedBids game={game} open /></section>}
+        {game.phase === "noon" && game.marketResolved && <section className="play-flow"><NoonResults game={game} /><PublicTape game={game} /></section>}
 
-        {!!game.rejected.length && game.phase === "noon" && (
-          <section className="card">
-            <div className="section-title">Your orders that did not clear</div>
-            <div className="stack">
-              {game.rejected.map((order, index) => (
-                <div className="mini-card" key={index}>
-                  {labelShort(order.wantItem)} from {traders[order.to]?.name}
-                  <div className="small muted">{order.reason}</div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+        {game.phase === "sunset" && <section className="card sunset-summary"><div className="section-title">Before sleep</div><p>Closing the day will settle tonight's food and any due promises, age perishables, then let ordinary businesses close their books and prepare tomorrow's stock.</p>{!!obligations.length && <p>You currently owe {obligations.reduce((sum, obligation) => sum + obligation.amount, 0)}🥫.</p>}</section>}
 
-        {game.phase === "sunset" && (
-          <section className="sunset-summary card">
-            <div className="section-title">Before sleep</div>
-            <p className="muted">Closing the day will settle food, obligations, perishables and tomorrow's business arrivals.</p>
-            {!!obligations.length && <p>You currently owe {obligations.reduce((sum, item) => sum + item.amount, 0)}🥫.</p>}
-          </section>
-        )}
+        {uiError && <div className="ui-error" role="alert">{uiError}</div>}
+        <DeveloperDrawer game={game} />
 
-        <details className="advanced-details">
-          <summary>More details</summary>
-          <div className="advanced-inner">
-            <div>Net worth by current reference prices: {netWorth(player)}🥫</div>
-            <div>Known information objects: {game.information.length}</div>
-            <div>Public trades recorded: {game.history.length}</div>
-            <div>Legal identity: {game.playerState.legalIdentity.status}</div>
-            <details className="log-details">
-              <summary>Harbour log</summary>
-              <div className="log-stack">
-                {game.log.map((line, index) => <div className="log-line" key={`${line}-${index}`}>{line}</div>)}
-              </div>
-            </details>
-          </div>
-        </details>
-
-        {!game.pendingEvents.length && (
-          <div className="bottom-action">
-            <button className="btn gold primary-action" onClick={handlePrimaryAction}>
-              {phaseButton(game)}
-            </button>
-          </div>
-        )}
+        {!game.pendingEvents.length && <div className="bottom-action"><button className="btn gold primary-action" onClick={handlePrimary}>{phaseButton(game)}</button></div>}
       </div>
     </main>
   );
