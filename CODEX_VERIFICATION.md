@@ -39,45 +39,92 @@ Therefore the latest commits were **not** verified here with a local `npm run bu
 - Confirm clearing uses the same committed intentions and does not reroll them.
 - Confirm public transaction tape reflects actual inventory movement.
 
-### B. Information asymmetry
+### B. Information asymmetry + staged precision
 
 - Player should not see every true inventory item.
-- Investigating a trader should reveal a real information object.
-- Selling a relevant holding lead during Morning should alter the buyer's noon plan because the buyer's belief changed.
-- The UI must not expose `knowledgeBasis` or other private NPC reasoning.
+- `precision` and `confidence` must remain separate fields.
+- Repeated investigation should deepen information rather than reveal exact truth immediately.
 
-### C. Substitute goods
+Specific Bar check:
 
-Verify at least these:
+1. first investigation → Apprentice is learning a Mai Tai and one ingredient is missing;
+2. second investigation → rum / lime / orange curaçao are confirmed present, still no explicit Orgeat name;
+3. third investigation → exact Orgeat need is revealed.
 
-- Sailor can value Dried Citrus Peel below Lime Crate.
-- Bar can value Almond Paste Jar below Orgeat Bottle.
-- Dock Dog can value Smoked Eel / Sea Lettuce as food substitutes.
-- A buyer who already owns an acceptable substitute should not simultaneously behave as though the need is completely unmet.
+Specific Sailor check:
 
-### D. Recurring business life
+1. first investigation → selective cargo / approaching departure context;
+2. second investigation → oily / medicinal hidden-cargo hint;
+3. third investigation → exact Sperm Whale Oil holding.
+
+Also confirm:
+
+- exact `holding` information becomes known stock for player targeting;
+- broad / specific need clues do **not** magically reveal hidden stock;
+- selling a relevant exact holding lead during Morning changes the buyer's noon plan because beliefs changed;
+- the UI does not expose `knowledgeBasis` or other private NPC reasoning;
+- a knowledgeable player can act on an inference before buying the exact final clue.
+
+### C. No invisible substitutes
+
+The September 3 hidden-substitute experiment was deliberately removed.
+
+Verify:
+
+- Dried Citrus Peel / Almond Paste are no longer required by current data or accepted as secret partial-credit solutions;
+- NPC utility only treats explicitly listed goals as needs;
+- if a future substitute is added, it must be made legible in data / UI / information before use.
+
+### D. Expanded item pool / texture
+
+Confirm the current 68-item catalogue loads without undefined references.
+
+Spot-check named goods requested by the designer:
+
+- Chia Seeds
+- Two Octopus Tentacles
+- Glasses Wipe
+- Presta Inner Tube
+- Chain Quick-Link
+- Brake Cable
+- Handlebar Tape
+- Tiny Torque Wrench
+- Bicycle Bell
+- Hawthorne Strainer
+- 30/45 Jigger
+- Long Bar Spoon
+- Fine Mesh Strainer
+- Hand Citrus Press
+- Lewis Bag
+- Orange Curaçao
+- Demerara Syrup
+
+Check that each trader's inventory texture is distinct rather than generated from a universal loot pool.
+
+### E. Recurring business life
 
 Run several days with minimal player action.
 
 Confirm:
 
-- Bar consumes Ice Block after service, creating recurring demand.
-- Dock Dog consumes cat food.
-- Fishmonger, Dock Dog and Sailor receive deterministic rotating arrivals.
-- Sailor's imports stop refreshing at / after the provisional departure window.
-- Market does not freeze permanently after Day 1–2 simply because everyone acquired one quest item.
+- Bar consumes Ice Block after service, creating recurring demand;
+- Dock Dog consumes Fresh Mackerel for the cats;
+- Fishmonger, Dock Dog and Sailor receive deterministic rotating arrivals;
+- Sailor's imports stop refreshing at / after the provisional departure window;
+- market does not freeze permanently after Day 1–2 simply because everyone acquired one goal item.
 
-### E. Perishables
+### F. Perishables
 
 Check multiple shelf lives:
 
-- Ice Block disappears quickly.
-- Fresh Mackerel lasts longer than Ice but not indefinitely.
-- Salted Cod lasts substantially longer.
-- Player-facing spoilage logs are coherent.
-- Perishable timers do not continue aging an item after it has changed owner incorrectly.
+- Ice Block disappears quickly;
+- Fresh Mackerel lasts longer than Ice but not indefinitely;
+- Two Octopus Tentacles behave as a short-lived food good;
+- Salted Cod lasts substantially longer;
+- player-facing spoilage logs are coherent;
+- perishable timers do not continue aging an item after it has changed owner incorrectly.
 
-### F. Nightly sustenance
+### G. Nightly sustenance
 
 Test all branches:
 
@@ -94,7 +141,7 @@ After form change confirm:
 - previous-life open obligations become estate obligations rather than silently disappearing;
 - the game does not crash when the player's inventory becomes empty.
 
-### G. Obligations
+### H. Obligations
 
 - Meal credit creates amount, creditor, due day and current-life identity.
 - Repayment consumes one free-time action and moves sardines to creditor.
@@ -102,7 +149,7 @@ After form change confirm:
 - An unpaid current-life obligation becomes overdue only once and damages relationship only once.
 - Old-life estate obligations do not repeatedly default against the new animal life.
 
-### H. Animal proxy route
+### I. Animal proxy route
 
 Create / force Animal form.
 
@@ -114,26 +161,42 @@ Create / force Animal form.
 - Proxy access should expire by the next day.
 - Noon player orders should clear through active proxy access.
 
-### I. Item/UI sanity
+### J. Item/UI sanity
 
 - New items render without missing icons / `undefined` values.
 - Trader cards do not become unusably long on mobile.
 - The larger inventory pool does not accidentally reveal hidden stock through dropdowns.
 - `Tonight` sustenance copy matches actual settlement behaviour.
+- Long names such as `Three Metres of Stolen Theatre Wire` and `Hotel Sugar Cubes, 23 Count` wrap cleanly.
+- Bar's large internal inventory does not mean the UI exposes every tool immediately.
+
+### K. Price audit before serious balance testing
+
+Current prices remain provisional and compressed.
+
+Before interpreting profitability metrics as balance evidence:
+
+- inventory all current reference prices;
+- inspect price distribution and starting cash ratios;
+- test whether +1 heat / markup is disproportionately large for cheap items;
+- propose one coordinated rebase including cash, food, info prices, proxy fee, auction reserve and thresholds;
+- do **not** scale item values in isolation.
 
 ## Known provisional rules — do not over-polish yet
 
 These are deliberately simple and may change after playtesting:
 
-- 14-day prototype cap.
-- 2 Morning + 2 Afternoon actions.
-- nightly sustenance = 1 food unit or 1🥫.
-- information sale price = 1🥫.
-- Bar Apprentice is the only implemented formal-market proxy.
-- proxy fee = 1🥫.
-- hunger-without-credit currently shifts the player to generic Animal form; specific animal / causal transformation mapping is not designed yet.
-- obligation enforcement currently damages relationships rather than seizing collateral.
-- player estate exists but reclaim mechanics are not implemented.
+- 14-day prototype cap;
+- 2 Morning + 2 Afternoon actions;
+- nightly sustenance = 1 food unit or 1🥫;
+- information sale price = 1🥫;
+- Bar Apprentice is the only implemented formal-market proxy;
+- proxy fee = 1🥫;
+- hunger-without-credit currently shifts the player to generic Animal form; specific animal / causal transformation mapping is not designed yet;
+- obligation enforcement currently damages relationships rather than seizing collateral;
+- player estate exists but reclaim mechanics are not implemented;
+- item `value` remains a provisional reference number, not intrinsic value;
+- `Sunflower = 99` is an old placeholder and should not be treated as final metaphysics or balance.
 
 ## Update rule
 
