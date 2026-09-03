@@ -2,7 +2,7 @@
 
 > Status: **core narrative direction, substantially more locked than earlier lore hypotheses.**
 >
-> This document captures the current philosophy and gameplay meaning of the Sun Moment, attachment, gradual animalisation, and the Onewheel Clown.
+> This document captures the current philosophy and gameplay meaning of the Sun Moment, attachment, gradual animalisation, the Onewheel Clown, and the emerging rebirth / form-change structure.
 
 ---
 
@@ -243,17 +243,17 @@ It is a state the player must interpret.
 
 # PART II — THE CLOWN
 
-## 10. The Onewheel Clown Should Be Human
+## 10. The Onewheel Clown Is Currently Human at Game Start
 
-Current strongest direction:
+Current strongest direction for the opening form:
 
-> **The Clown is biologically / physically human.**
+> **The Clown appears biologically / physically human.**
 
-Do not make him an animal, god, hidden alien, or metaphysical avatar by default.
-
-His power comes from being recognisably human inside this strange world.
+This is now best treated as a starting-state choice rather than proof that forms are permanent.
 
 He wears a clown identity deliberately.
+
+If the broader rebirth system is adopted, the Clown may have occupied other forms before or after the current run without turning him into an omniscient metaphysical avatar.
 
 ---
 
@@ -483,7 +483,7 @@ May not care much about wealth, yet may be unable to release responsibility for 
 May have little profit motivation but strong attachment to people, family and preserving the Bar.
 
 ### Sailor
-May be relatively pragmatic and able to leave local identities behind because departure is normal to them.
+Current identity is unresolved. The emerging direction is that `Sailor` may be a form / social function rather than one fixed individual: a liminal being whose economic role is transport, circulation and crossing boundaries.
 
 ### Fishmonger
 May appear stable and repetitive; their deeper relationship to the Sun Moment remains unresolved.
@@ -537,7 +537,164 @@ This preserves philosophical depth and avoids reducing the story to pseudo-scien
 
 ---
 
-## 22. Current Locked Principles
+# PART IV — EMERGING REBIRTH / FORM SYSTEM
+
+## 22. Forms May Be States of Participation, Not Permanent Species
+
+Strong new hypothesis:
+
+> Human, animal, sailor and other forms may be successive ways the same causal continuity participates in the world.
+
+A form should change:
+
+- legal access;
+- social status;
+- market access;
+- information channels;
+- mobility;
+- what kinds of actions are easy or difficult;
+- how the Sun Moment is experienced.
+
+This makes rebirth mechanically meaningful instead of cosmetic.
+
+The game may eventually let the player experience multiple forms across repeated lives / runs while retaining learned knowledge rather than permanent stat upgrades.
+
+This would provide a world-internal explanation for the existing meta-progression principle:
+
+> **The player gets stronger because they remember more, not because the avatar receives permanent bonuses.**
+
+## 23. Human / Animal Boundary and the Black Market
+
+Current strong direction:
+
+- human formal society recognises legal persons, family estates and institutional market access;
+- many venues discriminate against or ban animals;
+- the Bar is currently the clearest human venue that allows animals to enter;
+- Dock Dog, Seagulls, Squirrels, Mosquitoes and other animal actors can maintain their own networks and economic logic;
+- some humans hire animals or people who are already losing access to the Sun Moment to act as intermediaries;
+- these intermediaries bridge the formal human economy and animal society;
+- this bridge is a natural foundation for the black market.
+
+The black market is therefore not simply an `evil shop`.
+
+It is partly a market created by legal exclusion, incompatible forms and the need for agents who can cross boundaries.
+
+Animals may hold sardines and possessions in practice even when formal institutions refuse to recognise them directly. Human proxies, tolerated venues, family fronts or informal enforcement can bridge the gap.
+
+## 24. Hunger, Credit and Transformation — Strong Hypothesis, Not Yet Locked Mechanically
+
+Emerging rule:
+
+At daily settlement, a living form needs food / sustenance.
+
+If the player cannot pay for food, the first question is social and financial rather than biological:
+
+> **Will anyone feed you or extend credit?**
+
+A player with relationships may:
+
+- eat on credit;
+- be fed as a favour;
+- borrow food;
+- accept an obligation;
+- receive support from a business / household / animal network.
+
+A player with no food and no relationship willing to support them may cross a form threshold during sleep and wake in another form, potentially an animal.
+
+This is much more thematically interesting than a simple `starvation = Game Over`.
+
+However, the exact probability / determinism is intentionally unresolved. A fully random transformation could feel arbitrary if the player cannot understand the causal conditions.
+
+The eventual system should preserve two truths:
+
+1. social capital can keep someone alive / human when cash cannot;
+2. transformation should feel causally connected to the life the player has been living rather than a meaningless die roll.
+
+## 25. Sailor as a Liminal Form / Function — Open Hypothesis
+
+New possibility:
+
+`Sailor` may not be one unique NPC and may not be a conventional human profession.
+
+It may be a class of liminal beings whose function is to:
+
+- leave local markets;
+- move between regions / worlds;
+- carry goods across boundaries;
+- return with outside resources;
+- serve as interfaces between otherwise separated systems.
+
+Possible cosmological interpretations remain open:
+
+- animals who die may sometimes become Sailors;
+- Sailors may be beings less bound to one local identity;
+- people who partially transcend one form may become Sailors rather than leaving samsara entirely;
+- Sailor could be socially misunderstood as a profession while actually being a transitional state.
+
+Do **not** lock `Sailor = enlightened being` yet. If Sailors were fully liberated, continuing to trade and circulate goods would need a strong reason. A more interesting possibility is that they are **less rooted, not fully free**.
+
+## 26. Six-Realm Inspiration Without Literal One-to-One Mapping
+
+The broader structure may take inspiration from Buddhist samsara and the six realms, but Sunflower should not prematurely claim that each fictional form is a literal canonical Buddhist realm.
+
+Important design note:
+
+- plants are not one of the traditional Buddhist six realms;
+- `Sailor` is obviously not a traditional realm either;
+- therefore a literal mapping would distort either Buddhism or the game's fiction.
+
+Better direction:
+
+> Sunflower has its own cycle of forms, inspired by samsara, attachment, continuity and different conditions of existence.
+
+The player may eventually unlock radically different perspectives on the same market:
+
+- Human — strongest formal/legal access;
+- Animal — strongest informal / cross-species networks, weaker institutional recognition;
+- Liminal / Sailor — mobility and external trade, weaker local rootedness;
+- other forms remain open;
+- Plant is a particularly interesting experimental form because it would radically change agency, time and value, but should not be called a literal Buddhist realm.
+
+The same world should feel economically different from each form.
+
+## 27. Rebirth Should Change Strategy, Not Merely Skin
+
+If multiple forms become playable, each must alter the market game.
+
+Examples:
+
+### Human
+- can access formal market and recognised contracts;
+- can accumulate institutional reputation;
+- is strongly exposed to optimisation / attachment incentives;
+- may face prejudice toward animals.
+
+### Animal
+- restricted or banned from many human venues;
+- stronger access to scavenging, informal information and black-market networks;
+- may require human or tolerated intermediaries for formal settlement;
+- may have different consumption / mobility constraints.
+
+### Sailor / liminal form
+- can cross geography;
+- imports and exports goods;
+- can accept commissions;
+- may disappear for multiple days and return with external information;
+- may be less able to build deep local relationships.
+
+### Plant — very speculative
+- extremely limited direct action;
+- potentially produces food / seeds / living value;
+- experiences the Sun differently from mobile agents;
+- could reveal how much of `agency` in the market comes from movement versus being valuable to others.
+
+The goal is not a class-selection screen.
+
+The goal is to let the player discover that **different forms generate different economies around the same underlying world.**
+
+---
+
+## 28. Current Locked Principles
 
 The following principles are strong enough to treat as current canon unless later deliberately revised:
 
@@ -550,8 +707,12 @@ The following principles are strong enough to treat as current canon unless late
 7. Attachment may arise from love, duty or enlightenment-seeking as well as greed.
 8. Karma is best modelled as continuing consequence rather than a morality score.
 9. The player should discover entanglement through gameplay rather than a visible meter.
-10. The Clown is currently best conceived as human.
+10. The Clown currently begins in human form.
 11. The Clown may once have been extremely wealthy / successful.
 12. His core attachment is liberation itself.
 13. The Clown can be right about one deep truth without being right about everything.
 14. Market optimisation and metaphysical attachment must remain part of the same game system rather than separate narrative layers.
+15. Human and animal societies overlap economically but do not receive equal formal recognition.
+16. The Bar is a major tolerated cross-form venue.
+17. The black market can naturally emerge from intermediaries who bridge excluded animal society and formal human society.
+18. Multiple playable forms / lives are now a strong direction for meta-progression, but the exact cosmological taxonomy is not locked.
