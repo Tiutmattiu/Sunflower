@@ -12,7 +12,7 @@ import {
   SUSTENANCE_PER_DAY,
   VENUES,
 } from "./gameData";
-import { planNPCMarket, sellerAsk } from "./npcAI";
+import { planNPCMarket, privateUtility, sellerAsk } from "./npcAI";
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
 export const valueOf = (item) => (item && Number.isFinite(ITEMS[item]?.value) ? ITEMS[item].value : 0);
@@ -91,7 +91,7 @@ function createObligation(game, payload) {
     kind: payload.kind,
     debtorId: payload.debtorId || "player",
     debtorLifeId: lifeId,
-    creditorId: payload.credititorId || payload.creditorId,
+    creditorId: payload.creditorId,
     amount: Number(payload.amount || 0),
     createdDay: game.day,
     dueDay: payload.dueDay ?? game.day + 2,
@@ -431,12 +431,15 @@ function executePlayerOrders(game) {
     }
 
     const isCheat = normalized.to === "mechanic" && normalized.offerItem === "Bad Tangerine";
-    const paymentValue = valueOf(normalized.offerItem) + normalized.sardines;
-    const usefulDelivery = profileWantsItem(NPC_PROFILES[target.id], normalized.offerItem);
+    const barterUtility = normalized.offerItem ? privateUtility(game, target.id, normalized.offerItem) : 0;
+    const paymentValue = valueOf(normalized.offerItem) + barterUtility + normalized.sardines;
     const ask = sellerAsk(game, target.id, normalized.wantItem);
 
-    if (!isCheat && !usefulDelivery && paymentValue < ask) {
-      rejected.push({ ...normalized, reason: `${target.name} would not clear below an estimated ${ask}🥫 of value.` });
+    if (!isCheat && paymentValue < ask) {
+      rejected.push({
+        ...normalized,
+        reason: `${target.name} values that payment at about ${paymentValue}🥫 against an ask near ${ask}🥫.`,
+      });
       return;
     }
 
