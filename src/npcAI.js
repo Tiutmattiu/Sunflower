@@ -89,6 +89,12 @@ function knownSourcesForGoal(game, buyerId, goal) {
     sources.set(tapeOwner, "public tape");
   }
 
+  // Information bought from the player becomes a belief, not world truth. It can go stale.
+  const boughtLead = game.npcMemory?.[buyerId]?.knownHoldings?.[goal.item];
+  if (boughtLead?.holderId && boughtLead.holderId !== buyerId && boughtLead.holderId !== "player") {
+    sources.set(boughtLead.holderId, boughtLead.source || "bought information");
+  }
+
   // Hidden inventory requires active search. Existing relationships determine where a trader looks first;
   // they do not magically reveal the seller's true inventory.
   const profile = NPC_PROFILES[buyerId];
