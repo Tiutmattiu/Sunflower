@@ -72,7 +72,7 @@ export const INITIAL_TRADERS = {
     inventory: ["Rum Bottle", "Bruised Mint", "Cracked Shaker", "Lime Crate"],
   },
   player: {
-    id: "player", name: "You", icon: "🧍", role: "Outsider",
+    id: "player", name: "You", icon: "🧍", role: "Outsider acquisition agent",
     sardines: 6,
     inventory: ["Fish Bones", "Bad Tangerine", "Tin Spoon", "Old Coupon"],
   },
@@ -150,6 +150,58 @@ export const NPC_PROFILES = {
     ],
     clue: "The Apprentice is not a strong trader yet. People still like dealing with them, which is an economic advantage of its own.",
   },
+};
+
+export const SOCIAL_GRAPH = {
+  dog: {
+    fishmonger: { familiarity: 1, trust: 0, channel: "harbour" },
+    mechanic: { familiarity: 1, trust: 0, channel: "dock" },
+    vale: { familiarity: 1, trust: -1, channel: "street-to-elite" },
+    clown: { familiarity: 1, trust: 0, channel: "bar" },
+    bar: { familiarity: 2, trust: 1, channel: "animal-friendly bar" },
+    seagulls: { familiarity: 2, trust: 0, channel: "animal informal network" },
+    squirrels: { familiarity: 2, trust: 0, channel: "animal informal network" },
+    mosquitoes: { familiarity: 1, trust: 0, channel: "animal informal network" },
+  },
+  vale: {
+    mechanic: { familiarity: 3, trust: 2, channel: "repeat private trade" },
+    dog: { familiarity: 1, trust: -1, channel: "informal information" },
+  },
+  mechanic: {
+    vale: { familiarity: 3, trust: 2, channel: "repeat private trade" },
+    dog: { familiarity: 1, trust: 1, channel: "dock" },
+  },
+  clown: {
+    bar: { familiarity: 3, trust: 2, channel: "regular customer" },
+  },
+  bar: {
+    clown: { familiarity: 3, trust: 1, channel: "regular customer" },
+    dog: { familiarity: 2, trust: 2, channel: "animal-friendly bar" },
+  },
+  fishmonger: {
+    dog: { familiarity: 1, trust: 0, channel: "ordinary market" },
+  },
+};
+
+export const VENUES = {
+  bar: {
+    name: "The Bar",
+    animalAccess: "open",
+    note: "Currently the only confirmed human venue that openly allows animal people inside.",
+  },
+  formalMarket: {
+    name: "Public Market",
+    animalAccess: "restricted",
+    note: "Access rules are not final; discrimination against animal traders exists in this society.",
+  },
+};
+
+export const PLAYER_CONTEXT = {
+  communication: "limited-local-speech",
+  canUnderstandSomeLocalLanguage: true,
+  canSpeakFluently: false,
+  channels: ["translation", "writing", "gesture", "structured offers", "demonstrated reliability"],
+  note: "The player is an outsider and cannot freely interrogate every NPC through unlimited dialogue.",
 };
 
 export const PHASES = ["sunrise", "morning", "noon", "afternoon", "sunset"];
