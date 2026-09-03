@@ -11,8 +11,9 @@ function StartScreen({ onStart }) {
         <div className="eyebrow">Sunflower Market</div>
         <h1>You want a sunflower.</h1>
         <p>There is one problem: nobody will sell you one.</p>
+        <p className="muted">You do not know why you want it. You only know that it feels like a way home.</p>
         <p className="muted">
-          You have 14 days. Every sunrise, noon and sunset the harbour stops. The public market opens once each day at noon; the rest of your time is for information, relationships, investigation and positioning.
+          This prototype gives you 14 days. Every sunrise, noon and sunset the harbour stops. The public market opens once each day at noon; the rest of your time is for information, relationships, investigation and positioning.
         </p>
         <div className="start-rules">
           <div>🥫 Sardine tins are money.</div>
