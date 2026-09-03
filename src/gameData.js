@@ -52,7 +52,6 @@ export const ITEMS = {
   "Taxidermied Moth": { value: 22, icon: "🦋", type: "Collectible / Illiquid / Story" },
   "Unsent Letter": { value: 5, icon: "✉️", type: "Sentimental / Information-bearing / Story" },
 
-  "Auction Sunflower": { value: 52, icon: "🌻", type: "Auction Lot / Living" },
   "Auction Onewheel": { value: 28, icon: "🛞", type: "Vehicle / Auction Lot" },
 
   // Clown / speculative junk / everyday-surreal goods.
