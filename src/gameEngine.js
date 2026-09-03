@@ -1,11 +1,14 @@
 import {
   AFTERNOON_ACTIONS,
+  BUSINESS_CYCLES,
   INITIAL_TRADERS,
   ITEMS,
   MAX_DAYS,
   MORNING_ACTIONS,
   NPC_PROFILES,
   PLAYER_CONTEXT,
+  PROXY_FEE,
+  SUSTENANCE_PER_DAY,
   VENUES,
 } from "./gameData";
 import { planNPCMarket, sellerAsk } from "./npcAI";
@@ -31,6 +34,12 @@ function emptyMemory() {
 
 function relationshipMap() {
   return Object.fromEntries(Object.keys(NPC_PROFILES).map((id) => [id, 0]));
+}
+
+function profileWantsItem(profile, item) {
+  return (profile?.goals || []).some((goal) =>
+    goal.item === item || (goal.substitutes || []).some((substitute) => substitute.item === item)
+  );
 }
 
 function informationKey(info) {
@@ -66,6 +75,31 @@ function addInformation(game, payload) {
   return candidate;
 }
 
+function createObligation(game, payload) {
+  const lifeId = payload.debtorLifeId || game.playerState.legalIdentity.lifeId;
+  const obligation = {
+    id: `obligation-${game.obligations.length + 1}`,
+    kind: payload.kind,
+    debtorId: payload.debtorId || "player",
+    debtorLifeId: lifeId,
+    creditorId: payload.creditorId,
+    amount: Number(payload.amount || 0),
+    createdDay: game.day,
+    dueDay: payload.dueDay ?? game.day + 2,
+    status: "open",
+    note: payload.note || "",
+  };
+  game.obligations.push(obligation);
+  return obligation;
+}
+
+export function currentObligations(game) {
+  const lifeId = game.playerState.legalIdentity.lifeId;
+  return game.obligations.filter((obligation) =>
+    obligation.debtorLifeId === lifeId && ["open", "overdue"].includes(obligation.status)
+  );
+}
+
 export function createGame() {
   const game = {
     day: 1,
@@ -81,7 +115,10 @@ export function createGame() {
         lifeId: "life-1",
       },
       proxyAccess: [],
+      lastMeal: null,
     },
+    estates: [],
+    obligations: [],
     selected: "player",
     playerOrders: resetOrders(),
     marketPlan: [],
@@ -90,7 +127,7 @@ export function createGame() {
     rejected: [],
     history: [],
     information: [],
-    intel: {}, // compatibility layer while UI migrates to information objects
+    intel: {},
     relationships: relationshipMap(),
     npcMemory: emptyMemory(),
     heat: {},
@@ -118,6 +155,10 @@ export function createGame() {
       tradeCount: 0,
       cheats: 0,
       informationSales: 0,
+      creditUsed: 0,
+      defaults: 0,
+      proxyUses: 0,
+      lives: 1,
     },
     log: [
       "Day 1. The sunflower is not for sale.",
@@ -132,7 +173,11 @@ export function createGame() {
 export function canAccessVenue(game, venueId) {
   const venue = VENUES[venueId];
   if (!venue) return false;
-  if (game.playerState.proxyAccess.includes(venueId)) return true;
+
+  const activeProxy = game.playerState.proxyAccess.some((access) =>
+    access.venueId === venueId && access.expiresDay >= game.day
+  );
+  if (activeProxy) return true;
 
   const formAllowed = venue.allowedForms.includes(game.playerState.form);
   if (!formAllowed) return false;
@@ -177,7 +222,7 @@ export function informationBuyers(game, info) {
       if (buyerId === info.subjectId) return false;
       if (info.soldTo.includes(buyerId)) return false;
       if (game.traders[buyerId]?.inventory.includes(info.item)) return false;
-      return (profile.goals || []).some((goal) => goal.item === info.item);
+      return profileWantsItem(profile, info.item);
     })
     .map(([buyerId]) => buyerId);
 }
@@ -191,7 +236,7 @@ export function sellInformation(current, infoId, buyerId) {
 
   const buyer = game.traders[buyerId];
   const player = game.traders.player;
-  const price = 1; // First-pass information price; negotiation comes later.
+  const price = 1;
   if (!buyer || buyer.sardines < price) return game;
 
   buyer.sardines -= price;
@@ -208,10 +253,65 @@ export function sellInformation(current, infoId, buyerId) {
   };
 
   game.log.unshift(`${buyer.name} pays 1🥫 for your lead: ${info.text}`);
-
-  // Morning information can change the buyer's actual noon positioning. The plan remains deterministic;
-  // it changes because the information set changed, not because Resolve rerolled it.
   if (game.phase === "morning") game.marketPlan = planNPCMarket(game);
+  return game;
+}
+
+export function requestMarketProxy(current, targetId = "bar") {
+  const game = clone(current);
+  if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || game.ended) return game;
+  if (game.playerState.form !== "animal" || canAccessVenue(game, "formalMarket")) return game;
+
+  const target = game.traders[targetId];
+  const relationship = game.relationships[targetId] || 0;
+  if (!target || target.form !== "human" || targetId !== "bar" || relationship < 2) return game;
+
+  const player = game.traders.player;
+  if (player.sardines >= PROXY_FEE) {
+    player.sardines -= PROXY_FEE;
+    target.sardines += PROXY_FEE;
+    game.log.unshift(`${target.name} agrees to settle today's formal-market orders for ${PROXY_FEE}🥫.`);
+  } else if (relationship >= 3) {
+    createObligation(game, {
+      kind: "proxy-fee",
+      creditorId: targetId,
+      amount: PROXY_FEE,
+      dueDay: game.day + 2,
+      note: "Formal-market proxy fee.",
+    });
+    game.stats.creditUsed += 1;
+    game.log.unshift(`${target.name} agrees to proxy today's market on credit.`);
+  } else {
+    game.log.unshift(`${target.name} will proxy, but not on credit yet.`);
+    return game;
+  }
+
+  game.playerState.proxyAccess.push({ venueId: "formalMarket", via: targetId, expiresDay: game.day });
+  game.stats.proxyUses += 1;
+  game.actionsRemaining -= 1;
+  return game;
+}
+
+export function repayObligation(current, obligationId) {
+  const game = clone(current);
+  if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || game.ended) return game;
+
+  const obligation = currentObligations(game).find((entry) => entry.id === obligationId);
+  if (!obligation) return game;
+
+  const player = game.traders.player;
+  if (player.sardines < obligation.amount) return game;
+
+  player.sardines -= obligation.amount;
+  const creditor = game.traders[obligation.creditorId];
+  if (creditor) creditor.sardines += obligation.amount;
+  obligation.status = "settled";
+  obligation.settledDay = game.day;
+  game.actionsRemaining -= 1;
+  if (game.relationships[obligation.creditorId] !== undefined) {
+    game.relationships[obligation.creditorId] += 1;
+  }
+  game.log.unshift(`You settle ${obligation.amount}🥫 owed to ${creditor?.name || obligation.creditorId}.`);
   return game;
 }
 
@@ -256,7 +356,7 @@ function applySpecialRules(game, trade) {
   if (trade.to === "bar" && trade.offerItem === "Orgeat Bottle") {
     game.flags.orgeatDelivered = true;
     if (!game.traders.bar.inventory.includes("Mai Tai")) game.traders.bar.inventory.push("Mai Tai");
-    game.log.unshift("The Apprentice can now make a Mai Tai.");
+    game.log.unshift("The Apprentice can now make a proper Mai Tai.");
   }
 
   if (trade.to === "vale" && trade.offerItem === "Sperm Whale Oil") {
@@ -321,9 +421,9 @@ function executePlayerOrders(game) {
     const isCheat = normalized.to === "mechanic" && normalized.offerItem === "Bad Tangerine";
     const paymentValue = valueOf(normalized.offerItem) + normalized.sardines;
     const ask = sellerAsk(game, target.id, normalized.wantItem);
-    const exactDelivery = NPC_PROFILES[target.id]?.goals?.some((goal) => goal.item === normalized.offerItem);
+    const usefulDelivery = profileWantsItem(NPC_PROFILES[target.id], normalized.offerItem);
 
-    if (!isCheat && !exactDelivery && paymentValue < ask) {
+    if (!isCheat && !usefulDelivery && paymentValue < ask) {
       rejected.push({ ...normalized, reason: `${target.name} would not clear below an estimated ${ask}🥫 of value.` });
       return;
     }
@@ -408,53 +508,172 @@ export function resolveNoonMarket(current) {
 
 function applyPerishables(game) {
   const timer = { ...game.perishTimer };
-  const player = game.traders.player;
-  Object.keys(timer).forEach((item) => {
-    if (!player.inventory.includes(item)) delete timer[item];
+
+  Object.values(game.traders).forEach((trader) => {
+    const nextInventory = [];
+    trader.inventory.forEach((item) => {
+      const shelfLife = ITEMS[item]?.shelfLife;
+      const timerKey = `${trader.id}:${item}`;
+      if (!shelfLife) {
+        nextInventory.push(item);
+        delete timer[timerKey];
+        return;
+      }
+
+      const age = (timer[timerKey] || 0) + 1;
+      if (age >= shelfLife) {
+        if (ITEMS[item]?.foodUnits && trader.id === "player" && !nextInventory.includes("Spoiled Fish")) {
+          nextInventory.push("Spoiled Fish");
+        }
+        if (trader.id === "player") game.log.unshift(`${labelShort(item)} did not survive the sunset.`);
+        delete timer[timerKey];
+      } else {
+        timer[timerKey] = age;
+        nextInventory.push(item);
+      }
+    });
+    trader.inventory = nextInventory;
   });
 
-  const nextInventory = [];
-  player.inventory.forEach((item) => {
-    if (!ITEMS[item]?.perishable) {
-      nextInventory.push(item);
-      return;
-    }
-    const age = (timer[item] || 0) + 1;
-    if (age >= 3) {
-      if (!nextInventory.includes("Spoiled Fish")) nextInventory.push("Spoiled Fish");
-      game.log.unshift(`${labelShort(item)} spoiled at sunset.`);
-      delete timer[item];
-    } else {
-      timer[item] = age;
-      nextInventory.push(item);
-    }
-  });
-  player.inventory = nextInventory;
   game.perishTimer = timer;
 }
 
-function settleBusinesses(game) {
+function consumeBusinessInputs(game) {
   const dog = game.traders.dog;
-  const fishmonger = game.traders.fishmonger;
-
-  if (dog.inventory.includes("Fresh Mackerel")) {
-    dog.inventory = dog.inventory.filter((item) => item !== "Fresh Mackerel");
-    game.log.unshift("Dock Dog's fresh fish disappears into the cat colony by sunset.");
+  const catFood = ["Fresh Mackerel", "Smoked Eel", "Sea Lettuce Bundle"].find((item) => dog.inventory.includes(item));
+  if (catFood) {
+    dog.inventory = dog.inventory.filter((item) => item !== catFood);
+    game.log.unshift(`Dock Dog's ${catFood} disappears into the cat colony by sunset.`);
   }
 
-  if (!fishmonger.inventory.includes("Fresh Mackerel")) {
-    fishmonger.inventory.push("Fresh Mackerel");
-    game.log.unshift("Fishmonger lands one fresh market lot for tomorrow.");
+  const bar = game.traders.bar;
+  if (bar.inventory.includes("Ice Block")) {
+    bar.inventory = bar.inventory.filter((item) => item !== "Ice Block");
+    game.log.unshift("The Bar uses up its ice during service. Tomorrow's cold drinks need fresh supply.");
   }
-  if (!dog.inventory.includes("Dead Pigeon")) {
-    dog.inventory.push("Dead Pigeon");
-    game.log.unshift("Dock Dog scavenges another deeply questionable piece of inventory.");
+}
+
+function settleBusinesses(game) {
+  consumeBusinessInputs(game);
+
+  Object.entries(BUSINESS_CYCLES).forEach(([traderId, cycle]) => {
+    const trader = game.traders[traderId];
+    if (!trader || !cycle.length) return;
+    if (traderId === "mechanic" && game.day >= (NPC_PROFILES.mechanic.departureDay || Infinity)) return;
+
+    const item = cycle[(game.day - 1) % cycle.length];
+    if (!trader.inventory.includes(item)) {
+      trader.inventory.push(item);
+      const verbs = {
+        dog: "scavenges",
+        fishmonger: "brings in",
+        mechanic: "unloads",
+      };
+      game.log.unshift(`${trader.name} ${verbs[traderId] || "receives"} ${labelShort(item)} for tomorrow.`);
+    }
+  });
+
+  if (game.day === NPC_PROFILES.mechanic.departureDay) {
+    game.log.unshift("The Sailor's departure window has arrived. Their local inventory will stop refreshing after today.");
+  }
+}
+
+function chooseMealCreditSource(game) {
+  const candidates = ["bar", "dog"]
+    .filter((id) => (game.relationships[id] || 0) >= 2 && (game.traders[id]?.sardines || 0) >= SUSTENANCE_PER_DAY)
+    .sort((a, b) =>
+      (game.relationships[b] || 0) - (game.relationships[a] || 0) ||
+      a.localeCompare(b)
+    );
+  return candidates[0] || null;
+}
+
+function transformPlayerToAnimal(game) {
+  const player = game.traders.player;
+  const oldLifeId = game.playerState.legalIdentity.lifeId;
+
+  game.estates.push({
+    lifeId: oldLifeId,
+    endedDay: game.day,
+    sardines: player.sardines,
+    inventory: [...player.inventory],
+    note: "Former legal identity. The current animal form cannot directly claim this estate.",
+  });
+
+  game.obligations.forEach((obligation) => {
+    if (obligation.debtorLifeId === oldLifeId && ["open", "overdue"].includes(obligation.status)) {
+      obligation.status = "estate";
+    }
+  });
+
+  player.sardines = 0;
+  player.inventory = [];
+  game.playerState.life += 1;
+  game.stats.lives = game.playerState.life;
+  game.playerState.form = "animal";
+  game.playerState.legalIdentity = {
+    status: "unrecognized",
+    lifeId: `life-${game.playerState.life}`,
+    formerLifeId: oldLifeId,
+  };
+  game.playerState.proxyAccess = [];
+  game.log.unshift("You wake in an animal form. Your old assets still exist, but the law no longer recognises you as their owner.");
+}
+
+function settleSustenance(game) {
+  const player = game.traders.player;
+  const edible = player.inventory
+    .filter((item) => (ITEMS[item]?.foodUnits || 0) >= SUSTENANCE_PER_DAY)
+    .sort((a, b) => valueOf(a) - valueOf(b) || a.localeCompare(b));
+
+  if (edible.length) {
+    const meal = edible[0];
+    player.inventory = player.inventory.filter((item) => item !== meal);
+    game.playerState.lastMeal = { day: game.day, source: "inventory", item: meal };
+    game.log.unshift(`You eat ${labelShort(meal)} before sleep.`);
+    return;
   }
 
-  const sailorProfile = NPC_PROFILES.mechanic;
-  if (game.day === sailorProfile.departureDay) {
-    game.log.unshift("The Sailor's departure window has arrived. Future versions will make this a hard availability event.");
+  if (player.sardines >= SUSTENANCE_PER_DAY) {
+    player.sardines -= SUSTENANCE_PER_DAY;
+    game.playerState.lastMeal = { day: game.day, source: "sardine-tin", amount: SUSTENANCE_PER_DAY };
+    game.log.unshift(`You open ${SUSTENANCE_PER_DAY}🥫 instead of keeping it as money.`);
+    return;
   }
+
+  const creditorId = chooseMealCreditSource(game);
+  if (creditorId) {
+    const creditor = game.traders[creditorId];
+    creditor.sardines -= SUSTENANCE_PER_DAY;
+    createObligation(game, {
+      kind: "meal-credit",
+      creditorId,
+      amount: SUSTENANCE_PER_DAY,
+      dueDay: game.day + 2,
+      note: "Food advanced at sunset.",
+    });
+    game.stats.creditUsed += 1;
+    game.playerState.lastMeal = { day: game.day, source: "credit", creditorId };
+    game.log.unshift(`${creditor.name} feeds you on credit. You now owe ${SUSTENANCE_PER_DAY}🥫.`);
+    return;
+  }
+
+  transformPlayerToAnimal(game);
+}
+
+function markOverdueObligations(game) {
+  const currentLife = game.playerState.legalIdentity.lifeId;
+  game.obligations.forEach((obligation) => {
+    if (obligation.debtorLifeId !== currentLife || obligation.status !== "open") return;
+    if (obligation.dueDay > game.day) return;
+    obligation.status = "overdue";
+    game.stats.defaults += 1;
+    if (game.relationships[obligation.creditorId] !== undefined) {
+      game.relationships[obligation.creditorId] -= 1;
+    }
+    const creditor = game.traders[obligation.creditorId];
+    game.log.unshift(`${obligation.amount}🥫 owed to ${creditor?.name || obligation.creditorId} is now overdue.`);
+  });
 }
 
 export function advancePhase(current) {
@@ -483,8 +702,11 @@ export function advancePhase(current) {
     return game;
   }
   if (game.phase === "sunset") {
+    settleSustenance(game);
+    markOverdueObligations(game);
     applyPerishables(game);
     settleBusinesses(game);
+
     if (game.day >= game.maxDays) {
       game.ended = true;
       game.winner = false;
@@ -492,6 +714,7 @@ export function advancePhase(current) {
       game.style = classify(game);
       return game;
     }
+
     game.day += 1;
     game.phase = "sunrise";
     game.marketResolved = false;
@@ -499,6 +722,7 @@ export function advancePhase(current) {
     game.rejected = [];
     game.pendingEvents = [];
     game.actionsRemaining = 0;
+    game.playerState.proxyAccess = game.playerState.proxyAccess.filter((access) => access.expiresDay >= game.day);
     game.marketPlan = planNPCMarket(game);
     game.log.unshift(`Day ${game.day}. New positions form before the noon market.`);
     return game;
@@ -509,7 +733,7 @@ export function advancePhase(current) {
 function hiddenItemScore(item, targetId) {
   const outsideDemand = Object.entries(NPC_PROFILES).reduce((sum, [buyerId, profile]) => {
     if (buyerId === targetId) return sum;
-    return sum + ((profile.goals || []).some((goal) => goal.item === item) ? 10 : 0);
+    return sum + (profileWantsItem(profile, item) ? 10 : 0);
   }, 0);
   return outsideDemand + valueOf(item);
 }
@@ -588,7 +812,7 @@ export function buildEvents(game) {
   if (game.ended) return [];
   const player = game.traders.player;
   const events = [];
-  const soupFish = ["Fresh Mackerel", "Salted Cod"];
+  const soupFish = ["Fresh Mackerel", "Salted Cod", "Smoked Eel"];
 
   if (
     canAccessVenue(game, "bar") &&
@@ -690,6 +914,7 @@ export function classify(game) {
     "The Whale": stats.overpays * 4,
     "The Defector": game.flags.cheated ? 8 : 0,
     "The Information Broker": stats.informationSales * 4,
+    "The Credit Creature": stats.creditUsed * 3 + stats.defaults,
     "The Patient Observer": game.information.length * 2,
   };
   const [name] = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
@@ -699,6 +924,7 @@ export function classify(game) {
     "The Whale": "You forced outcomes by paying heavily.",
     "The Defector": "You used misrepresentation as a market tool.",
     "The Information Broker": "You turned private knowledge into a tradable asset.",
+    "The Credit Creature": "You repeatedly turned relationships and future promises into present liquidity.",
     "The Patient Observer": "You spent meaningful time learning the people around the market.",
   };
   return { name, description: descriptions[name] };
