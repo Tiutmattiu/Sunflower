@@ -2,8 +2,23 @@ import { ITEMS, NPC_PROFILES, SOCIAL_GRAPH } from "./gameData";
 
 const itemValue = (item) => ITEMS[item]?.value ?? 0;
 
-function goalFor(npcId, item) {
-  return (NPC_PROFILES[npcId]?.goals || []).find((goal) => goal.item === item) || null;
+function goalOptions(goal) {
+  return [
+    { item: goal.item, utility: goal.utility, likelySources: goal.likelySources || [] },
+    ...(goal.substitutes || []).map((substitute) => ({
+      item: substitute.item,
+      utility: substitute.utility,
+      likelySources: substitute.likelySources || goal.likelySources || [],
+    })),
+  ];
+}
+
+function goalMatchFor(npcId, item) {
+  for (const goal of NPC_PROFILES[npcId]?.goals || []) {
+    const option = goalOptions(goal).find((candidate) => candidate.item === item);
+    if (option) return { goal, option };
+  }
+  return null;
 }
 
 function contactBetween(fromId, toId) {
@@ -12,14 +27,14 @@ function contactBetween(fromId, toId) {
 
 export function privateUtility(game, npcId, item) {
   const profile = NPC_PROFILES[npcId];
-  const goal = goalFor(npcId, item);
-  if (!profile || !goal) return 0;
+  const match = goalMatchFor(npcId, item);
+  if (!profile || !match) return 0;
 
-  let utility = goal.utility || 0;
-  if (profile.departureDay && goal.urgencyPerDay) {
+  let utility = match.option.utility || 0;
+  if (profile.departureDay && match.goal.urgencyPerDay) {
     const daysLeft = Math.max(0, profile.departureDay - game.day);
     const urgencyWindow = Math.max(0, 5 - daysLeft);
-    utility += urgencyWindow * goal.urgencyPerDay;
+    utility += urgencyWindow * match.goal.urgencyPerDay;
   }
   return utility;
 }
@@ -71,40 +86,35 @@ function rankedHypotheses(buyerId, likelySources) {
     );
 }
 
-function knownSourcesForGoal(game, buyerId, goal) {
-  if (goal.item === "Blue Glass Marble") return [];
+function knownSourcesForItem(game, buyerId, item, likelySources) {
+  if (item === "Blue Glass Marble") return [];
 
   const sources = new Map();
 
-  // Public-facing stock is common knowledge. It may still be stale by clearing time.
-  publicSellersOf(goal.item).forEach((sellerId) => {
+  publicSellersOf(item).forEach((sellerId) => {
     if (sellerId !== buyerId && sellerId !== "player") {
       sources.set(sellerId, "public stock");
     }
   });
 
-  // Public trades reveal a recent owner. Consumption or private transfers may later make this stale.
-  const tapeOwner = latestPublicOwner(game, goal.item);
+  const tapeOwner = latestPublicOwner(game, item);
   if (tapeOwner && tapeOwner !== buyerId && tapeOwner !== "player") {
     sources.set(tapeOwner, "public tape");
   }
 
-  // Information bought from the player becomes a belief, not world truth. It can go stale.
-  const boughtLead = game.npcMemory?.[buyerId]?.knownHoldings?.[goal.item];
+  const boughtLead = game.npcMemory?.[buyerId]?.knownHoldings?.[item];
   if (boughtLead?.holderId && boughtLead.holderId !== buyerId && boughtLead.holderId !== "player") {
     sources.set(boughtLead.holderId, boughtLead.source || "bought information");
   }
 
-  // Hidden inventory requires active search. Existing relationships determine where a trader looks first;
-  // they do not magically reveal the seller's true inventory.
   const profile = NPC_PROFILES[buyerId];
   const depth = searchDepth(profile, game.day);
-  rankedHypotheses(buyerId, goal.likelySources)
+  rankedHypotheses(buyerId, likelySources)
     .slice(0, depth)
     .forEach(({ sellerId, contact }) => {
       if (sellerId === buyerId || sellerId === "player") return;
       const seller = game.traders[sellerId];
-      if (seller?.inventory.includes(goal.item)) {
+      if (seller?.inventory.includes(item)) {
         const basis = contact.familiarity >= 2
           ? `searched a known contact via ${contact.channel || "prior relationship"}`
           : "active search";
@@ -113,6 +123,10 @@ function knownSourcesForGoal(game, buyerId, goal) {
     });
 
   return [...sources.entries()].map(([sellerId, basis]) => ({ sellerId, basis }));
+}
+
+function goalAlreadyCovered(buyer, goal) {
+  return goalOptions(goal).some((option) => buyer.inventory.includes(option.item));
 }
 
 export function planNPCMarket(game) {
@@ -124,26 +138,28 @@ export function planNPCMarket(game) {
 
     const candidates = [];
     (NPC_PROFILES[buyerId].goals || []).forEach((goal) => {
-      if (buyer.inventory.includes(goal.item)) return;
+      if (goalAlreadyCovered(buyer, goal)) return;
 
-      knownSourcesForGoal(game, buyerId, goal).forEach(({ sellerId, basis }) => {
-        const seller = game.traders[sellerId];
-        if (!seller) return;
+      goalOptions(goal).forEach((option) => {
+        knownSourcesForItem(game, buyerId, option.item, option.likelySources).forEach(({ sellerId, basis }) => {
+          const seller = game.traders[sellerId];
+          if (!seller) return;
 
-        const ask = sellerAsk(game, sellerId, goal.item);
-        const max = buyerMax(game, buyerId, goal.item);
-        const surplus = max - ask;
-        if (ask <= buyer.sardines && surplus >= 0) {
-          candidates.push({
-            from: buyerId,
-            to: sellerId,
-            wantItem: goal.item,
-            sardines: ask,
-            score: surplus + privateUtility(game, buyerId, goal.item),
-            reason: goal.reason,
-            knowledgeBasis: basis,
-          });
-        }
+          const ask = sellerAsk(game, sellerId, option.item);
+          const max = buyerMax(game, buyerId, option.item);
+          const surplus = max - ask;
+          if (ask <= buyer.sardines && surplus >= 0) {
+            candidates.push({
+              from: buyerId,
+              to: sellerId,
+              wantItem: option.item,
+              sardines: ask,
+              score: surplus + privateUtility(game, buyerId, option.item),
+              reason: goal.reason,
+              knowledgeBasis: basis,
+            });
+          }
+        });
       });
     });
 
