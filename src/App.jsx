@@ -1,6 +1,15 @@
 import React, { useMemo, useState } from "react";
 import "./index.css";
-import { FORMS, ITEMS, NPC_PROFILES, PHASE_COPY, SARDINE, SUSTENANCE_PER_DAY } from "./gameData";
+import {
+  FORMS,
+  INFO_BASE_PRICE,
+  ITEMS,
+  NPC_PROFILES,
+  PHASE_COPY,
+  PROXY_FEE,
+  SARDINE,
+  SUSTENANCE_PER_DAY,
+} from "./gameData";
 import {
   advancePhase,
   canAccessVenue,
@@ -24,7 +33,8 @@ import { visibleMarketBoard } from "./npcAI";
 function itemLabel(item) {
   if (!item) return "nothing";
   const data = ITEMS[item];
-  return `${data?.icon || "📦"} ${item} · ${data?.value ?? 0}`;
+  const price = Number.isFinite(data?.value) ? `ref ${data.value}🥫` : "unpriced";
+  return `${data?.icon || "📦"} ${item} · ${price}`;
 }
 
 function PhaseStrip({ game }) {
@@ -72,12 +82,7 @@ function TraderDetail({ trader, profile, relationship, intel, visibleStock }) {
           ? visibleStock.map((item) => <span className="chip" key={`${trader.id}-${item}`}>{itemLabel(item)}</span>)
           : <span className="muted">Nothing confirmed. Their real inventory may be larger.</span>}
       </div>
-      {intel?.clue && (
-        <div className="intel-note">
-          📝 {intel.clue}
-          {intel.precision && <div className="small muted">Precision: {intel.precision}</div>}
-        </div>
-      )}
+      {intel?.clue && <div className="intel-note">📝 {intel.clue}</div>}
     </section>
   );
 }
@@ -166,7 +171,7 @@ function TransactionTape({ game }) {
 }
 
 function EventPanel({ game, onChoose }) {
-  const [bid, setBid] = useState(16);
+  const [bid, setBid] = useState(52);
   if (!game.pendingEvents.length) return null;
   const event = game.pendingEvents[0];
   return (
@@ -218,7 +223,7 @@ function ActionPanel({ game, selectedId, onAction, onProxy }) {
         </button>
         {proxyAvailable && (
           <button className="btn" onClick={() => onProxy(selectedId)}>
-            Ask Apprentice to proxy today's market · 1🥫
+            Ask Apprentice to proxy today's market · {PROXY_FEE}🥫
           </button>
         )}
       </div>
@@ -240,7 +245,7 @@ function LeadsPanel({ game, onSell }) {
             <div className="mini-card" key={info.id}>
               <div>{info.text}</div>
               <div className="small muted">
-                {info.source} · precision {info.precision || "context"} · confidence {info.confidence} · observed D{info.observedDay}
+                precision {info.precision} · confidence {info.confidence} · {info.source} · observed D{info.observedDay}
                 {info.exclusive ? " · probably exclusive" : ""}
               </div>
               {!!buyers.length && (
@@ -252,7 +257,7 @@ function LeadsPanel({ game, onSell }) {
                       disabled={!active}
                       onClick={() => onSell(info.id, buyerId)}
                     >
-                      Sell lead to {game.traders[buyerId].name} · 1🥫
+                      Sell lead to {game.traders[buyerId].name} · {INFO_BASE_PRICE}🥫
                     </button>
                   ))}
                 </div>
@@ -320,13 +325,10 @@ export default function App() {
 
   const selectedIntel = useMemo(() => {
     const styleInfo = game.information.find((info) => info.subjectId === selected.id && info.claimType === "style");
-    const clueInfo = [...game.information].reverse().find((info) =>
-      info.subjectId === selected.id && !["style", "holding"].includes(info.claimType)
-    );
+    const pressureInfo = [...game.information].reverse().find((info) => info.subjectId === selected.id && info.claimType === "pressure");
     return {
       style: styleInfo?.text?.replace(`${selected.name} trades like a `, "").replace(/\.$/, "") || game.intel[`${selected.id}:style`],
-      clue: clueInfo?.text || game.intel[`${selected.id}:clue`],
-      precision: clueInfo?.precision,
+      clue: pressureInfo?.text || game.intel[`${selected.id}:clue`],
     };
   }, [game.information, game.intel, selected.id, selected.name]);
 
@@ -399,6 +401,7 @@ export default function App() {
             <div className="eyebrow">Sunflower · living market prototype</div>
             <h1>🌻 Day {game.day} / {game.maxDays}</h1>
             <p>{phase.icon} <strong>{phase.title}</strong> — {phase.subtitle}</p>
+            <p className="muted small">Objective: <strong>{game.objective}</strong></p>
           </div>
           <button className="btn ghost" onClick={restart}>New Game</button>
         </header>
@@ -413,9 +416,17 @@ export default function App() {
 
         <PhaseStrip game={game} />
 
+        {game.flags.sunflowerAcquired && !game.ended && (
+          <section className="card noon-callout">
+            <div className="section-title">🌻 You have a sunflower.</div>
+            <p><strong>Nothing happens.</strong> It is in your inventory. You are still here.</p>
+            <p className="muted">Objective: {game.objective}</p>
+          </section>
+        )}
+
         {game.ended && (
           <section className={`end-box ${game.winner ? "win-box" : "lose-box"}`}>
-            <h2>{game.winner ? "🌻 You acquired the sunflower." : "This prototype life ended."}</h2>
+            <h2>This prototype life ended.</h2>
             <p>{game.finalText}</p>
             {game.style && <div className="style-box"><strong>{game.style.name}</strong><p>{game.style.description}</p></div>}
           </section>
