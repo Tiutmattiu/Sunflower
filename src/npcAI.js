@@ -203,3 +203,28 @@ export function visibleMarketBoard(game) {
     publicText: `${game.traders[plan.from].name} is prepared to pay ${plan.sardines}🥫 for ${plan.wantItem}.`,
   }));
 }
+
+export function visibleSellListings(game) {
+  const listings = [];
+
+  Object.entries(NPC_PROFILES).forEach(([sellerId, profile]) => {
+    const seller = game.traders[sellerId];
+    if (!seller) return;
+
+    (profile.publicStock || []).forEach((item) => {
+      if (!seller.inventory.includes(item)) return;
+      listings.push({
+        sellerId,
+        item,
+        ask: sellerAsk(game, sellerId, item),
+        reference: itemValue(item),
+      });
+    });
+  });
+
+  return listings.sort((a, b) =>
+    a.sellerId.localeCompare(b.sellerId) ||
+    a.ask - b.ask ||
+    a.item.localeCompare(b.item)
+  );
+}
