@@ -125,8 +125,8 @@ function knownSourcesForItem(game, buyerId, item, likelySources) {
   return [...sources.entries()].map(([sellerId, basis]) => ({ sellerId, basis }));
 }
 
-function goalAlreadyCovered(buyer, goal) {
-  return goalOptions(goal).some((option) => buyer.inventory.includes(option.item));
+function primaryGoalCovered(buyer, goal) {
+  return buyer.inventory.includes(goal.item);
 }
 
 export function planNPCMarket(game) {
@@ -138,9 +138,13 @@ export function planNPCMarket(game) {
 
     const candidates = [];
     (NPC_PROFILES[buyerId].goals || []).forEach((goal) => {
-      if (goalAlreadyCovered(buyer, goal)) return;
+      if (primaryGoalCovered(buyer, goal)) return;
 
       goalOptions(goal).forEach((option) => {
+        // A substitute reduces current pressure because the buyer will not buy another copy of it,
+        // but it does not erase the buyer's preference for the primary good.
+        if (buyer.inventory.includes(option.item)) return;
+
         knownSourcesForItem(game, buyerId, option.item, option.likelySources).forEach(({ sellerId, basis }) => {
           const seller = game.traders[sellerId];
           if (!seller) return;
