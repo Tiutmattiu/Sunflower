@@ -59,8 +59,9 @@ On 2026-09-04, the local production build, `node scripts/noon-smoke.mjs`, and de
 - `d1c34c` — styles for the simplified single-flow layout.
 - `15aa2ca` — opening instructions reduced to the first playable decision instead of explaining every subsystem up front.
 - `e08a42c` — NPC broad-interest purchases now preserve working capital instead of spending businesses toward zero cash merely because an item fits a stable interest.
+- `334996a` — first tactile harbour-desk visual pass: dark work surface, paper dossiers, taped contact cards, sticky-note guidance, public-ledger market presentation and paper order slips. This takes high-level interaction inspiration from physical-desk point-and-click games without copying external art assets.
 
-The ChatGPT container attempted to clone after those commits and still hit `Could not resolve host: github.com`, so do **not** treat those four commits as runtime-verified yet. Next code-running pass should pull latest `main`, run `npm run build`, run `node scripts/noon-smoke.mjs`, then manually check Day 1 Morning Learn/Trade switching, one narrow-screen order, and a 14-day no-action cash distribution. Update `CODEX_VERIFICATION.md` with observed results.
+The ChatGPT container attempted to clone after those commits and still hit `Could not resolve host: github.com`, so do **not** treat those later commits as runtime-verified yet. Next code-running pass should pull latest `main`, run `npm run build`, run `node scripts/noon-smoke.mjs`, then manually check Day 1 Morning Learn/Trade switching, one narrow-screen order, the tactile paper/desk contrast at desktop and mobile widths, and a 14-day no-action cash distribution. Update `CODEX_VERIFICATION.md` with observed results.
 
 The StackBlitz import above remains available as a browser playtest path. Public deployment is not verified; reloading still loses the current run.
 
