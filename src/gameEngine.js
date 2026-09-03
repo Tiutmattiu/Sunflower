@@ -1,6 +1,7 @@
 import {
   AFTERNOON_ACTIONS,
   BUSINESS_CYCLES,
+  INFO_BASE_PRICE,
   INITIAL_TRADERS,
   ITEMS,
   MAX_DAYS,
@@ -14,7 +15,7 @@ import {
 import { planNPCMarket, sellerAsk } from "./npcAI";
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
-export const valueOf = (item) => (item ? ITEMS[item]?.value || 0 : 0);
+export const valueOf = (item) => (item && Number.isFinite(ITEMS[item]?.value) ? ITEMS[item].value : 0);
 export const labelShort = (item) => item ? `${ITEMS[item]?.icon || "📦"} ${item}` : "nothing";
 export const netWorth = (trader) => trader.sardines + trader.inventory.reduce((sum, item) => sum + valueOf(item), 0);
 export const unique = (arr) => [...new Set(arr)];
@@ -41,7 +42,11 @@ function countMap() {
 }
 
 function profileWantsItem(profile, item) {
-  return (profile?.goals || []).some((goal) => goal.item === item);
+  if ((profile?.goals || []).some((goal) => goal.item === item)) return true;
+  const type = ITEMS[item]?.type || "";
+  return (profile?.interests || []).some((interest) =>
+    interest?.typeIncludes && type.includes(interest.typeIncludes)
+  );
 }
 
 function informationKey(info) {
@@ -86,7 +91,7 @@ function createObligation(game, payload) {
     kind: payload.kind,
     debtorId: payload.debtorId || "player",
     debtorLifeId: lifeId,
-    creditorId: payload.creditorId,
+    creditorId: payload.credititorId || payload.creditorId,
     amount: Number(payload.amount || 0),
     createdDay: game.day,
     dueDay: payload.dueDay ?? game.day + 2,
@@ -110,6 +115,7 @@ export function createGame() {
     maxDays: MAX_DAYS,
     phase: "sunrise",
     actionsRemaining: 0,
+    objective: "Get a sunflower",
     traders: clone(INITIAL_TRADERS),
     playerState: {
       life: 1,
@@ -149,6 +155,7 @@ export function createGame() {
       steelDeliveredToMechanic: false,
       toolDeliveredToMechanic: false,
       oneWheelBuilt: false,
+      sunflowerAcquired: false,
       cheated: false,
       raced: false,
     },
@@ -241,7 +248,7 @@ export function sellInformation(current, infoId, buyerId) {
 
   const buyer = game.traders[buyerId];
   const player = game.traders.player;
-  const price = 1;
+  const price = INFO_BASE_PRICE;
   if (!buyer || buyer.sardines < price) return game;
 
   buyer.sardines -= price;
@@ -257,7 +264,7 @@ export function sellInformation(current, infoId, buyerId) {
     source: `bought from player (${info.confidence} confidence)`,
   };
 
-  game.log.unshift(`${buyer.name} pays 1🥫 for your lead: ${info.text}`);
+  game.log.unshift(`${buyer.name} pays ${price}🥫 for your lead: ${info.text}`);
   if (game.phase === "morning") game.marketPlan = planNPCMarket(game);
   return game;
 }
@@ -426,9 +433,10 @@ function executePlayerOrders(game) {
     const isCheat = normalized.to === "mechanic" && normalized.offerItem === "Bad Tangerine";
     const paymentValue = valueOf(normalized.offerItem) + normalized.sardines;
     const usefulDelivery = profileWantsItem(NPC_PROFILES[target.id], normalized.offerItem);
+    const ask = sellerAsk(game, target.id, normalized.wantItem);
 
-    if (!isCheat && !usefulDelivery && paymentValue < sellerAsk(game, target.id, normalized.wantItem)) {
-      rejected.push({ ...normalized, reason: `${target.name} would not clear below an estimated ${sellerAsk(game, target.id, normalized.wantItem)}🥫 of value.` });
+    if (!isCheat && !usefulDelivery && paymentValue < ask) {
+      rejected.push({ ...normalized, reason: `${target.name} would not clear below an estimated ${ask}🥫 of value.` });
       return;
     }
 
@@ -714,7 +722,9 @@ export function advancePhase(current) {
     if (game.day >= game.maxDays) {
       game.ended = true;
       game.winner = false;
-      game.finalText = "The prototype's current life window closes here. The final life / rebirth pacing is not locked yet.";
+      game.finalText = game.flags.sunflowerAcquired
+        ? "You found the sunflower. It did not take you home. The prototype life window closes here, but the problem did not."
+        : "The prototype's current life window closes here. The final life / rebirth pacing is not locked yet.";
       game.style = classify(game);
       return game;
     }
@@ -847,8 +857,10 @@ export function buildEvents(game) {
   const player = game.traders.player;
   const events = [];
   const soupFish = ["Fresh Mackerel", "Salted Cod", "Smoked Eel", "Two Octopus Tentacles"];
+  const alreadyHasFlower = player.inventory.includes("Sunflower") || game.flags.sunflowerAcquired;
 
   if (
+    !alreadyHasFlower &&
     canAccessVenue(game, "bar") &&
     !game.flags.cheated &&
     game.flags.orgeatDelivered &&
@@ -864,10 +876,11 @@ export function buildEvents(game) {
   }
 
   if (
+    !alreadyHasFlower &&
     canAccessVenue(game, "valeGallery") &&
     game.flags.oilDeliveredToVale &&
     player.inventory.includes("Blue Glass Marble") &&
-    netWorth(player) >= (game.flags.cheated ? 22 : 18)
+    netWorth(player) >= (game.flags.cheated ? 90 : 70)
   ) {
     events.push({
       id: "auction",
@@ -878,6 +891,7 @@ export function buildEvents(game) {
   }
 
   if (
+    !alreadyHasFlower &&
     !game.flags.raced &&
     (player.inventory.includes("Built Onewheel") || player.inventory.includes("Auction Onewheel")) &&
     player.inventory.includes("Mai Tai")
@@ -893,17 +907,24 @@ export function buildEvents(game) {
   return events.slice(0, 1);
 }
 
+function acquireSunflower(game, sourceText) {
+  const player = game.traders.player;
+  if (!player.inventory.includes("Sunflower")) player.inventory.push("Sunflower");
+  game.flags.sunflowerAcquired = true;
+  game.objective = "Go home";
+  game.log.unshift("Objective updated: Go home.");
+  game.log.unshift("Nothing happens.");
+  game.log.unshift(sourceText);
+}
+
 export function resolveEvent(current, id, action, bidAmount = null) {
   const game = clone(current);
   const player = game.traders.player;
 
   if (id === "grandma" && action === "Go") {
-    player.inventory.push("Sunflower");
-    game.ended = true;
-    game.winner = true;
-    game.finalText = "After closing, a meal ends with a sunflower changing hands without a market price.";
+    acquireSunflower(game, "After closing, a meal ends with a sunflower changing hands without a market price.");
   } else if (id === "auction" && action === "Attend") {
-    const reserve = game.flags.cheated ? 20 : 16;
+    const reserve = game.flags.cheated ? 68 : 52;
     const amount = Number(bidAmount);
     if (!Number.isFinite(amount) || amount < reserve || amount > player.sardines) {
       game.log.unshift(`Vale's reserve was ${reserve}🥫. Your bid did not clear.`);
@@ -911,20 +932,14 @@ export function resolveEvent(current, id, action, bidAmount = null) {
       return game;
     }
     player.sardines -= amount;
-    player.inventory.push("Sunflower");
-    game.ended = true;
-    game.winner = true;
-    game.finalText = `Vale settles the sunflower lot at ${amount}🥫.`;
+    acquireSunflower(game, `Vale settles the sunflower lot at ${amount}🥫.`);
   } else if (id === "cliff" && action === "Race") {
     game.flags.raced = true;
     const preRaceWorth = netWorth(player);
     player.inventory = player.inventory.filter((item) => item !== "Mai Tai" && item !== "Built Onewheel" && item !== "Auction Onewheel");
-    const won = preRaceWorth >= 14;
+    const won = preRaceWorth >= 60;
     if (won) {
-      player.inventory.push("Sunflower");
-      game.ended = true;
-      game.winner = true;
-      game.finalText = "You cross the cliff route with Clown. For now, the prototype calls what you find a sunflower.";
+      acquireSunflower(game, "You cross the cliff route with Clown. What you find is, unmistakably, a sunflower.");
     } else {
       game.log.unshift("The cliff wager fails. The uncertainty model is deliberately simple in this milestone.");
       game.pendingEvents = [];
@@ -936,7 +951,6 @@ export function resolveEvent(current, id, action, bidAmount = null) {
   }
 
   game.pendingEvents = [];
-  game.style = classify(game);
   return game;
 }
 
