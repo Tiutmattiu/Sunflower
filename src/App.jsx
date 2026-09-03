@@ -1,15 +1,18 @@
 import React, { useMemo, useState } from "react";
 import "./index.css";
-import { FORMS, ITEMS, NPC_PROFILES, PHASE_COPY, SARDINE } from "./gameData";
+import { FORMS, ITEMS, NPC_PROFILES, PHASE_COPY, SARDINE, SUSTENANCE_PER_DAY } from "./gameData";
 import {
   advancePhase,
   canAccessVenue,
   createGame,
+  currentObligations,
   informationBuyers,
   knownItemsForTrader,
   labelShort,
   netWorth,
   performFreeAction,
+  repayObligation,
+  requestMarketProxy,
   resetOrders,
   resolveEvent,
   resolveNoonMarket,
@@ -188,9 +191,15 @@ function EventPanel({ game, onChoose }) {
   );
 }
 
-function ActionPanel({ game, selectedId, onAction }) {
+function ActionPanel({ game, selectedId, onAction, onProxy }) {
   const selected = game.traders[selectedId];
   const active = ["morning", "afternoon"].includes(game.phase) && game.actionsRemaining > 0 && selectedId !== "player";
+  const proxyAvailable = active &&
+    game.playerState.form === "animal" &&
+    selectedId === "bar" &&
+    (game.relationships.bar || 0) >= 2 &&
+    !canAccessVenue(game, "formalMarket");
+
   return (
     <section className="card">
       <div className="section-title">Free-time actions</div>
@@ -202,6 +211,11 @@ function ActionPanel({ game, selectedId, onAction }) {
         <button className="btn" disabled={!active} onClick={() => onAction("investigate", selectedId)}>
           Investigate {selectedId === "player" ? "someone" : selected.name}
         </button>
+        {proxyAvailable && (
+          <button className="btn" onClick={() => onProxy(selectedId)}>
+            Ask Apprentice to proxy today's market · 1🥫
+          </button>
+        )}
       </div>
       <div className="small muted action-count">Time slots left this phase: {game.actionsRemaining}</div>
     </section>
@@ -246,6 +260,35 @@ function LeadsPanel({ game, onSell }) {
   );
 }
 
+function ObligationsPanel({ game, onRepay }) {
+  const obligations = currentObligations(game);
+  const active = ["morning", "afternoon"].includes(game.phase) && game.actionsRemaining > 0;
+  return (
+    <section className="card">
+      <div className="section-title">Promises & credit</div>
+      <div className="stack">
+        {obligations.length ? obligations.map((obligation) => {
+          const creditor = game.traders[obligation.creditorId];
+          return (
+            <div className="mini-card" key={obligation.id}>
+              <div><strong>{obligation.amount}🥫</strong> owed to {creditor?.name || obligation.creditorId}</div>
+              <div className="small muted">{obligation.kind} · due D{obligation.dueDay} · {obligation.status}</div>
+              {obligation.note && <div className="small muted">{obligation.note}</div>}
+              <button
+                className="btn"
+                disabled={!active || game.traders.player.sardines < obligation.amount}
+                onClick={() => onRepay(obligation.id)}
+              >
+                Repay · {obligation.amount}🥫
+              </button>
+            </div>
+          );
+        }) : <div className="muted">No current-life obligations.</div>}
+      </div>
+    </section>
+  );
+}
+
 function phaseButton(game) {
   if (game.phase === "sunrise") return "Begin morning →";
   if (game.phase === "morning") return "Commit orders & go to noon →";
@@ -264,6 +307,7 @@ export default function App() {
   const form = FORMS[game.playerState.form];
   const usedItems = game.playerOrders.map((order) => order.offerItem).filter(Boolean);
   const plannedSardines = game.playerOrders.reduce((sum, order) => sum + Number(order.sardines || 0), 0);
+  const edibleItems = player.inventory.filter((item) => (ITEMS[item]?.foodUnits || 0) >= SUSTENANCE_PER_DAY);
 
   const visibleByTrader = useMemo(() => Object.fromEntries(
     Object.values(traders).map((trader) => [trader.id, knownItemsForTrader(game, trader.id)])
@@ -317,6 +361,14 @@ export default function App() {
 
   function handleSellInformation(infoId, buyerId) {
     setGame((current) => sellInformation(current, infoId, buyerId));
+  }
+
+  function handleProxy(targetId) {
+    setGame((current) => requestMarketProxy(current, targetId));
+  }
+
+  function handleRepay(obligationId) {
+    setGame((current) => repayObligation(current, obligationId));
   }
 
   function handleEvent(id, action, bid) {
@@ -384,7 +436,14 @@ export default function App() {
               visibleStock={visibleByTrader[selected.id] || []}
             />
 
-            {!game.ended && <ActionPanel game={game} selectedId={selected.id} onAction={handleFreeAction} />}
+            {!game.ended && (
+              <ActionPanel
+                game={game}
+                selectedId={selected.id}
+                onAction={handleFreeAction}
+                onProxy={handleProxy}
+              />
+            )}
 
             <MarketBoard game={game} />
 
@@ -440,13 +499,18 @@ export default function App() {
 
           <aside className="right-col">
             <LeadsPanel game={game} onSell={handleSellInformation} />
+            <ObligationsPanel game={game} onRepay={handleRepay} />
 
             <section className="card">
               <div className="section-title">Current form & access</div>
               <div className="stack">
                 <div className="mini-card">{form.icon} {form.label} · legal identity {game.playerState.legalIdentity.status}</div>
-                <div className="mini-card">Public Market: {canAccessVenue(game, "formalMarket") ? "direct access" : "proxy required"}</div>
+                <div className="mini-card">Public Market: {canAccessVenue(game, "formalMarket") ? "access available" : "proxy required"}</div>
                 <div className="mini-card">The Bar: {canAccessVenue(game, "bar") ? "welcome" : "no direct access"}</div>
+                <div className="mini-card">
+                  Tonight: {edibleItems.length ? `${itemLabel(edibleItems[0])} can feed you` : player.sardines >= SUSTENANCE_PER_DAY ? `${SUSTENANCE_PER_DAY}🥫 will be opened as food` : "you need credit or another source of food"}
+                </div>
+                {!!game.estates.length && <div className="mini-card">Former estates you remember but cannot currently claim: {game.estates.length}</div>}
               </div>
             </section>
 
