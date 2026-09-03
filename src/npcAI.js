@@ -1,9 +1,13 @@
-import { ITEMS, NPC_PROFILES } from "./gameData";
+import { ITEMS, NPC_PROFILES, SOCIAL_GRAPH } from "./gameData";
 
 const itemValue = (item) => ITEMS[item]?.value ?? 0;
 
 function goalFor(npcId, item) {
   return (NPC_PROFILES[npcId]?.goals || []).find((goal) => goal.item === item) || null;
+}
+
+function contactBetween(fromId, toId) {
+  return SOCIAL_GRAPH[fromId]?.[toId] || { familiarity: 0, trust: 0, channel: null };
 }
 
 export function privateUtility(game, npcId, item) {
@@ -53,6 +57,20 @@ function searchDepth(profile, day) {
   return Math.floor(day / tempo);
 }
 
+function rankedHypotheses(buyerId, likelySources) {
+  return [...(likelySources || [])]
+    .map((sellerId, index) => ({
+      sellerId,
+      index,
+      contact: contactBetween(buyerId, sellerId),
+    }))
+    .sort((a, b) =>
+      (b.contact.familiarity || 0) - (a.contact.familiarity || 0) ||
+      b.contact.trust - a.contact.trust ||
+      a.index - b.index
+    );
+}
+
 function knownSourcesForGoal(game, buyerId, goal) {
   if (goal.item === "Blue Glass Marble") return [];
 
@@ -71,17 +89,22 @@ function knownSourcesForGoal(game, buyerId, goal) {
     sources.set(tapeOwner, "public tape");
   }
 
-  // Hidden inventory requires active search. Better information traders search plausible sources faster.
+  // Hidden inventory requires active search. Existing relationships determine where a trader looks first;
+  // they do not magically reveal the seller's true inventory.
   const profile = NPC_PROFILES[buyerId];
   const depth = searchDepth(profile, game.day);
-  const hypotheses = (goal.likelySources || []).slice(0, depth);
-  hypotheses.forEach((sellerId) => {
-    if (sellerId === buyerId || sellerId === "player") return;
-    const seller = game.traders[sellerId];
-    if (seller?.inventory.includes(goal.item)) {
-      sources.set(sellerId, "active search");
-    }
-  });
+  rankedHypotheses(buyerId, goal.likelySources)
+    .slice(0, depth)
+    .forEach(({ sellerId, contact }) => {
+      if (sellerId === buyerId || sellerId === "player") return;
+      const seller = game.traders[sellerId];
+      if (seller?.inventory.includes(goal.item)) {
+        const basis = contact.familiarity >= 2
+          ? `searched a known contact via ${contact.channel || "prior relationship"}`
+          : "active search";
+        sources.set(sellerId, basis);
+      }
+    });
 
   return [...sources.entries()].map(([sellerId, basis]) => ({ sellerId, basis }));
 }
