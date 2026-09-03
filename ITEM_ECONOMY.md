@@ -1,6 +1,6 @@
 # Sunflower — Item Economy
 
-> Status: active system design. Keep this document focused on what goods *do economically* and how the market feels. Do not collect objects merely to inflate the catalogue.
+> Status: active system design and live-code audit. Keep this document focused on what goods *do economically* and how the market feels. Do not collect objects merely to inflate the catalogue.
 
 ## Core rule
 
@@ -12,7 +12,7 @@ An NPC wanting `X` should normally mean `X`, unless a broader category or substi
 
 ### No invisible substitute puzzles
 
-Do **not** silently implement rules such as:
+Do not silently implement rules such as:
 
 > Sailor says Lime, but Dried Citrus Peel secretly counts as 60% Lime.
 
@@ -20,7 +20,7 @@ That makes the player guess the designer rather than read a market.
 
 A substitute is valid only when at least one of these is true:
 
-- the need was stated as a category (`citrus provisions`, not `Lime Crate`);
+- the need was stated as a category;
 - the NPC explicitly says alternatives are acceptable;
 - the relationship is ordinary enough to infer from real knowledge;
 - the player can discover the substitution rule as information before committing the trade.
@@ -29,32 +29,129 @@ The engine should not award hidden partial credit for designer-only associations
 
 ---
 
-## Catalogue size
+## Current catalogue size
 
-As of the September 3 expansion, `ITEMS` contains **68 provisional item definitions**.
+As of the September 3 live audit, `ITEMS` contains **68 item definitions**.
 
-That is already enough for the current design phase.
+That is enough for the current design phase.
 
 Target range for the eventual game:
 
-- **60–80 total goods** across all forms / routes is probably sufficient;
+- roughly **60–80 total goods** across all forms / routes;
 - only roughly **20–30 should be economically legible in an early Human run**;
 - another **10–15 can enter through later arrivals, relationships, events and hidden stock**;
-- form-specific / black-market / Sailor goods can make the same world feel new on replay without putting 70 objects on one screen.
+- form-specific / black-market / Sailor goods can make the same world feel new on replay without putting the whole catalogue on one screen.
 
-Do not add another 30 items until the current pool has been playtested and cut.
-
-An item that remains mechanically interchangeable with another item after several runs should usually be deleted, merged or given a stronger reason to exist.
+Do not add another large batch until this pool has been played, cut and aesthetically refined.
 
 ---
 
-## Market texture by trader
+# Live-item rule
 
-The world should contain all four broad object aesthetics, but **not in equal proportions from every trader**.
+A kept item should satisfy at least one of these in live code:
 
-### Dock Dog — harbour reality + surreal everyday debris
+1. exists in a starting inventory;
+2. arrives through a deterministic business cycle;
+3. is produced / transformed by an implemented rule;
+4. can be consumed or used by a business/body;
+5. is an explicit NPC need;
+6. matches at least one stable NPC market interest;
+7. is a route / event output;
+8. carries information, access, collateral, sentimental or form-specific meaning that is intended for a near-term mechanic.
 
-Typical texture:
+A pure definition in `ITEMS` with no path into play is a bug, not content.
+
+### Reachability audit result
+
+The current pool now has a live path:
+
+- starting inventories seed most goods;
+- Dock Dog cycles scavenged / animal-network goods, including the previously dead `Pocket Match`;
+- Fishmonger cycles fresh catch, ice and sea produce;
+- Sailor cycles imported repair, bicycle, bar-tool and mystery cargo until departure;
+- `Mai Tai`, `Built Onewheel`, auction lots, spoilage and `Sunflower` are produced by rules/events rather than normal supply.
+
+This should still be rechecked by Codex/runtime smoke because static reachability is not the same as a fun market.
+
+---
+
+# First coordinated price rebase — 2026-09-03
+
+The original 1–16🥫 ordinary price band was too compressed. A one-tin change often meant a 20–50% move, making spread, urgency, market heat, relationship effects and distressed pricing impossible to distinguish cleanly.
+
+The first rebase widens the asset scale **without redefining what a sardine tin is**.
+
+A tin still has literal survival meaning: nightly sustenance can still consume **1🥫**. The point is that a professional tool should cost many tins, not that dinner should suddenly cost four abstract currency points.
+
+### Current reference-price bands
+
+| Broad class | Current rough band |
+|---|---:|
+| waste / tiny junk | 1–3🥫 |
+| small everyday / scavenged object | 2–6🥫 |
+| common food / commodity | 4–9🥫 |
+| cocktail ingredient / ordinary part | 5–14🥫 |
+| useful durable / professional tool | 7–18🥫 |
+| scarce input / collateral-like durable | 12–20🥫 |
+| prestige / collectible / special situation | 9–22+🥫 |
+| vehicle / major route asset | 28–30+🥫 |
+| auction sunflower estimate placeholder | 52🥫 |
+| living `Sunflower` | **unpriced** |
+
+These are **reference prices**, not intrinsic value.
+
+### Current liquidity pools
+
+First-pass starting cash was rebased with the goods:
+
+- Player: 18🥫
+- Dock Dog: 18🥫
+- Fishmonger: 30🥫
+- Sailor: 26🥫
+- Mirelle Vale: 52🥫
+- Onewheel Clown: 22🥫
+- Bar Apprentice: 34🥫
+
+These numbers are provisional and should be tuned from play, not protected because they look neat.
+
+### Still intentionally small
+
+- nightly sustenance: 1 food unit or 1🥫;
+- information sale base: 2🥫 (code migration still needs runtime verification);
+- formal-market proxy fee: 2🥫.
+
+Keeping survival small relative to assets is deliberate: hunger matters as a liquidity floor without turning the whole game into food survival accounting.
+
+---
+
+# Market interests: make objects tradeable without making them quest keys
+
+The NPC engine now has stable category interests in addition to explicit goals.
+
+This is deliberately small and legible:
+
+- **Dock Dog** — scavenged goods, animal-network goods, tiny utilities, containers;
+- **Fishmonger** — food commodities, cold-chain goods, harbour material;
+- **Sailor** — bicycle goods, repair inputs, tools, durable goods;
+- **Vale** — prestige, collectibles, provenance/story, information-bearing goods, curios, mystery assets;
+- **Clown** — speculative junk, vehicles, bicycle goods, mystery assets, strange stories;
+- **Bar Apprentice** — cocktail ingredients, professional bar tools, barware, containers.
+
+A market interest is **not** omniscience.
+
+NPCs may act on interests only when the item is public, appears on the public tape, or has become known through acquired information. Broad interests do not scan hidden inventories.
+
+Explicit needs can still motivate targeted investigation through plausible contacts.
+
+This lets objects circulate because different actors value categories differently while preserving information asymmetry.
+
+---
+
+# Market texture by trader
+
+## Dock Dog — harbour reality + surreal everyday debris
+
+Typical goods:
 
 - Dead Pigeon
 - Chewed Rope Toy
@@ -63,12 +160,13 @@ Typical texture:
 - Glasses Wipe
 - Bicycle Bell
 - Chia Seeds
+- Pocket Match
 
 Dog should make low-value objects feel surprisingly connected to people, animals and information.
 
-### Fishmonger — material harbour goods + accidental oddities
+## Fishmonger — material harbour goods + accidental oddities
 
-Typical texture:
+Typical goods:
 
 - Fresh Mackerel
 - Smoked Eel
@@ -76,12 +174,13 @@ Typical texture:
 - Ice Block
 - Rusty Harpoon
 - an inexplicable Orgeat Bottle acquired through barter / debt / misdelivery
+- an equally inexplicable Hawthorne Strainer
 
-Fishmonger's weird items should feel weird **because they do not belong in an otherwise comprehensible operating business**.
+Fishmonger's weird objects should feel weird because they do not belong in an otherwise comprehensible operating business.
 
-### Sailor — cross-border material goods + professional equipment + strange cargo
+## Sailor — cross-border material goods + professional equipment + strange cargo
 
-Typical texture:
+Typical goods:
 
 - Brass Compass
 - Sperm Whale Oil
@@ -90,14 +189,16 @@ Typical texture:
 - Chain Quick-Link
 - Brake Cable
 - Tiny Torque Wrench
+- 30/45 Jigger
+- Fine Mesh Strainer
 - Three Metres of Stolen Theatre Wire
 - Patch Cut from the Ship Mercy
 
 Sailor stock should carry geography, provenance and mobility.
 
-### Mirelle Vale — story fragments + elite / illiquid collectibles
+## Mirelle Vale — story fragments + elite / illiquid collectibles
 
-Typical texture:
+Typical goods:
 
 - Valentino Still
 - Film Canister
@@ -106,27 +207,26 @@ Typical texture:
 - Taxidermied Moth
 - Unsent Letter
 
-Vale's inventory should make the player ask whether the price comes from use, scarcity, provenance, fashion, status or somebody else's willingness to pay.
+Vale's inventory should make the player ask whether price comes from use, scarcity, provenance, fashion, status or somebody else's willingness to pay.
 
-### Bar Apprentice — real professional bar equipment + relationship objects
+## Bar Apprentice — professional bar equipment + relationship objects
 
-Typical texture:
+Typical goods / needs:
 
-- Hawthorne Strainer
-- 30/45 Jigger
-- Long Bar Spoon
-- Fine Mesh Strainer
-- Hand Citrus Press
-- Lewis Bag
+- Rum Bottle
 - Orange Curaçao
 - Demerara Syrup
+- Long Bar Spoon
+- Hand Citrus Press
+- Lewis Bag
 - Chipped Nick & Nora Glass
+- missing / desired professional tools such as Hawthorne Strainer, Jigger and Fine Mesh Strainer
 
 The Bar should reward actual cocktail knowledge without becoming a recipe quiz. A knowledgeable player may infer more from incomplete observations and therefore spend fewer information actions.
 
-### Onewheel Clown — surreal everyday goods + speculative junk + mobility debris
+## Onewheel Clown — surreal everyday goods + speculative junk + mobility debris
 
-Typical texture:
+Typical goods:
 
 - Lollipop
 - Lucky Sticker
@@ -139,182 +239,76 @@ Clown can assign coherent private utility to things other traders dismiss withou
 
 ---
 
-## Current economic item families
+# Important item families
 
 ### Food / sustenance
 
-Examples:
+Fresh Mackerel, Smoked Eel, Two Octopus Tentacles, Sea Lettuce, Salted Cod, Hardtack and Chia Seeds can all compete with the decision to preserve inventory for resale.
 
-- Fresh Mackerel
-- Smoked Eel
-- Two Octopus Tentacles
-- Sea Lettuce Bundle
-- Salted Cod
-- Hardtack Tin
-- Chia Seeds
+### Perishables / timing
 
-The player may eat inventory rather than preserve it for resale. That gives ordinary goods a real opportunity cost.
+Ice, Bruised Mint, Lime, Fresh Mackerel and Tentacles produce storage and fire-sale pressure.
 
-### Perishable / timing-sensitive inputs
+### Recurring inputs
 
-Examples:
-
-- Ice Block
-- Bruised Mint
-- Lime Crate
-- Fresh Mackerel
-- Two Octopus Tentacles
-
-These create timing, storage and fire-sale pressure.
-
-### Recurring operating inputs
-
-The Bar repeatedly consumes ice.
-
-Dock Dog repeatedly consumes fresh fish for the cat colony.
-
-Demand should return because businesses and bodies continue doing things, not because a quest flag resets arbitrarily.
+The Bar consumes ice. Dock Dog consumes fresh fish for the cat colony. Demand should return because businesses and bodies continue doing things, not because a quest flag resets.
 
 ### Professional durable tools
 
-Examples:
+Bar and bicycle tools should increasingly affect capability, production quality, verification, or access. In the current milestone they already have counterparty utility and trade value, but several still need deeper non-resale functions.
 
-- Hawthorne Strainer
-- Jigger
-- Citrus Press
-- Tiny Torque Wrench
-- Tool Roll
+### Mystery / information-bearing goods
 
-Durable tools should increasingly affect capability, production, verification or access rather than act only as resale tokens.
-
-### Durable / collateral-like goods
-
-Examples:
-
-- Brass Compass
-- Blue Glass Marble
-- some professional tools / collectible goods
-
-Their value can diverge from cash because liquidation speed and counterparty interest differ.
-
-### High-uncertainty / special situations
-
-Examples:
-
-- Sealed Parcel
-- Numbered Funeral Ticket
-- Unsent Letter
-- Key That Opens Nothing
-
-These should create information and belief problems rather than contain a guaranteed designer reward.
-
-### Animal-network / informal goods
-
-Examples:
-
-- Chia Seeds
-- Red Ribbon
-- Empty Green Bottle
-- Fish Bones
-- Glasses Wipe
-- scavenged bicycle debris
-
-Their liquidity and social meaning may differ sharply across human and animal networks.
+Sealed Parcel, Unsent Letter, Old Coupon and story-bearing collectibles should create belief / provenance problems, not guaranteed treasure-chest rewards.
 
 ---
 
-## Information can be embedded in goods
+# Expertise and incomplete information
 
-Some objects are valuable partly because possession tells you something.
+Items can communicate information without a tutorial prompt spelling it out.
 
-Examples:
+The Bar example is canonical:
 
-- a shipping label reveals origin;
-- a sealed parcel has uncertain contents but known provenance;
-- an Unsent Letter may contain private information;
-- a specialist bicycle part suggests who is repairing what;
-- professional bar stock lets an experienced player infer what the Apprentice is trying to make.
+> The Apprentice is learning a Mai Tai, but one ingredient is missing.
 
-This is preferable to treating `Information` and `Items` as completely separate universes.
+A knowledgeable player may infer likely missing inputs from what is visibly behind the bar. A player without cocktail knowledge can spend additional investigation actions until the clue becomes exact.
 
----
+**Expertise buys time; it does not gate progress.**
 
-## Price audit — current values are NOT canon
-
-The current ordinary reference-price range is mostly **1–16🥫**, with `Sunflower = 99` as an old prototype placeholder.
-
-This scale is too compressed to support the eventual market cleanly.
-
-Examples of the problem:
-
-- 2🥫 → 3🥫 is a 50% move;
-- a +1 urgency premium can dominate the entire reference price;
-- spread, relationship discount, liquidity discount, reputation premium and market heat collapse into the same one-tin increment.
-
-Therefore current `ITEMS[item].value` should be understood as a **provisional reference number**, not intrinsic value and not final balance.
-
-Before serious balance playtesting, do one coordinated rebase covering:
-
-- item reference prices;
-- initial NPC/player cash;
-- nightly sustenance cost;
-- information prices;
-- proxy fees;
-- auction reserves;
-- route net-worth thresholds;
-- NPC markups / urgency increments / heat increments.
-
-Do not scale item prices alone or the economy will become incoherent.
-
-Likely desirable result: a wider ordinary price band so that +1 is a small signal, +several tins is meaningful, and a desperation premium can be visibly large without automatically doubling the asset price.
-
-Also reconsider whether a living `Sunflower` should have any universal numeric reference price at all.
+The same structure can later apply to bicycle repair, film equipment, fish quality, shipping cargo and other domains.
 
 ---
 
-## Three-question item test
+# Three-question item test
 
-Before keeping a new good, ask:
+Before keeping or refining a good, ask:
 
 1. **Who might want it, and for what different reasons?**
 2. **Why could its value / liquidity differ tomorrow?**
 3. **What can the player do with it besides immediately sell it?**
 
-Possible answers include:
+Possible answers include eat, hold, inspect, use, pledge, gift, repair with, infer information from, move across markets, sell under time pressure, or preserve because another actor may value it privately.
 
-- eat;
-- hold;
-- inspect;
-- use;
-- pledge;
-- gift;
-- repair with;
-- infer information from;
-- move across markets;
-- sell under time pressure;
-- keep because another actor may value it privately.
-
-Not every item needs all three dimensions, but an item that has none is probably filler.
+An item that survives only because its name is cute should be cut or redesigned after playtesting.
 
 ---
 
-## Current design target
+# Next balance audit
 
-A healthy small market should contain at the same time:
+Do not add a second arbitrary multiplier.
 
-- obvious low-margin commodity trades;
-- at least one perishability / timing problem;
-- one or two illiquid / mysterious assets;
-- recurring operating demand;
-- professional goods whose significance rewards domain knowledge;
-- information edges of different precision;
-- goods whose value differs sharply by counterparty;
-- some objects that are funny, intimate or inexplicable before they are economically useful.
+Run several real market simulations and record:
 
-The player should ask:
+- how many trades clear per day;
+- how often cash constraints block rational bids;
+- spread as a percentage of reference price;
+- time to first cash shortage;
+- whether Vale can dominate simply because she starts liquid;
+- whether Dog can actually act like a dealer;
+- whether Bar can afford operating inputs and upgrades;
+- whether expensive tools ever transact;
+- whether speculative / prestige goods become permanently dead inventory;
+- whether player starting 18🥫 permits meaningful positioning without trivialising food;
+- whether auction thresholds remain reachable after the rebase.
 
-> Do I eat this, sell it, hold it, investigate it, use it, show it to someone, or keep quiet about who has it?
-
-not:
-
-> Which bespoke key opens the next NPC?
+Then change the smallest set of numbers that explains the observed problem.
