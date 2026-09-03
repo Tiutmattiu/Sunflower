@@ -1,5 +1,5 @@
 export const SARDINE = "🥫";
-export const MAX_DAYS = 14;
+export const MAX_DAYS = 14; // Prototype pacing cap, not a final cosmological rule.
 export const MORNING_ACTIONS = 2;
 export const AFTERNOON_ACTIONS = 2;
 
@@ -72,7 +72,7 @@ export const INITIAL_TRADERS = {
     inventory: ["Rum Bottle", "Bruised Mint", "Cracked Shaker", "Lime Crate"],
   },
   player: {
-    id: "player", name: "You", icon: "🧍", role: "Outsider acquisition agent",
+    id: "player", name: "You", icon: "🧍", role: "Outsider",
     sardines: 6,
     inventory: ["Fish Bones", "Bad Tangerine", "Tin Spoon", "Old Coupon"],
   },
@@ -183,25 +183,76 @@ export const SOCIAL_GRAPH = {
   },
 };
 
+export const FORMS = {
+  human: {
+    id: "human",
+    icon: "🧍",
+    label: "Human",
+    formalPersonhood: true,
+    note: "Strong institutional access; identity and ownership are formally legible.",
+  },
+  animal: {
+    id: "animal",
+    icon: "🐾",
+    label: "Animal",
+    formalPersonhood: false,
+    note: "Informal networks remain available, but many human institutions refuse direct recognition.",
+  },
+  sailor: {
+    id: "sailor",
+    icon: "⚓",
+    label: "Sailor",
+    formalPersonhood: true,
+    note: "A provisional liminal form: mobile and cross-boundary, but not necessarily liberated.",
+  },
+  plant: {
+    id: "plant",
+    icon: "🌱",
+    label: "Plant",
+    formalPersonhood: false,
+    note: "Future experimental form. Agency and value would work very differently.",
+  },
+};
+
 export const VENUES = {
   bar: {
     name: "The Bar",
-    animalAccess: "open",
+    allowedForms: ["human", "animal", "sailor"],
+    requiresLegalIdentity: false,
+    proxyable: false,
     note: "Currently the only confirmed human venue that openly allows animal people inside.",
   },
   formalMarket: {
     name: "Public Market",
-    animalAccess: "restricted",
-    note: "Access rules are not final; discrimination against animal traders exists in this society.",
+    allowedForms: ["human", "sailor"],
+    requiresLegalIdentity: true,
+    proxyable: true,
+    note: "Animal traders may need a recognised proxy rather than direct institutional access.",
+  },
+  valeGallery: {
+    name: "Vale's Auction Rooms",
+    allowedForms: ["human", "sailor"],
+    requiresLegalIdentity: true,
+    proxyable: true,
+    note: "Elite formal access. Recognition and invitation matter as much as cash.",
+  },
+  blackMarket: {
+    name: "Cross-form Informal Network",
+    allowedForms: ["human", "animal", "sailor"],
+    requiresLegalIdentity: false,
+    proxyable: false,
+    note: "Not one evil shop: an intermediary network between excluded animal society and formal human markets.",
   },
 };
 
 export const PLAYER_CONTEXT = {
+  startingForm: "human",
+  startingLegalIdentity: "recognized",
   communication: "limited-local-speech",
   canUnderstandSomeLocalLanguage: true,
   canSpeakFluently: false,
   channels: ["translation", "writing", "gesture", "structured offers", "demonstrated reliability"],
-  note: "The player is an outsider and cannot freely interrogate every NPC through unlimited dialogue.",
+  note: "The player begins as a formally recognised outsider and cannot freely interrogate every NPC through unlimited dialogue.",
 };
 
 export const PHASES = ["sunrise", "morning", "noon", "afternoon", "sunset"];
