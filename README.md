@@ -16,6 +16,14 @@ A browser-based single-player trading game prototype about information asymmetry
 
 The current 14-day limit is prototype pacing, not final lore or final run length.
 
+## Playtest in a browser
+
+Because this is a public Vite repository, StackBlitz can import the current `main` branch and run the `dev` script without a local Node setup:
+
+https://stackblitz.com/github/Tiutmattiu/Sunflower?startScript=dev
+
+The repository is the source of truth, so refresh/reopen the StackBlitz import after new commits if it is showing an older version.
+
 ## Run locally
 
 ```bash
@@ -43,7 +51,7 @@ npm run preview
 
 ## Verification status
 
-The latest branch is being actively refactored. Connected GitHub writes have succeeded, but the current ChatGPT execution environment has not been able to clone the repository and run the latest Vite build. See `CODEX_VERIFICATION.md` before treating the current build as runtime-verified.
+The latest branch is being actively refactored. Connected GitHub writes have succeeded, but the current ChatGPT execution environment still cannot resolve github.com for a local clone/build. StackBlitz is the easiest current browser playtest path; `CODEX_VERIFICATION.md` remains the authoritative list of runtime checks to perform after engine changes.
 
 ## Scope
 
