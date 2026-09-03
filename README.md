@@ -47,11 +47,11 @@ npm run preview
 - `NPC_CHARACTER_BIBLE.md` — NPC identity / behavior direction
 - `REBIRTH_FORM_SYSTEM.md` — form, legal identity and rebirth hypotheses
 - `WORLD_LORE_SUN_MOMENT.md` — current Sun Moment metaphysics
-- `CODEX_VERIFICATION.md` — runtime/build checks still requiring a code-running environment
+- `CODEX_VERIFICATION.md` — verified results, clearing rules, and remaining checks
 
 ## Verification status
 
-The latest branch is being actively refactored. Connected GitHub writes have succeeded, but the current ChatGPT execution environment still cannot resolve github.com for a local clone/build. StackBlitz is the easiest current browser playtest path; `CODEX_VERIFICATION.md` remains the authoritative list of runtime checks to perform after engine changes.
+On 2026-09-04, the local production build, `node scripts/noon-smoke.mjs`, and desktop/narrow-screen browser checks passed. Noon now batches player and NPC bids with seller-side valuation and daily rotating equal-bid priority. The StackBlitz import above remains available as a browser playtest path, but was not verified in this local pass. See `CODEX_VERIFICATION.md` for exact coverage and remaining limits. Public deployment is not verified; reloading still loses the current run.
 
 ## Scope
 

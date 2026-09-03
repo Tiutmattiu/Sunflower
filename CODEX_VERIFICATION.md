@@ -4,7 +4,40 @@
 >
 > **Do not turn this into a large automated test suite unless explicitly requested.** The project is intentionally small. Prefer build checks, direct smoke scripts and short manual playthroughs.
 
-## Current environment blocker
+## Latest verified pass — 2026-09-04
+
+Source: fresh clone of `Tiutmattiu/Sunflower`, initially at `dbd99f87c95220a40893dcd2737186dd8cf3a36e`, then fast-forwarded to `4998e7bc8dacefc257ae0867be8657e24b2b04f8` before committing this pass. New upstream StackBlitz setup, crash recovery, catalogue cleanup and documentation are preserved. The old DNS blocker below no longer applies to this local pass.
+
+Observed checks:
+
+- Existing dependencies installed locally; no new dependency, test framework, or CI added.
+- `npm run build` passed (Node 24.12.0, Vite 5.4.21).
+- `node scripts/noon-smoke.mjs` passed: higher NPC/player bids, two-/three-party rotating ties, NPC-plan order reversal, stale stock, insufficient cash, under-ask NPC orders, duplicate stock/payment copies, invalid cash, no same-batch recycling, seller-side barter/deception, tape ownership, hidden-stock/board projection, proxy access, repeat clearing, and a 14-day no-action run.
+- Browser: Day 1 player 10 vs Dog 10 for the last Fresh Mackerel → Dog wins; player keeps 18 cash and sees a generic rejection. Public tape shows Fishmonger → Dog. Advanced through Sunset to Day 2.
+- Browser at 390 × 844: player 11 vs Dog 10 → player gets the fish and has 7 cash. Order controls usable; document has no horizontal overflow. Desktop layout checked at 1280 × 900. No captured browser warnings/errors during these checks.
+- After integrating `4998e7b`, repeated build, smoke, desktop tie and narrow-screen winning-bid checks. Confirmed exactly one loaded stylesheet. Swapping upstream entry files under the running dev server briefly produced a React duplicate-root hot-update warning; a full reload and fresh game entry produced no new warnings/errors. The handoff page was fully reloaded.
+- Local play: `npm run dev -- --host 127.0.0.1 --port 5173 --strictPort`, then open `http://127.0.0.1:5173/`. This is local play, not a claim of public deployment. Reload still resets the run.
+
+### Clearing contract now implemented
+
+- Combine player orders and the already committed NPC plan; never call the planner while clearing.
+- Group by **seller + item name**. Rank by the seller's opening-state valuation: offered cash + offered item's reference value + that seller's private utility (including the existing explicit Sailor citrus misbelief). Both player and NPC offers must meet the same seller ask.
+- Equal-valued bidders rotate daily in sorted trader-ID order, starting at `(day - 1) % tiedBidderCount`. Duplicate orders do not add lottery entries. For the same tied pair, priority alternates; no randomness or player-first privilege.
+- Allocate only opening cash and physical inventory copies. An unfunded candidate is skipped; the next eligible offer can fill. Each accepted order consumes one wanted unit and, if present, one payment unit.
+- Deliver all receipts only after allocation, then apply existing production/story hooks, publish actual fills to tape, and update heat. No same-batch re-selling, cash recycling, or buying newly produced goods.
+- Lots are visited in stable seller/item order; malformed overcommitted orders can fill only while opening resources remain. UI rejects aggregate overcommitment before Noon. Linked/package bids and global optimal allocation are not implemented.
+- Public board contains only public bid fields, not hidden target/source, score, reason, or knowledge provenance. Player failures do not expose seller valuations or failed NPC intentions. Player targetability still uses public/tape/discovered knowledge; NPC beliefs are not refreshed at resolve.
+
+Closely related fixes: actual duplicate payment copies work in both UI and engine; invalid money and self-orders cannot settle; barter payments update public ownership for player and NPC knowledge; tape arrows now show goods moving seller → buyer. During upstream integration, keep the sole CSS import in `App.jsx`: upstream already removed the duplicate from `main.jsx`.
+
+### Observed balance limit, not changed in this pass
+
+No-action NPC trades/day: `5, 4, 3, 3, 2, 0, 1, 1, 0, 0, 0, 0, 0, 0`.
+The run reaches Day 14 and classifies as The Bystander without crashing, but recurring arrivals do **not** guarantee continuing liquidity. Late-run inactivity remains a playtesting/balance issue; prices and NPC behavior were not rebased here.
+
+The remaining checklists below are not all newly verified: complete sunflower-route playthroughs, perishable instance ages, long-run economic balance, and public hosting remain separate work.
+
+## Historical environment blocker
 
 ### 2026-09-03
 
@@ -20,7 +53,7 @@ Result:
 fatal: unable to access 'https://github.com/Tiutmattiu/Sunflower.git/': Could not resolve host: github.com
 ```
 
-Therefore the latest `main` has **not** been verified here with a local `npm run build`, Vite dev server, or browser playthrough. GitHub connector reads/writes succeeded, but that is not equivalent to runtime verification.
+At that time, `main` had **not** been verified there with a local `npm run build`, Vite dev server, or browser playthrough. GitHub connector reads/writes succeeded, but that was not equivalent to runtime verification. Superseded by the local results above.
 
 The repo is structurally a Vite/React app (`npm run dev`, `npm run build`, `npm run preview`). `vite.config.js` now uses `base: "./"` so built asset paths are safer for static/project-page hosting, but deployment itself still needs a real check.
 
@@ -48,9 +81,9 @@ A repository check on 2026-09-03 found **no `.github/workflows` directory**, so 
 - Confirm public transaction tape reflects actual cash and inventory movement.
 - Confirm information discovered/sold during Morning can causally change a plan before noon, but Resolve itself never rerolls.
 
-### Important current clearing caveat
+### Batch clearing regression check
 
-The prototype still executes player orders before NPC plans. That gives the player priority when both target the same unit. This is **not final market design**; a future pass should likely batch competing orders for the same public unit instead of giving hero priority. Do not silently preserve this as canon simply because it currently works.
+Player-first execution has been removed. Run `node scripts/noon-smoke.mjs` and use the clearing contract above when changing settlement. Do not rank competing bids by NPC buyer score or expose seller-side valuation numbers in the public UI.
 
 ## B. Information asymmetry + staged precision
 
@@ -90,7 +123,7 @@ Verify:
 - NPC needs are exact unless a future category/alternative is explicitly made legible;
 - engine does not award designer-only substitute credit.
 
-## D. 68-item catalogue reachability
+## D. 67-item catalogue reachability
 
 Confirm all current `ITEMS` definitions resolve without `undefined` references.
 
@@ -125,7 +158,7 @@ Runtime check:
 
 - every kept item should have a path into play;
 - no item should silently disappear because of a spelling mismatch;
-- the larger catalogue must not force all 68 items onto the player at once.
+- the larger catalogue must not force all 67 items onto the player at once.
 
 ## E. Stable market interests
 
@@ -202,7 +235,7 @@ Current rough bands:
 - scarce input / collateral-like durable: 12–20🥫;
 - prestige / collectible / special situation: roughly 9–22+🥫;
 - vehicles: ~28–30+🥫;
-- Auction Sunflower reference/lot placeholder: 52🥫;
+- Vale's auction reserve is an event price, not a separate priced flower item;
 - living `Sunflower`: **unpriced (`value: null`)**.
 
 Starting cash:
@@ -383,13 +416,13 @@ A much older read-only Codex audit from before the engine/world rewrite is usefu
 
 ### Still open / intentionally provisional
 
-- **player-order-first priority:** player currently gets first execution against contested inventory; needs batch competition;
+- **player-order-first priority:** resolved on 2026-09-04 by shared batch competition, with executable smoke checks;
 - **route priority:** `buildEvents()` still returns only the first eligible route (`events.slice(0, 1)`); decide whether multiple actionable routes should coexist in UI;
-- **Auction Sunflower legacy definition:** no longer spawned as a normal Vale inventory reward, but the catalogue still contains the old auction-lot placeholder and should be cleaned/repurposed when auction design is rewritten;
+- **Auction Sunflower legacy definition:** removed by upstream before `4998e7b`; the catalogue has 67 definitions and the living Sunflower remains unpriced;
 - **perishable duplicates:** timer key is still per trader + item name, not item instance;
 - **persistence:** reload still loses run state; decide later whether this matters for intended session length;
 - **deterministic replay seed:** current core AI is mostly deterministic, but there is still no formal seeded-run/persistence format;
-- **CSS import duplication:** CSS is still imported by both `main.jsx` and `App.jsx`; Vite normally deduplicates it, but one import can be removed next time `App.jsx` is touched;
+- **CSS import duplication:** resolved on 2026-09-04 upstream; only `App.jsx` imports the stylesheet;
 - **route/UI single-source-of-truth:** much improved because route conditions live in engine, but current event presentation still only consumes the first pending event.
 
 ---
@@ -409,7 +442,7 @@ A much older read-only Codex audit from before the engine/world rewrite is usefu
 - living Sunflower is unpriced.
 - acquiring Sunflower is only the first objective reveal, not victory.
 - the deeper `Go home` / rebirth game is not implemented yet.
-- player-order-first clearing remains a provisional implementation detail and should be replaced by fair batch competition once runtime is available to test it safely.
+- Noon now uses seller-valued batch competition; daily rotating ties and independent-lot allocation are the small prototype rules, not a full auction/package-bid system.
 
 ## Update rule
 

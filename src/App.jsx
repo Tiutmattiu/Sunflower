@@ -93,6 +93,7 @@ function OrderRow({ index, order, setOrder, traders, visibleByTrader, playerInve
   return (
     <div className="offer-row">
       <select
+        aria-label={`Order ${index + 1} counterparty`}
         value={order.to}
         disabled={disabled}
         onChange={(event) => setOrder(index, { to: event.target.value, wantItem: "", offerItem: "", sardines: 0 })}
@@ -103,6 +104,7 @@ function OrderRow({ index, order, setOrder, traders, visibleByTrader, playerInve
         ))}
       </select>
       <select
+        aria-label={`Order ${index + 1} wanted item`}
         value={order.wantItem}
         disabled={disabled || !target}
         onChange={(event) => setOrder(index, { ...order, wantItem: event.target.value })}
@@ -111,18 +113,21 @@ function OrderRow({ index, order, setOrder, traders, visibleByTrader, playerInve
         {targetStock.map((item) => <option key={item} value={item}>{itemLabel(item)}</option>)}
       </select>
       <select
+        aria-label={`Order ${index + 1} payment item`}
         value={order.offerItem}
         disabled={disabled}
         onChange={(event) => setOrder(index, { ...order, offerItem: event.target.value })}
       >
         <option value="">No barter item</option>
-        {playerInventory
-          .filter((item) => !usedItems.includes(item) || item === order.offerItem)
+        {unique(playerInventory)
+          .filter((item) => item === order.offerItem ||
+            playerInventory.filter((held) => held === item).length > usedItems.filter((used) => used === item).length)
           .map((item) => <option key={item} value={item}>{itemLabel(item)}</option>)}
       </select>
       <label className="sardine-input">
         <span>🥫</span>
         <input
+          aria-label={`Order ${index + 1} sardines`}
           type="number"
           min="0"
           disabled={disabled}
@@ -178,7 +183,7 @@ function TransactionTape({ game }) {
         {tape.length ? tape.map((trade) => (
           <div className="tape-row" key={trade.id}>
             <span>D{trade.day}</span>
-            <span>{game.traders[trade.from]?.icon} → {game.traders[trade.to]?.icon}</span>
+            <span title="Goods move from seller to buyer">{game.traders[trade.to]?.icon} → {game.traders[trade.from]?.icon}</span>
             <span>{labelShort(trade.item)}</span>
             <span>{trade.paymentItem ? `${labelShort(trade.paymentItem)} + ` : ""}{trade.sardines}🥫</span>
           </div>
@@ -366,8 +371,8 @@ export default function App() {
     if (game.ended || game.pendingEvents.length) return;
     if (game.phase === "morning") {
       const chosen = game.playerOrders.map((order) => order.offerItem).filter(Boolean);
-      if (chosen.length !== unique(chosen).length) {
-        window.alert("You cannot commit the same payment item to two noon orders.");
+      if (chosen.some((item) => chosen.filter((payment) => payment === item).length > player.inventory.filter((held) => held === item).length)) {
+        window.alert("You cannot commit more copies of a payment item than you own.");
         return;
       }
       if (plannedSardines > player.sardines) {
@@ -487,7 +492,7 @@ export default function App() {
             {!game.ended && game.phase === "morning" && (
               <section className="card order-card">
                 <div className="section-title">Your noon orders</div>
-                <p className="muted board-note">Prototype rule: up to three committed offers. You can target confirmed or still-believed stock; stale information can fail at clearing.</p>
+                <p className="muted board-note">Up to three committed offers compete with NPC bids. Each seller chooses the highest-valued offers; equal offers use daily rotating priority. Only opening cash and goods can fund this batch. Stale information can fail at clearing.</p>
                 <div className="stack">
                   {game.playerOrders.map((order, index) => (
                     <OrderRow

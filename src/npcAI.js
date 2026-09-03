@@ -1,4 +1,4 @@
-import { ITEMS, NPC_PROFILES, SOCIAL_GRAPH } from "./gameData";
+import { ITEMS, NPC_PROFILES, SOCIAL_GRAPH } from "./gameData.js";
 
 const itemValue = (item) => Number.isFinite(ITEMS[item]?.value) ? ITEMS[item].value : 0;
 
@@ -50,9 +50,10 @@ export function buyerMax(game, buyerId, item) {
 }
 
 function latestPublicOwner(game, item) {
-  const trades = game.history.filter((trade) => trade.item === item);
+  const trades = game.history.filter((trade) => trade.item === item || trade.paymentItem === item);
   if (!trades.length) return null;
-  return trades[trades.length - 1].from;
+  const trade = trades[trades.length - 1];
+  return trade.paymentItem === item ? trade.to : trade.from;
 }
 
 function publicSellersOf(game, item) {
@@ -199,7 +200,9 @@ export function planNPCMarket(game) {
 
 export function visibleMarketBoard(game) {
   return game.marketPlan.map((plan) => ({
-    ...plan,
+    from: plan.from,
+    wantItem: plan.wantItem,
+    sardines: plan.sardines,
     publicText: `${game.traders[plan.from].name} is prepared to pay ${plan.sardines}🥫 for ${plan.wantItem}.`,
   }));
 }

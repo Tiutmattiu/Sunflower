@@ -11,8 +11,8 @@ import {
   PROXY_FEE,
   SUSTENANCE_PER_DAY,
   VENUES,
-} from "./gameData";
-import { planNPCMarket, privateUtility, sellerAsk } from "./npcAI";
+} from "./gameData.js";
+import { planNPCMarket, privateUtility, sellerAsk } from "./npcAI.js";
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
 export const valueOf = (item) => (item && Number.isFinite(ITEMS[item]?.value) ? ITEMS[item].value : 0);
@@ -207,6 +207,7 @@ function latestPublicOwners(game) {
   const owners = {};
   game.history.forEach((trade) => {
     owners[trade.item] = trade.from;
+    if (trade.paymentItem) owners[trade.paymentItem] = trade.to;
   });
   return owners;
 }
@@ -402,100 +403,99 @@ function applySpecialRules(game, trade) {
   }
 }
 
-function executePlayerOrders(game) {
-  const accepted = [];
-  const rejected = [];
-  const usedPaymentItems = new Set();
+function clearCommittedOrders(game) {
+  const orders = [
+    ...game.playerOrders.filter((order) => order.to && order.wantItem).map((order) => ({ ...order, from: "player" })),
+    ...game.marketPlan,
+  ];
+  const groups = new Map();
+  // Only opening resources can fund this batch; receipts are delivered after allocation.
+  const available = clone(game.traders);
+  const reject = (order, reason) => {
+    // Failed NPC plans and seller valuations are not public information.
+    if (order.from === "player") game.rejected.push({ ...order, sardines: Number.isFinite(order.sardines) ? order.sardines : null, reason });
+  };
 
-  game.playerOrders.filter((order) => order.to && order.wantItem).forEach((order) => {
-    const player = game.traders.player;
-    const target = game.traders[order.to];
-    const normalized = {
-      from: "player",
-      to: order.to,
-      wantItem: order.wantItem,
-      offerItem: order.offerItem || null,
-      sardines: Number(order.sardines || 0),
+  orders.forEach((order) => {
+    const trade = {
+      from: order.from, to: order.to, wantItem: order.wantItem,
+      offerItem: order.offerItem || null, sardines: Number(order.sardines ?? 0),
     };
-
-    if (!target || !target.inventory.includes(normalized.wantItem)) {
-      rejected.push({ ...normalized, reason: "The item was not available when the noon market cleared." });
+    const buyer = game.traders[trade.from];
+    const seller = game.traders[trade.to];
+    if (!buyer || !seller || trade.from === trade.to || !ITEMS[trade.wantItem] ||
+        (trade.offerItem && !ITEMS[trade.offerItem]) ||
+        order.sardines == null || !Number.isFinite(trade.sardines) || trade.sardines < 0) {
+      reject(trade, "Invalid noon order.");
       return;
     }
-    if (normalized.offerItem && !player.inventory.includes(normalized.offerItem)) {
-      rejected.push({ ...normalized, reason: "You no longer own the payment item." });
+    if (trade.from === "player" && !canAccessVenue(game, "formalMarket")) {
+      reject(trade, "Your current form / legal identity cannot settle directly in the formal market without a proxy.");
       return;
     }
-    if (normalized.offerItem && usedPaymentItems.has(normalized.offerItem)) {
-      rejected.push({ ...normalized, reason: "You tried to spend the same item twice." });
+    if (trade.from === "player" && !knownItemsForTrader(game, trade.to).includes(trade.wantItem)) {
+      reject(trade, "You have no known holding to target with this order.");
       return;
     }
-    if (player.sardines < normalized.sardines) {
-      rejected.push({ ...normalized, reason: "You do not have enough sardines at clearing." });
+    if (!seller.inventory.includes(trade.wantItem)) {
+      reject(trade, "The item was not available when the noon market cleared.");
       return;
     }
-
-    const isCheat = normalized.to === "mechanic" && normalized.offerItem === "Bad Tangerine";
-    const barterUtility = normalized.offerItem ? privateUtility(game, target.id, normalized.offerItem) : 0;
-    const mistakenCitrusUtility = isCheat ? privateUtility(game, target.id, "Lime Crate") : 0;
-    const paymentValue = valueOf(normalized.offerItem) + barterUtility + mistakenCitrusUtility + normalized.sardines;
-    const ask = sellerAsk(game, target.id, normalized.wantItem);
-
-    if (paymentValue < ask) {
-      rejected.push({
-        ...normalized,
-        reason: `${target.name} does not accept this offer at the current ask.`,
-      });
+    if (buyer.sardines < trade.sardines || (trade.offerItem && !buyer.inventory.includes(trade.offerItem))) {
+      reject(trade, "You do not own the opening cash or payment item for this order.");
       return;
     }
-
-    if (normalized.offerItem) {
-      player.inventory = removeOne(player.inventory, normalized.offerItem);
-      target.inventory.push(normalized.offerItem);
-      usedPaymentItems.add(normalized.offerItem);
+    const isCheat = trade.to === "mechanic" && trade.offerItem === "Bad Tangerine";
+    const utility = trade.offerItem ? privateUtility(game, trade.to, trade.offerItem) : 0;
+    const mistakenCitrusUtility = isCheat ? privateUtility(game, trade.to, "Lime Crate") : 0;
+    const paymentValue = valueOf(trade.offerItem) + utility + mistakenCitrusUtility + trade.sardines;
+    if (paymentValue < sellerAsk(game, trade.to, trade.wantItem)) {
+      reject(trade, `${seller.name} does not accept this offer at the current ask.`);
+      return;
     }
-    if (normalized.sardines > 0) {
-      player.sardines -= normalized.sardines;
-      target.sardines += normalized.sardines;
-    }
-    target.inventory = removeOne(target.inventory, normalized.wantItem);
-    player.inventory.push(normalized.wantItem);
-    accepted.push(normalized);
-    recordTrade(game, normalized, "player-order");
-    applySpecialRules(game, normalized);
+    const key = `${trade.to}:${trade.wantItem}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push({ trade, paymentValue });
   });
 
-  game.marketOutcome = accepted;
-  game.rejected = rejected;
-}
+  // ponytail: independent lots, not combinatorial clearing; linked/package bids would need a different allocator.
+  [...groups.keys()].sort().forEach((key) => {
+    const candidates = groups.get(key);
+    const tieRanks = new Map();
+    unique(candidates.map(({ paymentValue }) => paymentValue)).forEach((value) => {
+      const bidders = unique(candidates.filter((candidate) => candidate.paymentValue === value).map(({ trade }) => trade.from)).sort();
+      bidders.forEach((id, index) => tieRanks.set(`${value}:${id}`, (index - (game.day - 1) % bidders.length + bidders.length) % bidders.length));
+    });
+    candidates.sort((a, b) => b.paymentValue - a.paymentValue ||
+      tieRanks.get(`${a.paymentValue}:${a.trade.from}`) - tieRanks.get(`${b.paymentValue}:${b.trade.from}`));
 
-function rejectPlayerOrdersForAccess(game) {
-  game.rejected = game.playerOrders
-    .filter((order) => order.to && order.wantItem)
-    .map((order) => ({
-      from: "player",
-      to: order.to,
-      wantItem: order.wantItem,
-      offerItem: order.offerItem || null,
-      sardines: Number(order.sardines || 0),
-      reason: "Your current form / legal identity cannot settle directly in the formal market without a proxy.",
-    }));
-}
+    candidates.forEach(({ trade }) => {
+      const buyer = available[trade.from];
+      const seller = available[trade.to];
+      if (buyer.sardines < trade.sardines || (trade.offerItem && !buyer.inventory.includes(trade.offerItem))) {
+        reject(trade, "Your opening cash or payment item is unavailable or already committed to a filled order.");
+        return;
+      }
+      if (!seller.inventory.includes(trade.wantItem)) {
+        reject(trade, "Another committed offer won the available stock (equal offers use daily rotating priority).");
+        return;
+      }
+      buyer.sardines -= trade.sardines;
+      if (trade.offerItem) buyer.inventory = removeOne(buyer.inventory, trade.offerItem);
+      seller.inventory = removeOne(seller.inventory, trade.wantItem);
+      game.marketOutcome.push(trade);
+    });
+  });
 
-function executeCommittedNPCPlan(game) {
-  game.marketPlan.forEach((plan) => {
-    const buyer = game.traders[plan.from];
-    const seller = game.traders[plan.to];
-    if (!buyer || !seller) return;
-    if (!seller.inventory.includes(plan.wantItem)) return;
-    if (buyer.sardines < plan.sardines) return;
-
-    buyer.sardines -= plan.sardines;
-    seller.sardines += plan.sardines;
-    seller.inventory = removeOne(seller.inventory, plan.wantItem);
-    buyer.inventory.push(plan.wantItem);
-    recordTrade(game, plan, "npc-plan");
-    game.marketOutcome.push(plan);
+  game.traders = available;
+  game.marketOutcome.forEach((trade) => {
+    game.traders[trade.to].sardines += trade.sardines;
+    if (trade.offerItem) game.traders[trade.to].inventory.push(trade.offerItem);
+    game.traders[trade.from].inventory.push(trade.wantItem);
+  });
+  game.marketOutcome.forEach((trade) => {
+    recordTrade(game, trade, trade.from === "player" ? "player-order" : "npc-plan");
+    applySpecialRules(game, trade);
   });
 }
 
@@ -516,9 +516,7 @@ export function resolveNoonMarket(current) {
 
   game.marketOutcome = [];
   game.rejected = [];
-  if (canAccessVenue(game, "formalMarket")) executePlayerOrders(game);
-  else rejectPlayerOrdersForAccess(game);
-  executeCommittedNPCPlan(game);
+  clearCommittedOrders(game);
   updateHeatFromHistory(game);
   game.marketResolved = true;
   game.playerOrders = resetOrders();
