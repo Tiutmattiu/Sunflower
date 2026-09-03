@@ -352,6 +352,14 @@ The player can then choose among economically different actions:
 
 Information value must decay when it spreads.
 
+### Current implemented resale / diffusion contract
+
+- A holding lead records source, precision, confidence, freshness, personal verification, known actors, sales, favours, diffusion count and resale state.
+- Selling or sharing teaches only the named recipient; it does not broadcast the lead globally.
+- A recipient may later resell through an established bilateral relationship. That private transfer moves cash, updates the buyer's bounded memory and appends a structured resale record.
+- Price falls as the audience grows and as the lead ages; stale leads cannot be sold.
+- The engine preserves this history for later diagnosis but does not yet assign final badges or archetype scores.
+
 ---
 
 ## Player participation created by information friction

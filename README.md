@@ -11,6 +11,8 @@ A browser-based single-player trading game prototype about information asymmetry
 - NPCs act on bounded information rather than omniscient inventory access
 - Goods have reference prices, while private utility, urgency and liquidity can change actual willingness to trade
 - Information has separate precision and confidence
+- Private information can be sold, shared as a favour, and resold through established NPC relationships
+- NPC-held ingredients and parts can trigger production and route consequences without player attribution
 - Food, perishability, credit, legal identity / form access and market proxies are partially implemented
 - Acquiring a sunflower no longer ends the game: the objective changes to **Go home**
 
@@ -38,6 +40,21 @@ npm run build
 npm run preview
 ```
 
+Targeted engine checks:
+
+```bash
+node scripts/noon-smoke.mjs
+node scripts/living-smoke.mjs
+```
+
+## Code ownership
+
+- `src/gameData.js` — facts and configuration: items, starting state, profiles, recipes and venue rules
+- `src/npcAI.js` — bounded NPC knowledge, valuation, planning and public listings
+- `src/gameEngine.js` — authoritative state transitions, settlement, production, consequences and structured evidence
+- `src/livingGame.js` — compatibility re-export only
+- `src/AppCore.jsx` — player-facing React flow; it calls the engine rather than owning game rules
+
 ## Important design docs
 
 - `GAME_DESIGN.md` — overall design direction
@@ -51,19 +68,7 @@ npm run preview
 
 ## Verification status
 
-On 2026-09-04, the local production build, `node scripts/noon-smoke.mjs`, and desktop/narrow-screen browser checks passed for the seller-valued Noon batch-clearing version committed as `82c5685`.
-
-**Changes after that verified pass still need a fresh build/browser smoke:**
-
-- `82051eb` — sequential first-run UI: Morning shows **Learn / Trade** instead of the full dashboard at once; empty credit/access/info panels are hidden; NPC cash is no longer displayed as primary UI; ended runs no longer keep the whole market visible below the ending.
-- `d1c34c` — styles for the simplified single-flow layout.
-- `15aa2ca` — opening instructions reduced to the first playable decision instead of explaining every subsystem up front.
-- `e08a42c` — NPC broad-interest purchases now preserve working capital instead of spending businesses toward zero cash merely because an item fits a stable interest.
-- `334996a` — first tactile harbour-desk visual pass: dark work surface, paper dossiers, taped contact cards, sticky-note guidance, public-ledger market presentation and paper order slips. This takes high-level interaction inspiration from physical-desk point-and-click games without copying external art assets.
-
-The ChatGPT container attempted to clone after those commits and still hit `Could not resolve host: github.com`, so do **not** treat those later commits as runtime-verified yet. Next code-running pass should pull latest `main`, run `npm run build`, run `node scripts/noon-smoke.mjs`, then manually check Day 1 Morning Learn/Trade switching, one narrow-screen order, the tactile paper/desk contrast at desktop and mobile widths, and a 14-day no-action cash distribution. Update `CODEX_VERIFICATION.md` with observed results.
-
-The StackBlitz import above remains available as a browser playtest path. Public deployment is not verified; reloading still loses the current run.
+On 2026-09-04 the production build, both engine smoke scripts, a Day 1 browser order/settlement/notebook flow, and a 390 × 844 responsive check passed locally. See `CODEX_VERIFICATION.md` for the exact current contracts and unverified boundaries. Public deployment is not verified.
 
 ## Scope
 

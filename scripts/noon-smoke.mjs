@@ -113,11 +113,11 @@ assert.equal(clear(game).marketOutcome.length, 2, "two physical units can fill t
 
 game = manualNoon();
 game.traders.player.inventory.push("Orgeat Bottle");
-game.playerOrders = [order("player", "bar", "Rum Bottle", 0, "Orgeat Bottle")];
-game.marketPlan = [order("vale", "bar", "Rum Bottle", 20)];
+game.playerOrders = [order("player", "bar", "Demerara Syrup", 0, "Orgeat Bottle")];
+game.marketPlan = [order("vale", "bar", "Demerara Syrup", 20)];
 result = clear(game);
 assert.equal(result.marketOutcome[0].from, "player");
-assert(result.flags.orgeatDelivered);
+assert.equal(result.worldThreads.barRecipe.stage, "aftermath");
 assert(result.traders.bar.inventory.includes("Mai Tai"));
 assert(knownItemsForTrader(result, "bar").includes("Orgeat Bottle"), "barter ownership belongs on the public tape");
 
@@ -189,6 +189,12 @@ assert(game.ended && game.day === 14);
 assert.equal(game.style.name, "The Bystander");
 assert.deepEqual(game.playerOrders, resetOrders());
 assert.equal(sellerAsk(createGame(), "fishmonger", "Fresh Mackerel"), 10);
+assert.equal(game.worldThreads.valeScreening.stage, "aftermath", "Vale's early oil purchase should lead to the screening without player involvement");
+assert.equal(game.worldThreads.onewheel.stage, "aftermath", "Sailor should be able to complete the bicycle chain without player involvement");
+assert(game.history.some((trade) => trade.day > 8), "recurring needs should keep some trade alive after the first goals resolve");
+assert(!game.history.some((trade) => trade.day > 8 && (trade.from === "mechanic" || trade.to === "mechanic")), "the departed Sailor must not keep trading from an empty berth");
+assert(game.traders.bar.sardines > 0 && game.traders.vale.sardines > 0, "Bar and Vale must not structurally bleed to zero");
+assert(game.traders.fishmonger.sardines < 150, "named sourcing costs should prevent runaway free-production wealth");
 
 console.log(`Living-day smoke passed. Day 1 NPC orders: ${dayOnePlans.length}. No-action public trades/day: ${dailyTrades.join(", ")}.`);
 console.log("Final NPC cash:", Object.fromEntries(Object.entries(game.traders).filter(([id]) => id !== "player").map(([id, trader]) => [id, trader.sardines])));

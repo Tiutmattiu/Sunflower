@@ -28,6 +28,18 @@ The primary pleasure is strategic trading:
 
 The eccentric world, strange goods, recurring characters and metaphysics deepen that market. They must not replace it.
 
+The economic hierarchy is not a set of interchangeable bonuses:
+
+> **Trading keeps you alive.**
+>
+> **Information makes you good.**
+>
+> **Relationships make you resilient.**
+>
+> **Special situations make you rich.**
+
+Cash and ordinary trade sustain the run. Information improves decisions and timing. Relationships create credit, access and recovery paths. Exceptional wealth belongs to scarce situations that require the earlier layers rather than replacing them.
+
 Experienced business / market players should sometimes think:
 
 > “I know what kind of problem this is.”
@@ -345,7 +357,7 @@ Named NPCs sit inside businesses and ordinary background demand:
 
 This is deliberately small.
 
-Do not build a hidden macroeconomic simulator before the core market is fun.
+Keep the background economy bounded and legible; named arrivals, consumption, production and outside customers are enough for the current prototype.
 
 The purpose is simply to make money and goods have **sources and sinks** so a no-action run does not look like arbitrary wealth teleportation.
 
@@ -443,6 +455,12 @@ Mai Tai + Onewheel + actual relationship with Clown can expose a special wager w
 
 Multiple currently real opportunities may coexist. The engine should not hide all but one because of arbitrary route priority.
 
+Routes are resilient chains rather than single missable trades:
+
+> **signal → contest → outcome → aftermath → second-order opportunity**
+
+Missing an arbitrage can close that trade without deleting the surrounding story. If Vale independently buys Whale Oil, the player may lose the oil spread while the public transaction, completed screening, investigation, access, provenance, capital and later auction still provide entry points. Strong NPCs remain capable; onboarding must not require making them artificially stupid.
+
 None of these routes is the final victory anymore. They all feed the same first reveal:
 
 > **You got a sunflower. Nothing happens. Go home.**
@@ -452,6 +470,12 @@ None of these routes is the final victory anymore. They all feed the same first 
 ## 15. Learning Design
 
 Terminology should usually come **after experience**.
+
+The preferred first-life rhythm is approximate rather than scripted:
+
+- **Day 1 — execution:** make or decline a concrete commitment;
+- **Day 2 — observation:** see market and world consequences;
+- **Day 3+ — inference / exploitation:** connect evidence to a new opportunity.
 
 The game does not say:
 
@@ -464,9 +488,15 @@ Outcome and process are separate.
 A profitable reckless action is still profitable.
 It can also have been a poor decision process.
 
-Final trader archetypes / badges should diagnose behaviour rather than moralise.
+Knowledge and assessment are core deliverables:
 
-`SCENARIOS_TEACHING.md` is an event / teaching idea bank, not a checklist of mechanics that must all be implemented immediately.
+> **PLAY → WORLD CONSEQUENCE → optional `?` CONCEPT DISCOVERY → distinctive BADGE / CASE → persistent NOTEBOOK → FINAL DIAGNOSIS**
+
+`?` is a timely optional explanation after the relevant consequence, never a pre-emptive answer. A badge records a distinctive realised story or pattern and is not automatically praise. The notebook keeps situations, concepts and evidence across the run. Final diagnosis synthesises that record; it must not be the player's first encounter with the ideas.
+
+Final trader archetypes / badges should diagnose behaviour rather than moralise. The current batch preserves structured evidence but deliberately does not lock the final scoring or archetype model.
+
+`SCENARIOS_TEACHING.md` defines implementation and coverage targets. Its exact scenes need not all become rigid quests, but their meaningful economic behaviours must become mechanically representable, observable, diagnosable and capable of timely learning feedback.
 
 ---
 
@@ -487,6 +517,7 @@ Do **not** expand these until the living-day vertical slice survives real playte
 - complete Sailor-form gameplay;
 - seeded deterministic replay architecture;
 - large automated test suite / CI.
+- final visual UI / art pass and final archetype presentation.
 
 These remain strong future directions where supported by the specialised design docs.
 

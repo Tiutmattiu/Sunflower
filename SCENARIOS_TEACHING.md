@@ -4,17 +4,18 @@
 >
 > Teaching rule: **experience first, terminology second**. A player should never need a trading background to understand a decision. The game presents an ordinary concrete problem in Sunflower language; after the player acts and consequences begin to unfold, the game names the real-world concept, explains why it mattered, and records the behaviour for diagnosis / badges.
 
-## Teaching loop
+## Teaching and assessment contract
 
-1. **Situation in plain game language** — what happened, who wants what, what is due, what is scarce.
-2. **Player choice** — expressed as actions, not finance vocabulary.
-3. **World consequence** — NPCs, prices, credit terms, inventory and authority respond systemically.
-4. **Reveal** — the game names the concept after the player has experienced it.
-5. **Notebook entry** — short explanation, optionally with a deeper “Learn more” layer.
-6. **Behaviour tag** — used by final diagnosis.
-7. **Badge / dirty-trade event** — only for distinctive patterns, not for every ordinary trade.
+1. **Play** — a situation and choice expressed in ordinary Sunflower language.
+2. **World consequence** — NPCs, prices, credit, inventory, access and later opportunities respond systemically.
+3. **Optional `?` concept discovery** — after the consequence, the player may open a timely explanation. It never blocks play or reveals the right answer in advance.
+4. **Badge / case** — only when a distinctive realised story or market pattern completes. It is evidence, not automatic praise.
+5. **Notebook** — durable memory of experienced situations, concepts and supporting evidence.
+6. **Final diagnosis** — synthesis across the run, never the player's first exposure to the concept.
 
-The game must distinguish **successful outcome** from **sound process**. A lucky bad decision can make money; a sensible decision can lose money. Diagnosis should track both.
+These scenarios are implementation and coverage targets, not disposable idea-bank material. Their exact fiction need not become rigid quests, but their meaningful behaviour must be mechanically representable, observable, diagnosable and capable of timely learning feedback.
+
+The game must distinguish **successful outcome** from **sound process**. A reckless poorly informed trade can make a large profit: good outcome, poor process. A well-reasoned trade can lose money: poor outcome, sound process. Wealth alone cannot determine decision quality.
 
 ---
 
@@ -458,14 +459,15 @@ A badge is not necessarily praise. Examples:
 
 Badges can feed the final diagnosis but must not determine it mechanically. A player may hold contradictory badges: `Sacred Word` and `Strategic Default`, or `Snake Oil` and `Trusted Counterparty`, reflecting different relationships and moments.
 
-## Diagnosis Principle
+## Diagnosis Ontology
 
-The final diagnosis should answer at least four separate questions:
+Structured evidence should preserve three separate layers before any final scoring model is chosen:
 
-1. **Did you achieve the sunflower objective?**
-2. **Did you make money / preserve economic value?**
-3. **How good was your decision process, independent of luck?**
-4. **What kind of market participant did your behaviour create?**
+1. **Outcome — what happened?** Sunflower objective, realised value, liquidity / solvency, defaults, retained relationships and access.
+2. **Process / skill — how was the decision made?** Valuation, information calibration, verification, execution, liquidity, credit, position sizing, negotiation, adaptability, market impact and sustainability.
+3. **Style — what kind of participant did repeated behaviour create?** Aggressive / patient, concentrated / diversified, inventory / information focused, public-market / relationship or OTC, liquidity taker / provider, transparent / secretive, trusting / verification-heavy, straightforward / strategically ambiguous.
+
+Style is not a moral or skill score. High risk appetite is a style; staking nearly all capital on an unverified rumour can additionally be poor position sizing and poor information process.
 
 This permits outcomes such as:
 

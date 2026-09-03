@@ -6,6 +6,13 @@ function goalFor(npcId, item) {
   return (NPC_PROFILES[npcId]?.goals || []).find((goal) => goal.item === item) || null;
 }
 
+function completedWorldGoal(game, npcId, item) {
+  if (npcId === "vale" && item === "Sperm Whale Oil") return game.worldThreads?.valeScreening?.stage === "aftermath";
+  if (npcId === "bar" && item === "Orgeat Bottle") return game.worldThreads?.barRecipe?.stage === "aftermath";
+  if (npcId === "mechanic" && ["Steel Rim", "Handlebar Tape"].includes(item)) return game.worldThreads?.onewheel?.stage === "aftermath";
+  return false;
+}
+
 function interestUtility(profile, item) {
   const type = ITEMS[item]?.type || "";
   return (profile?.interests || []).reduce((best, interest) => {
@@ -31,7 +38,7 @@ export function privateUtility(game, npcId, item) {
   if (!profile) return 0;
 
   const goal = goalFor(npcId, item);
-  let utility = goal ? Number(goal.utility || 0) : interestUtility(profile, item);
+  let utility = goal ? (game.day >= Number(goal.startsDay || 1) && !completedWorldGoal(game, npcId, item) ? Number(goal.utility || 0) : 0) : interestUtility(profile, item);
 
   if (goal && profile.departureDay && goal.urgencyPerDay) {
     const daysLeft = Math.max(0, profile.departureDay - game.day);
@@ -102,11 +109,12 @@ function knownSourcesForItem(game, buyerId, item, likelySources = []) {
   const sources = new Map();
 
   publicSellersOf(game, item).forEach((sellerId) => {
+    if (sellerId === "mechanic" && game.flags.sailorDeparted) return;
     if (sellerId !== buyerId && sellerId !== "player") sources.set(sellerId, "public stock");
   });
 
   const tapeOwner = latestPublicOwner(game, item);
-  if (tapeOwner && tapeOwner !== buyerId && tapeOwner !== "player") {
+  if (tapeOwner && tapeOwner !== buyerId && tapeOwner !== "player" && !(tapeOwner === "mechanic" && game.flags.sailorDeparted)) {
     sources.set(tapeOwner, "public tape");
   }
 
@@ -126,6 +134,7 @@ function knownSourcesForItem(game, buyerId, item, likelySources = []) {
     .forEach(({ sellerId, contact }) => {
       if (sellerId === buyerId || sellerId === "player") return;
       const seller = game.traders[sellerId];
+      if (sellerId === "mechanic" && game.flags.sailorDeparted) return;
       if (seller?.inventory.includes(item)) {
         const basis = contact.familiarity >= 2
           ? `searched a known contact via ${contact.channel || "prior relationship"}`
@@ -175,6 +184,7 @@ export function planNPCMarket(game) {
   const plans = [];
 
   Object.keys(NPC_PROFILES).forEach((buyerId) => {
+    if (buyerId === "mechanic" && game.flags.sailorDeparted) return;
     const buyer = game.traders[buyerId];
     const profile = NPC_PROFILES[buyerId];
     if (!buyer || !profile) return;
@@ -209,9 +219,14 @@ export function visibleMarketBoard(game) {
 export function visibleSellListings(game) {
   const listings = [];
   Object.entries(NPC_PROFILES).forEach(([sellerId, profile]) => {
+    if (sellerId === "mechanic" && game.flags.sailorDeparted) return;
     const seller = game.traders[sellerId];
     if (!seller) return;
-    (profile.publicStock || []).forEach((item) => {
+    const produced = [
+      ...(sellerId === "bar" && seller.inventory.includes("Mai Tai") ? ["Mai Tai"] : []),
+      ...(sellerId === "mechanic" && seller.inventory.includes("Built Onewheel") ? ["Built Onewheel"] : []),
+    ];
+    [...new Set([...(profile.publicStock || []), ...produced])].forEach((item) => {
       if (!seller.inventory.includes(item)) return;
       listings.push({ sellerId, item, ask: sellerAsk(game, sellerId, item), reference: itemValue(item) });
     });

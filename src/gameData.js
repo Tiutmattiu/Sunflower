@@ -6,6 +6,22 @@ export const SUSTENANCE_PER_DAY = 1;
 export const PROXY_FEE = 2;
 export const INFO_BASE_PRICE = 2;
 
+export const PRODUCTION_RECIPES = {
+  maiTai: {
+    producerId: "bar",
+    output: "Mai Tai",
+    inputs: ["Rum Bottle", "Lime Crate", "Orange Curaçao", "Orgeat Bottle"],
+    durableTools: ["Hawthorne Strainer", "30/45 Jigger", "Fine Mesh Strainer", "Long Bar Spoon", "Hand Citrus Press", "Lewis Bag"],
+    productivityTools: ["Hawthorne Strainer", "30/45 Jigger", "Fine Mesh Strainer"],
+  },
+  onewheel: {
+    producerId: "mechanic",
+    output: "Built Onewheel",
+    inputs: ["Steel Rim", "Chain Quick-Link", "Brake Cable", "Handlebar Tape"],
+    durableTools: ["Tiny Torque Wrench"],
+  },
+};
+
 // `value` is a public/reference price for first-pass arithmetic, never intrinsic value.
 // Private utility, urgency, liquidity, provenance, information and relationships move actual willingness to trade.
 export const ITEMS = {
@@ -48,8 +64,6 @@ export const ITEMS = {
   "Numbered Funeral Ticket": { value: 20, icon: "🎫", type: "Collectible / Event-linked / Story" },
   "Taxidermied Moth": { value: 22, icon: "🦋", type: "Collectible / Illiquid / Story" },
   "Unsent Letter": { value: 5, icon: "✉️", type: "Sentimental / Information-bearing / Story" },
-  "Auction Onewheel": { value: 28, icon: "🛞", type: "Vehicle / Auction Lot" },
-
   "Lollipop": { value: 2, icon: "🍭", type: "Treat / Liquid" },
   "Glitter Tape": { value: 4, icon: "✨", type: "Speculative Junk / Cosmetic" },
   "Tool Roll": { value: 10, icon: "🧰", type: "Tool / Repair / Durable" },
@@ -201,12 +215,17 @@ export const NPC_PROFILES = {
       { typeIncludes: "Bicycle", utility: 6 }, { typeIncludes: "Repair", utility: 5 },
       { typeIncludes: "Tool", utility: 4 }, { typeIncludes: "Durable", utility: 3 },
     ],
-    goals: [{ item: "Lime Crate", utility: 16, urgencyPerDay: 2, likelySources: ["bar", "fishmonger", "dog"], reason: "The ship must provision fresh citrus before departure." }],
+    goals: [
+      { item: "Lime Crate", utility: 16, urgencyPerDay: 2, likelySources: ["bar", "fishmonger", "dog"], reason: "The ship must provision fresh citrus before departure." },
+      { item: "Steel Rim", utility: 12, startsDay: 2, likelySources: ["fishmonger", "dog", "clown"], reason: "A working wheel needs a sound rim before the ship leaves." },
+      { item: "Handlebar Tape", utility: 8, startsDay: 2, likelySources: ["clown", "dog"], reason: "The current repair job still needs a safe finished grip." },
+    ],
     talkStages: TALK.mechanic,
     investigationStages: [
       { claimType: "activity", precision: "context", text: "Sailor is unloading only the cargo he intends to sell openly. The rest stays below deck, and departure is getting closer.", confidence: "high" },
       { claimType: "holding-hint", precision: "category", text: "One undeclared cargo lot smells oily and medicinal. Vale's people have already looked toward the ship twice.", confidence: "medium" },
       { claimType: "holding", precision: "exact", item: "Sperm Whale Oil", text: "Sailor has Sperm Whale Oil below deck.", confidence: "high", sellable: true, exclusive: true },
+      { claimType: "repair", precision: "category", text: "The half-built wheel job needs a sound rim, a quick-link, a brake cable and handlebar tape. The tiny torque wrench is a reusable tool, not a part.", confidence: "high" },
     ],
     clue: "The Sailor is leaving. A need that can wait today may become very expensive tomorrow.",
     business: {
@@ -232,8 +251,15 @@ export const NPC_PROFILES = {
     investigationStages: [
       { claimType: "activity", precision: "context", text: "Vale is preparing a private screening and quietly contacting people who deal in obsolete projection equipment and fuel.", confidence: "high" },
       { claimType: "need", precision: "exact", item: "Sperm Whale Oil", text: "Vale's screening specifically needs Sperm Whale Oil.", confidence: "medium" },
+      { claimType: "valuation", precision: "specific", text: "Vale discounts objects with no traceable story and pays up when provenance can be checked.", confidence: "high" },
     ],
     clue: "Vale is manipulative, but settlement reliability is excellent. She is usually happy to let the other person reveal urgency first.",
+    business: {
+      outsideSaleAny: ["Velvet Sleeve", "Film Canister", "Valentino Still", "Hand Mirror", "One White Glove", "Taxidermied Moth"],
+      outsideSaleRate: 1.15,
+      outsideSaleInterval: 3,
+      outsideBuyer: "an outside collector through her private-market network",
+    },
   },
   clown: {
     style: "High-risk speculator", markup: -2, cashPreference: 0.15, informationTempo: 2,

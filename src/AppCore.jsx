@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./index.css";
-import { ITEMS, NPC_PROFILES, PHASE_COPY, SARDINE } from "./gameData";
+import { FORMS, ITEMS, PHASE_COPY, SARDINE } from "./gameData";
 import {
   acceptInboundOffer,
   advancePhase,
+  canAccessVenue,
   createGame,
   currentObligations,
   declineInboundOffer,
@@ -19,16 +20,17 @@ import {
   resolveNoonMarket,
   sellInformation,
   shareInformationAsFavor,
-} from "./livingGame";
-import { sellerAsk, visibleMarketBoard } from "./npcAI";
+} from "./gameEngine";
+import { visibleMarketBoard, visibleSellListings } from "./npcAI";
 
-const SAVE_KEY = "sunflower-living-market-v5";
+const SAVE_KEY = "sunflower-living-market-v6";
+const SAVE_VERSION = 6;
 const PHASES = ["sunrise", "morning", "noon", "afternoon", "sunset"];
 
 function loadGame() {
   try {
     const parsed = JSON.parse(window.localStorage.getItem(SAVE_KEY) || "null");
-    if (parsed?.version === 5 && parsed?.game?.traders?.player) return parsed.game;
+    if (parsed?.version === SAVE_VERSION && parsed?.game?.traders?.player) return parsed.game;
   } catch {
     // Local persistence is convenience only.
   }
@@ -40,21 +42,7 @@ function label(item) {
 }
 
 function publicListings(game) {
-  const rows = [];
-  Object.entries(NPC_PROFILES).forEach(([sellerId, profile]) => {
-    const seller = game.traders[sellerId];
-    if (!seller) return;
-    const dynamic = [
-      ...(profile.publicStock || []),
-      ...(sellerId === "bar" && seller.inventory.includes("Mai Tai") ? ["Mai Tai"] : []),
-      ...(sellerId === "mechanic" && seller.inventory.includes("Built Onewheel") ? ["Built Onewheel"] : []),
-    ];
-    [...new Set(dynamic)].forEach((item) => {
-      if (!seller.inventory.includes(item)) return;
-      rows.push({ sellerId, item, ask: sellerAsk(game, sellerId, item) });
-    });
-  });
-  return rows;
+  return visibleSellListings(game);
 }
 
 function relationshipWord(value) {
@@ -132,7 +120,7 @@ function LearnPanel({ game, selectedId, setSelectedId, onTalk, onInvestigate, on
             return (
               <div className="mini-card" key={note.id}>
                 <div>{note.text}</div>
-                <div className="small muted">{note.precision} · {note.confidence} · {note.freshness} · known by {(note.knownBy || ["player"]).length} actor(s)</div>
+                <div className="small muted">{note.precision} · {note.confidence} · {note.freshness} · {note.personallyVerified ? "personally verified" : `source: ${note.source}`} · {note.resaleState || "private"} · known by {(note.knownBy || ["player"]).length} actor(s)</div>
                 {buyers.map((buyerId) => (
                   <div className="inline-actions" key={`${note.id}-${buyerId}`}>
                     <button className="btn" disabled={!active} onClick={() => onSellInfo(note.id, buyerId)}>Sell to {game.traders[buyerId].name} · {informationPrice(game, note, buyerId)}🥫</button>
@@ -251,6 +239,18 @@ function NoonPanel({ game }) {
   );
 }
 
+function TapeArchive({ game }) {
+  if (!game.history.length) return null;
+  return (
+    <details className="advanced-details">
+      <summary>Public tape archive · {game.history.length}</summary>
+      <div className="log-stack">{[...game.history].reverse().slice(0, 18).map((trade) => (
+        <div className="log-line" key={trade.id}>Day {trade.day}: {game.traders[trade.from]?.name} bought {label(trade.item)} from {game.traders[trade.to]?.name} for {trade.sardines}🥫{trade.paymentItem ? ` + ${label(trade.paymentItem)}` : ""}.</div>
+      ))}</div>
+    </details>
+  );
+}
+
 function EventPanel({ game, setGame }) {
   const [bid, setBid] = useState(52);
   if (!game.pendingEvents?.length) return null;
@@ -274,7 +274,7 @@ export default function AppCore() {
   const [selectedId, setSelectedId] = useState("dog");
 
   useEffect(() => {
-    try { window.localStorage.setItem(SAVE_KEY, JSON.stringify({ version: 5, game })); } catch { /* ignore */ }
+    try { window.localStorage.setItem(SAVE_KEY, JSON.stringify({ version: SAVE_VERSION, game })); } catch { /* ignore */ }
   }, [game]);
 
   const orders = game.playerOrders || resetOrders();
@@ -305,10 +305,14 @@ export default function AppCore() {
     <main className="app-shell">
       <div className="container">
         <header className="hero"><div><div className="eyebrow">Sunflower · code-first living slice</div><h1>Day {game.day}</h1><p>Objective: <strong>{game.objective}</strong></p></div><button className="btn ghost" onClick={restart}>New Game</button></header>
-        <div className="sticky-status"><span>{PHASE_COPY[phase].title}</span><span>{SARDINE} {player.sardines}</span><span>{game.actionsRemaining} time actions</span></div>
+        <div className="sticky-status"><span>{PHASE_COPY[phase].title}</span><span>{SARDINE} {player.sardines}</span><span>{game.actionsRemaining} time actions</span>{game.playerState.form !== "human" && <span>{FORMS[game.playerState.form].icon} {FORMS[game.playerState.form].label}</span>}</div>
         <div className="phase-strip">{PHASES.map((id) => <div className={`phase-node ${id === phase ? "active" : ""}`} key={id}><span>{PHASE_COPY[id].icon}</span><small>{PHASE_COPY[id].title}</small></div>)}</div>
 
         <section className="player-bar"><div className="player-balance"><strong>{player.sardines}🥫</strong><span>cash</span></div><div className="chips">{player.inventory.map((item, index) => <span className="chip" key={`${item}-${index}`}>{label(item)}</span>)}</div></section>
+
+        {game.flags.sunflowerAcquired && <section className="card flower-reveal"><div className="section-title">🌻 You got it.</div><p><strong>Nothing happens.</strong></p><p>The sunflower remains on your side of the desk. The market and your life continue.</p><p className="muted">Objective: {game.objective}</p></section>}
+
+        {game.playerState.form !== "human" && <section className="card access-sheet"><div className="section-title">The market recognises you differently</div><p>{FORMS[game.playerState.form].icon} {FORMS[game.playerState.form].label} · legal identity {game.playerState.legalIdentity.status}</p><p className="muted">Formal market: {canAccessVenue(game, "formalMarket") ? "access available through a proxy" : "direct access unavailable"}. Your memory continues, but your former estate is not automatically yours.</p></section>}
 
         <InboundOffers game={game} onAccept={(id) => setGame((current) => acceptInboundOffer(current, id))} onDecline={(id) => setGame((current) => declineInboundOffer(current, id))} />
         <EventPanel game={game} setGame={setGame} />
@@ -330,10 +334,11 @@ export default function AppCore() {
 
         {phase === "morning" && mode === "trade" && <TradePanel game={game} orders={orders} setOrders={setOrders} />}
         {phase === "noon" && <NoonPanel game={game} />}
+        {phase !== "noon" && <TapeArchive game={game} />}
         {phase === "sunset" && <section className="card"><div className="section-title">Sunset settlement</div><p>Closing the day settles food, promises, perishability and ordinary business activity.</p></section>}
 
-        {!!game.learningNotes?.length && <details className="advanced-details"><summary>Things the market has taught you · {game.learningNotes.length}</summary>{game.learningNotes.map((note) => <div className="mini-card" key={note.id}><strong>{note.title}</strong><div>{note.text}</div><small>Day {note.day}</small></div>)}</details>}
-        <details className="advanced-details"><summary>Developer details</summary><div>Inbound offers: {(game.inboundOffers || []).length}</div><div>Information objects: {(game.information || []).length}</div><div>Public trades: {game.history.length}</div></details>
+        {!!game.learningNotes?.length && <details className="advanced-details"><summary>Notebook · {game.learningNotes.length} discovered concept(s)</summary>{game.learningNotes.map((note) => <div className="mini-card" key={note.id}><strong>? {note.title}</strong><div>{note.text}</div><small>Discovered on Day {note.day}</small></div>)}</details>}
+        <details className="advanced-details"><summary>Harbour notes</summary><div className="log-stack">{game.log.slice(0, 10).map((line, index) => <div className="log-line" key={`${line}-${index}`}>{line}</div>)}</div></details>
 
         {!game.pendingEvents?.length && <div className="bottom-action"><button className="btn gold primary-action" onClick={primary}>{phase === "sunrise" ? "Begin morning" : phase === "morning" ? "Lock orders & open Noon" : phase === "noon" && !game.marketResolved ? "Settle Noon" : phase === "noon" ? "Leave Noon" : phase === "afternoon" ? "Go to sunset" : "Close the day"}</button></div>}
       </div>
