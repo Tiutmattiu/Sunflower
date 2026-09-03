@@ -5,6 +5,8 @@ import {
   MAX_DAYS,
   MORNING_ACTIONS,
   NPC_PROFILES,
+  PLAYER_CONTEXT,
+  VENUES,
 } from "./gameData";
 import { planNPCMarket, sellerAsk } from "./npcAI";
 
@@ -19,12 +21,49 @@ export const resetOrders = () => [emptyOrder(), emptyOrder(), emptyOrder()];
 
 function emptyMemory() {
   return Object.fromEntries(
-    Object.keys(NPC_PROFILES).map((id) => [id, { observedDemand: {}, observations: [] }])
+    Object.keys(NPC_PROFILES).map((id) => [id, {
+      observedDemand: {},
+      observations: [],
+      knownHoldings: {},
+    }])
   );
 }
 
 function relationshipMap() {
   return Object.fromEntries(Object.keys(NPC_PROFILES).map((id) => [id, 0]));
+}
+
+function informationKey(info) {
+  return [info.claimType, info.subjectId || "", info.item || "", info.text || ""].join("|");
+}
+
+function addInformation(game, payload) {
+  const candidate = {
+    id: `info-${game.information.length + 1}`,
+    claimType: payload.claimType,
+    subjectId: payload.subjectId || null,
+    item: payload.item || null,
+    text: payload.text,
+    source: payload.source || "unknown",
+    confidence: payload.confidence || "medium",
+    observedDay: game.day,
+    freshness: payload.freshness || "current",
+    exclusive: payload.exclusive ?? false,
+    sellable: payload.sellable ?? false,
+    soldTo: [],
+  };
+
+  const key = informationKey(candidate);
+  const existing = game.information.find((info) => informationKey(info) === key);
+  if (existing) {
+    existing.observedDay = game.day;
+    existing.freshness = candidate.freshness;
+    existing.confidence = candidate.confidence;
+    return existing;
+  }
+
+  game.information.push(candidate);
+  return candidate;
 }
 
 export function createGame() {
@@ -34,6 +73,15 @@ export function createGame() {
     phase: "sunrise",
     actionsRemaining: 0,
     traders: clone(INITIAL_TRADERS),
+    playerState: {
+      life: 1,
+      form: PLAYER_CONTEXT.startingForm,
+      legalIdentity: {
+        status: PLAYER_CONTEXT.startingLegalIdentity,
+        lifeId: "life-1",
+      },
+      proxyAccess: [],
+    },
     selected: "player",
     playerOrders: resetOrders(),
     marketPlan: [],
@@ -41,7 +89,8 @@ export function createGame() {
     marketOutcome: [],
     rejected: [],
     history: [],
-    intel: {},
+    information: [],
+    intel: {}, // compatibility layer while UI migrates to information objects
     relationships: relationshipMap(),
     npcMemory: emptyMemory(),
     heat: {},
@@ -68,6 +117,7 @@ export function createGame() {
       totalProfit: 0,
       tradeCount: 0,
       cheats: 0,
+      informationSales: 0,
     },
     log: [
       "Day 1. The sunflower is not for sale.",
@@ -76,6 +126,92 @@ export function createGame() {
     ],
   };
   game.marketPlan = planNPCMarket(game);
+  return game;
+}
+
+export function canAccessVenue(game, venueId) {
+  const venue = VENUES[venueId];
+  if (!venue) return false;
+  if (game.playerState.proxyAccess.includes(venueId)) return true;
+
+  const formAllowed = venue.allowedForms.includes(game.playerState.form);
+  if (!formAllowed) return false;
+  if (!venue.requiresLegalIdentity) return true;
+  return game.playerState.legalIdentity.status === "recognized";
+}
+
+function latestPublicOwners(game) {
+  const owners = {};
+  game.history.forEach((trade) => {
+    owners[trade.item] = trade.from;
+  });
+  return owners;
+}
+
+export function knownItemsForTrader(game, traderId) {
+  const trader = game.traders[traderId];
+  if (!trader) return [];
+  if (traderId === "player") return [...trader.inventory];
+
+  const known = [];
+  (NPC_PROFILES[traderId]?.publicStock || []).forEach((item) => {
+    if (trader.inventory.includes(item)) known.push(item);
+  });
+
+  const publicOwners = latestPublicOwners(game);
+  Object.entries(publicOwners).forEach(([item, ownerId]) => {
+    if (ownerId === traderId) known.push(item);
+  });
+
+  game.information
+    .filter((info) => info.claimType === "holding" && info.subjectId === traderId && info.item)
+    .forEach((info) => known.push(info.item));
+
+  return unique(known);
+}
+
+export function informationBuyers(game, info) {
+  if (!info?.sellable || info.claimType !== "holding" || !info.item) return [];
+  return Object.entries(NPC_PROFILES)
+    .filter(([buyerId, profile]) => {
+      if (buyerId === info.subjectId) return false;
+      if (info.soldTo.includes(buyerId)) return false;
+      if (game.traders[buyerId]?.inventory.includes(info.item)) return false;
+      return (profile.goals || []).some((goal) => goal.item === info.item);
+    })
+    .map(([buyerId]) => buyerId);
+}
+
+export function sellInformation(current, infoId, buyerId) {
+  const game = clone(current);
+  if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || game.ended) return game;
+
+  const info = game.information.find((entry) => entry.id === infoId);
+  if (!info || !informationBuyers(game, info).includes(buyerId)) return game;
+
+  const buyer = game.traders[buyerId];
+  const player = game.traders.player;
+  const price = 1; // First-pass information price; negotiation comes later.
+  if (!buyer || buyer.sardines < price) return game;
+
+  buyer.sardines -= price;
+  player.sardines += price;
+  info.soldTo.push(buyerId);
+  info.exclusive = false;
+  game.stats.informationSales += 1;
+  game.actionsRemaining -= 1;
+
+  game.npcMemory[buyerId].knownHoldings[info.item] = {
+    holderId: info.subjectId,
+    learnedDay: game.day,
+    source: `bought from player (${info.confidence} confidence)`,
+  };
+
+  game.log.unshift(`${buyer.name} pays 1🥫 for your lead: ${info.text}`);
+
+  // Morning information can change the buyer's actual noon positioning. The plan remains deterministic;
+  // it changes because the information set changed, not because Resolve rerolled it.
+  if (game.phase === "morning") game.marketPlan = planNPCMarket(game);
   return game;
 }
 
@@ -212,6 +348,19 @@ function executePlayerOrders(game) {
   game.rejected = rejected;
 }
 
+function rejectPlayerOrdersForAccess(game) {
+  game.rejected = game.playerOrders
+    .filter((order) => order.to && order.wantItem)
+    .map((order) => ({
+      from: "player",
+      to: order.to,
+      wantItem: order.wantItem,
+      offerItem: order.offerItem || null,
+      sardines: Number(order.sardines || 0),
+      reason: "Your current form / legal identity cannot settle directly in the formal market without a proxy.",
+    }));
+}
+
 function executeCommittedNPCPlan(game) {
   game.marketPlan.forEach((plan) => {
     const buyer = game.traders[plan.from];
@@ -246,7 +395,8 @@ export function resolveNoonMarket(current) {
 
   game.marketOutcome = [];
   game.rejected = [];
-  executePlayerOrders(game);
+  if (canAccessVenue(game, "formalMarket")) executePlayerOrders(game);
+  else rejectPlayerOrdersForAccess(game);
   executeCommittedNPCPlan(game);
   updateHeatFromHistory(game);
   game.marketResolved = true;
@@ -287,13 +437,11 @@ function settleBusinesses(game) {
   const dog = game.traders.dog;
   const fishmonger = game.traders.fishmonger;
 
-  // Consumption creates a real sink: Dog buys food because the cat colony actually uses it.
   if (dog.inventory.includes("Fresh Mackerel")) {
     dog.inventory = dog.inventory.filter((item) => item !== "Fresh Mackerel");
     game.log.unshift("Dock Dog's fresh fish disappears into the cat colony by sunset.");
   }
 
-  // Production / scavenging create bounded recurring sources so the market can keep moving.
   if (!fishmonger.inventory.includes("Fresh Mackerel")) {
     fishmonger.inventory.push("Fresh Mackerel");
     game.log.unshift("Fishmonger lands one fresh market lot for tomorrow.");
@@ -340,7 +488,7 @@ export function advancePhase(current) {
     if (game.day >= game.maxDays) {
       game.ended = true;
       game.winner = false;
-      game.finalText = "The final sunset passes. You never acquired the sunflower.";
+      game.finalText = "The prototype's current life window closes here. The final life / rebirth pacing is not locked yet.";
       game.style = classify(game);
       return game;
     }
@@ -358,6 +506,36 @@ export function advancePhase(current) {
   return game;
 }
 
+function hiddenItemScore(item, targetId) {
+  const outsideDemand = Object.entries(NPC_PROFILES).reduce((sum, [buyerId, profile]) => {
+    if (buyerId === targetId) return sum;
+    return sum + ((profile.goals || []).some((goal) => goal.item === item) ? 10 : 0);
+  }, 0);
+  return outsideDemand + valueOf(item);
+}
+
+function revealHolding(game, targetId) {
+  const target = game.traders[targetId];
+  const alreadyKnown = knownItemsForTrader(game, targetId);
+  const hidden = target.inventory
+    .filter((item) => !alreadyKnown.includes(item))
+    .sort((a, b) => hiddenItemScore(b, targetId) - hiddenItemScore(a, targetId));
+  const item = hidden[0];
+  if (!item) return null;
+
+  return addInformation(game, {
+    claimType: "holding",
+    subjectId: targetId,
+    item,
+    text: `${target.name} has ${labelShort(item)}.`,
+    source: "personal investigation",
+    confidence: "high",
+    freshness: "current",
+    exclusive: true,
+    sellable: true,
+  });
+}
+
 export function performFreeAction(current, action, targetId) {
   const game = clone(current);
   if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || game.ended) return game;
@@ -370,16 +548,36 @@ export function performFreeAction(current, action, targetId) {
     game.log.unshift(`${target.name}: relationship contact +1. Current familiarity ${relationship}.`);
     if (relationship >= 2 && !game.intel[`${targetId}:style`]) {
       game.intel[`${targetId}:style`] = NPC_PROFILES[targetId].style;
+      addInformation(game, {
+        claimType: "style",
+        subjectId: targetId,
+        text: `${target.name} trades like a ${NPC_PROFILES[targetId].style.toLowerCase()}.`,
+        source: "relationship",
+        confidence: "medium",
+        sellable: false,
+      });
     }
   }
 
   if (action === "investigate") {
-    const profile = NPC_PROFILES[targetId];
-    const primary = profile.goals?.[0];
-    game.intel[`${targetId}:clue`] = primary
-      ? `${profile.clue} Current pressure: ${primary.reason}`
-      : profile.clue;
-    game.log.unshift(`You spend time investigating ${target.name}. Something useful becomes legible.`);
+    const holding = revealHolding(game, targetId);
+    if (holding) {
+      game.log.unshift(`You investigate ${target.name} and confirm a holding: ${labelShort(holding.item)}.`);
+    } else {
+      const profile = NPC_PROFILES[targetId];
+      const primary = profile.goals?.[0];
+      const clue = primary ? `${profile.clue} Current pressure: ${primary.reason}` : profile.clue;
+      game.intel[`${targetId}:clue`] = clue;
+      addInformation(game, {
+        claimType: "pressure",
+        subjectId: targetId,
+        text: clue,
+        source: "personal investigation",
+        confidence: "medium",
+        sellable: false,
+      });
+      game.log.unshift(`You spend time investigating ${target.name}. Their pressure becomes more legible.`);
+    }
   }
 
   game.actionsRemaining -= 1;
@@ -393,6 +591,7 @@ export function buildEvents(game) {
   const soupFish = ["Fresh Mackerel", "Salted Cod"];
 
   if (
+    canAccessVenue(game, "bar") &&
     !game.flags.cheated &&
     game.flags.orgeatDelivered &&
     player.inventory.includes("Mai Tai") &&
@@ -407,6 +606,7 @@ export function buildEvents(game) {
   }
 
   if (
+    canAccessVenue(game, "valeGallery") &&
     game.flags.oilDeliveredToVale &&
     player.inventory.includes("Blue Glass Marble") &&
     netWorth(player) >= (game.flags.cheated ? 22 : 18)
@@ -489,7 +689,8 @@ export function classify(game) {
     "The Spread Reader": stats.profitableFlips * 4 + Math.max(0, stats.totalProfit),
     "The Whale": stats.overpays * 4,
     "The Defector": game.flags.cheated ? 8 : 0,
-    "The Patient Observer": Object.keys(game.intel).length * 2,
+    "The Information Broker": stats.informationSales * 4,
+    "The Patient Observer": game.information.length * 2,
   };
   const [name] = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
   const descriptions = {
@@ -497,6 +698,7 @@ export function classify(game) {
     "The Spread Reader": "You repeatedly found value in conversion and price differences.",
     "The Whale": "You forced outcomes by paying heavily.",
     "The Defector": "You used misrepresentation as a market tool.",
+    "The Information Broker": "You turned private knowledge into a tradable asset.",
     "The Patient Observer": "You spent meaningful time learning the people around the market.",
   };
   return { name, description: descriptions[name] };
