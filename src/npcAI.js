@@ -1,4 +1,4 @@
-import { ITEMS, NPC_PROFILES, SOCIAL_GRAPH } from "./gameData.js";
+import { INITIAL_TRADERS, ITEMS, NPC_PROFILES, SOCIAL_GRAPH } from "./gameData.js";
 
 const itemValue = (item) => Number.isFinite(ITEMS[item]?.value) ? ITEMS[item].value : 0;
 
@@ -16,6 +16,14 @@ function interestUtility(profile, item) {
 
 function contactBetween(fromId, toId) {
   return SOCIAL_GRAPH[fromId]?.[toId] || { familiarity: 0, trust: 0, channel: null };
+}
+
+function workingCapitalReserve(buyerId, profile, goalPriority) {
+  const startingCash = Number(INITIAL_TRADERS[buyerId]?.sardines || 0);
+  const cashPreference = Math.max(0, Math.min(1, Number(profile?.cashPreference ?? 0.5)));
+  const ordinaryReserveRatio = 0.25 + cashPreference * 0.25;
+  const reserveRatio = goalPriority ? ordinaryReserveRatio * 0.5 : ordinaryReserveRatio;
+  return Math.ceil(startingCash * reserveRatio);
 }
 
 export function privateUtility(game, npcId, item) {
@@ -126,10 +134,14 @@ function knownSourcesForItem(game, buyerId, item, likelySources = []) {
 
 function pushCandidate(game, candidates, buyerId, item, likelySources, reason, goalPriority = false) {
   const buyer = game.traders[buyerId];
-  if (!buyer || buyer.inventory.includes(item)) return;
+  const profile = NPC_PROFILES[buyerId];
+  if (!buyer || !profile || buyer.inventory.includes(item)) return;
 
   const utility = privateUtility(game, buyerId, item);
   if (utility <= 0) return;
+
+  const reserve = workingCapitalReserve(buyerId, profile, goalPriority);
+  const spendableCash = Math.max(0, buyer.sardines - reserve);
 
   knownSourcesForItem(game, buyerId, item, likelySources).forEach(({ sellerId, basis }) => {
     const seller = game.traders[sellerId];
@@ -138,7 +150,7 @@ function pushCandidate(game, candidates, buyerId, item, likelySources, reason, g
     const ask = sellerAsk(game, sellerId, item);
     const max = buyerMax(game, buyerId, item);
     const surplus = max - ask;
-    if (ask <= buyer.sardines && surplus >= 0) {
+    if (ask <= spendableCash && surplus >= 0) {
       candidates.push({
         from: buyerId,
         to: sellerId,
