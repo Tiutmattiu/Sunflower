@@ -3,28 +3,37 @@ import "./index.css";
 import { FORMS, ITEMS, PHASE_COPY, SARDINE } from "./gameData";
 import {
   acceptInboundOffer,
+  acceptFutureDelivery,
   advancePhase,
   canAccessVenue,
   createGame,
   currentObligations,
   declineInboundOffer,
+  duePrivateMatters,
+  fulfillFutureDelivery,
+  futureDeliveryAvailable,
   giveItem,
   informationBuyers,
   informationPrice,
   knownItemsForTrader,
   performFreeAction,
   repayObligation,
+  requestRelationshipLoan,
+  requestSecuredLoan,
   requestMarketProxy,
   resetOrders,
   resolveEvent,
+  resolveDuePrivateMatter,
   resolveNoonMarket,
   sellInformation,
+  sellInformationExclusive,
+  securedCollateralItems,
   shareInformationAsFavor,
 } from "./gameEngine";
 import { visibleMarketBoard, visibleSellListings } from "./npcAI";
 
-const SAVE_KEY = "sunflower-living-market-v6";
-const SAVE_VERSION = 6;
+const SAVE_KEY = "sunflower-living-market-v7";
+const SAVE_VERSION = 7;
 const PHASES = ["sunrise", "morning", "noon", "afternoon", "sunset"];
 
 function loadGame() {
@@ -75,36 +84,43 @@ function InboundOffers({ game, onAccept, onDecline }) {
   );
 }
 
-function LearnPanel({ game, selectedId, setSelectedId, onTalk, onInvestigate, onGift, onSellInfo, onShareInfo, onRepay, onProxy }) {
+function LearnPanel({ game, selectedId, setSelectedId, onTalk, onInvestigate, onGift, onSellInfo, onSellExclusive, onShareInfo, onRepay, onProxy, onFuture, onFulfillFuture, onRelationshipLoan, onSecuredLoan }) {
   const people = Object.values(game.traders).filter((trader) => trader.id !== "player");
   const target = game.traders[selectedId] || people[0];
   const active = ["morning", "afternoon"].includes(game.phase) && game.actionsRemaining > 0;
   const info = [...(game.information || [])].reverse();
-  const obligations = currentObligations(game);
+  const obligations = currentObligations(game).filter((entry) => entry.creditorId === target.id);
+  const knownFacts = info.filter((note) => note.subjectId === target.id);
+  const collateral = target.id === "vale" ? securedCollateralItems(game) : [];
 
   return (
-    <section className="play-flow">
-      <section className="card">
-        <div className="section-title">Learn</div>
-        <p className="small muted"><strong>Talk</strong> changes the relationship. <strong>Investigate</strong> spends the same scarce time on market facts instead.</p>
-        <select value={target.id} onChange={(event) => setSelectedId(event.target.value)}>
-          {people.map((person) => <option key={person.id} value={person.id}>{person.name}</option>)}
-        </select>
-        <p><strong>{target.name}</strong> · {relationshipWord(game.relationships[target.id] || 0)}</p>
-        <p className="small muted">You can currently confirm: {knownItemsForTrader(game, target.id).map(label).join(", ") || "nothing specific"}.</p>
-        <div className="inline-actions">
+    <section className="focus-desk">
+      <div className="avatar-row" role="list" aria-label="People in the harbour">
+        {people.map((person) => <button type="button" role="listitem" className={`avatar ${person.id === target.id ? "selected" : ""}`} key={person.id} onClick={() => setSelectedId(person.id)} aria-pressed={person.id === target.id}>
+          <span className="avatar-icon" aria-hidden="true">{person.icon}</span><span className="avatar-name">{person.name}</span>
+        </button>)}
+      </div>
+      <section className="card detail-card" data-portrait-id={target.id}>
+        <div className="detail-head"><div className="big-icon" aria-hidden="true">{target.icon}</div><div className="detail-copy"><h2>{target.name}</h2><div>{target.role}</div><span className="tag">{relationshipWord(game.relationships[target.id] || 0)}</span></div></div>
+        <p className="muted">Known holdings: {knownItemsForTrader(game, target.id).map(label).join(", ") || "nothing currently justified"}.</p>
+        {!!knownFacts.length && <div className="stack">{knownFacts.map((note) => <div className="intel-note" key={note.id}>{note.text}<br /><strong>Source: {note.personallyVerified ? "personally verified" : note.source}</strong></div>)}</div>}
+        <div className="verb-explainer"><div><strong>Talk</strong><span>Spend time on this person. Only a genuinely new stage can deepen the relationship, at most once per day.</span></div><div><strong>Investigate</strong><span>Spend time on market facts and record where the claim came from.</span></div></div>
+        <div className="action-grid">
           <button className="btn" disabled={!active} onClick={() => onTalk(target.id)}>Talk</button>
           <button className="btn" disabled={!active} onClick={() => onInvestigate(target.id)}>Investigate</button>
           {game.playerState.form === "animal" && target.id === "bar" && (game.relationships.bar || 0) >= 2 && (
             <button className="btn" disabled={!active} onClick={() => onProxy(target.id)}>Ask Apprentice to proxy formal market</button>
           )}
+          {target.id === "mechanic" && futureDeliveryAvailable(game) && <button className="btn gold" onClick={onFuture}>Promise one Lime Crate</button>}
+          {target.id === "bar" && (game.relationships.bar || 0) >= 2 && <button className="btn" disabled={!active || obligations.some((entry) => entry.kind === "relationship-loan")} onClick={onRelationshipLoan}>Ask for a short loan</button>}
+          {collateral.map((item) => <button className="btn" disabled={!active} key={item} onClick={() => onSecuredLoan(item)}>Pledge {label(item)}</button>)}
         </div>
-        {game.lastInteraction?.targetId === target.id && <div className="intel-note">{game.lastInteraction.text}{game.lastInteraction.note ? ` — ${game.lastInteraction.note}` : ""}</div>}
+        {game.lastInteraction?.targetId === target.id && <div className={`mini-card interaction-result ${game.lastInteraction.action === "talk" ? "conversation-result" : "investigation-result"}`}><p>{game.lastInteraction.text}{game.lastInteraction.note ? ` — ${game.lastInteraction.note}` : ""}</p></div>}
       </section>
 
-      <section className="card">
+      <section className="card obligation-sheet">
         <div className="section-title">Give something instead of selling it</div>
-        <p className="small muted">A gift consumes a time action and turns a good into relationship capital. It is not a market settlement.</p>
+        <p className="muted">A gift consumes a time action and turns a good into relationship capital. It is not a market settlement.</p>
         <div className="chips">
           {game.traders.player.inventory.map((item, index) => (
             <button className="btn ghost" disabled={!active} key={`${item}-${index}`} onClick={() => onGift(target.id, item)}>Give {label(item)}</button>
@@ -112,19 +128,21 @@ function LearnPanel({ game, selectedId, setSelectedId, onTalk, onInvestigate, on
         </div>
       </section>
 
-      {!!info.length && <section className="card">
-        <div className="section-title">Your information</div>
+      {!!info.length && <section className="card note-card">
+        <div className="section-title">Notebook leads</div>
         <div className="stack">
           {info.map((note) => {
             const buyers = informationBuyers(game, note).filter((id) => !(note.knownBy || []).includes(id));
+            const covenant = currentObligations(game).find((entry) => entry.kind === "information-exclusivity" && entry.infoId === note.id);
             return (
               <div className="mini-card" key={note.id}>
                 <div>{note.text}</div>
-                <div className="small muted">{note.precision} · {note.confidence} · {note.freshness} · {note.personallyVerified ? "personally verified" : `source: ${note.source}`} · {note.resaleState || "private"} · known by {(note.knownBy || ["player"]).length} actor(s)</div>
+                <div className="muted">Source: {note.personallyVerified ? "personally verified" : note.source} · {note.precision} · {note.confidence} · {note.freshness}</div>
                 {buyers.map((buyerId) => (
                   <div className="inline-actions" key={`${note.id}-${buyerId}`}>
-                    <button className="btn" disabled={!active} onClick={() => onSellInfo(note.id, buyerId)}>Sell to {game.traders[buyerId].name} · {informationPrice(game, note, buyerId)}🥫</button>
-                    <button className="btn ghost" disabled={!active} onClick={() => onShareInfo(note.id, buyerId)}>Tell as a favour</button>
+                    <button className="btn" disabled={!active} onClick={() => onSellInfo(note.id, buyerId)}>{covenant && covenant.creditorId !== buyerId ? "Break exclusivity — sell" : "Sell"} to {game.traders[buyerId].name} · {informationPrice(game, note, buyerId)}🥫</button>
+                    {(note.knownBy || []).length === 1 && <button className="btn" disabled={!active || game.traders[buyerId].sardines < informationPrice(game, note, buyerId) + 2} onClick={() => onSellExclusive(note.id, buyerId)}>Exclusive · {informationPrice(game, note, buyerId) + 2}🥫</button>}
+                    <button className="btn ghost" disabled={!active} onClick={() => onShareInfo(note.id, buyerId)}>{covenant && covenant.creditorId !== buyerId ? "Break exclusivity — tell" : "Tell as a favour"}</button>
                   </div>
                 ))}
               </div>
@@ -133,12 +151,12 @@ function LearnPanel({ game, selectedId, setSelectedId, onTalk, onInvestigate, on
         </div>
       </section>}
 
-      {!!obligations.length && <section className="card">
-        <div className="section-title">Open promises</div>
+      {!!obligations.length && <section className="card obligation-sheet">
+        <div className="section-title">Private matters with {target.name}</div>
         {obligations.map((obligation) => (
           <div className="mini-card" key={obligation.id}>
-            {obligation.amount}🥫 owed to {game.traders[obligation.creditorId]?.name || obligation.creditorId} · due Day {obligation.dueDay}
-            <button className="btn" disabled={!active || game.traders.player.sardines < obligation.amount} onClick={() => onRepay(obligation.id)}>Repay</button>
+            <strong>{obligation.note}</strong><div>Due Day {obligation.dueDay}{obligation.amount ? ` · ${obligation.amount}🥫` : ""}</div>
+            {obligation.kind === "future-delivery" ? <button className="btn" disabled={!active || !game.traders.player.inventory.includes(obligation.item)} onClick={() => onFulfillFuture(obligation.id)}>Deliver Lime now</button> : obligation.kind !== "information-exclusivity" && <button className="btn" disabled={!active || game.traders.player.sardines < obligation.amount} onClick={() => onRepay(obligation.id)}>Repay</button>}
           </div>
         ))}
       </section>}
@@ -155,7 +173,7 @@ function TradePanel({ game, orders, setOrders }) {
   }
   return (
     <section className="play-flow">
-      <section className="card">
+      <section className="card market-card">
         <div className="section-title">Public stalls</div>
         <p className="small muted">These are visible offers. Hidden stock is not shown merely because the engine stores it.</p>
         <div className="stack">
@@ -172,7 +190,7 @@ function TradePanel({ game, orders, setOrders }) {
         </div>
       </section>
 
-      <section className="card">
+      <section className="card order-card">
         <div className="section-title">Your Noon order sheet</div>
         <p className="small muted"><strong>Writing is not trading.</strong> These become binding only when Morning closes.</p>
         {orders.map((order, index) => {
@@ -231,7 +249,7 @@ function NoonPanel({ game }) {
         {game.rejected.map((order, index) => <div className="mini-card" key={`r-${index}`}><strong>Did not fill:</strong> {label(order.wantItem)} · {order.reason}</div>)}
         {!bought.length && !sold.length && !game.rejected.length && <p>Nothing on your side settled.</p>}
       </section>
-      <details className="advanced-details" open>
+      <details className="tape-drawer" open>
         <summary>Public tape · {game.history.filter((trade) => trade.day === game.day).length}</summary>
         {game.history.filter((trade) => trade.day === game.day).map((trade) => <div key={trade.id}>{game.traders[trade.from]?.name} bought {label(trade.item)} from {game.traders[trade.to]?.name} for {trade.sardines}🥫.</div>)}
       </details>
@@ -242,13 +260,34 @@ function NoonPanel({ game }) {
 function TapeArchive({ game }) {
   if (!game.history.length) return null;
   return (
-    <details className="advanced-details">
+    <details className="tape-drawer">
       <summary>Public tape archive · {game.history.length}</summary>
       <div className="log-stack">{[...game.history].reverse().slice(0, 18).map((trade) => (
         <div className="log-line" key={trade.id}>Day {trade.day}: {game.traders[trade.from]?.name} bought {label(trade.item)} from {game.traders[trade.to]?.name} for {trade.sardines}🥫{trade.paymentItem ? ` + ${label(trade.paymentItem)}` : ""}.</div>
       ))}</div>
     </details>
   );
+}
+
+function CurrentState({ game }) {
+  const due = duePrivateMatters(game).length;
+  const copy = {
+    sunrise: "The harbour is waking. Begin Morning to receive 2 scarce time actions.",
+    morning: `${game.actionsRemaining} actions left. Talk, investigate, or prepare Noon orders. Closing Morning locks written orders.`,
+    noon: game.marketResolved ? "Settlement happened. The Public Tape shows what actually traded; leave Noon for 2 Afternoon actions." : "Orders are locked. Settle Noon once to move goods and cash.",
+    afternoon: `${game.actionsRemaining} actions left. Read the Public Tape, then talk, investigate, trade privately, or arrange finance.`,
+    sunset: due ? `${due} due private matter${due === 1 ? "" : "s"} must be decided before the day can close.` : "Closing the day settles food, ordinary obligations, perishability, and business activity.",
+  }[game.phase];
+  return <section className="now-card"><strong>{PHASE_COPY[game.phase].title.toUpperCase()}</strong><span>{copy}</span></section>;
+}
+
+function DueMatters({ game, onResolve }) {
+  const due = duePrivateMatters(game);
+  if (!due.length) return null;
+  return <section className="card obligation-sheet"><div className="section-title">Due private matters</div>{due.map((matter) => <div className="mini-card" key={matter.id}>
+    <strong>{matter.note}</strong><p>{matter.kind === "future-delivery" ? "The Sailor needs the promised Lime before the day closes." : `Repay ${matter.amount}🥫 or let Vale keep the ${matter.collateral}.`}</p>
+    <div className="inline-actions">{matter.kind === "future-delivery" ? <><button className="btn gold" disabled={!game.traders.player.inventory.includes(matter.item)} onClick={() => onResolve(matter.id, "deliver")}>Deliver as promised</button><button className="btn" onClick={() => onResolve(matter.id, "default")}>Do not deliver</button></> : <><button className="btn gold" disabled={game.traders.player.sardines < matter.amount} onClick={() => onResolve(matter.id, "repay")}>Repay now</button><button className="btn" onClick={() => onResolve(matter.id, "seize")}>Let Vale take collateral</button></>}</div>
+  </div>)}</section>;
 }
 
 function EventPanel({ game, setGame }) {
@@ -309,6 +348,8 @@ export default function AppCore() {
         <header className="hero"><div><div className="eyebrow">Sunflower · code-first living slice</div><h1>Day {game.day}</h1><p>Objective: <strong>{game.objective}</strong></p></div><button className="btn ghost" onClick={restart}>New Game</button></header>
         <div className="sticky-status"><span>{PHASE_COPY[phase].title}</span><span>{SARDINE} {player.sardines}</span><span>{game.actionsRemaining} time actions</span>{game.playerState.form !== "human" && <span>{FORMS[game.playerState.form].icon} {FORMS[game.playerState.form].label}</span>}</div>
         <div className="phase-strip">{PHASES.map((id) => <div className={`phase-node ${id === phase ? "active" : ""}`} key={id}><span>{PHASE_COPY[id].icon}</span><small>{PHASE_COPY[id].title}</small></div>)}</div>
+        <CurrentState game={game} />
+        <details className="notebook-drawer"><summary>HOW THIS WORKS</summary><div className="notebook-stack">Sunrise → Morning → Noon → Afternoon → Sunset. Morning and Afternoon give scarce time actions. Talk spends time on a person; Investigate spends it on facts. Written Morning orders are not trades until Noon settles once. After Noon, the Public Tape shows what actually happened.</div></details>
 
         <section className="player-bar"><div className="player-balance"><strong>{player.sardines}🥫</strong><span>cash</span></div><div className="chips">{player.inventory.map((item, index) => <span className="chip" key={`${item}-${index}`}>{label(item)}</span>)}</div></section>
 
@@ -329,26 +370,30 @@ export default function AppCore() {
           onInvestigate={(id) => setGame((current) => performFreeAction(current, "investigate", id))}
           onGift={(id, item) => setGame((current) => giveItem(current, id, item))}
           onSellInfo={(infoId, buyerId) => setGame((current) => sellInformation(current, infoId, buyerId))}
+          onSellExclusive={(infoId, buyerId) => setGame((current) => sellInformationExclusive(current, infoId, buyerId))}
           onShareInfo={(infoId, buyerId) => setGame((current) => shareInformationAsFavor(current, infoId, buyerId))}
           onRepay={(id) => setGame((current) => repayObligation(current, id))}
           onProxy={(id) => setGame((current) => requestMarketProxy(current, id))}
+          onFuture={() => setGame((current) => acceptFutureDelivery(current))}
+          onFulfillFuture={(id) => setGame((current) => fulfillFutureDelivery(current, id))}
+          onRelationshipLoan={() => setGame((current) => requestRelationshipLoan(current))}
+          onSecuredLoan={(item) => setGame((current) => requestSecuredLoan(current, item))}
         />}
 
         {phase === "morning" && mode === "trade" && <TradePanel game={game} orders={orders} setOrders={setOrders} />}
         {phase === "noon" && <NoonPanel game={game} />}
         {phase !== "noon" && <TapeArchive game={game} />}
         {phase === "sunset" && <section className="card"><div className="section-title">Sunset settlement</div><p>Closing the day settles food, promises, perishability and ordinary business activity.</p></section>}
+        <DueMatters game={game} onResolve={(id, action) => setGame((current) => resolveDuePrivateMatter(current, id, action))} />
 
-        {!!game.learningNotes?.length && <details className="advanced-details"><summary>Notebook · {game.learningNotes.length} discovered concept(s)</summary>{game.learningNotes.map((note) => <div className="mini-card" key={note.id}>
+        {!!game.learningNotes?.length && <details className="notebook-drawer"><summary>Notebook · {game.learningNotes.length} discovered concept(s){game.badges?.length ? ` · ${game.badges.length} badge(s)` : ""}</summary>{(game.badges || []).map((badge) => <div className="mini-card note-card" key={badge.id}><strong>{badge.title}</strong><p>{badge.summary}</p></div>)}{game.learningNotes.map((note) => <div className="mini-card" key={note.id}>
           <strong>? {note.title}</strong>
           <p><small>WHAT HAPPENED</small></p>
           {(note.occurrences?.length ? note.occurrences : [{ day: note.day, whatHappened: "This concept was discovered in an older save before occurrence links were recorded." }]).map((occurrence, index) => <p key={`${note.id}-${index}`}><strong>Day {occurrence.day}{occurrence.phase ? ` · ${PHASE_COPY[occurrence.phase]?.title || occurrence.phase}` : ""}</strong><br />{occurrence.whatHappened}</p>)}
           <p><small>WHAT PEOPLE CALL THIS</small></p><div>{note.title}</div>
           <p><small>WHY IT MATTERS</small></p><div>{note.text}</div>
         </div>)}</details>}
-        <details className="advanced-details"><summary>Harbour notes</summary><div className="log-stack">{game.log.slice(0, 10).map((line, index) => <div className="log-line" key={`${line}-${index}`}>{line}</div>)}</div></details>
-
-        {!game.pendingEvents?.length && <div className="bottom-action"><button className="btn gold primary-action" onClick={primary}>{phase === "sunrise" ? "Begin morning" : phase === "morning" ? "Lock orders & open Noon" : phase === "noon" && !game.marketResolved ? "Settle Noon" : phase === "noon" ? "Leave Noon" : phase === "afternoon" ? "Go to sunset" : "Close the day"}</button></div>}
+        {!game.pendingEvents?.length && <div className="bottom-action"><button className="btn gold primary-action" disabled={phase === "sunset" && duePrivateMatters(game).length > 0} onClick={primary}>{phase === "sunrise" ? "Begin morning — gain 2 actions" : phase === "morning" ? "Lock orders & open Noon" : phase === "noon" && !game.marketResolved ? "Settle Noon once" : phase === "noon" ? "Leave Noon — gain 2 actions" : phase === "afternoon" ? "Go to sunset" : "Close the day & settle"}</button></div>}
       </div>
     </main>
   );

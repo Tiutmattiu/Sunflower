@@ -281,3 +281,7 @@ Do **not** block Milestone 1 on:
 - final endgame diagnosis taxonomy.
 
 Those systems can be layered onto a living daily market. They should not be used to hide a weak market engine.
+
+### Public and private records in the playable slice
+
+The Noon tape is public knowledge. Private leads, finance, collateral and promises remain person-specific papers whose claims show their source. Future delivery and secured borrowing that are due at Sunset require an explicit player decision; Sunset cannot close around them. Ordinary cash debt keeps its existing settlement path, while information exclusivity resolves after the relevant Noon.

@@ -489,3 +489,7 @@ Do not make the world imply that every life mechanically lasts exactly fourteen 
 12. Plant form is a serious design possibility and may invert the acquisition game.
 13. The Sunflower may ultimately relate to collective consciousness / non-separation, but this remains endgame hypothesis rather than locked explanation.
 14. Fourteen days is a prototype pacing constant, not canon.
+
+## Bilateral claims across form change
+
+Secured collateral has already left the player before transformation, so Vale takes the pledged object and the secured claim closes. An old-life information exclusivity covenant ends with that legal life; secrecy is not a soul-level obligation. Other ordinary unsecured/formal claims remain attached to the old life or estate.

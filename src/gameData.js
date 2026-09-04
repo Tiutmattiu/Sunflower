@@ -141,8 +141,8 @@ const TALK = {
     { text: "Fishmonger talks while working, which seems to be his version of hospitality." },
   ],
   mechanic: [
-    { text: "The Sailor talks in fragments between jobs: weather, a broken fitting, departure, somebody who still owes somebody else. You catch more rhythm than detail." },
-    { text: "The Sailor now assumes you understand enough harbour shorthand to skip the polite explanations.", info: { claimType: "deadline", precision: "context", confidence: "high", text: "The Sailor treats departure as a hard constraint; unfinished provisioning will become more expensive as the ship gets closer to leaving." } },
+    { text: "The Sailor talks in fragments about provisioning. Fresh citrus is the pressure point, and the Bar is the plausible local lead.", info: { claimType: "holding", subjectId: "bar", item: "Lime Crate", precision: "specific", confidence: "medium", text: "The Bar is a plausible current source for a Lime Crate." } },
+    { text: "The Sailor now speaks plainly: one Lime Crate must be aboard before departure.", info: { claimType: "need", item: "Lime Crate", precision: "exact", confidence: "high", text: "The Sailor needs exactly one Lime Crate before departure." } },
     { text: "The Sailor gives you the kind of answer reserved for somebody expected to still be here tomorrow." },
   ],
   vale: [

@@ -1,21 +1,31 @@
 // Targeted design regression smoke. No test framework / CI required.
 import assert from "node:assert/strict";
 import {
+  acceptFutureDelivery,
   acceptInboundOffer,
   advancePhase,
   buildEvents,
   buildInboundOffers,
   createGame,
+  fulfillFutureDelivery,
   giveItem,
   informationPrice,
+  performFreeAction,
+  playerVisibleKnowledge,
   publiclyKnownPlayerItems,
   repayObligation,
+  requestRelationshipLoan,
+  requestSecuredLoan,
   requestMarketProxy,
   resolveEvent,
+  resolveDuePrivateMatter,
   resolveNoonMarket,
   shareInformationAsFavor,
+  sellInformation,
+  sellInformationExclusive,
 } from "../src/gameEngine.js";
 import { sellerAsk } from "../src/npcAI.js";
+import { readFileSync } from "node:fs";
 
 function enterMorning(game = createGame()) {
   return advancePhase(game);
@@ -221,5 +231,105 @@ game.phase = "sunset";
 game = advancePhase(game);
 assert.equal(game.ended, true);
 assert.equal(game.style, null);
+
+// Normal player UI has an opening, a reopenable grammar note, and no raw engine log.
+const appSource = readFileSync(new URL("../src/AppCore.jsx", import.meta.url), "utf8");
+const mainSource = readFileSync(new URL("../src/main.jsx", import.meta.url), "utf8");
+assert(!appSource.includes("game.log"), "normal UI must not render raw engine logs");
+assert(appSource.includes("HOW THIS WORKS") && mainSource.includes("You want a sunflower."));
+game = createGame();
+game.log.unshift("PRIVATE ENGINE FACT");
+assert(!JSON.stringify(playerVisibleKnowledge(game)).includes("PRIVATE ENGINE FACT"));
+
+// Talk gains at most once per target/day and exhausted authored stages do not farm relationship.
+game = enterMorning();
+game = performFreeAction(game, "talk", "dog");
+game = performFreeAction(game, "talk", "dog");
+assert.equal(game.relationships.dog, 1);
+for (let day = 2; day <= 4; day += 1) {
+  game.day = day; game.phase = "morning"; game.actionsRemaining = 1;
+  game = performFreeAction(game, "talk", "dog");
+}
+assert.equal(game.relationships.dog, 2, "Dog has only three authored stages and Day 1 already consumed two of them");
+
+// Promise Lime without owning it, source the exact physical good, deliver, and earn the idempotent badge.
+game = enterMorning();
+game = performFreeAction(game, "talk", "mechanic");
+game = performFreeAction(game, "talk", "mechanic");
+game = advancePhase(game); game = resolveNoonMarket(game); game = advancePhase(game);
+game = acceptFutureDelivery(game);
+const future = game.obligations.find((entry) => entry.kind === "future-delivery");
+assert(future && !future.ownedAtCommitment);
+game = advancePhase(game); game = advancePhase(game); game = advancePhase(game);
+game.playerOrders[0] = { to: "bar", wantItem: "Lime Crate", offerItem: "", sardines: sellerAsk(game, "bar", "Lime Crate") };
+game = advancePhase(game); game = resolveNoonMarket(game); game = advancePhase(game);
+assert(game.traders.player.inventory.includes("Lime Crate"));
+game = fulfillFutureDelivery(game, future.id);
+assert.equal(game.obligations.find((entry) => entry.id === future.id).status, "settled");
+assert.equal(game.badges.filter((badge) => badge.id === "sold-before-owned").length, 1);
+
+// Future default returns the reserve and creates restitution without ending the game.
+game = enterMorning();
+game.information.push(
+  { id: "lime-source", claimType: "holding", subjectId: "bar", item: "Lime Crate", precision: "exact", confidence: "high", freshness: "current", observedDay: 1, knownBy: ["player"] },
+  { id: "lime-need", claimType: "need", subjectId: "mechanic", item: "Lime Crate", precision: "exact", confidence: "high", freshness: "current", observedDay: 1, knownBy: ["player"] },
+);
+game = acceptFutureDelivery(game);
+const failedFuture = game.obligations.find((entry) => entry.kind === "future-delivery");
+game.day = failedFuture.dueDay; game.phase = "sunset"; game.actionsRemaining = 0;
+game = resolveDuePrivateMatter(game, failedFuture.id, "default");
+assert.equal(game.obligations.find((entry) => entry.id === failedFuture.id).status, "defaulted");
+assert(game.obligations.some((entry) => entry.kind === "restitution" && entry.amount === 5));
+assert.equal(game.ended, false);
+
+// Bar allows one relationship-backed exposure at a time.
+game = enterMorning(); game.relationships.bar = 2;
+game = requestRelationshipLoan(game);
+assert.equal(game.traders.player.sardines, 22);
+const once = game.obligations.length;
+game.actionsRemaining = 1;
+game = requestRelationshipLoan(game);
+assert.equal(game.obligations.length, once);
+
+// Vale holds the exact collateral outside inventory, returns it on repayment, or keeps it with no residual debt.
+game = enterMorning(); game.relationships.vale = 1; game.traders.player.inventory.push("Brass Compass");
+game = requestSecuredLoan(game, "Brass Compass");
+let secured = game.obligations.find((entry) => entry.kind === "secured-loan");
+assert(!game.traders.player.inventory.includes("Brass Compass"));
+game.traders.player.sardines = secured.amount; game.actionsRemaining = 1;
+game = repayObligation(game, secured.id);
+assert(game.traders.player.inventory.includes("Brass Compass"));
+game = enterMorning(); game.relationships.vale = 1; game.traders.player.inventory.push("Brass Compass");
+game = requestSecuredLoan(game, "Brass Compass"); secured = game.obligations.find((entry) => entry.kind === "secured-loan");
+game.day = secured.dueDay; game.phase = "sunset"; game = resolveDuePrivateMatter(game, secured.id, "seize");
+assert(game.traders.vale.inventory.includes("Brass Compass"));
+assert.equal(game.obligations.find((entry) => entry.id === secured.id).status, "seized");
+
+// Exclusivity rewards compliant causal use; breach has no instant penalty but causal public use can expose it.
+function exclusiveLead(id, item) {
+  return { id, claimType: "holding", subjectId: "mechanic", item, text: `Sailor has ${item}.`, source: "personal investigation", precision: "exact", confidence: "high", observedDay: 1, freshness: "current", exclusive: true, sellable: true, soldTo: [], sharedWith: [], knownBy: ["player"], diffusionCount: 0, personallyVerified: true };
+}
+game = enterMorning(); game.information.push(exclusiveLead("exclusive-oil", "Sperm Whale Oil"));
+game = sellInformationExclusive(game, "exclusive-oil", "vale");
+game = advancePhase(game); game = resolveNoonMarket(game); game = advancePhase(game); game = advancePhase(game); game = advancePhase(game); game = advancePhase(game); game = advancePhase(game); game = resolveNoonMarket(game);
+assert(game.badges.some((badge) => badge.id === "exclusive"));
+
+game = enterMorning(); game.traders.mechanic.inventory.push("Sealed Parcel"); game.information.push(exclusiveLead("exclusive-parcel", "Sealed Parcel"));
+game = sellInformationExclusive(game, "exclusive-parcel", "clown");
+game = advancePhase(game); game = resolveNoonMarket(game); game = advancePhase(game);
+const beforeDetection = game.relationships.clown;
+game = sellInformation(game, "exclusive-parcel", "vale");
+assert.equal(game.relationships.clown, beforeDetection, "breach alone must not punish instantly");
+game.traders.mechanic.inventory = game.traders.mechanic.inventory.filter((item) => item !== "Sperm Whale Oil");
+game = advancePhase(game); game = advancePhase(game); game = advancePhase(game); game = advancePhase(game); game = resolveNoonMarket(game);
+assert.equal(game.relationships.clown, beforeDetection - 2);
+
+// Raw evidence records action context and deliberately unused phase time.
+game = enterMorning();
+game = performFreeAction(game, "investigate", "vale");
+const investigation = game.decisionEvidence.find((entry) => entry.type === "investigate");
+assert.equal(investigation.actionsBefore, 2); assert.equal(investigation.actionsAfter, 1); assert.equal(investigation.relationshipBefore, investigation.relationshipAfter);
+game = advancePhase(game);
+assert(game.decisionEvidence.some((entry) => entry.type === "phase-ended-with-unused-actions" && entry.phase === "morning" && entry.unusedActions === 1));
 
 console.log("Living systems smoke passed.");

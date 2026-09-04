@@ -406,3 +406,7 @@ The player should be able to say:
 not:
 
 > "The AI rolled lucky."
+
+## Player-knowledge boundary
+
+Raw engine and world logs are not player knowledge. Every player-visible claim must carry a justified source such as public tape, conversation, personal investigation, public notice, or personal verification. When a purchased lead causes an NPC public-market decision, its exact `infoId` may follow that plan into the resulting public trade so diffusion, use, breach and detection remain causal rather than inferred.

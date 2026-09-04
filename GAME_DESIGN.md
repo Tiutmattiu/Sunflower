@@ -553,3 +553,11 @@ Success criteria:
 10. Feel at least one urge to position for tomorrow.
 
 Only after this loop is enjoyable should the game become more complicated.
+
+### Playable harbour vertical slice v1
+
+- The interaction foundation is scene-first: one desk/workspace, an active dossier or paper, physical-looking inventory/tape/notebook objects, and one clear action strip. It is a drop-in shell for later art, not a generic scene engine.
+- Player knowledge requires provenance. Public listings and the Noon tape, the player's own results, conversation, investigation, received information, public notices, and observable consequences are valid sources; raw engine/world logs are not player knowledge.
+- Bilateral Finance v1 consists of the authored Sailor Lime future delivery, Bar relationship loan, Vale secured borrowing with a haircut, and temporary information exclusivity with breach/detection kept separate.
+- Assessment is evidence-first. Raw factual decisions are retained; Outcome, Process, and Style are distinct and no archetype or personality score is calculated here.
+- Economic Health is evaluated from repeated real-engine traces across policies and horizons. Equal wealth is not the target and diagnostic flags do not rebalance the economy.

@@ -123,7 +123,7 @@ function knownSourcesForItem(game, buyerId, item, likelySources = []) {
     boughtLead?.holderId && boughtLead.holderId !== buyerId && boughtLead.holderId !== "player" &&
     game.day - Number(boughtLead.learnedDay || game.day) <= 2
   ) {
-    sources.set(boughtLead.holderId, boughtLead.source || "bought information");
+    sources.set(boughtLead.holderId, { basis: boughtLead.source || "bought information", infoId: boughtLead.infoId || null });
   }
 
   // Active search is reserved for explicit needs and only checks a bounded set of plausible contacts.
@@ -139,11 +139,11 @@ function knownSourcesForItem(game, buyerId, item, likelySources = []) {
         const basis = contact.familiarity >= 2
           ? `searched a known contact via ${contact.channel || "prior relationship"}`
           : "active search";
-        sources.set(sellerId, basis);
+        if (!sources.has(sellerId)) sources.set(sellerId, { basis, infoId: null });
       }
     });
 
-  return [...sources.entries()].map(([sellerId, basis]) => ({ sellerId, basis }));
+  return [...sources.entries()].map(([sellerId, detail]) => ({ sellerId, ...(typeof detail === "string" ? { basis: detail, infoId: null } : detail) }));
 }
 
 function pushCandidate(game, candidates, buyerId, item, likelySources, reason, goalPriority = false) {
@@ -157,7 +157,7 @@ function pushCandidate(game, candidates, buyerId, item, likelySources, reason, g
   const reserve = workingCapitalReserve(buyerId, profile, goalPriority);
   const spendableCash = Math.max(0, buyer.sardines - reserve);
 
-  knownSourcesForItem(game, buyerId, item, likelySources).forEach(({ sellerId, basis }) => {
+  knownSourcesForItem(game, buyerId, item, likelySources).forEach(({ sellerId, basis, infoId }) => {
     const seller = game.traders[sellerId];
     if (!seller) return;
 
@@ -175,6 +175,7 @@ function pushCandidate(game, candidates, buyerId, item, likelySources, reason, g
         score: surplus + utility + (goalPriority ? 12 : 0),
         reason,
         knowledgeBasis: basis,
+        infoId,
       });
     }
   });

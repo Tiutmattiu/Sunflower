@@ -513,3 +513,10 @@ This permits outcomes such as:
 - high information edge + weak execution.
 
 The educational layer should explain these distinctions without implying that one archetype is the universally “correct” way to trade.
+
+## Bilateral Finance v1 teaching conditions
+
+- **Sold It Before You Had It** requires a bound Lime future delivery when the player did not own Lime, later sourcing the physical good, and on-time delivery. Profit is irrelevant.
+- Bar relationship credit is one short, interest-free exposure at a time and is taught as cash moved through relationship trust.
+- Vale advances 60% of eligible collateral's reference value; the gap is the collateral haircut. Repayment returns the exact pledged object, while seizure closes the claim without residual unsecured debt.
+- Information exclusivity is a seller covenant, not an audience flag. Breach can remain undetected; only causal public use of the leaked lead can expose it. The **EXCLUSIVE** badge requires the premium, compliance, and actual use by the buyer.

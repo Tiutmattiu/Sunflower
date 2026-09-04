@@ -9,12 +9,13 @@ function StartScreen({ onStart }) {
         <div className="start-flower">🌻</div>
         <div className="eyebrow">Sunflower Market</div>
         <h1>You want a sunflower.</h1>
-        <p>There is one problem: nobody will sell you one.</p>
-        <p className="muted">You do not know why you want it. You only know that it feels like a way home.</p>
+        <p>You do not know why.</p>
+        <p className="muted">You only know that it feels like a way home.</p>
         <div className="start-rules">
-          <div>🥫 You have money and a few strange things.</div>
-          <div>☀️ Before noon, you can learn or prepare a trade.</div>
-          <div>🌞 At noon, the market clears once.</div>
+          <div><strong>Sunrise → Morning → Noon → Afternoon → Sunset</strong></div>
+          <div><strong>Morning / Afternoon:</strong> scarce time actions. Talk spends time on a person; Investigate spends it on market facts.</div>
+          <div><strong>Trade:</strong> visible stalls and written commitments. Morning orders are not yet trades.</div>
+          <div><strong>Noon:</strong> settles once. Afterward, the Public Tape shows what actually happened.</div>
         </div>
         <p className="muted small">That is enough to begin. The rest will appear when it matters.</p>
         <button className="btn gold start-button" onClick={onStart}>Enter the harbour →</button>

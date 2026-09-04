@@ -688,3 +688,10 @@ or:
 > Dog bought three low-value scraps because cat-supply need is high, resale spread is small but positive, cash reserve remains above Dog's minimum, and the goods are easy to move through the informal network.
 
 The player need not see this explanation directly. It exists so designers can verify that the market is behaving logically rather than randomly.
+
+## Small finance notes for the current runtime
+
+- Sailor can privately reserve cash for one authored Lime future-delivery promise while retaining working cash.
+- Bar Apprentice may extend one small relationship-backed, interest-free cash loan.
+- Vale may hold eligible durable collateral and lend against a 60% reference-value advance.
+- A buyer may pay a small premium for temporary information distribution scarcity; private breach and public detection remain separate facts.

@@ -134,6 +134,7 @@ function refreshInformation(game) {
 function createObligation(game, payload) {
   const lifeId = payload.debtorLifeId || game.playerState.legalIdentity.lifeId;
   const obligation = {
+    ...payload,
     id: `obligation-${game.obligations.length + 1}`,
     kind: payload.kind,
     debtorId: payload.debtorId || "player",
@@ -146,12 +147,19 @@ function createObligation(game, payload) {
     note: payload.note || "",
   };
   game.obligations.push(obligation);
-  const evidence = recordEvidence(game, "credit-created", { obligationId: obligation.id, creditorId: obligation.creditorId, amount: obligation.amount, dueDay: obligation.dueDay, reason: obligation.kind });
-  addLearningNote(game, "credit", "Credit creates an obligation", "Credit moves resources through time, but it leaves a claim that must later be repaid or defaulted.", {
-    evidenceIds: [evidence.id],
-    whatHappened: `${game.traders[obligation.creditorId]?.name || obligation.creditorId} advanced ${obligation.amount}🥫. It is due on Day ${obligation.dueDay}.`,
-  });
+  recordEvidence(game, "obligation-created", { obligationId: obligation.id, creditorId: obligation.creditorId, amount: obligation.amount, dueDay: obligation.dueDay, reason: obligation.kind });
   return obligation;
+}
+
+function createBadge(game, payload) {
+  if (game.badges.some((badge) => badge.id === payload.id)) return;
+  game.badges.push({ ...payload, day: game.day, evidenceIds: unique(payload.evidenceIds || []) });
+}
+
+function teachCredit(game, obligation, evidence, whatHappened) {
+  addLearningNote(game, "credit", "Credit creates an obligation", "Credit moves resources through time, but it leaves a claim that must later be repaid or defaulted.", {
+    evidenceIds: [evidence?.id], whatHappened,
+  });
 }
 
 export function currentObligations(game) {
@@ -178,6 +186,7 @@ export function createGame() {
     },
     estates: [],
     obligations: [],
+    badges: [],
     selected: "player",
     playerOrders: resetOrders(),
     lockedPlayerOrders: [],
@@ -201,6 +210,7 @@ export function createGame() {
     intel: {},
     investigationCounts: zeroMap(),
     talkCounts: zeroMap(),
+    talkGainDays: {},
     relationships: zeroMap(),
     lastInteraction: null,
     npcMemory: emptyMemory(),
@@ -262,6 +272,14 @@ function latestPublicOwners(game) {
     if (trade.paymentItem) owners[trade.paymentItem] = trade.to;
   });
   return owners;
+}
+
+export function playerVisibleKnowledge(game) {
+  return {
+    information: game.information.map((info) => ({ id: info.id, text: info.text, source: info.personallyVerified ? "personally verified" : info.source })),
+    publicTape: game.history.map((trade) => ({ id: trade.id, day: trade.day, from: trade.from, to: trade.to, item: trade.item, sardines: trade.sardines, source: "public tape" })),
+    currentResult: game.lastInteraction ? { ...game.lastInteraction, source: "your action" } : null,
+  };
 }
 
 export function publiclyKnownPlayerItems(game) {
@@ -354,6 +372,7 @@ function transferInformation(game, info, buyerId, { cash = true, favour = false 
     holderId: info.subjectId,
     learnedDay: game.day,
     source: favour ? "shared by player as a favour" : `bought from player (${info.confidence} confidence)`,
+    infoId: info.id,
   };
   return cash ? price : true;
 }
@@ -375,6 +394,19 @@ function recordEvidence(game, type, detail = {}) {
   return entry;
 }
 
+function activeObligation(game, kind, creditorId = null) {
+  return currentObligations(game).find((entry) => entry.kind === kind && (!creditorId || entry.creditorId === creditorId));
+}
+
+function breachExclusivity(game, infoId, recipientId) {
+  const covenant = currentObligations(game).find((entry) => entry.kind === "information-exclusivity" && entry.infoId === infoId && entry.creditorId !== recipientId);
+  if (!covenant || covenant.breached) return;
+  covenant.breached = true;
+  covenant.breachPartyId = recipientId;
+  const evidence = recordEvidence(game, "information-exclusivity-breached", { obligationId: covenant.id, infoId, buyerId: covenant.creditorId, thirdPartyId: recipientId, detected: false });
+  covenant.evidenceIds.push(evidence.id);
+}
+
 function replanNPCMarket(game) {
   const accepted = game.marketPlan.filter((plan) => plan.inboundOfferId && game.inboundOffers.some((offer) => offer.id === plan.inboundOfferId && offer.status === "accepted"));
   const committedBuyers = new Set(accepted.map((plan) => plan.from));
@@ -388,6 +420,7 @@ function replanNPCMarket(game) {
       holderId: plan.to,
       learnedDay: game.day,
       source: plan.knowledgeBasis,
+      infoId: plan.infoId || null,
     };
     const observation = `${plan.wantItem} believed held by ${plan.to}: ${plan.knowledgeBasis}`;
     if (!game.npcMemory[plan.from].observations.includes(observation)) game.npcMemory[plan.from].observations.push(observation);
@@ -399,6 +432,7 @@ export function sellInformation(current, infoId, buyerId) {
   if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || game.ended) return game;
   const info = game.information.find((entry) => entry.id === infoId);
   if (!info || !informationBuyers(game, info).includes(buyerId)) return game;
+  breachExclusivity(game, infoId, buyerId);
   const paid = transferInformation(game, info, buyerId, { cash: true });
   if (!paid) return game;
   game.actionsRemaining -= 1;
@@ -417,7 +451,9 @@ export function shareInformationAsFavor(current, infoId, buyerId) {
   const game = clone(current);
   if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || game.ended) return game;
   const info = game.information.find((entry) => entry.id === infoId);
-  if (!info || !informationBuyers(game, info).includes(buyerId) || !transferInformation(game, info, buyerId, { cash: false, favour: true })) return game;
+  if (!info || !informationBuyers(game, info).includes(buyerId)) return game;
+  breachExclusivity(game, infoId, buyerId);
+  if (!transferInformation(game, info, buyerId, { cash: false, favour: true })) return game;
   game.actionsRemaining -= 1;
   const evidence = recordEvidence(game, "information-favour", { infoId, buyerId, channel: "private", source: info.source, precision: info.precision, confidence: info.confidence, freshness: info.freshness, audienceSize: info.knownBy.length });
   addLearningNote(game, "relationship-capital", "Information can become relationship capital", "A saleable lead can be exchanged for familiarity instead of cash.", {
@@ -427,6 +463,133 @@ export function shareInformationAsFavor(current, infoId, buyerId) {
   game.lastInteraction = { action: "information-favour", targetId: buyerId, text: `You give ${game.traders[buyerId].name} the lead without charging. They remember the favour.` };
   game.log.unshift(game.lastInteraction.text);
   if (game.phase === "morning") replanNPCMarket(game);
+  return game;
+}
+
+export function sellInformationExclusive(current, infoId, buyerId) {
+  const game = clone(current);
+  if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || game.ended) return game;
+  const info = game.information.find((entry) => entry.id === infoId);
+  if (!info || info.freshness === "stale" || (info.knownBy || []).length !== 1 || currentObligations(game).some((entry) => entry.kind === "information-exclusivity" && entry.infoId === infoId)) return game;
+  const normalPrice = informationPrice(game, info, buyerId);
+  const buyer = game.traders[buyerId];
+  if (!informationBuyers(game, info).includes(buyerId) || buyer.sardines < normalPrice + 2) return game;
+  const paid = transferInformation(game, info, buyerId, { cash: true });
+  buyer.sardines -= 2;
+  game.traders.player.sardines += 2;
+  game.actionsRemaining -= 1;
+  const evidence = recordEvidence(game, "information-exclusivity-sold", { infoId, buyerId, normalPrice, premium: 2, price: paid + 2, actionsBefore: game.actionsRemaining + 1, actionsAfter: game.actionsRemaining });
+  const covenant = createObligation(game, {
+    kind: "information-exclusivity", creditorId: buyerId, amount: 0, dueDay: game.day + 1, expiresDay: game.day + 1,
+    infoId, premium: 2, buyerUsed: false, breached: false, detected: false, evidenceIds: [evidence.id], note: "Keep this lead between us through the following Noon.",
+  });
+  addLearningNote(game, "information-exclusivity", "Distribution scarcity", "A buyer may pay for temporary scarcity in who can receive a lead. Breach and detection are separate facts.", {
+    evidenceIds: [evidence.id], whatHappened: `${buyer.name} paid ${paid + 2}🥫 for the lead and a temporary promise not to distribute it.`,
+  });
+  game.lastInteraction = { action: "information-exclusive", targetId: buyerId, text: `${buyer.name} pays ${paid + 2}🥫. You promise to keep this lead between you through Day ${covenant.expiresDay} Noon.` };
+  if (game.phase === "morning") replanNPCMarket(game);
+  return game;
+}
+
+export function futureDeliveryAvailable(game) {
+  const sailor = game.traders.mechanic;
+  const knowsNeed = game.information.some((info) => info.subjectId === "mechanic" && info.item === "Lime Crate" && info.claimType === "need" && info.precision === "exact");
+  const knowsSource = game.information.some((info) => info.subjectId !== "mechanic" && info.item === "Lime Crate" && info.claimType === "holding");
+  return ["morning", "afternoon"].includes(game.phase) && game.actionsRemaining > 0 && !game.flags.sailorDeparted &&
+    !sailor.inventory.includes("Lime Crate") && !game.traders.player.inventory.includes("Lime Crate") &&
+    !activeObligation(game, "future-delivery", "mechanic") && knowsNeed && knowsSource &&
+    game.day <= NPC_PROFILES.mechanic.departureDay - 2 && sailor.sardines - 13 >= 6;
+}
+
+export function acceptFutureDelivery(current) {
+  const game = clone(current);
+  if (!futureDeliveryAvailable(game)) return game;
+  const player = game.traders.player;
+  const sailor = game.traders.mechanic;
+  const actionsBefore = game.actionsRemaining;
+  const openingCash = game.traders.player.sardines;
+  sailor.sardines -= 13;
+  player.sardines += 4;
+  game.actionsRemaining -= 1;
+  const evidence = recordEvidence(game, "future-delivery-bound", { counterpartyId: "mechanic", item: "Lime Crate", deposit: 4, reservedBalance: 9, dueDay: Math.min(game.day + 2, NPC_PROFILES.mechanic.departureDay - 1), ownedAtCommitment: false, openingCash, actionsBefore, actionsAfter: game.actionsRemaining });
+  createObligation(game, {
+    kind: "future-delivery", creditorId: "mechanic", amount: 0, item: "Lime Crate", deposit: 4, reservedBalance: 9,
+    dueDay: evidence.dueDay, ownedAtCommitment: false, commitmentEvidenceId: evidence.id, note: "A promise for lime.",
+  });
+  addLearningNote(game, "future-delivery", "Future delivery / sourcing risk", "A delivery promise can be bound before the seller owns the underlying good.", {
+    evidenceIds: [evidence.id], whatHappened: `The Sailor paid 4🥫 now and reserved 9🥫 for one Lime Crate due on Day ${evidence.dueDay}.`,
+  });
+  game.lastInteraction = { action: "future-delivery", targetId: "mechanic", text: `The Sailor pays 4🥫 now and reserves 9🥫 for one Lime Crate due Day ${evidence.dueDay}.` };
+  return game;
+}
+
+export function fulfillFutureDelivery(current, obligationId) {
+  const game = clone(current);
+  const obligation = currentObligations(game).find((entry) => entry.id === obligationId && entry.kind === "future-delivery");
+  if (!obligation || !["morning", "afternoon", "sunset"].includes(game.phase) || (game.phase !== "sunset" && game.actionsRemaining <= 0) || !game.traders.player.inventory.includes(obligation.item)) return game;
+  const actionsBefore = game.actionsRemaining;
+  const openingCash = game.traders.player.sardines;
+  const age = takePerishableAge(game, game.traders.player, obligation.item);
+  game.traders.player.inventory = removeOne(game.traders.player.inventory, obligation.item);
+  addPerishableAge(game, game.traders.mechanic, obligation.item, age);
+  game.traders.mechanic.inventory.push(obligation.item);
+  game.traders.player.sardines += obligation.reservedBalance;
+  obligation.status = "settled";
+  obligation.settledDay = game.day;
+  game.relationships.mechanic += 1;
+  if (game.phase !== "sunset") game.actionsRemaining -= 1;
+  const evidence = recordEvidence(game, "future-delivery-fulfilled", { obligationId, item: obligation.item, balance: obligation.reservedBalance, onTime: game.day <= obligation.dueDay, openingCash, actionsBefore, actionsAfter: game.actionsRemaining });
+  if (!obligation.ownedAtCommitment && game.day <= obligation.dueDay) createBadge(game, { id: "sold-before-owned", title: "SOLD IT BEFORE YOU HAD IT", summary: "Promised Lime, sourced it later, and delivered on time.", evidenceIds: [obligation.commitmentEvidenceId, evidence.id] });
+  game.lastInteraction = { action: "future-delivery-fulfilled", targetId: "mechanic", text: `You deliver the exact Lime Crate. The reserved ${obligation.reservedBalance}🥫 is released.` };
+  return game;
+}
+
+export function requestRelationshipLoan(current) {
+  const game = clone(current);
+  const relationship = game.relationships.bar || 0;
+  const amount = relationship >= 3 ? 6 : 4;
+  if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || relationship < 2 || activeObligation(game, "relationship-loan", "bar") || game.traders.bar.sardines - amount < 18) return game;
+  const openingCash = game.traders.player.sardines;
+  const actionsBefore = game.actionsRemaining;
+  const nearTermObligations = currentObligations(game).filter((entry) => entry.dueDay <= game.day + 2).map((entry) => entry.id);
+  game.traders.bar.sardines -= amount;
+  game.traders.player.sardines += amount;
+  game.actionsRemaining -= 1;
+  const evidence = recordEvidence(game, "relationship-loan-opened", { counterpartyId: "bar", amount, dueDay: game.day + 2, openingCash, nearTermObligations, actionsBefore, actionsAfter: game.actionsRemaining });
+  const obligation = createObligation(game, { kind: "relationship-loan", creditorId: "bar", amount, dueDay: game.day + 2, openingEvidenceId: evidence.id, note: "A few tins for a few days." });
+  teachCredit(game, obligation, evidence, `The Apprentice advanced ${amount}🥫 without interest, due Day ${obligation.dueDay}.`);
+  game.stats.creditUsed += 1;
+  game.lastInteraction = { action: "relationship-loan", targetId: "bar", text: `The Apprentice lends you ${amount}🥫 until Day ${obligation.dueDay}.` };
+  return game;
+}
+
+export function securedCollateralItems(game) {
+  return unique(game.traders.player.inventory).filter((item) => {
+    const type = ITEMS[item]?.type || "";
+    return Number(ITEMS[item]?.value || 0) > 0 && !ITEMS[item]?.shelfLife && (type.includes("Collateral") || type.includes("Durable")) &&
+      !["Sunflower", "Blue Glass Marble", "Built Onewheel", "Mai Tai"].includes(item);
+  });
+}
+
+export function requestSecuredLoan(current, item) {
+  const game = clone(current);
+  const reference = valueOf(item);
+  const principal = Math.max(1, Math.floor(reference * .6));
+  if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || game.playerState.legalIdentity.status !== "recognized" ||
+    (game.relationships.vale || 0) < 1 || activeObligation(game, "secured-loan", "vale") || !securedCollateralItems(game).includes(item) || game.traders.vale.sardines - principal < 16) return game;
+  const actionsBefore = game.actionsRemaining;
+  const openingCash = game.traders.player.sardines;
+  const collateralAge = takePerishableAge(game, game.traders.player, item);
+  game.traders.player.inventory = removeOne(game.traders.player.inventory, item);
+  game.traders.vale.sardines -= principal;
+  game.traders.player.sardines += principal;
+  game.actionsRemaining -= 1;
+  const evidence = recordEvidence(game, "secured-loan-opened", { counterpartyId: "vale", item, referenceValue: reference, principal, repayment: principal + 1, haircut: reference - principal, openingCash, actionsBefore, actionsAfter: game.actionsRemaining });
+  const obligation = createObligation(game, { kind: "secured-loan", creditorId: "vale", amount: principal + 1, principal, collateral: item, collateralAge, dueDay: game.day + 2, openingEvidenceId: evidence.id, note: `Against the ${item}.` });
+  addLearningNote(game, "collateral-haircut", "Collateral haircut", "A lender advances less than an asset's reference value because liquidation and price risk remain.", {
+    evidenceIds: [evidence.id], whatHappened: `Vale held your ${item} and advanced ${principal}🥫 against its ${reference}🥫 reference value.`,
+  });
+  game.lastInteraction = { action: "secured-loan", targetId: "vale", text: `Vale takes the ${item} into custody and advances ${principal}🥫. Repayment is ${principal + 1}🥫 on Day ${obligation.dueDay}.` };
   return game;
 }
 
@@ -577,13 +740,14 @@ export function requestMarketProxy(current, targetId = "bar") {
     target.sardines += PROXY_FEE;
     game.lastInteraction = { action: "proxy", targetId, text: `${target.name} agrees to settle today's formal-market orders for ${PROXY_FEE}🥫.` };
   } else if (relationship >= 3) {
-    createObligation(game, {
+    const obligation = createObligation(game, {
       kind: "proxy-fee",
       creditorId: targetId,
       amount: PROXY_FEE,
       dueDay: game.day + 2,
       note: "Formal-market proxy fee.",
     });
+    teachCredit(game, obligation, game.decisionEvidence.at(-1), `${target.name} advanced a ${PROXY_FEE}🥫 proxy fee, due Day ${obligation.dueDay}.`);
     game.stats.creditUsed += 1;
     game.lastInteraction = { action: "proxy", targetId, text: `${target.name} agrees to proxy today's market on credit.` };
   } else {
@@ -601,25 +765,31 @@ export function requestMarketProxy(current, targetId = "bar") {
 
 export function repayObligation(current, obligationId) {
   const game = clone(current);
-  if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || game.ended) return game;
+  const sunsetSecured = game.phase === "sunset" && currentObligations(game).some((entry) => entry.id === obligationId && entry.kind === "secured-loan" && entry.dueDay <= game.day);
+  if ((!sunsetSecured && (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0)) || game.ended) return game;
 
   const obligation = currentObligations(game).find((entry) => entry.id === obligationId);
-  if (!obligation) return game;
+  if (!obligation || ["future-delivery", "information-exclusivity"].includes(obligation.kind)) return game;
   const player = game.traders.player;
   if (player.sardines < obligation.amount) return game;
+  const openingCash = player.sardines;
+  const actionsBefore = game.actionsRemaining;
 
   player.sardines -= obligation.amount;
   const creditor = game.traders[obligation.creditorId];
   if (creditor) creditor.sardines += obligation.amount;
+  if (obligation.kind === "secured-loan" && obligation.collateral) {
+    addPerishableAge(game, player, obligation.collateral, obligation.collateralAge);
+    player.inventory.push(obligation.collateral);
+  }
   obligation.status = "settled";
   obligation.settledDay = game.day;
-  game.actionsRemaining -= 1;
-  const evidence = recordEvidence(game, "credit-repaid", { obligationId, creditorId: obligation.creditorId, amount: obligation.amount, timing: game.day <= obligation.dueDay ? "on-time" : "late" });
-  addLearningNote(game, "credit", "Credit creates an obligation", "Credit moves resources through time, but it leaves a claim that must later be repaid or defaulted.", {
-    evidenceIds: [evidence.id],
-    whatHappened: `You repaid ${obligation.amount}🥫 to ${creditor?.name || obligation.creditorId} ${game.day <= obligation.dueDay ? "on time" : "late"}.`,
-  });
-  if (game.relationships[obligation.creditorId] !== undefined) game.relationships[obligation.creditorId] += 1;
+  if (!sunsetSecured) game.actionsRemaining -= 1;
+  const evidence = recordEvidence(game, obligation.kind === "secured-loan" ? "secured-loan-repaid" : "credit-repaid", { obligationId, creditorId: obligation.creditorId, amount: obligation.amount, collateral: obligation.collateral || null, timing: game.day <= obligation.dueDay ? "on-time" : "late", openingCash, actionsBefore, actionsAfter: game.actionsRemaining });
+  if (obligation.kind !== "secured-loan") {
+    teachCredit(game, obligation, evidence, `You repaid ${obligation.amount}🥫 to ${creditor?.name || obligation.creditorId} ${game.day <= obligation.dueDay ? "on time" : "late"}.`);
+    if (game.relationships[obligation.creditorId] !== undefined) game.relationships[obligation.creditorId] += 1;
+  }
   game.lastInteraction = { action: "repay", targetId: obligation.creditorId, text: `You settle ${obligation.amount}🥫 owed to ${creditor?.name || obligation.creditorId}.` };
   game.log.unshift(game.lastInteraction.text);
   return game;
@@ -637,6 +807,7 @@ function recordTrade(game, trade, source) {
     item: trade.wantItem,
     paymentItem: trade.offerItem || null,
     sardines: Number(trade.sardines || 0),
+    infoId: trade.infoId || null,
   };
   game.history.push(entry);
   if (source === "npc-plan") recordEvidence(game, "public-market-trade", { tradeId: entry.id, from: entry.from, to: entry.to, item: entry.item, paymentItem: entry.paymentItem, sardines: entry.sardines, channel: "public" });
@@ -727,6 +898,41 @@ export function giveItem(current, targetId, item) {
   return game;
 }
 
+export function duePrivateMatters(game) {
+  return currentObligations(game).filter((entry) => ["future-delivery", "secured-loan"].includes(entry.kind) && entry.dueDay <= game.day);
+}
+
+export function resolveDuePrivateMatter(current, obligationId, action) {
+  const obligation = duePrivateMatters(current).find((entry) => entry.id === obligationId);
+  if (!obligation || current.phase !== "sunset") return clone(current);
+  if (obligation.kind === "future-delivery" && action === "deliver") return fulfillFutureDelivery(current, obligationId);
+  if (obligation.kind === "secured-loan" && action === "repay") {
+    return repayObligation(current, obligationId);
+  }
+
+  const game = clone(current);
+  const live = game.obligations.find((entry) => entry.id === obligationId);
+  if (live.kind === "future-delivery" && action === "default") {
+    game.traders.mechanic.sardines += live.reservedBalance;
+    live.status = "defaulted";
+    live.settledDay = game.day;
+    game.relationships.mechanic -= 2;
+    game.stats.defaults += 1;
+    const evidence = recordEvidence(game, "future-delivery-defaulted", { obligationId, item: live.item, reservedReturned: live.reservedBalance, openingCash: game.traders.player.sardines });
+    const restitution = createObligation(game, { kind: "restitution", creditorId: "mechanic", amount: 5, dueDay: game.day + 2, note: "Restitution after the missed Lime promise." });
+    teachCredit(game, restitution, evidence, `The reserved ${live.reservedBalance}🥫 returned to the Sailor and you now owe 5🥫 restitution.`);
+    game.lastInteraction = { action: "future-delivery-defaulted", targetId: "mechanic", text: "You do not deliver. The reserved balance returns to the Sailor; 5🥫 restitution is now due." };
+  } else if (live.kind === "secured-loan" && action === "seize") {
+    game.traders.vale.inventory.push(live.collateral);
+    addPerishableAge(game, game.traders.vale, live.collateral, live.collateralAge);
+    live.status = "seized";
+    live.settledDay = game.day;
+    recordEvidence(game, "secured-collateral-seized", { obligationId, collateral: live.collateral, residualDebt: 0 });
+    game.lastInteraction = { action: "secured-collateral-seized", targetId: "vale", text: `Vale keeps the ${live.collateral}. The claim is closed with no residual debt.` };
+  }
+  return game;
+}
+
 function publicPostedAsk(game, sellerId, item) {
   const produced = (sellerId === "bar" && item === "Mai Tai") || (sellerId === "mechanic" && item === "Built Onewheel");
   const isPublic = ((NPC_PROFILES[sellerId]?.publicStock || []).includes(item) || produced) && game.traders[sellerId]?.inventory.includes(item);
@@ -769,6 +975,7 @@ function clearCommittedOrders(game) {
       sardines: Number(order.sardines ?? 0),
       claim: order.claim || null,
       inspectionAllowed: Boolean(order.inspectionAllowed),
+      infoId: order.infoId || null,
     };
     const buyer = game.traders[trade.from];
     const seller = game.traders[trade.to];
@@ -948,6 +1155,23 @@ function updateHeatFromHistory(game) {
   game.heat = next;
 }
 
+function settleInformationCovenants(game) {
+  currentObligations(game).filter((entry) => entry.kind === "information-exclusivity").forEach((covenant) => {
+    const causalTrades = game.history.filter((trade) => trade.day === game.day && trade.infoId === covenant.infoId);
+    if (causalTrades.some((trade) => trade.from === covenant.creditorId)) covenant.buyerUsed = true;
+    if (covenant.breached && causalTrades.some((trade) => trade.from === covenant.breachPartyId)) {
+      covenant.detected = true;
+      game.relationships[covenant.creditorId] -= 2;
+      const evidence = recordEvidence(game, "information-exclusivity-detected", { obligationId: covenant.id, infoId: covenant.infoId, buyerId: covenant.creditorId, thirdPartyId: covenant.breachPartyId });
+      covenant.evidenceIds.push(evidence.id);
+    }
+    if (game.day < covenant.expiresDay) return;
+    covenant.status = covenant.breached ? (covenant.detected ? "breached-detected" : "breached-undetected") : "fulfilled";
+    covenant.settledDay = game.day;
+    if (!covenant.breached && covenant.buyerUsed) createBadge(game, { id: "exclusive", title: "EXCLUSIVE", summary: "Sold a scarce lead and kept the distribution promise while the buyer used it.", evidenceIds: covenant.evidenceIds });
+  });
+}
+
 export function resolveNoonMarket(current) {
   const game = clone(current);
   if (game.phase !== "noon" || game.marketResolved || game.ended) return game;
@@ -959,6 +1183,7 @@ export function resolveNoonMarket(current) {
   applyExperienceFirstLearning(game);
   markInboundSettlement(game);
   updateHeatFromHistory(game);
+  settleInformationCovenants(game);
   game.marketResolved = true;
   game.playerOrders = resetOrders();
   game.log.unshift(`Day ${game.day} noon market settled: ${game.marketOutcome.length} trade(s).`);
@@ -1036,6 +1261,7 @@ function settleInformationResale(game) {
   game.npcMemory[deal.buyerId].knownHoldings[deal.info.item] = {
     holderId: deal.info.subjectId, learnedDay: game.day,
     source: `bought through ${SOCIAL_GRAPH[deal.sellerId][deal.buyerId].channel}`,
+    infoId: deal.info.id,
   };
   game.informationTrades.push({ day: game.day, infoId: deal.info.id, from: deal.sellerId, to: deal.buyerId, price: deal.price });
   recordEvidence(game, "information-resold", { infoId: deal.info.id, sellerId: deal.sellerId, buyerId: deal.buyerId, price: deal.price, channel: "private", audienceSize: deal.info.knownBy.length });
@@ -1052,6 +1278,7 @@ function consumeConfiguredInputs(game) {
       const revenue = hadIce ? business.serviceRevenueWithIce : business.serviceRevenueBase;
       if (Number(revenue) > 0) {
         trader.sardines += Number(revenue);
+        recordEvidence(game, "world-consequence", { consequence: "outside-revenue", actorId: traderId, amount: Number(revenue), inputUsed: hadIce ? "Ice Block" : null });
         game.log.unshift(`The Bar closes service with ${revenue}🥫 of outside-customer revenue${hadIce ? " after a full cold-drink service" : " despite running short of ice"}.`);
       }
     }
@@ -1061,6 +1288,7 @@ function consumeConfiguredInputs(game) {
       if (item) {
         takePerishableAge(game, trader, item);
         trader.inventory = removeOne(trader.inventory, item);
+        recordEvidence(game, "world-consequence", { consequence: "business-consumption", actorId: traderId, item });
         game.log.unshift(`${trader.name}'s ${labelShort(item)} ${business.consumeText || "is used up by sunset"}.`);
       }
     }
@@ -1069,6 +1297,7 @@ function consumeConfiguredInputs(game) {
       if (!trader.inventory.includes(item)) return;
       takePerishableAge(game, trader, item);
       trader.inventory = removeOne(trader.inventory, item);
+      recordEvidence(game, "world-consequence", { consequence: "business-consumption", actorId: traderId, item });
       game.log.unshift(`${trader.name} uses ${labelShort(item)} during today's business.`);
     });
 
@@ -1079,6 +1308,7 @@ function consumeConfiguredInputs(game) {
         takePerishableAge(game, trader, item);
         trader.inventory = removeOne(trader.inventory, item);
         trader.sardines += proceeds;
+        recordEvidence(game, "world-consequence", { consequence: "outside-sale", actorId: traderId, item, proceeds });
         game.log.unshift(`${trader.name} sells ${labelShort(item)} to ${business.outsideBuyer || "ordinary outside customers"} for ${proceeds}🥫 after the public market closes.`);
       }
     }
@@ -1098,11 +1328,13 @@ function settleBusinessArrivals(game) {
     const rate = Number(business.arrivalCostRate || 0);
     const cost = rate > 0 ? Math.max(1, Math.round(valueOf(item) * rate)) : 0;
     if (trader.sardines < cost) {
+      recordEvidence(game, "world-consequence", { consequence: "arrival-unfunded", actorId: traderId, item, cost, cash: trader.sardines });
       game.log.unshift(`${trader.name} cannot fund the next ${labelShort(item)} arrival tonight.`);
       return;
     }
     trader.sardines -= cost;
     trader.inventory.push(item);
+    recordEvidence(game, "world-consequence", { consequence: "business-arrival", actorId: traderId, item, cost });
     const verb = traderId === "dog" ? "scavenges" : traderId === "fishmonger" ? "sources" : "unloads";
     game.log.unshift(`${trader.name} ${verb} ${labelShort(item)} for tomorrow${cost ? ` at a ${cost}🥫 sourcing cost` : ""}.`);
   });
@@ -1146,7 +1378,13 @@ function transformPlayerToAnimal(game) {
     note: "Former legal identity. The current animal form cannot directly claim this estate.",
   });
   game.obligations.forEach((obligation) => {
-    if (obligation.debtorLifeId === oldLifeId && ["open", "overdue"].includes(obligation.status)) obligation.status = "estate";
+    if (obligation.debtorLifeId !== oldLifeId || !["open", "overdue"].includes(obligation.status)) return;
+    if (obligation.kind === "secured-loan") {
+      game.traders.vale.inventory.push(obligation.collateral);
+      addPerishableAge(game, game.traders.vale, obligation.collateral, obligation.collateralAge);
+      obligation.status = "seized";
+    } else if (obligation.kind === "information-exclusivity") obligation.status = "ended";
+    else obligation.status = "estate";
   });
   player.sardines = 0;
   player.inventory = [];
@@ -1190,13 +1428,14 @@ function settleSustenance(game) {
   if (creditorId) {
     const creditor = game.traders[creditorId];
     creditor.sardines -= SUSTENANCE_PER_DAY;
-    createObligation(game, {
+    const obligation = createObligation(game, {
       kind: "meal-credit",
       creditorId,
       amount: SUSTENANCE_PER_DAY,
       dueDay: game.day + 2,
       note: "Food advanced at sunset.",
     });
+    teachCredit(game, obligation, game.decisionEvidence.at(-1), `${creditor.name} advanced ${SUSTENANCE_PER_DAY}🥫 for food, due Day ${obligation.dueDay}.`);
     game.stats.creditUsed += 1;
     game.playerState.lastMeal = { day: game.day, source: "credit", creditorId };
     recordEvidence(game, "sustenance", { source: "credit", creditorId, amount: SUSTENANCE_PER_DAY });
@@ -1269,6 +1508,7 @@ export function advancePhase(current) {
     return game;
   }
   if (game.phase === "morning") {
+    if (game.actionsRemaining > 0) recordEvidence(game, "phase-ended-with-unused-actions", { phase: "morning", unusedActions: game.actionsRemaining, cash: game.traders.player.sardines, openObligationCount: currentObligations(game).length });
     game.lockedPlayerOrders = snapshotPlayerOrders(game);
     game.phase = "noon";
     game.actionsRemaining = 0;
@@ -1284,12 +1524,14 @@ export function advancePhase(current) {
     return game;
   }
   if (game.phase === "afternoon") {
+    if (game.actionsRemaining > 0) recordEvidence(game, "phase-ended-with-unused-actions", { phase: "afternoon", unusedActions: game.actionsRemaining, cash: game.traders.player.sardines, openObligationCount: currentObligations(game).length });
     game.phase = "sunset";
     game.actionsRemaining = 0;
     game.lastInteraction = null;
     return game;
   }
   if (game.phase === "sunset") {
+    if (duePrivateMatters(game).length) return game;
     settleSustenance(game);
     markOverdueObligations(game);
     applyPerishables(game);
@@ -1378,9 +1620,13 @@ function talkTo(game, targetId) {
   const profile = NPC_PROFILES[targetId];
   const count = game.talkCounts[targetId] || 0;
   const stages = profile?.talkStages || [];
+  const hasNewStage = count < stages.length;
   const stage = stages[Math.min(count, Math.max(0, stages.length - 1))] || { text: `${target.name} spends a little time with you.` };
   game.talkCounts[targetId] = count + 1;
-  game.relationships[targetId] = (game.relationships[targetId] || 0) + 1;
+  const gainKey = `${game.day}:${targetId}`;
+  const relationshipGain = hasNewStage && !game.talkGainDays[gainKey] ? 1 : 0;
+  game.relationships[targetId] = (game.relationships[targetId] || 0) + relationshipGain;
+  if (relationshipGain) game.talkGainDays[gainKey] = true;
 
   let note = null;
   if (stage.info) {
@@ -1412,6 +1658,8 @@ function talkTo(game, targetId) {
     text: stage.text,
     note: note?.text || null,
     relationship,
+    relationshipGain,
+    informationId: note?.id || null,
   };
   game.log.unshift(`Conversation with ${target.name}: ${stage.text}`);
 }
@@ -1457,6 +1705,9 @@ export function performFreeAction(current, action, targetId) {
     return game;
   }
 
+  const actionsBefore = game.actionsRemaining;
+  const openingCash = game.traders.player.sardines;
+  const relationshipBefore = game.relationships[targetId] || 0;
   if (action === "talk") talkTo(game, targetId);
   else if (action === "investigate") investigate(game, targetId);
   else return game;
@@ -1472,7 +1723,12 @@ export function performFreeAction(current, action, targetId) {
     precision: observed?.precision || null,
     confidence: observed?.confidence || null,
     freshness: observed?.freshness || null,
+    actionsBefore,
+    actionsAfter: game.actionsRemaining,
+    openingCash,
+    relationshipBefore,
     relationshipAfter: game.relationships[targetId],
+    knownInfoIds: game.information.filter((info) => info.subjectId === targetId).map((info) => info.id),
   });
   return game;
 }
