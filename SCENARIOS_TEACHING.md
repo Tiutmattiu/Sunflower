@@ -1,25 +1,51 @@
 # Sunflower — Scenario Teaching Layer
 
-> Companion to `GAME_DESIGN.md`.
->
-> Teaching rule: **experience first, terminology second**. A player should never need a trading background to understand a decision. The game presents an ordinary concrete problem in Sunflower language; after the player acts and consequences begin to unfold, the game names the real-world concept, explains why it mattered, and records the behaviour for diagnosis / badges.
+> Status: **current source of truth for teaching coverage, realised cases, badge logic, and diagnosis evidence requirements.** This file is not world-history canon and should not revive obsolete NPC identities or old lore hypotheses.
 
-## Teaching and assessment contract
+Teaching rule:
 
-1. **Play** — a situation and choice expressed in ordinary Sunflower language.
-2. **World consequence** — NPCs, prices, credit, inventory, access and later opportunities respond systemically.
-3. **Optional `?` concept discovery** — after the consequence, the player may open a timely explanation. It never blocks play or reveals the right answer in advance.
-4. **Badge / case** — only when a distinctive realised story or market pattern completes. It is evidence, not automatic praise.
-5. **Notebook** — durable memory of experienced situations, concepts and supporting evidence.
-6. **Final diagnosis** — synthesis across the run, never the player's first exposure to the concept.
+> **Experience first, terminology second.**
 
-These scenarios are implementation and coverage targets, not disposable idea-bank material. Their exact fiction need not become rigid quests, but their meaningful behaviour must be mechanically representable, observable, diagnosable and capable of timely learning feedback.
+A player should not need finance vocabulary before acting. The game presents an ordinary problem, the world responds, and only afterwards may the player open a concise concept explanation.
 
-The game must distinguish **successful outcome** from **sound process**. A reckless poorly informed trade can make a large profit: good outcome, poor process. A well-reasoned trade can lose money: poor outcome, sound process. Wealth alone cannot determine decision quality.
+---
 
-## Canonical coverage families
+## 1. Teaching and assessment contract
 
-These are coverage families, not sixteen scripted quests. One scenario may cover several families.
+1. **Play** — a concrete situation in Sunflower language.
+2. **World consequence** — prices, inventory, obligations, access, relationships, information and later opportunities respond.
+3. **Optional `?` concept discovery** — after consequence, never before as a “correct answer” hint.
+4. **Badge / case** — only when a distinctive causal story actually completes.
+5. **Notebook** — durable record of what happened, where the information came from, and why the concept mattered.
+6. **Final diagnosis** — synthesis across independent decisions, not first exposure to a concept.
+
+Core assessment rules:
+
+- Outcome != Process.
+- Style != Skill.
+- No evidence != average.
+- Insufficient evidence remains insufficient evidence.
+- Repeated clicks inside one event do not become independent evidence.
+- Contradictory behaviour remains visible.
+- Badges are realised market stories, not points or moral praise.
+- A diagnostic choice is meaningful only when the player had at least one genuine alternative.
+
+For assessment-relevant events, preserve enough factual context to know:
+
+- what options were actually visible;
+- what the player knew at commitment;
+- what resources were available;
+- what was committed;
+- what alternative channels were legally / physically available;
+- what happened later.
+
+Do not infer love, greed, enlightenment, moral worth or hidden motive from action alone.
+
+---
+
+## 2. Canonical coverage families
+
+These are coverage families, not sixteen scripted quests. One situation may cover several families.
 
 1. Order / settlement / execution basics
 2. Arbitrage & alpha decay
@@ -32,484 +58,743 @@ These are coverage families, not sixteen scripted quests. One scenario may cover
 9. Quality / deception / due diligence / adverse selection
 10. Market making / spread / inventory risk
 11. Execution / market impact / order visibility / venue choice
-12. Auctions / private vs common value / winner's curse
+12. Auctions / private vs common value / winner’s curse
 13. Confidence runs / reflexivity / fire-sale spiral
 14. Leverage / crowding / position sizing / luck
 15. Price vs value / reference points / disposition
 16. Institutions / traceability / formal vs informal markets
 
-Assessment rules:
-
-- Outcome != Process.
-- Style != Skill.
-- No evidence != average.
-- Insufficient evidence remains insufficient evidence.
-- Confidence grows from repeated independent decisions in varied contexts, not button counts.
-- Contradictory behaviour remains visible rather than being averaged away.
-- Badges are realised stories, not points.
-
-Treat **You Got the Flower and Wrecked Everything Else** as the capstone diagnosis situation. Do not build the final archetype taxonomy from these families.
+The final game should provide multiple independent contexts for important diagnosis dimensions. Do not let one NPC monopolise a concept.
 
 ---
 
-## Scenario 1 — Selling Tomorrow’s Lime
+# CURRENT / NEAR-CURRENT AUTHORED CASES
 
-### Game-language situation
-Mechanic needs a Lime Crate next round and will pay well. You do not own one. Bar Apprentice has one but has not promised to sell it. Mechanic trusts you because you settled two earlier deals.
+## Scenario 1 — Aspen’s Lime Promise
 
-Possible actions:
-- promise delivery and take a deposit;
-- promise delivery without taking money now;
-- first secure the Lime from Bar, then sell it;
-- offer Mechanic a contract conditional on obtaining Lime;
-- walk away.
+### Situation
+Aspen needs one Lime Crate before departure. The player does not own one but may know a plausible source.
 
-### What the world should model
-A promise of future delivery creates an **obligation** even if the player does not currently own the good. Counterparties price the risk that the player may fail to source it. Better credit history permits more aggressive promises and lower collateral requirements.
+Possible actions can include:
 
-If Bar later refuses to sell, the player has **sourcing risk**. In a formal contract, failure can trigger agreed penalties / collateral / authority records. In an informal contract, consequences depend on relationship, reputation and bargaining power.
+- sign the future-delivery promise;
+- source first, then sell;
+- decline;
+- seek alternate financing / sourcing when later systems permit it.
 
-### Real-world concepts revealed after play
-- forward / future-delivery contract;
-- trade credit / advance payment;
-- counterparty risk;
+### World model
+A binding promise can exist before the seller owns the underlying good. Aspen’s deposit and reserved balance create real sourcing pressure. Failure is a real default, not merely a missed shop interaction.
+
+### Concepts
+
+- future / forward delivery;
 - sourcing risk;
+- counterparty risk;
+- advance payment;
 - creditworthiness;
-- collateral;
 - default.
 
-### Badge ideas
-- **Sold It Before You Had It** — complete a profitable future-delivery contract without initially owning the good.
-- **Promise Kept** — settle a difficult obligation on time.
-- **Paper Merchant** — repeatedly trade obligations rather than inventory.
-- **Empty Hands, Full Book** — maintain several outstanding delivery promises at once without defaulting.
+### Implemented badge
+
+**SOLD IT BEFORE YOU HAD IT**
+
+Award only if:
+
+1. the future-delivery contract became binding;
+2. the player did not own the Lime at commitment;
+3. the player later sourced / possessed it;
+4. the player delivered on time.
+
+**Profit is not required.**
+
+Future possible cases may distinguish difficult on-time performance, multiple promises, or more complex conditional contracts, but do not award them until the mechanics exist.
 
 ---
 
-## Scenario 2 — The Cod Route Everyone Notices
+## Scenario 2 — Temporary Price Gap
 
-### Game-language situation
-Fishmonger sells Salted Cod cheaply. Vale privately pays much more. You buy from one and resell to the other. It works twice. Other traders begin noticing your movements.
+### Situation
+Octopus publicly sells a marine / preserved good at a price that another actor, often Yasmin or another specialised buyer, may value more highly.
+
+The opportunity is useful only while supply, demand and information remain favourable.
 
 Possible actions:
-- keep the route secret;
+
+- exploit the spread;
+- buy too much and move the market;
+- investigate first;
 - sell the information;
-- lie about what Vale is buying;
-- lock up supply through contracts;
-- buy aggressively before competitors learn;
-- stop because the opportunity is already crowded.
+- keep the route private;
+- stop when the edge decays.
 
-### What the world should model
-The opportunity must decay. Buying Cod reduces cheap supply; selling to Vale satisfies her need; observed profits attract competitors. Competition raises the buy price and/or lowers the resale price until the spread closes.
+### Required world model
 
-Selling the information converts an informational advantage into immediate cash but accelerates competition. False information can redirect competitors temporarily, but if the lie is attributable the player loses integrity and may face retaliation.
+The spread must be capable of closing through:
 
-### Real-world concepts
+- depleted cheap supply;
+- satisfied buyer demand;
+- visible trading / information diffusion;
+- competition;
+- changed prices or inventory.
+
+### Concepts
+
 - arbitrage;
 - spread;
-- market efficiency;
-- information diffusion;
-- market impact;
 - alpha decay;
-- crowded trade;
-- predatory / anticipatory trading.
+- market impact;
+- crowding;
+- information diffusion.
 
-### Badge ideas
-- **First Through the Gap** — exploit a temporary price discrepancy before anyone else.
-- **Closed the Spread** — make enough trades that your own activity destroys the arbitrage.
-- **Sold the Map** — sell a profitable route to another trader.
-- **False Trail** — profit by deliberately misdirecting a competitor, with later detection risk.
+### Coverage status
+
+**Partial.** Public market and information substrate exist; a fully realised repeatable alpha-decay case still requires deeper market mechanics.
+
+Possible future badges:
+
+- First Through the Gap
+- Closed the Spread
+- Sold the Map
+
+Do not implement these from simple one-click profit counters.
 
 ---
 
-## Scenario 3 — The Bad Tangerine Pitch
+## Scenario 3 — The Bad Tangerine
 
-### Game-language situation
-Mechanic wants lime. You possess a bad tangerine. You never literally say “this is a lime”; you say something technically vague that you know Mechanic will probably misunderstand.
+### Situation
+Aspen needs Lime. The player has a bad tangerine or another materially different substitute and can choose how to describe it.
 
 Possible actions:
-- explicitly tell the truth;
-- exaggerate quality;
-- use careful ambiguity;
-- directly lie;
+
+- tell the truth;
+- disclose uncertainty;
+- exaggerate;
+- use technically true ambiguity;
+- lie directly;
 - allow inspection;
 - refuse inspection;
-- compensate later if discovered;
-- deny responsibility.
+- compensate later.
 
-### What the world should model
-Deception is not a single binary flag. The system should record what the player claimed, what they knew, what the counterparty reasonably inferred, how verifiable the claim was, whether inspection was permitted, and what happened after discovery.
+### Required world model
 
-The best confidence players should be able to maintain credibility by mixing truth with ambiguity, choosing hard-to-verify claims, preserving clean relationships, and strategically compensating victims.
+Deception is not one binary `cheat` flag.
 
-### Real-world concepts
-- misrepresentation;
-- omission / strategic ambiguity;
+Evidence should eventually distinguish:
+
+- what the player knew;
+- what they actually claimed;
+- what the counterparty could reasonably infer;
+- whether inspection was offered / refused;
+- whether a warranty or definition existed;
+- later discovery;
+- later compensation / denial.
+
+### Concepts
+
 - adverse selection;
+- misrepresentation;
+- omission;
 - due diligence;
-- warranties / inspection rights;
-- reputation capital;
-- lemons problem.
+- inspection rights;
+- warranties;
+- reputation capital.
 
-### Badge ideas
-- **Snake Oil** — knowingly sell a materially misleading product claim.
-- **Technically True** — complete a deceptive sale without making a literally false statement.
-- **Read the Fine Print** — avoid being deceived by inspecting or contractually defining quality.
-- **Confidence Artist** — sustain repeated deception without losing market access.
+### Coverage status
+
+**Future target.** Do not pretend the current hard-coded deception counter is sufficient.
+
+Possible future badges:
+
+- Snake Oil
+- Technically True
+- Read the Fine Print
 
 ---
 
 ## Scenario 4 — Rich on Paper, Broke Today
 
-### Game-language situation
-You have only 1 sardine in cash, but you own a valuable Blue Marble and somebody formally owes you 8 sardines in two rounds. A deal available right now costs 6.
+### Situation
+The player has little current cash but owns valuable goods, a receivable / Juan claim, information, collateral, relationships, or future income.
 
-Possible actions:
-- borrow cheaply from a formal lender;
-- borrow expensively and privately;
-- pledge the Marble as security;
-- sell the receivable for less than its face value;
-- sell the Marble quickly at a discount;
-- abandon the opportunity and preserve liquidity.
+A time-sensitive opportunity requires liquidity now.
 
-### What the world should model
-A player can be economically healthy but unable to pay today. Assets differ in liquidity. Receivables and goods may be collateral or may need to be sold at a discount. In stressful conditions, lenders may demand more collateral precisely when the player can least afford it.
+Possible routes may include:
 
-### Real-world concepts
+- Sterling relationship credit;
+- Yasmin secured borrowing;
+- sell a visible owned good;
+- accept an inbound bid;
+- sell information;
+- sell / factor a known receivable;
+- future-delivery advance;
+- abstain and preserve liquidity.
+
+### World model
+
+Reference wealth and spendable liquidity are different. A claim may be valuable to its holder while still being illiquid. Collateral can preserve ownership upside at the cost of financing terms. A player can be solvent and unable to pay today.
+
+### Concepts
+
 - liquidity vs solvency;
 - collateral;
-- secured lending;
 - haircut;
-- receivables financing / factoring;
+- secured lending;
+- factoring / receivables finance;
 - fire sale;
-- leverage;
-- liquidity premium.
+- opportunity cost.
 
-### Badge ideas
-- **Rich, Broke** — own positive net assets while unable to meet an immediate cash need.
-- **Pawn the Marble** — finance a trade with collateral.
-- **Fire Sale** — sell a valuable asset materially below normal value because you need cash now.
-- **Liquidity Surgeon** — solve a cash shortage without destroying long-term value.
+### Current coverage
 
----
+**Strong partial.** Sterling credit and Yasmin secured borrowing are implemented; Juan transferable claims are the next major extension.
 
-## Scenario 5 — Dirty Sardines, Clean Contract
+Possible future cases:
 
-### Game-language situation
-Authority distrusts you after black-market activity. You have money, but counterparties question where it came from. A respected trader offers a formal deal that could make your money look connected to legitimate business.
+- Rich, Broke
+- Pawn the Marble
+- Fire Sale
+- Bridge Builder
 
-### What the world should model
-The game should not treat one transaction as a magic “clean money” button. Authority risk should depend on transaction history, counterparties, traceability, suspicious patterns, unexplained wealth and individual inspectors. Using respected intermediaries can reduce suspicion, but layering transactions can itself become suspicious.
-
-### Real-world concepts
-- money laundering;
-- layering / integration;
-- know-your-customer style scrutiny;
-- source-of-funds risk;
-- regulatory arbitrage;
-- reputation laundering.
-
-### Badge ideas
-- **Washed in Daylight** — route suspicious proceeds through apparently legitimate transactions.
-- **Too Clean** — trigger scrutiny by making an implausibly neat laundering pattern.
-- **Respectable Company** — improve access by associating with high-reputation counterparties.
+Only award when the causal sequence is actually observed.
 
 ---
 
-## Scenario 6 — Bell Knows Tomorrow’s Ban
+## Scenario 5 — Public Rail or Dima
 
-### Game-language situation
-Inspector Bell privately tells you that Whale Oil will be restricted next round. Nobody else knows yet. You can trade on it, sell the information, verify it, or ignore it.
+### Situation
+The player wants the same economic outcome but formal access, traceability, form, privacy or enforcement constraints change which venue is usable.
+
+Possible routes can include:
+
+- public Octopus-cleared transaction;
+- direct bilateral deal;
+- Sterling relationship proxy;
+- Dima formal-market proxy;
+- Dima informal settlement / guarantee;
+- abstain.
+
+### World model
+
+Public and informal markets exist for different reasons. Informal does not mean automatically criminal or immoral. Formal does not mean universally safer or accessible.
+
+### Concepts
+
+- institutions;
+- venue choice;
+- traceability;
+- transaction cost;
+- proxy / agency;
+- informal enforcement;
+- regulatory / institutional exclusion.
+
+### Coverage status
+
+**Partial now, core next-stage target.**
+
+Do not revive the old “Dirty Sardines / magic clean-money transaction” framing as current canon.
+
+---
+
+## Scenario 6 — Private Event Information
+
+### Situation
+The player receives a genuinely private, material lead about a restriction, shipment, buyer need, venue closure or other event.
 
 Possible actions:
-- buy oil because you expect scarcity;
-- sell oil because you expect holders to panic;
-- buy related substitutes instead;
+
+- verify;
+- exploit directly;
+- buy a substitute;
 - sell the information;
-- leak it publicly;
-- trade very subtly;
-- do nothing because the source may be unreliable.
+- sell exclusive;
+- share as a favour;
+- leak publicly;
+- do nothing.
 
-### What the world should model
-Private information is not automatically useful: the player still has to interpret how other traders will react. Regulation may change supply, demand, forced selling, substitutes and black-market prices differently. Trading too aggressively can reveal that the player knew something.
+### World model
 
-Legality should depend on Sunflower’s institutional rules rather than copying one jurisdiction mechanically, but the game can teach the general idea of **material non-public information** and misuse of privileged information.
+Information is not automatically useful. The player must interpret the second-order response of other traders. Actor belief must remain separate from engine truth.
 
-### Real-world concepts
-- insider information;
-- material non-public information;
+### Concepts
+
+- private information;
 - event-driven trading;
-- regulatory shock;
 - second-order effects;
-- information leakage;
-- suspicious trading patterns.
+- leakage;
+- verification;
+- materiality;
+- information footprint.
 
-### Badge ideas
-- **Heard It Before the Bell** — profit from genuinely private regulatory information.
-- **Wrong Sign** — correctly obtain private news but trade the wrong direction.
-- **Quiet Hands** — exploit private information without creating an obvious footprint.
-- **Megaphone** — deliberately release private information to change the market.
+### Coverage status
+
+Information objects and provenance substrate exist. Event-shock depth remains future work.
 
 ---
 
-## Scenario 7 — Your Best Customer Becomes Your Rival
+## Scenario 7 — Dima Learns the Business
 
-### Game-language situation
-You sell useful reports to Fishmonger. He learns from them. Eventually he stops buying and begins selling competing reports for less.
+### Situation
+The player repeatedly sells useful market information or routes to Dima. The information may help Dima become a better intermediary or competitor.
 
 Possible actions:
-- keep selling and accept competition;
-- charge more while the information is unique;
-- sell delayed reports;
-- sign exclusivity;
-- give different clients different information;
-- stop educating a dangerous future competitor;
-- collaborate and split the market.
 
-### What the world should model
-Knowledge transfer changes capabilities. Information buyers learn. A customer can become a competitor. Exclusivity has value only when it can actually be enforced. Informal markets may rely on reputation rather than legal enforcement.
+- ordinary sale;
+- exclusivity premium;
+- favour / share;
+- sell delayed information;
+- stop educating a dangerous buyer;
+- breach exclusivity;
+- collaborate.
 
-### Real-world concepts
+### World model
+
+Knowledge transfer can change another actor’s capability. A customer can become a competitor. Exclusivity has value only if temporary distribution scarcity actually matters.
+
+### Concepts
+
 - information economics;
-- commoditisation of research;
 - exclusivity;
-- non-compete / confidentiality arrangements;
-- intellectual capital;
+- commoditisation of research;
+- learning;
 - first-mover advantage;
-- competition and barriers to entry.
+- barriers to entry.
 
-### Badge ideas
-- **Taught Your Rival** — create a competitor by repeatedly selling them useful information.
-- **Research House** — earn meaningful income from information rather than goods.
-- **Exclusive** — profit from selling limited-access information.
+### Implemented badge
+
+**EXCLUSIVE**
+
+Award only when:
+
+- the exclusivity premium was received;
+- the player did not breach through expiry;
+- the exclusive buyer actually used the information during the window.
+
+Breach truth and breach detection are separate.
 
 ---
 
-## Scenario 8 — Pay the Debt or Take the Deal
+## Scenario 8 — Pay Sterling or Take the Deal
 
-### Game-language situation
-You promised Bar 8 sardines today. You have exactly 8. A nearly irresistible opportunity also costs 8 now and may return much more later. Bar refuses to wait.
+### Situation
+A player owes Sterling today but also sees a high-return opportunity requiring the same cash.
 
-Possible actions:
-- repay as promised;
-- default and take the opportunity;
-- renegotiate;
-- find bridge financing;
+Possible actions may include:
+
+- repay;
+- default deliberately;
+- seek bridge financing;
 - sell another asset;
-- split the difference if possible;
-- walk away from the new opportunity.
+- pledge collateral;
+- renegotiate if the relationship / system permits;
+- abandon the new opportunity.
 
-### What the world should model
-A profitable future does not erase a missed promise today. A rational economic decision for the player may still be a harmful counterparty decision. Diagnosis must be multidimensional: capital allocation may be excellent while reliability is poor.
+### World model
 
-Default should change future credit terms even if the player later becomes rich. Some counterparties may forgive profitable opportunism; others care strongly about punctual settlement.
+A profitable future does not erase a missed promise today. Capital allocation and reliability can point in opposite directions.
 
-### Real-world concepts
-- opportunity cost;
-- default;
+### Concepts
+
+- strategic default;
 - maturity mismatch;
-- refinancing / bridge financing;
-- covenant discipline;
-- time value of liquidity;
-- strategic default.
+- opportunity cost;
+- bridge financing;
+- covenant / obligation discipline;
+- time value of liquidity.
 
-### Badge ideas
-- **Broke the Promise, Made the Trade** — deliberately default to fund a higher-return opportunity.
-- **Sacred Word** — honour a costly obligation despite a tempting alternative.
-- **Bridge Builder** — finance both obligations without default.
+### Coverage status
+
+**Partial.** Obligations and defaults exist; richer competing-liquidity situations are still needed for diagnosis.
+
+Possible future cases:
+
+- Broke the Promise, Made the Trade
+- Sacred Word
+- Bridge Builder
+
+Do not treat either repayment or strategic default as automatically morally correct.
 
 ---
 
-## Scenario 9 — Everyone Thinks You’re Broke
+## Scenario 9 — Confidence Run
 
-### Game-language situation
-A false rumour says you cannot pay your debts. Traders demand cash, lenders ask for more collateral, and credit disappears. You were healthy before the rumour; the reaction itself may ruin you.
+### Situation
+A rumour says the player or another trader cannot meet obligations. Credit terms worsen, counterparties demand cash, and a belief about liquidity can become the cause of real distress.
 
 Possible actions:
-- publish proof of assets;
-- repay some debts early;
-- ask a trusted trader to vouch for you;
+
+- publish verifiable evidence;
+- repay early;
 - obtain emergency liquidity;
+- ask a trusted counterparty to vouch;
 - sell assets;
-- attack the rumour source;
-- spread counter-rumours;
-- hide weakness and bluff confidence.
+- extend claims;
+- bluff;
+- do nothing.
 
-### What the world should model
-Beliefs about liquidity must be separate from actual liquidity. Counterparties react to what they think is true. If enough of them withdraw credit simultaneously, a solvent player can be forced into fire sales and become genuinely distressed.
+### Required world model
 
-### Real-world concepts
-- run / funding run;
-- self-fulfilling liquidity crisis;
-- confidence shock;
+Belief about solvency / liquidity must be separate from actual solvency / liquidity. Counterparty reaction can create a self-reinforcing fire-sale spiral.
+
+### Concepts
+
+- funding run;
+- reflexivity;
+- fire sale;
 - collateral call;
-- fire-sale spiral;
-- contagion;
-- lender of last resort / emergency liquidity.
+- confidence shock;
+- contagion.
 
-### Badge ideas
-- **Run on You** — trigger a self-reinforcing withdrawal of credit.
-- **Still Solvent** — survive a confidence crisis without default.
-- **Last Lender** — rescue another trader from a run and gain influence.
-- **Rumour Became Reality** — begin solvent and end distressed because others believed you were distressed.
+### Coverage status
+
+**Future target.** Do not award run badges until this causal system exists.
 
 ---
 
-## Scenario 10 — You Got the Flower and Wrecked Everything Else
+## Scenario 10 — Juan’s IOU Changes Hands
 
-### Game-language situation
-You acquire the sunflower through high-cost borrowing, deception, bribery, defaults and aggressive event bets. The target is achieved, but your finances and relationships are wrecked.
+### Situation
+Juan owes money. The same IOU appears as:
 
-### What the world should model
-Winning the stated objective must be separate from trading quality. Final diagnosis should use multiple dimensions and distinguish tactical brilliance from sustainability.
+- Juan’s liability;
+- Sterling / Dima / Yasmin / player receivable;
+- a discounted transferable asset;
+- a restructuring problem;
+- a possible claim on future botanical output.
 
-Possible dimensions:
-- objective execution;
-- valuation discipline;
-- liquidity management;
-- credit discipline;
-- information edge;
-- negotiation efficiency;
-- risk appetite;
-- position sizing;
-- adaptability;
+Possible actions can include:
+
+- buy the claim at a discount;
+- sell it onward;
+- accept a Juan buyback;
+- collect at maturity;
+- extend maturity;
+- force liquidation;
+- decline because liquidation destroys future recovery value.
+
+### Required world model
+
+The claim is not a fake inventory trinket. It is one obligation with a debtor and changing holder.
+
+Juan’s botanical productive assets make maturity meaningful: forcing immediate liquidation can destroy future value that might otherwise repay the claim.
+
+### Concepts
+
+- receivable;
+- distressed debt;
+- maturity;
+- restructuring;
+- secondary claim market;
+- recovery value;
+- forced liquidation;
+- creditor coordination;
+- debt-as-holder-asset.
+
+### Coverage status
+
+**Next major implementation target.**
+
+Badge title should remain unresolved until the realised story is stable; do not freeze copy in code too early.
+
+---
+
+## Scenario 11 — Yasmin’s Auction
+
+### Situation
+Yasmin offers an asset whose value may contain both private utility and uncertain common / resale value.
+
+Possible actions:
+
+- inspect;
+- gather provenance;
+- finance a bid;
+- bid conservatively;
+- bid aggressively;
+- abstain.
+
+### Required world model
+
+The game must distinguish:
+
+- private value;
+- common / resale value uncertainty;
+- other bidders’ information;
+- winner’s curse;
+- access / provenance requirements.
+
+The Sunflower’s value to the player must **not** be reduced to “what other bidders stop paying”.
+
+### Coverage status
+
+**Future Market Depth target.** Existing auction substrate is not yet the intended v2 case.
+
+---
+
+## Scenario 12 — Wong Makes a Market
+
+### Situation
+Wong repeatedly quotes small bid / ask spreads on standard goods while carrying inventory and household burn.
+
+Possible actions for player interaction:
+
+- hit his ask;
+- sell into his bid;
+- wait;
+- compete with a quote;
+- exploit stale inventory;
+- observe the spread widen under inventory stress.
+
+### Required world model
+
+Market making must expose:
+
+- spread;
+- inventory risk;
+- working capital;
+- adverse selection;
+- quote withdrawal / widening.
+
+### Coverage status
+
+**Future Market Depth target.**
+
+---
+
+## Scenario 13 — Negotiation Has an Outside Option
+
+### Situation
+Wong, Dima, Yasmin or another counterparty opens with a strong number or time pressure, but the player may have another route.
+
+Possible actions:
+
+- counter;
+- walk;
+- use alternate supplier / venue;
+- improve information;
+- accept because the outside option is worse.
+
+### Concepts
+
+- BATNA;
+- reservation price;
+- anchoring;
+- concession discipline;
+- option value.
+
+### Coverage status
+
+**Future Market Depth target.** Do not infer negotiation skill from a single accepted price without knowing the available alternatives.
+
+---
+
+## Scenario 14 — Everyone Copies the Leveraged Trade
+
+### Situation
+A profitable leveraged strategy becomes crowded. Easy financing makes it appear safer until one shock forces simultaneous selling.
+
+### Required world model
+
+- leverage;
+- collateral;
+- crowding;
+- common funding source;
+- correlated liquidation;
+- reflexive price pressure.
+
+### Coverage status
+
+**Future Market Depth target.** Juan and Yasmin provide natural entry points once claims / leverage are real.
+
+---
+
+## Scenario 15 — You Got the Flower and Wrecked Everything Else
+
+### Situation
+The player acquires the Sunflower while ending near economic / relational ruin, or acquires it through excellent execution but damaging obligations.
+
+### Purpose
+The stated objective and quality of play must remain separable.
+
+A player can display:
+
+- brilliant objective execution;
+- poor liquidity management;
+- strong information practice;
+- weak credit discipline;
+- high relationship cost;
+- good or bad luck.
+
+### Concepts / diagnosis
+
+This is a capstone **diagnosis situation**, not one score.
+
+Possible future realised cases:
+
+- Whatever It Takes
+- Pyrrhic Bloom
+
+Do not implement a moral “bad ending” label merely because relationships or wealth were sacrificed.
+
+---
+
+# 3. Character coverage map
+
+Characters should remain distinct while diagnosis dimensions receive cross-context evidence.
+
+## Aspen
+Primary:
+
+- execution / settlement;
+- future delivery / sourcing;
+- deadline planning;
+- conservative liquidity.
+
+Secondary:
+
+- information timing;
+- position sizing.
+
+## Sterling
+Primary:
+
 - relationship capital;
-- integrity / deception skill;
-- regulatory exposure;
-- sustainability.
+- informal credit;
+- soft information;
+- price vs non-market value;
+- attention allocation.
 
-### Badge ideas
-- **Whatever It Takes** — acquire the sunflower while ending near economic ruin.
-- **Pyrrhic Bloom** — succeed at the objective while destroying most starting economic value.
-- **Black-and-Gold Route** — combine formal and illicit channels in a single winning run.
+Secondary:
 
----
+- service-business working capital;
+- partnership / optionality.
 
-# Additional Scenario Families Inspired by Trading / Business Literature
+## Yasmin
+Primary:
 
-These should be introduced as concrete Sunflower events first. The book / real-world concept belongs in an optional post-event “Why this mattered” layer, not in the decision prompt.
+- collateral / secured finance;
+- provenance;
+- auctions;
+- private placement / capital allocation.
 
-## A. The First Number Wins — Negotiation Anchor
-A trader opens with an absurdly high number. Even if the player rejects it, later counteroffers remain suspiciously close to that first number.
+Secondary:
 
-Concepts: **anchoring**, reservation price, BATNA, concession discipline.
+- private information;
+- institutional capital.
 
-Possible badge: **Unanchored** — walk away or reset a negotiation after a manipulative opening number.
+## Wong
+Primary:
 
-Design inspiration: *Getting to Yes* and negotiation research on BATNA / bargaining; anchoring research can supply the behavioural layer.
+- bargaining;
+- turnover;
+- small-unit economics;
+- working-capital velocity;
+- later market making.
 
-## B. The Deal You Should Walk Away From — BATNA
-A counterparty pressures the player with “take it now or lose it.” The player actually has a quieter alternative elsewhere that is slightly less profitable but much safer.
+Secondary:
 
-Concepts: BATNA, walk-away price, urgency manipulation, option value.
+- salvage / substitution;
+- informal information.
 
-Badge: **Had Somewhere Else to Go**.
+## Juan
+Primary:
 
-## C. Everyone Is Winning — Until They Aren’t
-A leveraged strategy works repeatedly. NPCs copy it. Lenders lower collateral requirements because it appears safe. One shock causes everyone to need cash simultaneously.
+- duration / maturity;
+- leverage;
+- distressed claims;
+- restructuring;
+- position sizing;
+- convex special situations.
 
-Concepts: leverage, crowded trade, margin / collateral spiral, model risk, liquidity feedback.
+Secondary:
 
-Badge: **Genius Until Round 9** or **Deleveraged Before the Crowd**.
+- creditor coordination;
+- runs / forced liquidation;
+- biological productive assets.
 
-Design inspiration: *When Genius Failed* and real liquidity spirals.
+## Dima
+Primary:
 
-## D. Lucky Idiot
-The player makes a reckless, poorly informed bet and earns a huge profit. The game explicitly records the outcome as profitable but the process as weak. Repeating the behaviour may eventually destroy the player.
+- institutions;
+- informal enforcement;
+- proxy / agency;
+- claim transfer;
+- information intermediation;
+- venue choice.
 
-Concepts: luck vs skill, outcome bias, survivorship bias, variance.
+Secondary:
 
-Badge: **Fooled by Sardines**.
+- exclusivity;
+- traceability.
 
-Design inspiration: *Fooled by Randomness*.
+## Octopus
+Octopus provides infrastructure / environment for:
 
-## E. Price Is Not Value
-A fashionable item trades far above its reference / utility value because everybody expects somebody else to pay more. The player can join, avoid, short via a future-delivery obligation if allowed, or provide liquidity.
+- public execution;
+- clearing;
+- settlement receipts;
+- perishability;
+- physical supply;
+- inventory / wholesale pressure.
 
-Concepts: price/value distinction, second-level thinking, contrarianism, bubble dynamics.
-
-Badge: **Paid for the Story**, **Second-Level Thinker**, or **Last Buyer**.
-
-Design inspiration: Howard Marks’ *The Most Important Thing*.
-
-## F. The Tip From a Genius
-A famous successful NPC gives the player a confident tip. The player can follow blindly, verify independently, take a smaller position, or ignore it. The expert may be wrong for reasons unrelated to competence.
-
-Concepts: authority bias, independent judgment, position sizing, uncertainty.
-
-Badge: **Borrowed Conviction** or **Checked the Tape**.
-
-Design inspiration: *Reminiscences of a Stock Operator* and *Market Wizards*.
-
-## G. The Rule Changes Mid-Trade
-The player has a profitable position under current rules. Authority unexpectedly changes eligibility, tariff, settlement or market access. The trade may become unprofitable or impossible.
-
-Concepts: regulatory risk, rule-change risk, political / institutional risk, basis risk.
-
-Badge: **The Rulebook Moved**.
-
-Design inspiration: historical episodes described in *Reminiscences of a Stock Operator* and general market-structure literature.
-
-## H. Make the Market Look Busy
-A sophisticated trader creates misleading apparent interest to attract other traders, then unloads inventory into the induced demand.
-
-The implementation must stay stylised and game-mechanical rather than teaching real-world evasion tactics.
-
-Concepts: bluffing, manipulation, false signalling, distribution, market impact.
-
-Badge: **Painted the Harbour** / **Saw Through the Crowd**.
-
-Design inspiration: market-manipulation sections of *Trading and Exchanges* and *Reminiscences of a Stock Operator*.
-
-## I. The Lemon Market
-Nobody trusts the quality of used / opaque goods. Honest sellers leave because buyers refuse to pay enough; average quality deteriorates further. A trusted inspection / certification service can restore trade.
-
-Concepts: adverse selection, information asymmetry, certification, warranties.
-
-Badge: **Made a Market in Lemons**.
-
-## J. The Lender Who Saves You Owns You
-An emergency lender provides liquidity when nobody else will, at expensive terms or with powerful collateral / influence rights.
-
-Concepts: lender of last resort, distressed financing, bargaining power under stress, liquidity premium.
-
-Badge: **Last Sardine Standing**.
+Octopus is not a seventh karmic diagnostic archetype.
 
 ---
 
-## Badge Philosophy
+# 4. Badge architecture
 
-Badges should primarily recognise **behavioural patterns and notable market events**, not moralise.
+A badge requires a causal sequence and evidence IDs.
 
-A badge is not necessarily praise. Examples:
+Do not award a badge for merely opening a menu or clicking a named action.
 
-- `Snake Oil` — notable deception event.
-- `Fire Sale` — forced-liquidity event.
-- `Run on You` — confidence crisis.
-- `Fooled by Sardines` — lucky bad process.
-- `Closed the Spread` — arbitrage changed the market.
-- `Sacred Word` — honoured costly obligation.
+Currently implemented:
 
-Badges can feed the final diagnosis but must not determine it mechanically. A player may hold contradictory badges: `Sacred Word` and `Strategic Default`, or `Snake Oil` and `Trusted Counterparty`, reflecting different relationships and moments.
+- **SOLD IT BEFORE YOU HAD IT**
+- **EXCLUSIVE**
 
-## Diagnosis Ontology
+High-priority future realised cases, only after their mechanics exist:
 
-Structured evidence should preserve three separate layers before any final scoring model is chosen:
+- Promise Kept
+- Rich, Broke
+- Pawn the Marble
+- Bridge Builder
+- First Through the Gap
+- Fire Sale
+- Read the Fine Print
+- Run on You
+- Still Solvent
+- Whatever It Takes
+- Pyrrhic Bloom
+- a Juan distressed-claim case, title not yet locked
 
-1. **Outcome — what happened?** Sunflower objective, realised value, liquidity / solvency, defaults, retained relationships and access.
-2. **Process / skill — how was the decision made?** Valuation, information calibration, verification, execution, liquidity, credit, position sizing, negotiation, adaptability, market impact and sustainability.
-3. **Style — what kind of participant did repeated behaviour create?** Aggressive / patient, concentrated / diversified, inventory / information focused, public-market / relationship or OTC, liquidity taker / provider, transparent / secretive, trusting / verification-heavy, straightforward / strategically ambiguous.
+Badge count is not completion percentage and must never become spiritual / karmic progress.
 
-Style is not a moral or skill score. High risk appetite is a style; staking nearly all capital on an unverified rumour can additionally be poor position sizing and poor information process.
+---
 
-This permits outcomes such as:
+# 5. Diagnosis confidence
 
-- won + rich + reckless;
-- won + poor + brilliant execution;
-- lost + excellent trader;
-- profited + poor reasoning / lucky;
-- deceived often + unusually strong credibility management;
-- honest + commercially ineffective;
-- high information edge + weak execution.
+Recommended interpretation of independent evidence:
 
-The educational layer should explain these distinctions without implying that one archetype is the universally “correct” way to trade.
+- **1 independent case** — anecdote
+- **2 independent contexts** — emerging pattern
+- **3+ cases across at least 2 context types** — supported
+- **5+ cases across at least 3 context types** — high confidence
+
+A contract’s signing, delivery and repayment are not automatically three independent demonstrations of the same trait.
+
+The engine should preserve factual events; final diagnosis decides whether events are independent enough to support a pattern.
+
+---
+
+# 6. Hard guardrails
+
+Do not let this teaching file reintroduce old world hypotheses as canon.
+
+In particular, do not revive:
+
+- old Mechanic / Vale / Dock Dog / Clown / Bar Apprentice / Fishmonger identities as current runtime names;
+- Fishmonger as central bank or hidden world-conspiracy figure;
+- the employer acquisition-agent opening;
+- compulsory sun ritual / petrification rules;
+- six realms as player personality labels;
+- a “right spiritual choice” teaching case.
+
+When a scenario targets mechanics not yet implemented, label it as a coverage target rather than pretending runtime already supports it.
