@@ -1,718 +1,729 @@
-# Sunflower — Sun Moment Core Lore
+# Sunflower — World Canon, Sun Moment & Samsara
 
-> Status: **core narrative direction, substantially more locked than earlier lore hypotheses.**
+> Status: **current source of truth for world ontology and metaphysical/gameplay meaning.**
 >
-> This document captures the current philosophy and gameplay meaning of the Sun Moment, attachment, gradual animalisation, the Onewheel Clown, and the emerging rebirth / form-change structure.
+> This file supersedes earlier speculative lore notes and the old compulsory sun-ritual draft. When an older document, comment, or prototype wording conflicts with this file, this file wins.
+>
+> Detailed mechanics remain in `REBIRTH_FORM_SYSTEM.md`, `DAY_LOOP_MARKET_STRUCTURE.md`, `SCENARIOS_TEACHING.md`, `INFORMATION_DISCOVERY_MODEL.md`, and `NPC_CHARACTER_BIBLE.md`. Those files must defer to this canon on ontology, identity, karma, Sun Moment, and the current cast.
 
 ---
 
-## 1. The Sun Moment Is Not a Rule Imposed by Authority
+## 1. One structure, changing legibility
 
-The Sun Moment is a biological / metaphysical event that living beings naturally enter.
+Sunflower is not a trading game with a philosophical story attached.
 
-At fixed moments, the ordinary separation between individual goal-directed agents temporarily loosens.
+The same mathematical / causal structure operates from the first action onward:
 
-For a few seconds, living beings naturally stop pursuing immediate personal objectives. Production pauses. Negotiation pauses. Work pauses. Consumption pauses. The organism no longer behaves primarily as a separate self defending its own local project.
+- Goods
+- Cash
+- Information
+- Obligations
+- Relationships
+- Time
+- Body / Form
+- Access
+- Attention
 
-The event should feel closer to a brief compulsory disengagement than to a public religious ceremony.
+A Day 1 purchase is already economic, informational, relational, temporal and karmic.
 
-Society may build rituals, language, institutions, clocks, myths and rules around the phenomenon, but those cultural structures are not the original cause.
+The player does **not** progress through `Trading Game -> Mystery Game -> Spiritual Game`.
 
----
+The structure stays the same. What changes is what the player can see, access, price, remember, enforce, and recognise.
 
-## 2. The Core Trade-Off: Refusing to Stop Can Be Profitable
-
-A person can resist the Sun Moment.
-
-This is not automatically punished.
-
-In fact, refusing to stop may create a real competitive advantage.
-
-Examples:
-
-- while other researchers pause, one professor keeps working;
-- while other traders disengage, one trader completes an order;
-- while competitors stop watching the market, one participant continues analysing;
-- while everyone else releases a time-sensitive opportunity, one person captures it.
-
-Therefore resisting the Sun Moment is genuinely tempting.
-
-The design must preserve this truth:
-
-> **Attachment can make you more effective inside the market before it makes you less capable of leaving it.**
-
-Sunflower must never reduce this into `greed = punishment`.
+Later lives, forms, paperwork, repeated objects and consequences may alter what an early action means without making its early economic description false.
 
 ---
 
-## 3. Attachment Is Not the Same as Desire
+## 2. Opening and the sunflower
 
-A person may have goals, ambition, love, responsibilities and commercial skill without automatically becoming metaphysically corrupted.
+Opening canon:
 
-The relevant distinction is not:
+> 🌻
+>
+> **You want a sunflower.**
+>
+> You do not know why.
+>
+> You only know that it feels like a way home.
 
-> wanting something vs wanting nothing.
+The player is **not** currently an acquisition agent sent by an employer, museum, corporation, institute or collector.
 
-It is closer to:
+The sunflower is a real living object. Obtaining it is a real accomplishment.
 
-> being able to release a goal temporarily vs being unable to stop maintaining it.
+After acquisition:
 
-A highly ambitious trader may still enter the Sun Moment effortlessly.
+> **You got it.**
 
-A supposedly spiritual person may fail because they are obsessively trying to achieve enlightenment.
+Nothing metaphysical automatically happens.
 
-Therefore attachment can form around:
+The Sunflower remains in inventory, unpriced.
+
+The objective becomes:
+
+> **Go home.**
+
+This is not a reveal that the flower was fake. The object completed what an object could complete; the meaning attached to possession is another matter.
+
+The sunflower is not currently locked as a cure, virus, government key, capitalist pathogen, corporate specimen mission, or moral test.
+
+Its strong current material meanings are:
+
+- living;
+- reproductive;
+- seed-bearing;
+- capable of being commodity, gift, plant, productive stock, memory or specimen depending on relation.
+
+---
+
+## 3. The Sun Moment is the world clock
+
+The Sun Moment is a real biological / metaphysical event.
+
+It is not created by Authority and is not originally a religious ritual.
+
+Societies may build clocks, customs, theories, etiquette, civic rules and religious explanations around it, but those structures are responses to a real event.
+
+At a Sun Moment, living beings naturally stop separate goal pursuit for a brief interval.
+
+Production pauses. Negotiation pauses. Consumption pauses. Individual project-maintenance loosens.
+
+Current day-loop canon:
+
+- **Sunrise** — Sun Moment / day boundary;
+- **Noon** — Sun Moment immediately before public clearing;
+- **Sunset** — Sun Moment / settlement boundary.
+
+The player should encounter the event before receiving a theory of it.
+
+---
+
+## 4. Resistance can be profitable
+
+A living being can resist the Sun Moment.
+
+Resistance is not automatically punished. It can produce genuine local advantage.
+
+The design must preserve:
+
+> **attachment -> local advantage -> reinforcement -> harder disengagement**
+
+If resistance were immediately punished, the Sun Moment would become a morality quiz rather than a temptation.
+
+The strongest late-stage expression remains:
+
+> the world stops, but the player's interface still works.
+
+Eventually the player may realise that stopping itself has become difficult or unavailable.
+
+Do not implement the final loss-of-stop threshold until separately specified.
+
+Do not expose:
+
+- an Entanglement meter;
+- karma points;
+- enlightenment progress;
+- a rewarded `[LET GO]` answer.
+
+---
+
+## 5. Attachment is not greed
+
+Attachment is not equivalent to desire.
+
+A person can want, love, trade, work, care and remain able to disengage.
+
+The useful distinction is closer to:
+
+> can this project be released, even briefly?
+
+Attachment can organise around:
 
 - wealth;
+- competence;
 - reputation;
 - career;
-- a scientific problem;
 - family;
-- protecting another person;
+- children;
+- rescue;
+- grief;
 - love;
-- guilt;
-- responsibility;
-- artistic work;
-- political power;
+- safety;
+- duty;
 - survival;
 - freedom;
-- enlightenment itself.
+- being useful;
+- being needed;
+- being right;
+- spiritual understanding;
+- liberation itself.
 
-No one type of desire is automatically morally superior.
-
----
-
-## 4. Gradual Entanglement
-
-Resisting the Sun Moment should not produce immediate stone transformation.
-
-The stronger design is gradual.
-
-A possible progression:
-
-1. **First resistance** — nothing visibly bad happens. The person may even gain a clear advantage.
-2. **Repeated resistance** — disengaging begins to feel irritating or costly.
-3. **Habit formation** — the person increasingly treats every Sun Moment as wasted time.
-4. **Difficulty stopping** — entering the state now takes conscious effort.
-5. **Deep entanglement** — the person is no longer simply choosing not to stop; they are losing the ability to stop.
-6. **Transformation threshold** — the current human form can no longer sustain the accumulated pattern and eventually gives way to another form.
-
-This creates a positive feedback loop:
-
-> attachment → local advantage → success reinforces attachment → stopping becomes harder → more local advantage becomes necessary → deeper entanglement
-
-This loop should exist mechanically as well as narratively.
+A commercially aggressive trader may disengage cleanly. A supposedly spiritual person may become unable to stop trying to achieve enlightenment.
 
 ---
 
-## 5. Do Not Expose a Simple Entanglement Meter
+## 6. Karma
 
-Avoid a visible bar such as:
-
-`ENTANGLEMENT 73/100`
-
-The player should infer change from experience.
-
-Possible manifestations:
-
-- early Sun Moments pass automatically;
-- later, a trade opportunity remains open during the pause;
-- the player receives an option to continue;
-- continuing sometimes produces immediate profit;
-- repeated continuation alters future Sun Moments;
-- characters react differently;
-- stopping may eventually require sacrifice;
-- at extreme levels, the player may discover that the game no longer offers a meaningful `Stop` choice.
-
-The most frightening late-stage expression is not a warning popup.
-
-It is:
-
-> the market goes still, but the player can still act — and eventually realises they no longer know how not to.
-
----
-
-## 6. Animalisation Is Not Moral Punishment
-
-Transformation into an animal must not mean:
-
-> bad person → lower life form.
-
-It is not a morality score and should not reproduce a simplistic `sin → punishment` system.
-
-Instead, animalisation is a continuation / reorganisation of patterns that have become too strongly bound to maintain their previous form.
-
-A person may become deeply entangled because of greed.
-
-But they may also become entangled because they cannot release:
-
-- responsibility for children;
-- care for animals;
-- grief;
-- duty;
-- love;
-- fear of abandoning someone;
-- the need to save another person.
-
-This prevents the world from teaching that emotional detachment is automatically virtue.
-
----
-
-## 7. Karma as Unfinished Consequence
-
-Sunflower should avoid a simple cosmic morality-point interpretation of Karma.
-
-A useful internal definition is:
+Keep the compact line:
 
 > **Karma is action that has not finished happening.**
 
-A trade changes inventories, prices, beliefs and relationships.
+`Unfinished` does not mean an incomplete quest.
 
-A debt persists beyond the moment it was created.
+Technical design gloss:
 
-A betrayal changes future access.
+> **Action continues as conditions for further action.**
 
-A family member's decisions alter the opportunities and burdens inherited by others.
+A fully settled action may continue karmically when it changes what happens next.
 
-When a legal person dies or transforms, their causal effects do not disappear.
+Examples:
 
-Assets, obligations, family consequences, reputation, social damage and unfinished relationships continue to move through the world.
+- a fulfilled Aspen contract makes more people rely on Aspen;
+- a successful Wong rescue creates another dependent and a reputation for accepting rescues;
+- a repaid Juan claim makes later financing easier;
+- a gift changes future access;
+- a public trade changes beliefs and later prices;
+- a legal death moves assets into an estate that still shapes later action.
 
-This links the metaphysical idea of continuity directly to the economic simulation.
+Karma therefore lives directly in the simulation:
+
+> action -> changed conditions -> changed next action.
+
+It is not a cosmic morality score.
 
 ---
 
-## 8. The Market and the Sun Moment Are the Same Thematic System
+## 7. Primary characters are karmic recurrences
 
-The game is not built from one trading system plus a separate philosophical story.
+The six primary recurring figures are:
 
-They should be the same mechanism seen from two levels.
+- **Aspen**
+- **Sterling**
+- **Yasmin**
+- **Wong**
+- **Juan**
+- **Dima**
 
-The market constantly teaches the player to optimise:
+They are full people with bounded knowledge, operating costs, interests, relationships, histories and weaknesses.
 
-- timing;
+They are not six therapy lessons.
+
+However, their repeated presence in the player's lives is not merely random cast persistence. They are recurring karmic knots in the player's causal stream.
+
+A knot is not solved by choosing the correct dialogue answer.
+
+A character does not disappear because of an accident, bankruptcy or completed side quest.
+
+A relation may cease to recur only when it no longer reproduces the same causal structure.
+
+Exactly what release means remains open: the person may still exist, change form/realm, be released, or simply cease recurring for this player.
+
+Do not certify one explanation early.
+
+---
+
+## 8. Current primary character directions
+
+### Aspen
+
+Current named Sailor / mechanic.
+
+Female; lesbian; highly scheduled; sensitive to time, weather and bodily change; risk-averse; uncomfortable with uncertainty; does not romanticise sailing; earns through conservative shipping, contracts and finance.
+
+She supports lovers / dependents and can turn intimacy into a logistics network.
+
+Her knot is not greed. It is the stability of being useful and needed.
+
+`Sailor` also remains a broader liminal form/function category. Aspen is one current Sailor, not the only possible Sailor.
+
+### Sterling
+
+Male Bar operator / apprentice.
+
+Myshkin / Jia Baoyu-like social position without becoming a saint.
+
+High empathy, curiosity and sensory utility; low attachment to ordinary accumulated wealth; wealthy family background; fast learning; weak early boundaries; no simple good/evil morality system.
+
+The Seagull network played a role in placing/hiring him at the Bar.
+
+He may become an excellent competitor, major investor, victim of persuasive bad deals, or several of these at different times.
+
+Relationship is not a romance system. Repeated attention simply costs time that could have been used elsewhere.
+
+### Yasmin
+
+Capital allocator / family operator.
+
+Previous animal life strongly leans hyena but exact previous species remains provisional.
+
+She specialises in ownership, passive-yield structures, family capital, secured finance, auctions, placements, provenance, elite access and social maintenance.
+
+Her wealth is passive at the asset level and labour-intensive at the social level.
+
+She is not simply rude or openly snobbish; she is skilled at making people feel correctly recognised.
+
+Her intimacy difficulty comes from incentive literacy: unpriced care is hard to distinguish from hidden motive.
+
+### Wong
+
+Dock Dog.
+
+High-turnover / low-margin operator, parent/guardian/rescuer.
+
+Wong bargains, salvages, takes dirty and small jobs, moves many cheap goods, carries large recurring household/rescue costs, and believes rescuing animals can create merit.
+
+More capacity can create more dependents. Successful care can therefore produce more obligations to care.
+
+### Juan
+
+Botanist / grower / Onewheel Clown / debtor.
+
+The former-dentist direction is superseded.
+
+Juan manages biological productive assets: seed, propagation, maturity, dormancy, crop timing, future harvest and distressed living inventory.
+
+He also understands leverage, claims, distressed debt, refinancing, creditor coordination, and the fact that his liability is somebody else's asset.
+
+He can look intoxicated, broke, chaotic or ridiculous while being technically excellent at plants and certain financial structures.
+
+He keeps unusual South-American psychoactive / ritual plants as part of his botanical world without turning the game into a drug-preparation simulator.
+
+His core repetition is:
+
+> experience -> observation -> protocol -> repeatability -> mastery attempt -> another experiment.
+
+He can turn liberation into an optimisation problem.
+
+Juan may eventually recognise the player's seed-like biology through botanical observation. A possible route allows him to plant the player; the game must not automatically certify planting as liberation.
+
+### Dima
+
+Male Seagull.
+
+Informal broker / guarantee / enforcement / claim-transfer operator.
+
+Dima does not own the entire black market. His advantage is trusted informal settlement when formal institutions cannot or will not recognise a transaction.
+
+He earns from introductions, proxy buying, guarantees, informal claims, claim transfer, information, enforcement and access.
+
+His knot is indispensability: he genuinely solves exclusion and also earns because exclusion continues.
+
+---
+
+## 9. Supporting figures and infrastructure
+
+### Octopus
+
+Octopus is not a seventh primary karmic figure.
+
+Octopus carries the recurring physical economy:
+
+- fresh fish;
+- preserved seafood;
+- ice;
+- marine goods;
+- harbour salvage.
+
+Octopus also serves as the diegetic public settlement / clearing rail.
+
+`🥫` sardine tins remain currency / settlement asset.
+
+**Octopus Clearing** is the public Noon batch process.
+
+Client settlement float is not Octopus's own wealth. That distinction must remain true in code and Economic Health metrics.
+
+### Sonya
+
+Sonya is Sterling's Penguin grandmother.
+
+She is a supporting recurrence, not a primary karmic knot.
+
+The useful structure is:
+
+- family says Grandma;
+- formal law may treat the former Human as deceased;
+- the present Penguin is physically here;
+- memory, behavioural continuity, family continuity and legal continuity need not agree.
+
+The fresh-fish route remains and should be discovered materially: recurring fish purchase, skin removed, Bar closes early, Penguin eating. No exposition lecture is required.
+
+---
+
+## 10. Six realms and forms
+
+The wider world includes the Buddhist six-realm structure as real ontology.
+
+This is not a psychological quiz and not an RPG ladder.
+
+Human and Animal are already materially present. Other realms exist in the wider world even if they are not all mechanically playable yet.
+
+Do not implement:
+
+> Human -> Animal -> Asura -> Deva -> Buddha
+
+as progression.
+
+A psychological/economic pattern can echo a realm without making the actor literally belong to that realm.
+
+`Sailor` and `Plant` are important Sunflower forms/conditions, but their exact relationship to the traditional six-realm ontology remains unresolved.
+
+Do not force a doctrinal mapping merely for neatness.
+
+---
+
+## 11. Rebirth and legal personhood
+
+Memory continuity does not imply legal-person continuity.
+
+When a recognised legal person ends through transformation/death, the new form cannot automatically claim the old person's:
+
+- cash accounts;
+- property;
+- equity;
+- receivables;
+- recognised contracts;
+- institutional status;
+- formal reputation.
+
+Former assets and obligations remain in an estate / former-life legal structure.
+
+The new form can remember them without being legally entitled to them.
+
+A desire to become Human again can therefore be economically rational and still become attachment.
+
+The world must not teach `Human = spiritually higher`.
+
+Hunger currently provides one gameplay route to a life transition when food, cash, credit and social support all fail. That is one transition path, not the complete cosmology.
+
+Transformation is not moral punishment.
+
+---
+
+## 12. Animal society and the black market
+
+Animals are not pets or decorative transformed Humans.
+
+Animal society has its own language, work, markets, households, information networks, routes, norms and institutions.
+
+Humans and Animals coexist but are institutionally unequal.
+
+Animals can physically possess sardines, goods, information and obligations even when Human formal systems do not recognise them as equivalent legal persons.
+
+The black market is not an evil-shop button.
+
+It emerges from:
+
+- legal exclusion;
+- incompatible forms;
+- fragmented trust;
+- information asymmetry;
+- settlement risk;
+- need for proxies and guarantees.
+
+Dima is the current central named expression of this layer.
+
+Sterling's Bar is an important tolerated cross-form venue.
+
+Wong has overlapping informal networks and can sometimes bypass Dima.
+
+---
+
+## 13. The Bar
+
+The Bar is more than a production station.
+
+Current canon:
+
+- Sterling operates it;
+- the Seagull network helped place/hire him there;
+- it is one of the clearest cross-form social venues;
+- Sonya/family continuity intersects with it;
+- Juan's tab/debt intersects with it;
+- Dima's network can use it;
+- it can later become a real asset/ownership situation.
+
+The Bar Sale remains a strong future special situation and should emerge from revenue, costs, ownership, debt, capital, customer network and non-market social value.
+
+Do not turn it into a detached visual-novel chapter.
+
+---
+
+## 14. Freshness, living matter and commodity money
+
+Fresh / living / generative goods are economically and culturally important.
+
+The world distinguishes:
+
+> preserved / stable / storable / standardised / tradable
+
+from
+
+> fresh / living / perishable / generative / time-sensitive.
+
+This supports fresh fish, lime, mint, seeds, plants and sunflower.
+
+`🥫` sardine tins work as durable settlement money because preserved nutrition is broadly accepted and storable.
+
+The exact monetary history does not need an exposition lecture.
+
+Do **not** resurrect the old claim that simply going outside causes animal transformation.
+
+---
+
+## 15. Value is relational, not arbitrary
+
+Reference price is public arithmetic, not intrinsic truth.
+
+The same object can be junk, food, collateral, access, memory, production input, gift, collectible or future claim depending on relation.
+
+This does not mean material differences are unreal.
+
+Fish spoils. Ice melts. Collateral must be realisable. Seeds require conditions to grow.
+
+Sunflower should avoid both `price = true value` and `nothing has real consequence`.
+
+---
+
+## 16. Juan, seed and Plant form
+
+Plant form is a serious possibility, not a joke class.
+
+Earlier lives ask:
+
+> What is this thing worth to me?
+
+Plant form can invert perspective:
+
+> What do others do when I am the living asset?
+
+Possible valuations include food, collateral, productive stock, decoration, research material, reproductive material, property, or something cared for without being owned.
+
+Juan's botanical knowledge can provide a material route into this inversion.
+
+If he eventually plants the player, germination can be real while metaphysical meaning remains open.
+
+---
+
+## 17. Total commodification
+
+The exchange grammar can expand until nearly everything becomes legible as a tradable position:
+
+- goods;
 - information;
-- price;
-- liquidity;
+- exclusivity;
+- obligations;
+- claims;
+- access;
 - relationships;
-- contracts;
-- advantage.
+- future production;
+- identity;
+- persons.
 
-The Sun Moment asks a different question:
+This is a possible ending/state, not automatically an evil ending.
 
-> **When does pursuing value begin to consume the person doing the valuing?**
+Its strongest expression is administrative clarity: the UI becomes cleaner, more standardised, more efficient, and more capable of representing people as exposure, yield and claims.
 
-Importantly, the answer cannot simply be `never pursue value`.
+The disturbing part is not ugliness; it is that the interface may no longer need to represent a person as a person.
 
-The player should experience real rewards for staying engaged.
-
-The philosophical pressure only works because the market rewards attachment before the deeper cost becomes visible.
-
----
-
-## 9. The Perfect Optimizer
-
-A possible extreme player trajectory:
-
-- never wastes a Sun Moment;
-- consistently continues trading while others pause;
-- captures time-sensitive opportunities;
-- becomes extraordinarily efficient;
-- accumulates wealth;
-- develops near-perfect execution;
-- succeeds by every conventional market measure.
-
-Yet repeated refusal to disengage gradually removes the ability to stop.
-
-Possible end-state / archetype direction:
-
-**The Perfect Optimizer**
-
-Potential contradiction:
-
-- Execution: exceptional
-- Discipline: exceptional
-- Capital growth: exceptional
-- Ability to disengage: nearly gone
-
-This should not automatically be labelled a bad ending.
-
-It is a state the player must interpret.
+Refusing commodification is also not automatically liberation.
 
 ---
 
-# PART II — THE CLOWN
+## 18. Altered states / toad
 
-## 10. The Onewheel Clown Is Currently Human at Game Start
+Juan, Wong and Aspen can share recurring altered-state/toad scenes.
 
-Current strongest direction for the opening form:
+These scenes are not a drug crafting system, proof of enlightenment, or a moral anti-drug lesson.
 
-> **The Clown appears biologically / physically human.**
+For Juan, unusual experience tends to become measurement, timing, protocol and another trial.
 
-This is now best treated as a starting-state choice rather than proof that forms are permanent.
+Aspen approaches it through safety, schedule, species, bodily response and next-day obligation.
 
-He wears a clown identity deliberately.
+Wong can approach it as part of a practical/informal animal network.
 
-If the broader rebirth system is adopted, the Clown may have occupied other forms before or after the current run without turning him into an omniscient metaphysical avatar.
-
----
-
-## 11. The Clown May Have Been Extremely Wealthy
-
-The Clown may once have been one of the most economically successful people in the settlement.
-
-Possible past strengths:
-
-- speculation;
-- leverage;
-- acquisitions;
-- financing;
-- arbitrage;
-- aggressive risk-taking;
-- opportunistic investment.
-
-He may have already achieved the conventional objectives others still pursue.
-
-He discovered that success did not end the underlying suffering / repetition.
-
-Therefore he began abandoning status, wealth and respectable identity while searching for a way out.
-
-This makes his current appearance misleading:
-
-> others see a drunk, gambler, eccentric or failed man;
-> the player may later discover that he understands some structures of the world unusually well.
+The same material does not mean the same thing to all three.
 
 ---
 
-## 12. Why the Clown Persona Matters
+## 19. Romance is not a system
 
-The clown costume should not exist only because it is visually funny.
+No Romance Route, heart meter, or Romance Ending requirement.
 
-A possible motivation:
+Attraction, intimacy, attachment, jealousy, sex and affection can arise from repeated state-aware interaction.
 
-The Clown's previous identity carried:
+The main mechanical cost is attention:
 
-- name;
-- prestige;
-- assets;
-- family position;
-- professional authority;
-- reputation.
+> one more conversation is one less market action.
 
-He deliberately adopted an identity no respectable person would take seriously.
-
-He may believe that becoming socially ridiculous weakens the structure of ego and social role.
-
-However, this creates a new irony:
-
-> `Clown` itself becomes another identity.
-
-He may become proud of being the one person who sees through everyone else.
-
-The ego changes costume rather than disappearing.
+The engine may record repeated attention. It must not infer `playerLove = true`.
 
 ---
 
-## 13. The Clown's Core Contradiction
+## 20. Teaching and diagnosis
 
-The Clown has understood one thing that ordinary accumulation cannot solve.
+The game teaches:
 
-But he still approaches liberation using the same grammatical structure as acquisition.
+> Play -> world consequence -> optional concept -> realised case/badge -> Notebook -> later diagnosis.
 
-Vale:
+The 16 teaching families remain coverage requirements, not 16 quests.
 
-> I must obtain the asset.
+Outcome, Process and Style remain separate.
 
-Trader:
+No evidence is not average.
 
-> I must obtain the profit.
+A final diagnosis can say `in these situations, you repeatedly did X`; it must not say `this is your true self`.
 
-Clown:
-
-> I must obtain freedom.
-
-Therefore his central tragic contradiction is:
-
-> **He has realised that getting things does not solve the problem, but he still tries to get enlightenment as though it were the final asset.**
-
-This is one of the strongest current character principles and should be preserved.
+Notebook concepts must not become a wisdom-completion collection.
 
 ---
 
-## 14. The Clown's Risk Appetite
+## 21. Narrative form
 
-Clown's extreme risk tolerance should not be random `crazy person` behaviour.
+Story is generated by:
 
-He assigns unusually low value to conventional security because he is actively trying to escape repetition.
+> market state + karmic recurrence + repeated object + changed access + memory.
 
-This affects his economic decisions.
+Not by a linear act ladder.
 
-He may accept bets other traders reject because:
+Repeated objects can include receipts, claims, seeds, fish, toads, timetables, provenance cards and the sunflower.
 
-- wealth has low marginal meaning to him;
-- bankruptcy does not frighten him as much;
-- he is willing to trade safety for extreme upside;
-- he may assign unusual value to rare escape possibilities.
+Later recurrence can make earlier events newly legible.
 
-Therefore two intelligent traders can rationally disagree because they use different utility functions.
+Dialogue remains material, dry, specific, state-aware and non-omniscient.
 
-Vale may reject a 50% survival / enormous-payoff opportunity.
+Do not write philosophical speeches merely because the underlying system is philosophical.
 
-Clown may accept it.
+Current route anchors remain discoveries within the same world:
 
-Neither must be stupid.
+- Sonya / Supper;
+- Yasmin / Auction;
+- Juan / Cliff.
 
----
-
-## 15. Gambling, Intoxication and Temporary Self-Loss
-
-Clown may continue to gamble, drink, race and seek altered states even while claiming that ordinary wealth is meaningless.
-
-A promising psychological explanation:
-
-Certain high-intensity experiences temporarily remove ordinary self-consciousness.
-
-Examples:
-
-- racing;
-- gambling;
-- extreme risk;
-- intoxication;
-- psychedelic / hallucinatory experiences;
-- physical danger.
-
-For brief periods he experiences something resembling the Sun Moment:
-
-- no past;
-- no future;
-- no ordinary identity;
-- only immediate experience.
-
-He may confuse **temporary ego dissolution** with liberation.
-
-When the state ends, the ordinary self returns.
-
-Therefore he repeats the behaviour.
-
-This creates an addiction-like structure without requiring the narrative to reduce him to `the drug character`.
-
-The philosophical question is:
-
-> Does an overwhelming experience of unity prove anything about reality, or only about experience?
-
-The game should not automatically answer.
+Missed trade does not automatically mean missed route.
 
 ---
 
-## 16. Clown and Enlightenment
+## 22. Code-realisation invariants
 
-Clown may understand the Sun Moment better than almost anyone while being one of the people least able to enter it effortlessly.
+The worldview is not complete until code can express it.
 
-Possible internal experience:
+Required substrate:
 
-> Is this it?
->
-> Am I doing it correctly?
->
-> Can I remain here?
->
-> Is this enlightenment?
->
-> How do I avoid coming back?
-
-The very effort to achieve the state interrupts the state.
-
-A baby may enter effortlessly.
-
-Clown may have spent years studying it and still fail because he cannot stop trying to succeed at it.
-
----
-
-## 17. Clown as a Source of Information
-
-Do not make Clown secretly correct about everything.
-
-He may possess unusually good information about one deep domain while remaining unreliable in others.
-
-Possible competence profile:
-
-- metaphysical / world anomaly observation: high
-- risk appetite: extreme
-- ordinary capital preservation: weak
-- practical credit discipline: weak or inconsistent
-- willingness to test dangerous hypotheses: very high
-- ability to distinguish temporary altered state from actual liberation: uncertain
-
-This protects the information game.
-
-Discovering that one of Clown's strange claims is true should not turn all future Clown dialogue into revealed truth.
+1. actor knowledge remains bounded;
+2. public / private / discovered knowledge remain distinct;
+3. Goods, Cash, Information, Obligations, Relationships, Time, Form, Access and Attention influence future options;
+4. Sun Moment exists in the actual day clock;
+5. resisting it can create local advantage;
+6. no visible moral/karma/entanglement meter interprets the choice;
+7. recurring business loops recreate future demand;
+8. legal identity can end while memory continues;
+9. estate wealth remains distinct from current-body wealth;
+10. Animals can participate economically without equal formal recognition;
+11. Dima expresses informal settlement/access;
+12. Octopus expresses physical supply/public clearing;
+13. Juan liabilities can exist as assets held/transferred by others;
+14. primary NPCs have distinct economic styles and constraints;
+15. relationship time competes with economic time;
+16. player diagnosis uses evidence and genuine alternatives, not button counts;
+17. later forms change access to the same systems rather than replacing the game with a new genre.
 
 ---
 
-## 18. Cliff Route Reinterpretation
+## 23. Explicitly retired historical hypotheses
 
-The Cliff route should eventually become more than a random race.
+The following appeared during earlier brainstorming but are **not current canon** and must not leak back into implementation simply because they remain in Git history.
 
-It can represent the Clown's attempt to test whether a boundary can be crossed during a Sun Moment / transition state.
+### Retired: outside exposure causes animal transformation
 
-The exact cosmology remains unresolved.
+Do not use `go outside -> become animal`.
 
-Important point:
+### Retired: compulsory civic Sun Ritual
 
-Clown is not racing merely for status.
+Do not use prescribed facing-the-sun posture, compulsory public observance, or `miss ritual -> petrify`.
 
-The wager, speed and danger are connected to his search for release.
+The Sun Moment is natural and pre-institutional.
 
-The player may initially interpret the route as an eccentric gambling event and only later understand its deeper purpose.
+### Retired: instant petrification punishment
 
----
+No `fail one Sun Moment -> stone -> animal`. Entanglement is gradual.
 
-# PART III — NPC CONTRASTS
+### Retired: player sent by employer to acquire sunflower
 
-## 19. Different Forms of Attachment
+The player currently only knows that they want it and it feels like home.
 
-The major characters should demonstrate different kinds of entanglement rather than a simple moral hierarchy.
+### Retired: Fishmonger conspiracy branches
 
-### Vale
-Highly ambitious and deeply engaged with markets, yet potentially capable of releasing attention cleanly during the Sun Moment.
+Do not revive Fishmonger as hidden monetary authority, secret escapee, disguised human, or primary karmic figure.
 
-### Dock Dog
-May not care much about wealth, yet may be unable to release responsibility for the cats.
+The physical operator is now Octopus. Dima is the primary black-market NPC.
 
-### Bar Apprentice
-May have little profit motivation but strong attachment to people, family and preserving the Bar.
+### Retired: sunflower as predetermined cure / virus / capitalist pathogen / government key
 
-### Sailor
-Current identity is unresolved. The emerging direction is that `Sailor` may be a form / social function rather than one fixed individual: a liminal being whose economic role is transport, circulation and crossing boundaries.
+Its causal endgame role remains open.
 
-### Fishmonger
-May appear stable and repetitive; their deeper relationship to the Sun Moment remains unresolved.
+### Retired: giant Grandma / Bar / Clown conspiracy
 
-### Clown
-Has abandoned conventional accumulation but is maximally attached to the project of liberation.
+Sonya, the Bar, Juan and the sunflower can intersect without forming one master conspiracy.
 
-### Player
-Begins with a single concrete objective — obtain the sunflower — and may gradually become more deeply embedded in the market while trying to achieve it.
+### Retired: animals as a simple oppressed-class allegory
 
-This structure prevents the game from teaching:
+Institutional exclusion is real, but animal society is autonomous and not a one-to-one metaphor.
 
-> rich = trapped, poor = enlightened.
+### Retired: six realms as personality labels
 
----
+Realms belong to world ontology. Realm-like behavioural echoes are not diagnosis labels.
 
-## 20. Core Narrative Question
+### Retired: NPC release as character self-improvement quest
 
-A central question now emerging for Sunflower is:
-
-> **What happens when optimisation becomes an identity that can no longer be put down?**
-
-The market makes this question playable because optimisation produces real rewards.
-
-The Sun Moment makes the cost legible because stopping is itself a capacity that can be lost.
-
-The Clown demonstrates that even rejecting conventional optimisation can become another optimisation project.
+A knot ends through causal non-reproduction, not because the NPC learned the correct lesson.
 
 ---
 
-## 21. Do Not Over-Explain the Metaphysics
-
-The world can support multiple interpretations of the same phenomenon.
-
-Possible perspectives:
-
-- biological researchers describe a collective autonomic shutdown;
-- religious traditions describe non-separation;
-- Authority treats the event as a civic / health necessity;
-- Clown calls it proof that ordinary identity is false;
-- traders treat it as inconvenient market downtime;
-- children simply stop without asking why.
-
-The game does not need to confirm a literal `energy frequency`, cosmic soul, scientific field, or final metaphysical mechanism.
-
-The phenomenon should be real.
-
-The explanation can remain contested.
-
-This preserves philosophical depth and avoids reducing the story to pseudo-scientific exposition.
-
----
-
-# PART IV — EMERGING REBIRTH / FORM SYSTEM
-
-## 22. Forms May Be States of Participation, Not Permanent Species
-
-Strong new hypothesis:
-
-> Human, animal, sailor and other forms may be successive ways the same causal continuity participates in the world.
-
-A form should change:
-
-- legal access;
-- social status;
-- market access;
-- information channels;
-- mobility;
-- what kinds of actions are easy or difficult;
-- how the Sun Moment is experienced.
-
-This makes rebirth mechanically meaningful instead of cosmetic.
-
-The game may eventually let the player experience multiple forms across repeated lives / runs while retaining learned knowledge rather than permanent stat upgrades.
-
-This would provide a world-internal explanation for the existing meta-progression principle:
-
-> **The player gets stronger because they remember more, not because the avatar receives permanent bonuses.**
-
-## 23. Human / Animal Boundary and the Black Market
-
-Current strong direction:
-
-- human formal society recognises legal persons, family estates and institutional market access;
-- many venues discriminate against or ban animals;
-- the Bar is currently the clearest human venue that allows animals to enter;
-- Dock Dog, Seagulls, Squirrels, Mosquitoes and other animal actors can maintain their own networks and economic logic;
-- some humans hire animals or people who are already losing access to the Sun Moment to act as intermediaries;
-- these intermediaries bridge the formal human economy and animal society;
-- this bridge is a natural foundation for the black market.
-
-The black market is therefore not simply an `evil shop`.
-
-It is partly a market created by legal exclusion, incompatible forms and the need for agents who can cross boundaries.
-
-Animals may hold sardines and possessions in practice even when formal institutions refuse to recognise them directly. Human proxies, tolerated venues, family fronts or informal enforcement can bridge the gap.
-
-## 24. Hunger, Credit and Transformation — Strong Hypothesis, Not Yet Locked Mechanically
-
-Emerging rule:
-
-At daily settlement, a living form needs food / sustenance.
-
-If the player cannot pay for food, the first question is social and financial rather than biological:
-
-> **Will anyone feed you or extend credit?**
-
-A player with relationships may:
-
-- eat on credit;
-- be fed as a favour;
-- borrow food;
-- accept an obligation;
-- receive support from a business / household / animal network.
-
-A player with no food and no relationship willing to support them may cross a form threshold during sleep and wake in another form, potentially an animal.
-
-This is much more thematically interesting than a simple `starvation = Game Over`.
-
-However, the exact probability / determinism is intentionally unresolved. A fully random transformation could feel arbitrary if the player cannot understand the causal conditions.
-
-The eventual system should preserve two truths:
-
-1. social capital can keep someone alive / human when cash cannot;
-2. transformation should feel causally connected to the life the player has been living rather than a meaningless die roll.
-
-## 25. Sailor as a Liminal Form / Function — Open Hypothesis
-
-New possibility:
-
-`Sailor` may not be one unique NPC and may not be a conventional human profession.
-
-It may be a class of liminal beings whose function is to:
-
-- leave local markets;
-- move between regions / worlds;
-- carry goods across boundaries;
-- return with outside resources;
-- serve as interfaces between otherwise separated systems.
-
-Possible cosmological interpretations remain open:
-
-- animals who die may sometimes become Sailors;
-- Sailors may be beings less bound to one local identity;
-- people who partially transcend one form may become Sailors rather than leaving samsara entirely;
-- Sailor could be socially misunderstood as a profession while actually being a transitional state.
-
-Do **not** lock `Sailor = enlightened being` yet. If Sailors were fully liberated, continuing to trade and circulate goods would need a strong reason. A more interesting possibility is that they are **less rooted, not fully free**.
-
-## 26. Six-Realm Inspiration Without Literal One-to-One Mapping
-
-The broader structure may take inspiration from Buddhist samsara and the six realms, but Sunflower should not prematurely claim that each fictional form is a literal canonical Buddhist realm.
-
-Important design note:
-
-- plants are not one of the traditional Buddhist six realms;
-- `Sailor` is obviously not a traditional realm either;
-- therefore a literal mapping would distort either Buddhism or the game's fiction.
-
-Better direction:
-
-> Sunflower has its own cycle of forms, inspired by samsara, attachment, continuity and different conditions of existence.
-
-The player may eventually unlock radically different perspectives on the same market:
-
-- Human — strongest formal/legal access;
-- Animal — strongest informal / cross-species networks, weaker institutional recognition;
-- Liminal / Sailor — mobility and external trade, weaker local rootedness;
-- other forms remain open;
-- Plant is a particularly interesting experimental form because it would radically change agency, time and value, but should not be called a literal Buddhist realm.
-
-The same world should feel economically different from each form.
-
-## 27. Rebirth Should Change Strategy, Not Merely Skin
-
-If multiple forms become playable, each must alter the market game.
-
-Examples:
-
-### Human
-- can access formal market and recognised contracts;
-- can accumulate institutional reputation;
-- is strongly exposed to optimisation / attachment incentives;
-- may face prejudice toward animals.
-
-### Animal
-- restricted or banned from many human venues;
-- stronger access to scavenging, informal information and black-market networks;
-- may require human or tolerated intermediaries for formal settlement;
-- may have different consumption / mobility constraints.
-
-### Sailor / liminal form
-- can cross geography;
-- imports and exports goods;
-- can accept commissions;
-- may disappear for multiple days and return with external information;
-- may be less able to build deep local relationships.
-
-### Plant — very speculative
-- extremely limited direct action;
-- potentially produces food / seeds / living value;
-- experiences the Sun differently from mobile agents;
-- could reveal how much of `agency` in the market comes from movement versus being valuable to others.
-
-The goal is not a class-selection screen.
-
-The goal is to let the player discover that **different forms generate different economies around the same underlying world.**
-
----
-
-## 28. Current Locked Principles
-
-The following principles are strong enough to treat as current canon unless later deliberately revised:
-
-1. The Sun Moment is a real organism-level phenomenon, not merely a state religion.
-2. Living beings naturally disengage from separate goal pursuit for a brief interval.
-3. Strong attachment can allow / compel someone to resist this disengagement.
-4. Resistance can generate genuine worldly advantage.
-5. Repeated resistance gradually makes future disengagement more difficult.
-6. Animalisation is gradual / systemic rather than instant divine punishment.
-7. Attachment may arise from love, duty or enlightenment-seeking as well as greed.
-8. Karma is best modelled as continuing consequence rather than a morality score.
-9. The player should discover entanglement through gameplay rather than a visible meter.
-10. The Clown currently begins in human form.
-11. The Clown may once have been extremely wealthy / successful.
-12. His core attachment is liberation itself.
-13. The Clown can be right about one deep truth without being right about everything.
-14. Market optimisation and metaphysical attachment must remain part of the same game system rather than separate narrative layers.
-15. Human and animal societies overlap economically but do not receive equal formal recognition.
-16. The Bar is a major tolerated cross-form venue.
-17. The black market can naturally emerge from intermediaries who bridge excluded animal society and formal human society.
-18. Multiple playable forms / lives are now a strong direction for meta-progression, but the exact cosmological taxonomy is not locked.
+## 24. Locked / provisional / unresolved
+
+### Locked
+
+- opening sunflower desire and `Go home` after acquisition;
+- one structure, changing legibility;
+- Sun Moment is real and natural;
+- resistance can be profitable;
+- attachment is not greed;
+- no visible karma/entanglement morality meter;
+- karma is unfinished causal continuation;
+- six primary karmic figures: Aspen, Sterling, Yasmin, Wong, Juan, Dima;
+- Octopus supporting physical economy / clearing;
+- Sonya Penguin grandmother supporting recurrence;
+- Human/Animal legal discontinuity;
+- animal society and institutional inequality;
+- Dima black-market intermediation;
+- Bar as cross-form venue;
+- Juan botanist / debt-as-asset direction;
+- romance is emergent attention, not a system;
+- Outcome != Process != Style;
+- 14 days is prototype pacing, not cosmology.
+
+### Strong provisional
+
+- Yasmin previous form = hyena;
+- Aspen's exact lover/support network details;
+- repeated Sun-Moment resistance contributing to future form transition;
+- Juan eventually planting the player;
+- total commodification as one possible ending/state;
+- current route anchors: Sonya / Yasmin / Juan;
+- Plant as playable form;
+- Sailor as both a specific current character and broader liminal form/function.
+
+### Unresolved
+
+- exact transformation mapping;
+- exact relationship between Sailor/Plant and traditional six-realm ontology;
+- exact mechanics/geography of the other realms;
+- what `home` ultimately means;
+- exact ontology of release;
+- whether released NPCs disappear, transform, cease recurring, or something stranger;
+- final Plant agency;
+- exact final liberation structure;
+- whether collective/non-separate endgame interpretation is literally true;
+- exact threshold at which Sun-Moment stopping capacity changes;
+- exact endgame causal role of the sunflower.
+
+Do not resolve these in code by accident.
