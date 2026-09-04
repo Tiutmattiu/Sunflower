@@ -315,3 +315,164 @@ Run several real market simulations and record:
 - whether auction thresholds remain reachable after the rebase.
 
 Then change the smallest set of numbers that explains the observed problem.
+
+---
+
+# Joel Bar — Real-Menu Ingredient Source & Active-Pool Rule — 2026-09-05
+
+This section records the real-world menu reference supplied by the creator. It is a **design source for Joel's generative Bar system**, not a requirement to turn every listed ingredient into a permanently active market SKU.
+
+The reference menu contributes two different things:
+
+1. the **menu grammar**;
+2. the **ingredient universe**.
+
+Do not dilute this into a generic `Gin + Vermouth + Soda` cocktail simulator.
+
+## Menu grammar taken directly from the reference concept
+
+The Bar should be able to ask for a desired experience before naming a fixed drink:
+
+- style: **fruity / spirit-forward / dry / sweet / balanced**;
+- optional extra direction: **sour / smoky / savoury / spicy / surprise me**;
+- base choice: **alcoholic / non-alcoholic**;
+- actual production is constrained by **what is physically available tonight**.
+
+A small number of classic cocktails remain useful as benchmark recipes and authored route anchors. The generative grammar is the main long-term Bar identity.
+
+## Reference-menu master ingredient pool
+
+The following ingredients were captured from the user-provided real Bar menu reference in this design pass. Treat them as `source = real_menu_reference`, distinct from ingredients added later only to support Sunflower's economy.
+
+### Fruit / fruit-like
+
+- Green Apple
+- Red Apple
+- Pineapple
+- Raspberry
+- Blackberry
+- Strawberry
+- Watermelon
+- Cherry
+- Grape
+- Peach
+- Avocado
+- Grapefruit
+- Cacao
+- Mango
+- Orange
+- Pear
+
+### Vegetable / savoury produce
+
+- Cucumber
+- Fennel
+- Eggplant
+- Tomato
+
+### Herbs / aromatics
+
+- Dill
+- Lemongrass
+- Mint
+- Rosemary
+- Basil
+- Thyme
+
+### Spices / seeds
+
+- Cumin
+- Cardamom
+- Cinnamon
+- Sichuan Pepper
+- Sesame
+- Mustard Seed
+
+This is a **master pool**, not the default starting inventory.
+
+If a future close transcription of the original menu image conflicts with this captured list, the original reference image wins and this list should be corrected rather than defended as canon.
+
+## Sunflower support ingredients are a separate provenance class
+
+Some inputs are required for the economic/production model or existing authored routes even when they were not taken directly from the reference-menu list.
+
+Examples may include:
+
+- Rum Bottle;
+- Orange Curaçao;
+- Orgeat;
+- Demerara Syrup;
+- Lime;
+- Ice;
+- Soda / carbonated mixer;
+- selected spirits or non-alcoholic bases;
+- tea / botanical bases where they serve a real demand or production role.
+
+Tag these conceptually as `source = sunflower_support`, not `real_menu_reference`.
+
+Do not silently claim that Gin, Whisky, Soda, Tea or any other support ingredient came from the real menu unless the source reference actually shows it.
+
+## Active-pool rule: preserve variety without destroying market depth
+
+Do **not** instantiate all 32 reference-menu ingredients every run.
+
+A naive random sample is also undesirable. With 32 reference ingredients split roughly into 16 fruit, 4 vegetable, 6 herb and 6 spice items, an unstratified sample has a meaningful chance of missing an entire small family. For example, a random 10-item draw contains at least one vegetable only about **79.7%** of the time.
+
+Therefore use a **stratified/curated active pool**, not pure uniform random selection.
+
+First implementation target:
+
+- roughly **8–10 active real-menu ingredients** in a run / relevant Bar cycle;
+- roughly **4–6 support ingredients** required for bases, benchmark recipes and service infrastructure;
+- target **12–16 Bar-relevant active ingredients total**, many of which should also serve another harbour demand family rather than exist only for cocktails.
+
+Minimum diversity guardrail for the real-menu subset:
+
+- >=2 fruit/fruit-like;
+- >=1 savoury produce;
+- >=1 herb/aromatic;
+- >=1 spice/seed;
+- remaining slots chosen from supply arrivals, seasonality, current inventory, event demand and authored route needs.
+
+The remaining master-pool ingredients simply do not appear in that run/cycle unless a later arrival legitimately introduces them.
+
+## Bridge-good requirement
+
+Before adding a real-menu ingredient as a permanent global item definition, ask whether it can do more than one economic job.
+
+Preferred examples:
+
+- Cucumber / Tomato / Fennel: Bar + household/hosting + food/event demand;
+- Mint / Basil / Dill / Rosemary: Bar + Juan/growing + hosting/food demand;
+- Cardamom / Cinnamon / Cumin / Sichuan Pepper: Bar + Yasmin hosting/gift + imported spice demand;
+- fruit: Bar + household consumption + event demand + perishability/compost consequence.
+
+If an ingredient would exist only so one cocktail can contain it, prefer keeping it as an inactive master-pool possibility until another real demand path exists.
+
+## Metadata required for Bar-capable ingredients
+
+The smallest useful item/ingredient schema should support, directly or through an attached Bar profile:
+
+- provenance/source class: `real_menu_reference | sunflower_support | existing_world`;
+- flavour contribution vector;
+- alcoholic / non-alcoholic compatibility where relevant;
+- servings or batch yield;
+- perishability / shelf-life class;
+- procurement unit and cost basis;
+- whether the ingredient is consumable, reusable, or a durable tool;
+- explicit substitute relationships only when player-legible;
+- other non-Bar demand families.
+
+Do not embed customer utility directly into the item definition. Customer preference belongs to the customer/event state; the item only contributes properties.
+
+## Player-facing consequence
+
+The paper/menu may communicate a broad creative possibility set, but the actionable surface is always:
+
+> **WHAT WE HAVE TONIGHT**
+
+That list is current inventory, not the entire master pool.
+
+A knowledgeable player should be able to notice that an unexpected combination can satisfy a demand signal without the game revealing a designer-approved recipe. This preserves the existing principle:
+
+> **Expertise buys time; it does not gate progress.**
