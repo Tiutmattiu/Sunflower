@@ -1,304 +1,453 @@
-# Sunflower — NPC Character & Economy Bible v2
+# Sunflower — NPC Character & Economy Bible v3
 
 > **Status: active narrative-economic canon, September 2026.**
 >
 > Companion to `GAME_DESIGN.md`, `NARRATIVE_KARMA_MATRIX.md`, `REBIRTH_FORM_SYSTEM.md`, `WORLD_LORE_SUN_MOMENT.md`, `SCENARIOS_TEACHING.md`, and `ITEM_ECONOMY.md`.
 >
-> This revision supersedes the earlier generic character labels in this file. Runtime IDs such as `dog`, `mechanic`, `vale`, `clown`, `bar`, and `fishmonger` may remain temporarily for implementation compatibility, but player-facing narrative should use the current identities below.
+> This revision supersedes the earlier generic player-facing identities. Runtime IDs such as `dog`, `mechanic`, `vale`, `clown`, `bar`, and `fishmonger` may remain temporarily for implementation compatibility. Narrative canon uses the names below.
+>
+> **Do not silently turn a provisional detail into canon.** Where the creator has not decided something, this file marks it provisional or leaves it open.
 
 ---
 
-# 1. Core Character Rule
+# 1. Core Character Constitution
 
-The named traders are not quest dispensers, moral exemplars, or six finance tutorials wearing costumes.
+The named traders are not quest dispensers, moral examples, or finance lessons in costume.
 
-They are people with different ways of making money, different recurring costs, different blind spots, and different reasons they cannot simply stop doing what they do.
+They are recurring karmic knots with:
 
-Every major character should have:
-
-- a real income model;
-- real recurring expenses or obligations;
-- a reason their strategy works often enough to persist;
-- a domain in which they are genuinely competent;
-- a domain in which they are weak or structurally disadvantaged;
-- social relationships that exist before the player arrives;
+- a real way of making money;
+- recurring expenses and obligations;
+- a reason that method works often enough to persist;
+- a domain of genuine competence;
+- a domain of genuine weakness;
+- a pre-existing social position;
 - incomplete beliefs rather than engine omniscience;
-- a recognisable rhythm of work and speech;
-- a recurring karmic problem that can return across lives without becoming a morality lesson.
+- a recognisable work rhythm;
+- a recognisable speech rhythm;
+- a pattern that can keep returning across lives.
 
-The harbour should therefore support the proposition:
+The harbour should support:
 
 > **Everybody has a way of making money. Nobody has the whole market figured out.**
 
-The player is entering an economy that already contains several viable business models.
+The six main recurring figures are:
 
-No one is the game's official `good capitalist`, `bad capitalist`, `wise poor person`, or `evil rich person`.
+1. **Aspen** — current Sailor / mechanic / conservative operator.
+2. **Sterling** — Bar operator / apprentice / fast-learning experiential investor.
+3. **Yasmin** — capital owner / family allocator / elite social operator.
+4. **Wong** — Dock Dog / high-turnover low-margin migrant dealer.
+5. **Juan** — former dentist / Onewheel Clown / debtor / distressed-finance speculator.
+6. **Dima** — Seagull black-market broker / cross-form gatekeeper.
 
-A profitable strategy can be exhausting, exploitative, caring, fragile, socially dependent, highly skilled, or all of those at once.
+**Sonya** is Sterling's Penguin grandmother and a recurring supporting figure. She is not a seventh primary trader and should not be promoted into the core market graph merely because she matters to a route.
+
+No main character is the game's official:
+
+- good capitalist;
+- bad capitalist;
+- wise poor person;
+- evil rich person;
+- enlightened person;
+- moral compass.
+
+A profitable method may also be exhausting, exploitative, caring, socially useful, fragile, or self-defeating.
 
 ---
 
-# 2. Aspen — Current Sailor / Mechanic
+# 2. Naming Rule
+
+Current creator naming has a useful unevenness and should be preserved.
+
+Preferred texture:
+
+> **ordinary real name + distinct sound silhouette + occasional private pun/material echo + mixed cultural origins + no explanation of the joke.**
+
+Examples:
+
+- `Sterling` quietly touches stirring, silver, money, and quality without becoming a bartender pun in dialogue.
+- `Aspen` is a normal name with a clean, nervous natural sound; no one should explain tree symbolism.
+- `Yasmin` sounds like a real person rather than a designed aristocrat.
+- `Wong`, `Juan`, and `Dima` keep the cast grounded by being ordinary.
+- `Sonya` is a plain human name attached to a Penguin grandmother.
+- supporting actors do not all need symbolically meaningful names.
+
+Avoid turning the cast into a coordinated fantasy naming set.
+
+---
+
+# 3. Aspen — Current Sailor / Mechanic
 
 ## Identity
 
-Aspen is the current Sailor encountered in the opening harbour cycle.
+Aspen is a lesbian woman and the current Sailor encountered in the opening harbour cycle.
 
-She is a lesbian woman, mechanically skilled, highly punctual, and unusually sensitive to:
+She is mechanically skilled, exact, punctual, and unusually sensitive to:
 
-- time;
-- weather;
+- clocks;
 - tide;
+- weather;
 - route duration;
 - maintenance intervals;
-- food and sleep timing;
-- small changes in her own body;
-- anything that could make a schedule less predictable.
+- food timing;
+- sleep timing;
+- medication and bodily changes;
+- anything that makes a schedule less predictable.
 
-Her surface rhythm should evoke the nervous exactness of the White Rabbit without turning her into a quotation or costume reference.
+Her rhythm may evoke the anxious exactness of the White Rabbit without quotation, costume imitation, or whimsy exposition.
 
-Aspen checks clocks, lists, pressure readings, forecasts, body sensations, and departure windows because uncertainty is expensive to her.
+Aspen does **not** like risk.
 
-She does **not** like risk.
+Aspen does **not** like the unknown.
 
-She does **not** like the unknown.
+Aspen does **not** especially like sailing.
 
-She does **not** especially like sailing.
+This matters because `Sailor` is a liminal form/function in the larger cosmology. Occupying a boundary-crossing form does not mean enjoying freedom, wandering, or uncertainty.
 
-This is important because `Sailor` remains a liminal form/function in the larger cosmology. Aspen should not romanticise mobility merely because she occupies a boundary-crossing role.
-
-## Economic role
+## Money-making method
 
 Aspen prefers steady, legible, repeatable cash flow.
 
-Her strongest money-making methods are:
+Strong earning methods:
 
-- scheduled shipping and delivery contracts;
-- commissions to source specific goods abroad;
-- low-volatility cross-port trade;
-- repair work she can scope before accepting;
-- reliable future delivery;
-- conservative private lending or financing only where she understands the underlying activity;
-- repeat counterparties whose behaviour she has already observed.
+- scheduled shipping;
+- delivery contracts;
+- sourcing commissions;
+- repeat cross-port arbitrage whose costs are already known;
+- repairs she can scope before accepting;
+- future delivery;
+- conservative private lending where she understands the underlying business;
+- repeat counterparties with observable settlement history.
 
-She is willing to leave some upside on the table in exchange for lower uncertainty.
+She willingly leaves upside on the table for:
 
-She should often reject trades that Juan would love and Yasmin would at least analyse.
+- lower variance;
+- clearer timing;
+- known counterparties;
+- enforceable terms;
+- predictable cash conversion.
 
-Her edge is not bravery. It is reliability, preparation, and the willingness to do the same useful thing correctly many times.
+Aspen is often the best counterparty for a boring deal.
+
+That is a compliment.
+
+## Operating costs
+
+Aspen's costs should be visible enough to justify her prices:
+
+- maintenance;
+- replacement parts;
+- fuel / voyage input abstractions where needed;
+- provisions;
+- berth / route fees if later implemented;
+- time lost to delay;
+- external sourcing cost;
+- contractual penalties;
+- gifts, medicine, rent, and support for several lovers.
+
+Her cash flow can be healthy while her free time is almost nonexistent.
 
 ## Patronage and lovers
 
-Aspen is also a patron with several mistresses or maintained lovers across different places.
+Aspen maintains several mistresses or lovers across different places.
 
-This should not be written simply as glamorous promiscuity.
+Do not write this as a glamour montage of promiscuity.
 
-The important structure is obligation.
+The important structure is **material obligation**.
 
 She remembers:
 
-- who needs rent;
-- who asked for medicine;
-- who wants a particular object from another port;
-- birthdays and return dates;
+- rent dates;
+- medicine;
+- birthdays;
+- a requested object from another port;
 - who is ill;
 - who expects her on which week;
-- which promise must be fulfilled before the next departure.
+- what she promised to bring back;
+- which visit must fit between two departures.
 
-Her personal relationships can become another logistical network.
+She may genuinely enjoy being a patron.
 
-She can experience genuine satisfaction in being useful, necessary, and dependable.
+She may also prefer relationships in which her role is obvious.
 
-## Karmic pressure
+## Information edge
 
-Aspen's attachment is not adventure and not primarily greed.
+Aspen naturally learns:
 
-It is closer to:
+- external prices;
+- weather;
+- route disruptions;
+- arrival and departure windows;
+- foreign supply;
+- shipping delay;
+- cargo constraints;
+- mechanical condition;
+- which repeated counterparty pays on time.
 
-> **I know what I am for when somebody needs me to do something.**
-
-This makes her a strong Sun-Moment character.
-
-She may be one of the least conventionally greedy people in the harbour while still being unable to stop because a schedule, person, machine, cargo, or promise depends on her.
-
-The recurring problem is not `learn to relax`.
-
-It is whether usefulness can remain a choice rather than becoming the only stable proof that she should exist.
+She should not automatically know elite gossip, street gossip, or another person's hidden motives.
 
 ## Weaknesses
 
 Aspen is structurally weak at:
 
 - highly ambiguous speculation;
-- open-ended ventures with no clear timetable;
-- businesses whose outcomes depend on social fashion she cannot model;
-- large unhedged tail risks;
-- situations where the correct move is to wait without knowing for how long;
+- fashion/status demand she cannot model;
+- open-ended ventures;
+- waiting without a timetable;
+- large tail-risk bets;
+- hidden social games;
+- deals where success depends on somebody changing their mind;
 - accepting that another person may want her without needing a service.
-
-## Dialogue / scene rhythm
-
-Aspen should rarely make grand speeches.
-
-Useful recurring details:
-
-- checks the time before answering;
-- asks for exact quantities;
-- notices weather before anyone else;
-- leaves conversations on schedule;
-- gives unusually specific arrival windows;
-- treats physical symptoms as operational information;
-- has low tolerance for phrases such as `probably`, `sometime`, and `we'll see`.
-
-The comedy comes from the fact that she is a Sailor who dislikes the sea and a boundary-crosser who tries to make every boundary crossing routine.
-
----
-
-# 3. Sterling — Bar Operator / Apprentice
-
-## Identity
-
-Sterling is a young man working the Bar.
-
-The Seagull gang unexpectedly hired or installed him to operate it. The exact transaction behind that appointment can remain partly opaque at first; the world does not need to explain every absurd institutional fact immediately.
-
-The name `Sterling` deliberately sits close to `stirring` without becoming a joke every character must comment on.
-
-Sterling combines some of the social position of Jia Baoyu with a Myshkin-like disruption of ordinary instrumental thinking, but he must remain his own character.
-
-He has unusually strong empathy and is highly responsive to sensory experience.
-
-He likes:
-
-- tastes;
-- smells;
-- textures;
-- alcohol craft;
-- new people;
-- unfamiliar techniques;
-- strange invitations;
-- trying something once to see what happens.
-
-He comes from money.
-
-He is therefore capable of making decisions that look irrational to poorer traders because the same loss does not threaten him in the same way.
-
-## Moral position
-
-Sterling is **not** the moral centre of the game.
-
-He does not need a strong conventional good/evil framework.
-
-He can be generous without thinking `this is virtue`.
-
-He can do something reckless, selfish, or strange because it interests him.
-
-He may understand that a person is lying and still decide the interaction is worth continuing.
-
-He may also hurt someone through inattention, curiosity, refusal to choose, or an inability to see why a boundary matters to them.
-
-## Economic role
-
-Sterling begins as a chaotic earner rather than a disciplined trader.
-
-His early economic behaviours can include:
-
-- Bar service revenue;
-- cocktail production;
-- accepting odd forms of payment;
-- extending informal credit;
-- taking small speculative positions because they sound interesting;
-- investing in a person or idea before fully understanding it;
-- spending on experiences rather than maximising cash;
-- entering partnerships without the usual degree of suspicion.
-
-His critical long-run trait is **learning speed**.
-
-Sterling must not remain a permanent rich idiot.
-
-A plausible trajectory is:
-
-> weak framework → repeated experience → rapid pattern acquisition → dangerous flexibility.
-
-He can eventually become a powerful competitor, large investor, skilled bartender-business operator, or catastrophic source of misallocated capital depending on what he repeatedly experiences and whom he learns from.
-
-## Social effect
-
-Sterling should be polarising rather than universally lovable.
-
-Some people trust or enjoy him quickly.
-
-Others find him:
-
-- irritating;
-- unserious;
-- spoiled;
-- impossible to model;
-- offensively casual about losses that would ruin them;
-- too open;
-- too easily distracted;
-- too willing to invite the wrong person into the room.
-
-His family wealth also attracts people who want:
-
-- his capital;
-- his introductions;
-- Bar access;
-- social legitimacy;
-- a naive co-investor;
-- a rescue lender;
-- a partner they expect to control.
 
 ## Karmic pressure
 
-Sterling's unusual strength is a low instrumental reflex.
+Aspen's attachment is usefulness.
 
-He does not automatically convert every piece of information, care, or intimacy into leverage.
+A schedule tells her the next action.
 
-His recurring danger is that care and openness can become refusal to choose.
+A promise tells her what must be done.
 
-He may:
+A dependent tells her why she must continue.
 
-- lend when refusal would be healthier;
-- keep Juan's cycle running because he understands why Juan is struggling;
-- make incompatible promises;
-- preserve the Bar at other people's cost;
-- absorb losses that eventually fall on staff or family;
-- confuse empathy with responsibility for another person's entire life.
+Her problem is not `learn to relax`.
 
-The knot is not solved by teaching him to become Yasmin.
+It is whether usefulness can remain a choice rather than the only stable proof that she has a place.
 
-Competence must not require cynicism.
+This gives her a strong Sun-Moment contradiction:
 
-## Romance / intimacy rule
+> one can be disciplined, generous, reliable, and still be unable to stop.
 
-Sterling is not a romance route.
+## Speech rhythm
 
-If attraction or intimacy develops, it should grow from repeated attention and shared situations.
+- exact quantities;
+- exact times;
+- short corrections;
+- few adjectives;
+- weather and bodily state treated as operational data;
+- low tolerance for `probably`, `sometime`, `maybe later`, or `we'll see`;
+- rarely explains herself after the relevant fact is already clear.
 
-The player may spend three mornings talking to Sterling and miss three profitable investigations. The engine can remember the shared time but must not infer `the player is in love`.
+## Recurring objects
 
-The player can also ignore Sterling and concentrate on making money.
-
-## Penguin Grandma
-
-Grandma is a Penguin.
-
-Sterling's family continues to call her Grandma even where formal human institutions treat the former legal person as dead and the present animal as legally distinct.
-
-The Grandma/Fish route should first appear through ordinary behaviour:
-
-- Sterling closes early;
-- a specific fish is bought repeatedly;
-- the skin is removed;
-- a Penguin is present;
-- the family calls her Grandma.
-
-Do not turn this immediately into a speech proving or disproving soul continuity.
+- watch;
+- tide sheet;
+- pencil;
+- maintenance list;
+- folded weather notice;
+- medicine for someone elsewhere;
+- small wrapped gifts with dates written on them;
+- spare cable;
+- a notebook where cargo and personal errands share one page.
 
 ---
 
-# 4. Yasmin — Capital Owner / Social Allocator
+# 4. Sterling — Bar Operator / Apprentice
+
+## Identity
+
+Sterling is a young man operating the Bar.
+
+The Seagull network unexpectedly hired or installed him there.
+
+He comes from money.
+
+He has unusually strong empathy and high sensory curiosity.
+
+He likes:
+
+- taste;
+- smell;
+- texture;
+- alcohol craft;
+- unfamiliar techniques;
+- unfamiliar people;
+- small social experiments;
+- invitations;
+- trying something once because he wants to know what it is like.
+
+The name `Sterling` quietly rhymes with `stirring`, but characters should not repeatedly comment on this.
+
+His position can carry traces of Jia Baoyu and Myshkin as reference points without making him a copy of either.
+
+## Moral position
+
+Sterling is **not** the moral centre.
+
+He does not require a stable good/evil doctrine.
+
+He may be generous without thinking of virtue.
+
+He may continue talking to a liar because the conversation remains interesting.
+
+He may hurt people through:
+
+- curiosity;
+- inattention;
+- weak boundaries;
+- refusal to choose;
+- assuming a loss is bearable because it is bearable to him.
+
+His openness should sometimes be beautiful, sometimes irritating, sometimes expensive.
+
+## Money-making method
+
+Early Sterling is a chaotic earner.
+
+Sources:
+
+- Bar revenue;
+- cocktail production;
+- informal credit;
+- unusual payment;
+- small speculative experiments;
+- family capital;
+- accidental opportunities created by social access;
+- partnerships entered before he understands why everyone else is cautious.
+
+His strongest long-term economic trait is **learning speed**.
+
+He should not remain a permanent rich idiot.
+
+Possible trajectory:
+
+> weak framework → repeated experience → rapid pattern acquisition → dangerous flexibility.
+
+He may eventually become:
+
+- a strong Bar operator;
+- a creative investor;
+- a counterparty who combines relationship and capital;
+- a rival who learned from the player;
+- a source of badly allocated capital;
+- several of these across different lives.
+
+## Operating costs
+
+The Bar should have real economics:
+
+- ice;
+- ingredients;
+- breakage;
+- labour / operating cost abstraction;
+- tabs;
+- rent / lease / Seagull claim;
+- replacements;
+- occasional family money covering what the business itself did not.
+
+Sterling can look profitable while family capital quietly plugs holes.
+
+The game should be able to reveal that distinction.
+
+## Why Dima hired him — current strong direction
+
+This detail was previously unresolved; the following is the current working explanation and may be revised if later story needs contradict it.
+
+Dima's network needed a human legal face for a tolerated cross-form venue.
+
+Sterling was useful because:
+
+- he already wanted to work behind a Bar;
+- he did not object to Animal customers;
+- his family background made small operating losses survivable;
+- he was legally recognised;
+- he asked fewer defensive questions than a cautious operator;
+- Dima expected him to be easier to influence than he may actually become.
+
+Do not turn Sterling into a helpless front.
+
+He can learn the structure and eventually negotiate with the people who expected to use him.
+
+## Information edge
+
+Sterling naturally learns soft information:
+
+- who keeps coming in;
+- who sits with whom;
+- who suddenly stops ordering;
+- who is drinking too much;
+- who is talking about a good repeatedly;
+- who asks for private space;
+- which groups overlap socially;
+- which professional tools or ingredients are missing.
+
+He may fail to recognise the economic importance of what he heard until later.
+
+## Weaknesses
+
+Early Sterling is weak at:
+
+- boundaries;
+- credit discipline;
+- distinguishing a compelling story from a good investment;
+- detecting when another person's downside is being transferred to him;
+- knowing when empathy is being used strategically;
+- refusing a fascinating bad deal.
+
+## Karmic pressure
+
+Sterling's strength is low instrumental reflex.
+
+He does not automatically convert:
+
+- care into leverage;
+- information into cash;
+- attention into control;
+- relationship into property.
+
+His danger is that care becomes refusal to choose.
+
+He may:
+
+- keep Juan's cycle running;
+- allow too many tabs;
+- make incompatible promises;
+- protect a business at somebody else's cost;
+- let curiosity override another person's boundary;
+- absorb losses that later fall on staff, family, or creditors.
+
+The answer is not `become Yasmin`.
+
+Competence must not require cynicism.
+
+## Romance / intimacy
+
+Sterling is not a romance route.
+
+No heart meter.
+
+No special romance ending.
+
+If the player keeps spending actions with him, shared history grows.
+
+That may become attraction, friendship, sex, irritation, dependence, or nothing.
+
+The engine records time and events, not `love`.
+
+## Speech rhythm
+
+- asks sensory questions;
+- often offers something before asking for payment;
+- may jump topics when a new object appears;
+- can be surprisingly precise once he has learned a craft;
+- does not sound saintly;
+- occasionally says something socially blunt because he does not realise the expected performance matters;
+- grows more technically fluent over time.
+
+## Recurring objects
+
+- jigger;
+- ice bucket;
+- stained order pad;
+- unpaid tab;
+- broken glass;
+- a drink made twice differently;
+- Seagull paperwork;
+- a family card or expensive object treated casually;
+- keys he may or may not legally own.
+
+---
+
+# 5. Yasmin — Capital Owner / Social Allocator
 
 ## Identity
 
@@ -306,569 +455,1014 @@ Yasmin replaces the earlier `Mirelle Vale` identity.
 
 She is the second child in a wealthy or commercially important family.
 
-She has spent years learning how to remain useful to people above, beside, and adjacent to her family's position.
-
-She is polished, socially competent, and usually pleasant in ordinary interaction.
+She is polished, socially observant, and usually pleasant.
 
 Do **not** write her as a sneering aristocrat.
 
-Most people should be able to meet Yasmin and conclude that she is gracious, observant, and good company.
+Most ordinary people should be able to meet her and reasonably conclude:
 
-Her strategic social behaviour becomes most visible around people whose approval, capital, status, access, or patronage matters to her.
+> she is gracious;
+> she remembers things;
+> she knows how to behave;
+> she did not make me feel poor.
+
+Her strategic performance becomes most visible around people whose:
+
+- approval;
+- capital;
+- status;
+- family position;
+- access;
+- patronage
+
+matter to her.
 
 ## Previous form
 
 Yasmin lived a previous life as an Animal.
 
-A hyena is the current strongest candidate, but the exact species remains provisional.
+A hyena remains the creator's strongest candidate, but is **not yet locked**.
 
-The value of the hyena direction is not `hyena = cruel`.
+The useful structure is not `hyena = cruel`.
 
-It is the structural echo between:
+It is:
 
 - clan hierarchy;
 - social ranking;
-- access to resources through group position;
-- reading who can approach what and when;
-- highly social competition.
+- reading access;
+- resource timing;
+- knowing who can approach what;
+- socially organised competition.
 
-Her current upper-class human life may therefore reproduce an older social ecology in a new form.
+Her current upper-class life may repeat a former social ecology in another form.
 
-## Economic role
+## Money-making method
 
-Yasmin specialises in wealth that can produce more wealth without requiring her to personally sell low-margin goods all day.
+Yasmin specialises in capital that produces more capital.
 
-Possible methods include:
+Methods may include:
 
 - family business ownership;
-- minority equity stakes;
-- rental or lease income;
-- auction commissions;
-- private placements;
+- minority equity;
+- lease/rent income;
+- auction commission;
+- private placement;
+- secured finance;
+- distressed acquisition;
 - provenance-heavy collectibles;
-- secured lending;
-- selective distressed acquisition;
 - information control;
-- high-end intermediation;
-- arranging access between people who would not otherwise transact.
+- introductions;
+- arranging access between capital and opportunity.
 
-This is `passive income` only at the asset level.
+Her wealth is passive at the asset level and active at the social level.
 
-Maintaining the social structure that protects those assets is labor.
+## Social labour
 
-Yasmin spends substantial time on:
+Yasmin spends real time maintaining the conditions that protect her capital:
 
 - dinners;
 - screenings;
-- private events;
+- seating plans;
+- invitations;
+- small gifts;
 - introductions;
 - remembering family facts;
-- making the correct people feel recognised;
-- protecting reputation;
-- keeping useful relationships warm.
+- appearing at the correct event;
+- knowing when not to be seen with someone;
+- keeping senior relatives and useful patrons warm.
 
-Her wealth can therefore be economically passive while her life is socially exhausting.
+This work should cost actions or otherwise compete with alternative uses of time when she is modelled deeply enough.
 
 ## Family pressure
 
-As the second child, Yasmin may have learned that recognition is not automatic.
+As the second child, Yasmin may have learned that recognition, control, and inheritance are conditional.
 
-Early motivation can include pleasing parents, senior relatives, or family decision-makers to receive greater control, trust, capital, or status.
+Early pressure can include:
 
-Later, even after she has secured her own position, the maintenance behaviour can persist because the position now requires continual reproduction.
+- pleasing parents;
+- being useful to senior relatives;
+- avoiding embarrassment;
+- producing returns;
+- proving she can manage people and assets.
+
+Later, after she no longer needs approval in the same way, the maintenance pattern can persist because her position now depends on reproducing the network.
 
 ## Intimacy problem
 
-Yasmin is very good at modelling incentives.
+Yasmin is good at modelling incentives.
 
-This makes intimacy difficult.
+That makes intimacy difficult.
 
 If somebody wants her:
 
-> What do they want from her?
+> Why?
 
 If somebody helps her:
 
-> What are they buying?
+> What is the return?
 
 If somebody asks for nothing:
 
-> What is the hidden price?
+> What have I missed?
 
-This should not make her incapable of affection. It makes affection hard to distinguish from strategy from inside her own model of the world.
+This does not make her incapable of affection.
 
-Sterling can be particularly destabilising because his motives may be genuinely under-specified even to himself.
+It makes unpriced motive difficult to distinguish from hidden motive.
+
+Sterling can be difficult for her because his own incentives may genuinely be under-specified.
+
+## Information edge
+
+Yasmin naturally learns:
+
+- family transactions;
+- elite capital;
+- auction plans;
+- ownership changes;
+- financing needs;
+- provenance;
+- which people are trying to appear solvent;
+- who needs an introduction;
+- which event matters socially before it matters publicly.
+
+She is weaker where information lives in networks that do not care about elite status.
 
 ## Weaknesses
 
-Yasmin should not be best at every business.
-
-She is comparatively weak at:
+Yasmin should be weak at:
 
 - high-turnover low-margin operations;
 - dirty physical work;
-- businesses where tiny unit economics matter more than access;
-- volatile operations that cannot be made respectable by structure;
-- situations where the best information lives in networks that do not care about her status;
-- accepting value that cannot be traced, certified, introduced, or socially located.
+- tiny unit economics;
+- highly informal markets with little enforceable documentation;
+- chaotic goods whose stories cannot be certified;
+- decisions where doing nothing socially is the strongest move;
+- accepting value that remains unpriced.
 
 ## Karmic pressure
 
 Yasmin's knot concerns:
 
 - provenance;
-- ownership;
-- status;
+- position;
 - proof;
+- ownership;
 - incentive;
 - control;
-- the cost of maintaining position.
+- the cost of maintaining status.
 
-A future player transformation can make this especially sharp: Yasmin may privately believe that Animal-you is continuous with a former human while still refusing to treat the new legal person as the owner of the old estate.
+A transformed player can become a direct problem for her worldview:
+
+she may privately believe Animal-player is continuous with former Human-player while still refusing to settle property as if the same legal person survived.
 
 Belief and settlement are not the same thing.
 
+## Speech rhythm
+
+- remembers names and prior details;
+- rarely raises her voice;
+- uses questions to make others reveal assumptions;
+- can compliment sincerely and calculate at the same time;
+- becomes more performative around people whose approval matters;
+- avoids obvious snobbery;
+- when angry, may become more formal rather than louder.
+
+## Recurring objects
+
+- invitation list;
+- seating plan;
+- sealed lot;
+- provenance label;
+- family message;
+- receipt;
+- collateral sleeve;
+- place card;
+- object whose story is worth more than its material.
+
 ---
 
-# 5. Wong — Dock Dog / Migrant Dealer
+# 6. Wong — Dock Dog / Migrant Dealer
 
 ## Identity
 
 Wong is Dock Dog.
 
-He has many dependents and high recurring household costs.
+He has many dependents and a high recurring burn rate.
 
-His world includes children, rescued animals, food expenses, informal obligations, and the constant practical work of keeping several lives going.
+His world includes:
 
-He believes that rescuing animals kept or exploited by humans — including birds and cats — can accumulate merit.
+- children;
+- rescued birds;
+- rescued cats;
+- food;
+- small household expenses;
+- informal obligations;
+- constant practical work.
 
-This belief can be sincere, useful, self-serving, compassionate, compulsive, or several of those things at once.
+Wong believes rescuing animals kept or exploited by humans can accumulate merit.
 
-## Economic role
+This may be sincere, practical, self-serving, compassionate, compulsive, or several at once.
 
-Wong is a high-turnover, low-margin operator.
+Do not reduce it to a joke about religion.
 
-He is not poor because he cannot make money.
+## Money-making method
 
-Money moves through him quickly.
+Wong earns through:
 
-His methods include:
-
+- high-volume low-margin resale;
 - scavenging;
 - rubbish picking;
-- resale of low-value objects;
+- salvage;
+- delivery;
 - odd jobs;
-- dirty work other people refuse;
-- informal delivery;
-- small brokerage;
-- animal-network information;
-- buying in tiny lots and reselling repeatedly;
-- bargaining over almost everything;
-- recovering value from goods other traders ignore.
+- dirty work;
+- tiny brokerage;
+- informal information;
+- animal-network access;
+- bargaining;
+- turning things other traders ignore into usable inventory.
 
-The correct mental model is often:
+The correct scale is often:
 
 > earn 1🥫 twenty times
 
 rather than:
 
-> risk everything for 30🥫 once.
+> risk everything to earn 30🥫 once.
 
 ## Survival economics
 
-Wong's business can show high gross turnover while his personal liquid wealth remains low.
+Wong can move large gross volume while remaining cash-light.
 
-That is not a contradiction.
+That is not contradiction.
 
-He has a high burn rate.
+He has:
 
-If he stops turning over inventory for too long, household and rescue costs catch him.
+- household costs;
+- animal costs;
+- food costs;
+- emergency costs;
+- little room for one catastrophic loss.
 
-This makes him a good expression of:
+If he stops turning inventory, the expense side keeps moving.
 
-- working capital;
-- thin margins;
-- volume;
-- cash conversion;
-- recurring consumption;
-- informal labour;
-- bargaining;
-- the difference between revenue and retained wealth.
+## Information edge
+
+Wong naturally learns:
+
+- what was thrown away;
+- who needs a cheap worker;
+- who lost an object;
+- what entered through an informal route;
+- where an Animal can enter;
+- who is feeding whom;
+- which small supplier needs cash today;
+- rumours that move physically before they reach elite networks.
+
+He often hears important facts before he understands their high-end market value.
+
+## Weaknesses
+
+Wong is weak at:
+
+- large concentrated bets;
+- long periods of idle capital;
+- elite access;
+- expensive legal fights;
+- illiquid prestige assets;
+- deals where a tiny mistake can wipe out the household.
 
 ## Karmic pressure
 
-Wong's attachment is responsibility mediated through accounting.
+Wong's knot is responsibility mediated through accounting.
 
-He may genuinely care for vulnerable animals while also thinking in terms of merit, obligation, and the number of lives he can support.
+More capacity can produce more dependents.
 
-More money may not solve his knot because more capacity can produce more dependents.
+More income can therefore increase, rather than reduce, the number of lives he feels responsible for.
 
-The recurring question is not whether rescue is good or bad.
+The question is not whether rescue is good.
 
-It is whether care can stop expanding into an obligation that makes stopping impossible.
+It is whether every available unit of capacity must become another obligation.
 
-## Social role
+## Relation to Dima
 
-Wong has broad contact with:
+Wong uses Dima's network because it solves real access problems.
 
-- animal networks;
-- informal workers;
-- rubbish and salvage streams;
-- Seagull contacts;
-- people who need cheap labour;
-- people who need something moved quietly;
-- Sterling's Bar;
-- Juan;
-- Sailors passing through.
+He may also resent Dima's cut.
 
-He can plausibly be one of the people who knows where to find the psychedelic toads used socially by Juan, Aspen/Sailor circles, and himself.
+Wong is exactly the kind of small operator who can make Dima rich through repeated tiny fees while never feeling that any single fee is large enough to start a war over.
 
-The toad should remain a recurring material fact, not a quest item labelled `psychedelic enlightenment`.
+Their relation should remain practical, familiar, and asymmetrical.
+
+## Toads
+
+Wong is one natural source of psychedelic toads through Animal networks.
+
+For Wong, the toad does not need to carry mystical meaning.
+
+It can be:
+
+- recreation;
+- exchange;
+- habit;
+- sociality;
+- something somebody asked him to find.
+
+Juan is the one most likely to turn the experience into a theory.
+
+## Speech rhythm
+
+- bargains automatically;
+- notices small amounts;
+- uses practical comparisons;
+- can be warm and mercenary in the same minute;
+- complains about cost without implying poverty;
+- short on time;
+- rarely gives a clean answer if the answer affects price.
+
+## Recurring objects
+
+- salvaged bag;
+- fish scraps;
+- cages being opened;
+- cat food;
+- half-tin dispute;
+- string;
+- dead or nearly-useless object with resale value;
+- toad container;
+- handwritten list of expenses.
 
 ---
 
-# 6. Juan — Onewheel Clown / Former Dentist
+# 7. Juan — Former Dentist / Onewheel Clown / Debtor
 
 ## Identity
 
 Juan is the current design name for the Onewheel Clown.
 
-Before this identity, he was a dentist.
+Before this life structure, he was a dentist.
 
-That previous career matters because it establishes a credible earlier life of:
+That previous profession provides:
 
-- technical professional skill;
+- technical skill;
+- a respectable identity;
 - predictable income;
-- respectable social position;
 - clinic assets;
 - routine;
-- a profession with ordinary status and solvency.
+- a socially legible life.
 
-He later developed serious addiction problems and is publicly understood as bankrupt or perpetually broke.
+He later developed serious addiction problems.
 
-He should not be reduced to `addict = irresponsible idiot`.
+Publicly he is understood as:
 
-Juan can be genuinely sophisticated in specific financial structures while still having a reward horizon that repeatedly destabilises long-term plans.
+- broke;
+- unstable;
+- indebted;
+- always around the Bar;
+- betting again.
 
-## Economic role
+That public description is incomplete.
 
-Juan lives inside liabilities.
+## Money-making method
 
-His key insight is simple:
+Juan understands an important financial asymmetry:
 
-> **One person's liability is another person's asset.**
+> his liability is someone else's asset.
 
-If Juan owes several people money, those claims appear as assets on their side of the relationship.
-
-This can create a strange form of bargaining power when too many people become invested in his continued ability to pay.
-
-Possible money-making / survival methods include:
+He can therefore operate through:
 
 - leverage;
-- rolling debt forward;
-- refinancing;
-- distressed-debt negotiation;
-- repurchasing his own debt below face value when creditors lose confidence;
+- rollover;
+- restructuring;
+- distressed-debt repurchase;
+- multiple creditors;
+- creditor coordination problems;
 - wagers;
-- races;
-- speculative positions;
-- selling optionality or future claims;
-- exploiting differences between secured, unsecured, formal, and informal creditors;
-- persuading creditors that restructuring is worth more than immediate collection.
+- optionality;
+- future claims;
+- selling risk other people think they are merely collecting.
 
-## Debt ecology
+A person can be broke and still be financially sophisticated.
 
-Juan's debt should eventually be distributed across different counterparties rather than represented by one generic `Debt = 42` number.
+## Creditor ecology
 
-For example, claims may differ by:
+Juan should not have one generic `debt = 20`.
 
-- creditor;
-- collateral;
-- due date;
-- legal enforceability;
-- relationship;
-- seniority in practice;
-- whether the creditor needs cash now;
-- whether the creditor believes Juan can recover.
+Useful distinctions:
 
-This allows creditor coordination problems without building a bankruptcy simulator.
+- Sterling may hold soft Bar credit.
+- Dima may hold informal or purchased claims.
+- Yasmin may buy discounted debt or hold secured claims when the economics make sense.
+- another unnamed creditor can exist if needed for coordination.
+- not every debt needs the same maturity, seniority, or enforcement.
 
-A creditor may rationally prefer to extend Juan rather than destroy the value of their own claim.
+The system can remain small while still teaching:
 
-Another may try to collect first before everyone else does.
+> the same face amount is not the same claim.
 
-## Addiction and planning
+## Addiction and horizon mismatch
 
-Juan can make a brilliant long-horizon restructuring decision in the morning and destroy its liquidity logic in the afternoon.
+Juan can make an excellent long-horizon decision in the morning and destroy its liquidity logic in the afternoon.
 
-The problem is not necessarily lack of intelligence.
+That is not proof that he does not understand finance.
 
-His planning horizon and immediate reward system can disagree.
+His planning system and immediate reward system can disagree.
 
-This makes him a strong source of evidence for separating:
+Do not write him as `addict = irrational`.
 
-- skill;
-- outcome;
-- self-control;
-- liquidity;
-- leverage;
-- risk appetite;
-- addiction;
-- luck.
+He can be analytically right and behaviourally fragile.
 
-## Clown / liberation knot
+## Liberation knot
 
-Juan remains the strongest expression of liberation converted into acquisition.
+Juan has learned that ordinary wealth does not end repetition.
 
-He has learned that ordinary wealth does not solve the repeating problem.
+He converts liberation into another optimisation project.
 
-He therefore pursues:
+He seeks:
 
-- cliff experiments;
-- wagers;
-- speed;
-- intoxication;
-- psychedelic toads;
-- altered states;
-- Sun-Moment timing;
-- theories of exit.
+- correct cliff;
+- correct speed;
+- correct wager;
+- correct dose;
+- correct toad;
+- correct Sun-Moment timing;
+- correct theory;
+- correct altered state.
 
-The mistake is not that every strange experience is false.
+The problem is not that unusual experiences are false.
 
-The recurring pattern is that he turns experience immediately into method:
+The pattern is that each experience becomes:
 
-> What dose? What time? Which cliff? Again under what conditions?
+- evidence;
+- method;
+- repeatability;
+- mastery;
+- another attempt.
 
-He tries to optimise escape.
+## Information edge
 
-## Toad circle
+Juan naturally notices:
 
-Juan frequently uses psychedelic toads with Wong and Sailor/Aspen circles.
+- distressed balance sheets;
+- who is short of cash;
+- who is pretending not to be;
+- whose debt is trading below face;
+- which creditor is getting nervous;
+- weird tail-risk possibilities;
+- route anomalies;
+- anything that could create convex payoff.
 
-The same toad should not mean the same thing to each person.
+He is unreliable outside domains he actually observes.
 
-For Juan it tends to become experiment and evidence.
+## Weaknesses
 
-For Wong it can be ordinary animal-network culture, recreation, exchange, habit, or sociality.
+- ordinary capital preservation;
+- stable consumption;
+- short-horizon self-control;
+- predictable repayment;
+- deciding that a question does not need another experiment;
+- distinguishing `I can structure this` from `I should do this`.
 
-For Aspen it can be tightly bounded, scheduled, or treated as another bodily variable rather than a sacred event.
+## Speech rhythm
 
-Do not write the toad as a moral lesson about drugs or a guaranteed route to truth.
+- debt language used casually;
+- sometimes clinically technical because of former profession;
+- asks follow-up questions after experiences others would leave alone;
+- can make absurd proposals with correct arithmetic;
+- often refuses moral framing and substitutes probability or structure;
+- should be funny because he is specific, not because he babbles nonsense.
+
+## Recurring objects
+
+- Onewheel;
+- old dental instrument;
+- multiple IOUs;
+- Bar tab;
+- creditor list;
+- Mai Tai;
+- toad;
+- tape;
+- odds written on disposable paper.
 
 ---
 
-# 7. Fishmonger — Monopoly Operator / Real-Economy Chokepoint
+# 8. Dima — Seagull Black-Market Broker
 
 ## Identity
 
-Fishmonger is not the harbour's innocent practical straight man.
+Dima replaces the earlier named Fishmonger slot in narrative canon.
 
-They operate a monopoly or near-monopoly around an essential part of the fish economy.
+He is a male Seagull and the most visible operator of the harbour's dominant cross-form black-market brokerage network.
 
-The exact legal mechanism can remain provisional, but the economic fact should be clear:
+`Dima` is an ordinary Russian diminutive chosen to fit the creator's preference for simple names and the character's tracksuit-gangster visual reference.
 
-> **other people may be able to catch, eat, or sell fish, but Fishmonger controls a chokepoint that makes scale, storage, settlement, or regular market access much easier through them than around them.**
+Visual direction:
 
-This keeps the character grounded in physical production while giving them a distinctly different way of making money.
+- ordinary tracksuit;
+- practical cheap bag;
+- no ornate crime-boss costume;
+- capable of looking ridiculous and threatening in the same frame because he is still a Seagull.
 
-## Possible monopoly structure
+Do not write him as a parody of Russian ethnicity.
 
-The strongest implementation direction is a combination of several practical advantages rather than a magical exclusive right:
+The tracksuit/gangster reference is visual-social shorthand, not his entire personality.
 
-- control of the best cold-storage / ice capacity;
-- preferred dock purchasing relationships;
-- long-term supply contracts;
-- first access to large catch lots;
-- control of regular wholesale distribution;
-- influence over sardine-tin conversion / settlement supply;
-- the ability to wait while small sellers must liquidate perishables quickly;
-- enough working capital to buy when others cannot store inventory.
+## The black market is not an evil shop
 
-The exact bundle should be simplified for play, but the result is recognisable market power.
+Dima does not own every illicit object in a catalogue.
 
-Fishmonger can therefore earn from:
+The black market exists because:
 
-- producer margin;
-- wholesale spread;
-- storage access;
-- monopsony-like buying power over small fish suppliers;
-- monopoly/oligopoly pricing to downstream buyers;
-- control of a settlement commodity that everyone needs.
+- Animals lack equal formal recognition;
+- some venues exclude them;
+- some goods cannot use formal settlement;
+- people need proxies;
+- information and credit are fragmented;
+- counterparties need enforcement where law will not help them.
 
-## Why this is not unlimited power
+Dima makes money by reducing those frictions.
 
-Fish still rot.
+## Money-making method
 
-Weather still changes catch.
+Dima's network earns from:
 
-Ice still costs money.
+- introductions;
+- proxy buying;
+- proxy selling;
+- private settlement;
+- informal credit;
+- debt purchase / collection;
+- fencing and provenance transformation where appropriate;
+- information brokerage;
+- transport coordination;
+- access fees;
+- escrow-like reputation;
+- taking a spread between excluded counterparties;
+- charging for enforcement or guarantee.
 
-Workers still need paying.
+He can also hold inventory, but inventory is not his core edge.
 
-Sailors can import substitutes.
+His edge is **being the bridge**.
 
-Animals can create informal channels.
+## Market power
 
-Wong can route small lots around formal distribution.
+Dima should have monopoly or near-monopoly power over one practical black-market chokepoint without owning the entire underground economy.
 
-A monopoly can be powerful without making physical constraints disappear.
+Strong direction:
 
-This makes Fishmonger the strongest expression of:
+> his network has the most trusted cross-form settlement/enforcement reputation in the harbour.
 
-> **market power sitting on top of real material bottlenecks.**
+Other Seagulls, Squirrels, Mosquitoes, humans, and Animals can trade without him.
 
-## Economic lesson space
+But bypassing him can mean:
 
-Fishmonger can naturally produce situations involving:
+- lower trust;
+- no guarantee;
+- worse information;
+- more chance of non-payment;
+- no legal proxy;
+- harder enforcement.
 
-- monopoly pricing;
-- barriers to entry;
-- vertical integration;
-- essential facilities;
-- monopsony power;
-- working capital;
-- inventory spoilage;
-- price discrimination where believable;
-- supplier dependence;
-- substitution;
-- informal competition;
-- the difference between controlling a market and controlling nature.
+This creates a real gatekeeping rent.
 
-## Social presentation
+His monopoly is on **coordination and enforceability**, not on all vice.
 
-Fishmonger does not need to act theatrical or villainous.
+## Why the network hired Sterling
 
-They can be ordinary, competent, practical, and very willing to use a structural advantage.
+Dima's network needed the Bar to remain a tolerated human-facing venue.
 
-A person can complain sincerely about thin margins while simultaneously using market power against suppliers.
+Sterling was useful as:
 
-A person can be excellent at fish and still be bad for anyone trying to enter the fish business.
+- legally recognised operator;
+- bartender who actually likes the work;
+- wealthy enough not to collapse after one bad week;
+- socially open to Animals;
+- initially unlikely to demand complete control.
+
+Dima expected influence.
+
+Sterling may learn faster than expected.
+
+That relationship can become employer/employee, landlord/operator, creditor/debtor, partners, or adversaries depending on what actually happens.
+
+Do not reveal the complete Bar legal structure in first-contact dialogue.
+
+## Information edge
+
+Dima naturally knows:
+
+- who cannot use formal markets;
+- who needs a proxy;
+- who is under informal debt pressure;
+- which goods cannot appear publicly;
+- who can enforce a promise;
+- who is trying to hide ownership;
+- which rumours matter because somebody is willing to pay to suppress them;
+- where formal exclusion creates price gaps.
+
+He should not automatically know elite family politics or external shipping conditions.
+
+## Weaknesses
+
+Dima is weak at:
+
+- high-status environments where informal credibility does not transfer;
+- provenance that must survive formal audit;
+- long-horizon capital allocation;
+- low-fee markets where his intermediation spread becomes uneconomic;
+- situations where direct access improves and his gatekeeping is no longer needed;
+- counterparties who can genuinely transact without him.
 
 ## Karmic pressure
 
-Fishmonger's knot is provisionally about turning necessity into control.
+Dima solves exclusion and profits from exclusion.
 
-Because everybody needs food, cold chain, settlement goods, or market access, a practical service can gradually become a position other people cannot easily refuse.
+Both facts are true.
 
-The knot should not reduce to `monopoly bad`.
+He may keep an Animal alive by finding a human proxy and take a fee that Animal hates.
 
-A fragmented fish market may genuinely waste food, destroy cold-chain efficiency, and make supply less reliable.
+He may protect an informal creditor from fraud and make the debt harder to escape.
 
-The recurring question is how much coordination becomes dependence, and how much dependence becomes power that perpetuates itself.
+He may resent Authority while depending economically on the gap Authority creates.
 
----
+His recurring knot is:
 
-# 8. Current Economic Contrast
+> **what happens when being indispensable requires the barrier to remain.**
 
-| Character | Primary earning logic | Why it works | Main structural weakness | Recurring karmic pressure |
-|---|---|---|---|---|
-| **Aspen** | scheduled shipping, commissions, reliable contracts, conservative finance | precision, routine, trust, boundary access | ambiguity, tail risk, open-ended waiting | usefulness / obligation / inability to stop being needed |
-| **Sterling** | Bar operations, experiments, informal deals, later investment | sensory curiosity, social access, fast learning, family capital | weak early framework, poor boundaries, exploitable openness | care / experience / refusal to choose |
-| **Yasmin** | family assets, equity, auctions, secured finance, high-end intermediation | capital ownership, provenance, elite social maintenance | low-margin operations, unstructured informal markets, distrust of unpriced motives | status / proof / incentive / control |
-| **Wong** | high-volume low-margin trade, salvage, odd jobs, informal brokerage | turnover, bargaining, labour, broad network | high burn rate, little room for catastrophic loss | responsibility / merit accumulation / endless dependents |
-| **Juan** | leverage, restructuring, distressed debt, wagers, optionality | financial creativity, creditor interdependence, risk tolerance | addiction, horizon mismatch, solvency fragility | escape / repetition / turning freedom into a project |
-| **Fishmonger** | monopoly/near-monopoly over fish chokepoint, wholesale spread, storage and supply control | market power plus physical infrastructure | perishability, weather, substitutes, informal bypass | necessity becoming control |
+Do not resolve this as `crime bad`.
 
-This table is not a class system.
+If formal society suddenly became fairer, many people would gain access and Dima would lose rents.
 
-A character may learn another person's technique without becoming that person.
+His response to that possibility is more interesting than a police chase.
 
-The point is that the harbour contains several economically coherent ways to survive and accumulate.
+## Speech rhythm
 
----
+- brief;
+- practical;
+- rarely explains method;
+- quotes fee after confirming feasibility;
+- uses names and relationships as collateral;
+- can be dryly polite;
+- notices who is listening;
+- often distinguishes `possible`, `legal`, `safe`, and `cheap` as four different questions.
 
-# 9. Pre-existing Social Network — Current Direction
+## Recurring objects
 
-The social graph should exist before the player arrives.
-
-Strong current links:
-
-- **Wong ↔ Seagull networks:** work, rescue, informal trade, black-market introductions.
-- **Sterling ↔ Seagulls:** Sterling's unexpected Bar appointment gives the Seagulls a concrete reason to remain socially relevant.
-- **Sterling ↔ Penguin Grandma / family:** care, food, legal discontinuity, non-market allocation.
-- **Juan ↔ Sterling:** Bar tab, alcohol, rescue/enabling tension, possible financing.
-- **Juan ↔ Wong:** informal network, scavenged goods, toads, cheap labour/information, mutual familiarity.
-- **Juan ↔ Sailor/Aspen circle:** wagers, repairs, toad use, transport, boundary experiments.
-- **Aspen ↔ Yasmin:** repeat cross-boundary trade can make Aspen one of Yasmin's reliable sourcing counterparties even if their risk appetites differ strongly.
-- **Yasmin ↔ family/elite network:** economic maintenance work that does not depend on player attention.
-- **Fishmonger ↔ almost everyone:** food, ice, settlement goods, wholesale access, or market power create unavoidable contact without requiring friendship.
-- **Wong ↔ Fishmonger:** structurally tense potential relation between thin-margin informal circulation and an incumbent chokepoint operator.
-
-These links should create gossip, credit, conflict, and information pathways. They should not imply that every pair are close friends.
+- tracksuit pocket;
+- folded claim;
+- cheap phone;
+- stamped but unofficial receipt;
+- key to Bar back door;
+- paper bag that belongs to somebody else;
+- list with initials only;
+- a feather stuck to formal paperwork.
 
 ---
 
-# 10. Character Writing Rules
+# 9. Sonya — Sterling's Penguin Grandmother
 
-## Do not explain personality directly in dialogue
+## Status
 
-Prefer behaviour.
+Sonya is a recurring supporting figure, not a seventh primary trader and not a default node in every social/economic relationship.
 
-Aspen checks the tide sheet.
+She is a Penguin.
 
-Sterling offers somebody a drink before asking whether they can pay.
+Sterling's family calls her Sonya / Grandma even where formal human institutions treat the former human legal person as dead and the present Animal as legally distinct.
 
-Yasmin remembers the patron's daughter's school.
+The name follows the creator's chosen reference to *Death and the Penguin*: because the penguin Misha is male, the girl's name, Sonya, is used here.
 
-Wong argues over half a tin because it matters at volume.
+## Route role
 
-Juan renegotiates a debt that everyone else assumed was fixed.
+Sonya belongs primarily to the Sterling / food / hospitality / continuity route.
 
-Fishmonger changes the wholesale condition instead of saying `I have market power`.
+Useful recurring facts:
 
-## Do not make economic behaviour equal morality
+- Sterling closes early sometimes.
+- A particular fresh fish appears repeatedly.
+- The skin may be removed.
+- Sonya eats.
+- family language and legal language do not match.
 
-- Yasmin can be socially warm and strategically self-interested.
+Do not make her immediately explain rebirth.
+
+Do not make her a metaphysical oracle.
+
+Do not add her to every money circuit.
+
+---
+
+# 10. Pre-existing Social Network
+
+The network exists before the player.
+
+Relationships are asymmetric.
+
+Liking someone does not imply extending credit.
+
+Trusting settlement does not imply liking someone.
+
+## Aspen ↔ Yasmin
+
+Old repeat business.
+
+Yasmin values Aspen's reliable cross-boundary sourcing.
+
+Aspen values that Yasmin can pay, specify, and settle.
+
+They differ sharply in risk tolerance and social style.
+
+## Aspen ↔ Wong
+
+Wong can find small practical items quickly.
+
+Aspen dislikes his uncertain sourcing but may use him when time matters more than provenance.
+
+Wong thinks Aspen pays fairly but asks too many exact questions.
+
+## Aspen ↔ Juan
+
+Repair, wagers, old familiarity, toads, and boundary experiments.
+
+Aspen is one of the people who can make Juan's equipment safer without believing that his underlying plan is wise.
+
+Juan treats her measurements as useful data.
+
+## Aspen ↔ Dima
+
+Occasional logistics and access.
+
+Aspen will deal with Dima only when terms are unusually explicit.
+
+Dima can exploit routes Aspen cannot use formally; Aspen can move goods Dima cannot source locally.
+
+Neither has to trust the other's worldview.
+
+## Aspen ↔ Sterling
+
+Aspen supplies bar tools, ingredients, or foreign objects when the economics fit.
+
+Sterling likes unfamiliar things she brings.
+
+Any intimacy is emergent, not authored as a route.
+
+## Sterling ↔ Dima
+
+Dima's network hired/installed Sterling at the Bar.
+
+This is the strongest structural tie around the venue.
+
+Sterling may be employee, operator, legal front, future partner, or future bargaining problem depending on state.
+
+## Sterling ↔ Wong
+
+Animals are allowed in the Bar.
+
+Wong can bring customers, salvage, information, odd ingredients, and trouble.
+
+Sterling may extend small tabs that Wong usually tries to clear because repeated access matters.
+
+## Sterling ↔ Juan
+
+Bar tab, alcohol, sympathy, enabling, curiosity, arguments about debt, and occasional real help.
+
+Sterling may be one of Juan's softest creditors.
+
+That can protect Juan or prolong him.
+
+## Sterling ↔ Yasmin
+
+Yasmin initially sees family capital, social access, and poor discipline.
+
+Sterling may learn from her quickly.
+
+She may become less comfortable as he becomes more competent without becoming more predictable.
+
+## Yasmin ↔ Juan
+
+Yasmin can buy, finance, or restructure claims on Juan when price and security justify it.
+
+She need not respect his lifestyle to respect a discounted claim.
+
+Juan may dislike her and still prefer her terms to somebody else's.
+
+## Yasmin ↔ Dima
+
+Publicly distant, privately useful.
+
+Yasmin sometimes needs:
+
+- an introduction she cannot be seen arranging;
+- an Animal counterparty;
+- a provenance problem solved informally;
+- information unavailable in elite channels.
+
+Dima sometimes needs:
+
+- capital;
+- formal settlement;
+- a recognised buyer;
+- somebody whose signature survives scrutiny.
+
+They can do business without pretending to inhabit the same social world.
+
+## Yasmin ↔ Wong
+
+Occasional indirect trade.
+
+Wong may bring objects whose value depends on story or provenance.
+
+Yasmin may pay far more for one object than Wong expected and far less for twenty objects Wong understands better than she does.
+
+## Wong ↔ Dima
+
+Frequent practical relation.
+
+Wong uses Dima's network for:
+
+- access;
+- settlement;
+- buyers;
+- introductions.
+
+Dima collects many small rents from people like Wong.
+
+Wong bargains every one.
+
+## Wong ↔ Juan
+
+Old familiarity.
+
+Toads, cheap goods, odd jobs, information, emergency errands.
+
+Wong may think Juan is financially insane and still sell to him cash-first.
+
+## Juan ↔ Dima
+
+Dima can be creditor, claim buyer, collection broker, or refinancing source.
+
+Juan understands that Dima's claim on him is part of Dima's balance sheet.
+
+Dima understands that destroying Juan's ability to pay may destroy his own asset.
+
+Neither needs to say this as philosophy.
+
+## Dima ↔ the Bar
+
+The Bar is the clearest tolerated cross-form venue.
+
+Dima's network has a structural interest in keeping it open.
+
+This makes the Bar economically important without turning it into a secret dungeon.
+
+---
+
+# 11. Information Geography by Character
+
+Each main figure should naturally see a different market.
+
+### Aspen sees
+- outside prices;
+- route delays;
+- weather;
+- arrival/departure;
+- external supply;
+- mechanical condition.
+
+### Sterling sees
+- repeated presence;
+- social overlap;
+- who is talking;
+- who is avoiding whom;
+- drink/ingredient/tool needs;
+- informal mood changes.
+
+### Yasmin sees
+- capital;
+- ownership;
+- provenance;
+- elite demand;
+- family pressure;
+- financing;
+- who needs a respectable intermediary.
+
+### Wong sees
+- discarded goods;
+- tiny shortages;
+- informal labour;
+- Animal needs;
+- physical movement around the harbour;
+- small suppliers under time pressure.
+
+### Juan sees
+- debt distress;
+- liquidity weakness;
+- mispriced claims;
+- convex bets;
+- creditor anxiety;
+- strange boundary hypotheses.
+
+### Dima sees
+- exclusion;
+- proxy demand;
+- informal debt;
+- hidden ownership;
+- enforcement gaps;
+- cross-form price differences;
+- who needs something done without formal visibility.
+
+This distribution should drive both NPC AI and dialogue.
+
+---
+
+# 12. Character Competence Matrix
+
+Use multidimensional competence rather than one intelligence stat.
+
+| Character | Strong | Weak |
+|---|---|---|
+| Aspen | logistics, reliability, maintenance, timing, contract discipline | ambiguity, fashion, tail risk, open-ended social games |
+| Sterling | empathy, sensory craft, learning speed, flexible combination | early pricing discipline, boundaries, credit control |
+| Yasmin | capital allocation, provenance, social strategy, formal finance | low-margin operations, unstructured informal markets |
+| Wong | bargaining, turnover, salvage, street information, working through constraints | large illiquid bets, elite/formal access |
+| Juan | restructuring, leverage, distressed claims, optionality | short-horizon control, capital preservation |
+| Dima | brokerage, enforcement, informal credit, cross-form access | formal audit, elite signalling, low-spread direct markets |
+
+---
+
+# 13. Writing Rules
+
+## Behaviour before explanation
+
+Do not make characters announce their profile.
+
+- Aspen checks the forecast instead of saying `I fear uncertainty`.
+- Sterling extends a tab instead of saying `I am empathetic`.
+- Yasmin remembers a patron's family detail instead of saying `I network`.
+- Wong argues over half a tin instead of saying `my margins are thin`.
+- Juan renegotiates a claim instead of saying `debt is an asset`.
+- Dima changes the fee after access becomes scarce instead of saying `I have market power`.
+
+## Economic behaviour is not morality
+
+- Aspen can be reliable and compulsive.
 - Sterling can be generous and harmful.
-- Wong can rescue animals and still calculate merit.
-- Aspen can be reliable and compulsively unable to stop serving others.
+- Yasmin can be warm and strategic.
+- Wong can rescue and calculate merit.
 - Juan can be brilliant and destructive.
-- Fishmonger can improve supply reliability and exploit monopoly power at the same time.
+- Dima can protect excluded traders and profit from the exclusion.
 
-## Dialogue should remain short and state-aware
+## Short dialogue, long memory
 
-The richer story should come from:
+Dialogue should usually be short.
 
-- repeated scenes;
-- market consequences;
-- objects returning;
+Depth comes from:
+
+- repeated objects;
+- repeated lines in changed contexts;
+- the public tape;
 - obligations;
-- public tape;
-- social memory;
-- legal identity changes;
 - who knows what;
-- who is present.
+- who remembers what;
+- player form;
+- legal identity;
+- cash pressure;
+- absence.
 
-Do not turn the character bible into permission for long exposition speeches.
+See `DIALOGUE_MONTAGE_BANK.md`.
 
 ---
 
-# 11. Locked / Provisional / Unresolved
+# 14. Locked / Provisional / Open
 
-## Locked in this revision
+## Locked
 
-- Aspen is the current female Sailor/Mechanic identity; she is lesbian, highly scheduled, risk-averse, body/weather/time sensitive, dislikes sailing, earns through reliable cross-boundary work, and maintains multiple lovers through material support and obligation.
-- Sterling is the male Bar operator/apprentice, unexpectedly hired by Seagull interests, wealthy-background, highly empathic and sensory, morally non-didactic, initially chaotic economically, and capable of very rapid learning.
-- Yasmin replaces Mirelle Vale as the high-capital/social-allocation character.
-- Wong is Dock Dog, high-turnover/low-margin, high-cost, bargain-heavy, migrant-coded, rescue-oriented, and connected to informal animal networks.
-- Juan is the current Onewheel Clown identity and a former dentist with addiction, debt, leverage, and restructuring as part of his real economic life.
-- Fishmonger is a monopoly/near-monopoly operator around a fish-economy chokepoint, not an innocent neutral producer.
-- Every major participant has a distinct way of making money.
-- No character's earning method is the game's official correct method.
+- Aspen: female, lesbian, current Sailor/mechanic, risk-averse, highly scheduled, body/weather/time-sensitive, dislikes sailing, steady operator, maintains several lovers materially.
+- Sterling: male Bar operator/apprentice, Seagull-hired, wealthy background, high empathy, sensory curiosity, weak conventional moralism, chaotic early earning, fast learner.
+- Yasmin: replaces Vale; second child in wealthy family; capital/social allocator; polished rather than openly arrogant; weak intimacy due incentive-reading; former Animal life exists.
+- Wong: Dock Dog; migrant-coded; high-turnover low-margin; many dependents; rescues animals partly through merit logic; strong bargainer.
+- Juan: former dentist; current Onewheel Clown; addiction, debt, leverage, distressed-finance logic, liberation-as-acquisition.
+- Dima: male Seagull; black-market/cross-form brokerage operator; Russian tracksuit-gangster visual reference; monopoly/near-monopoly over trusted informal settlement/enforcement rather than all underground trade.
+- Sonya: Penguin grandmother tied to Sterling route; supporting figure, not seventh main trader.
+- Black market: intermediation created by exclusion, incompatible forms, information asymmetry, and enforcement gaps; not a generic evil shop.
+- Romance: no dedicated system.
+- Every main character has a viable way of making money and a distinct blind spot.
 
 ## Provisional
 
 - Yasmin's previous Animal form is a hyena.
-- The exact composition of Fishmonger's monopoly: cold storage, distribution, dock contracts, settlement conversion, or some subset.
-- Exact number and geography of Aspen's mistresses/lovers.
-- Sterling's exact legal/employment relationship with the Seagull gang and Bar ownership.
-- Juan's detailed creditor stack and which debts are formal, secured, or informal.
+- Exact legal ownership of the Bar.
+- Exact creditor stack for Juan.
+- Exact number and locations of Aspen's lovers.
+- Exact fee / enforcement mechanism underpinning Dima's market power.
+- Exact amount of family capital quietly supporting Sterling.
 
-## Unresolved
+## Open
 
-- The final karmic-resolution condition for each named knot.
-- Whether named NPC biological forms change in later cycles and under what causes.
-- The final metaphysical status of Sailor as a form/function.
-- The exact relationship between Yasmin's former Animal life and current autobiographical memory.
-- Fishmonger's deeper cross-life history beyond monopoly power.
-- The extent to which Penguin Grandma retains autobiographical memory versus behavioural/emotional continuity.
+- exact transformation causality;
+- final karmic-resolution condition for each main knot;
+- final ontology of Sailor;
+- Plant agency;
+- exact extent of literal six-realm cosmology;
+- Sonya's autobiographical memory;
+- final liberation;
+- long-run fate of Dima's business if formal cross-form access expands.
