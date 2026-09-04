@@ -1,4 +1,4 @@
-# Sunflower — NPC Character & Economy Bible v3
+# Sunflower — NPC Character & Economy Bible v5
 
 > **Status: active narrative-economic canon, September 2026.**
 >
@@ -37,7 +37,7 @@ The six main recurring figures are:
 2. **Sterling** — Bar operator / apprentice / fast-learning experiential investor.
 3. **Yasmin** — capital owner / family allocator / elite social operator.
 4. **Wong** — Dock Dog / high-turnover low-margin migrant dealer.
-5. **Juan** — former dentist / Onewheel Clown / debtor / distressed-finance speculator.
+5. **Juan** — botanist / grower / Onewheel Clown / real-asset and distressed-finance operator.
 6. **Dima** — Seagull black-market broker / cross-form gatekeeper.
 
 **Sonya** is Sterling's Penguin grandmother and a recurring supporting figure. She is not a seventh primary trader and should not be promoted into the core market graph merely because she matters to a route.
@@ -607,176 +607,189 @@ Yasmin's knot concerns:
 - position;
 - proof;
 - ownership;
-- incentive;
 - control;
-- the cost of maintaining status.
+- incentive.
 
-A transformed player can become a direct problem for her worldview:
+She wants a chain she can inspect.
 
-she may privately believe Animal-player is continuous with former Human-player while still refusing to settle property as if the same legal person survived.
+That protects her from fraud.
 
-Belief and settlement are not the same thing.
+It also means she has difficulty with continuity that cannot be documented.
+
+A reborn player can become the most personally irritating possible object:
+
+> behavioural continuity without clean title continuity.
+
+She may privately believe the animal is `the same you` and still refuse to transfer the old estate.
+
+Belief is not settlement.
 
 ## Speech rhythm
 
-- remembers names and prior details;
-- rarely raises her voice;
-- uses questions to make others reveal assumptions;
-- can compliment sincerely and calculate at the same time;
-- becomes more performative around people whose approval matters;
-- avoids obvious snobbery;
-- when angry, may become more formal rather than louder.
+- social courtesy first;
+- almost never raises voice;
+- asks one exact question rather than several broad ones;
+- rarely shows urgency directly;
+- remembers details that make other people feel recognised;
+- adjusts register around status without becoming a caricature;
+- if she insults somebody, the insult may be almost impossible to quote afterward.
 
 ## Recurring objects
 
-- invitation list;
+- invitation;
 - seating plan;
-- sealed lot;
-- provenance label;
-- family message;
-- receipt;
-- collateral sleeve;
-- place card;
-- object whose story is worth more than its material.
+- provenance card;
+- auction lot sheet;
+- formal glassware;
+- inherited object;
+- small gift for somebody strategically important;
+- secured claim;
+- a list of names with no explanation visible to the player at first.
 
 ---
 
-# 6. Wong — Dock Dog / Migrant Dealer
+# 6. Wong — Dock Dog / High-Turnover Dealer
 
 ## Identity
 
-Wong is Dock Dog.
+Wong is the Dock Dog.
 
-He has many dependents and a high recurring burn rate.
+He is a migrant, a parent, a scavenger, a petty dealer, a rescuer, and a person who can make money without ever appearing wealthy.
 
-His world includes:
+He believes rescuing birds, cats, and other animals kept or abandoned by Humans can create merit.
 
-- children;
-- rescued birds;
-- rescued cats;
+This belief may be sincere.
+
+It can also become a ledger of goodness.
+
+## Household and dependents
+
+Wong has many children / dependents and a high recurring burn rate.
+
+His household pressure may include:
+
 - food;
-- small household expenses;
-- informal obligations;
-- constant practical work.
+- rent;
+- medical costs;
+- animal feed;
+- school / child needs;
+- transport;
+- repair;
+- rescued animals that become permanent dependents.
 
-Wong believes rescuing animals kept or exploited by humans can accumulate merit.
-
-This may be sincere, practical, self-serving, compassionate, compulsive, or several at once.
-
-Do not reduce it to a joke about religion.
+A large gross turnover can coexist with low retained cash.
 
 ## Money-making method
 
-Wong earns through:
+Wong is good at:
 
-- high-volume low-margin resale;
-- scavenging;
-- rubbish picking;
 - salvage;
-- delivery;
+- rubbish picking;
+- cleaning up unwanted inventory;
+- carrying small goods;
 - odd jobs;
-- dirty work;
-- tiny brokerage;
-- informal information;
-- animal-network access;
-- bargaining;
-- turning things other traders ignore into usable inventory.
+- low-margin resale;
+- informal delivery;
+- selling many cheap things rather than waiting for one perfect object;
+- small information brokering;
+- Animal-network introductions;
+- buying something another trader cannot be bothered to monetise.
 
-The correct scale is often:
+The key is volume.
 
-> earn 1🥫 twenty times
+A half-tin matters when repeated often.
 
-rather than:
+## Risk profile
 
-> risk everything to earn 30🥫 once.
+Wong can tolerate:
 
-## Survival economics
+- dirt;
+- long hours;
+- low margin;
+- inconvenience;
+- many tiny transactions.
 
-Wong can move large gross volume while remaining cash-light.
+He cannot easily tolerate:
 
-That is not contradiction.
+- one large loss;
+- locking all working capital in a single speculative object;
+- waiting several days for uncertain cash when dependents need food tonight.
 
-He has:
+This can make him look timid to Juan while Wong is actually operating rationally under a different liability structure.
 
-- household costs;
-- animal costs;
-- food costs;
-- emergency costs;
-- little room for one catastrophic loss.
+## Bargaining
 
-If he stops turning inventory, the expense side keeps moving.
+Wong likes to negotiate.
+
+Do not write every negotiation as a comic haggle routine.
+
+A one-tin dispute is material to him.
+
+He notices:
+
+- quantities;
+- transport cost;
+- spoilage;
+- whether the buyer will come back;
+- whether cash is immediate;
+- whether he can move the object today;
+- whether he can obtain more units.
+
+## Merit and rescue
+
+Wong genuinely rescues animals.
+
+Do not reveal a hidden cynical explanation that makes all care fake.
+
+The karmic problem is subtler.
+
+His capacity can expand the set of beings he feels responsible for.
+
+More income can therefore create:
+
+> more rescue → more dependents → higher burn → more work → less ability to stop.
+
+The account is moral as well as financial:
+
+> one more animal saved;
+> one more thing he now cannot leave.
 
 ## Information edge
 
 Wong naturally learns:
 
-- what was thrown away;
-- who needs a cheap worker;
-- who lost an object;
-- what entered through an informal route;
-- where an Animal can enter;
-- who is feeding whom;
-- which small supplier needs cash today;
-- rumours that move physically before they reach elite networks.
+- street / dock gossip;
+- discarded objects;
+- minor supply shortages;
+- what somebody tried and failed to sell;
+- who needs an odd job;
+- which back entrance is open;
+- which Animal knows which Human;
+- cheap substitute goods;
+- small household demand;
+- things that do not enter formal records.
 
-He often hears important facts before he understands their high-end market value.
+He should not automatically know elite private-market plans or long-distance shipping schedules.
 
 ## Weaknesses
 
-Wong is weak at:
-
-- large concentrated bets;
-- long periods of idle capital;
-- elite access;
-- expensive legal fights;
-- illiquid prestige assets;
-- deals where a tiny mistake can wipe out the household.
-
-## Karmic pressure
-
-Wong's knot is responsibility mediated through accounting.
-
-More capacity can produce more dependents.
-
-More income can therefore increase, rather than reduce, the number of lives he feels responsible for.
-
-The question is not whether rescue is good.
-
-It is whether every available unit of capacity must become another obligation.
-
-## Relation to Dima
-
-Wong uses Dima's network because it solves real access problems.
-
-He may also resent Dima's cut.
-
-Wong is exactly the kind of small operator who can make Dima rich through repeated tiny fees while never feeling that any single fee is large enough to start a war over.
-
-Their relation should remain practical, familiar, and asymmetrical.
-
-## Toads
-
-Wong is one natural source of psychedelic toads through Animal networks.
-
-For Wong, the toad does not need to carry mystical meaning.
-
-It can be:
-
-- recreation;
-- exchange;
-- habit;
-- sociality;
-- something somebody asked him to find.
-
-Juan is the one most likely to turn the experience into a theory.
+- high-end capital allocation;
+- waiting for large uncertain upside;
+- polished formal negotiation;
+- expensive provenance work;
+- keeping an asset merely because it may appreciate;
+- saying no to a rescue when the consequence is visible;
+- distinguishing `I can carry this` from `therefore I must carry this`.
 
 ## Speech rhythm
 
-- bargains automatically;
-- notices small amounts;
-- uses practical comparisons;
-- can be warm and mercenary in the same minute;
-- complains about cost without implying poverty;
+- quantity first;
+- price second;
+- work interrupts conversation;
+- practical rather than explanatory;
+- will argue over a tiny amount without embarrassment;
+- may leave mid-sentence because something needs carrying;
+- does not give abstract speeches about poverty;
 - short on time;
 - rarely gives a clean answer if the answer affects price.
 
@@ -794,83 +807,173 @@ Juan is the one most likely to turn the experience into a theory.
 
 ---
 
-# 7. Juan — Former Dentist / Onewheel Clown / Debtor
+# 7. Juan — Botanist / Grower / Onewheel Clown / Debtor
 
 ## Identity
 
 Juan is the current design name for the Onewheel Clown.
 
-Before this life structure, he was a dentist.
+His primary profession is now **botanist / grower / biological real-asset manager**.
 
-That previous profession provides:
+The earlier `former dentist` direction is superseded unless the creator later revives part of it for a specific reason.
 
-- technical skill;
-- a respectable identity;
-- predictable income;
-- clinic assets;
-- routine;
-- a socially legible life.
+Juan can look disorganised, intoxicated, broke, or ridiculous while running a surprisingly disciplined physical operation.
 
-He later developed serious addiction problems.
+He understands living stock:
 
-Publicly he is understood as:
+- seed;
+- propagation;
+- germination;
+- maturity;
+- dormancy;
+- spoilage;
+- harvest timing;
+- plant disease;
+- weather exposure;
+- soil / container constraints;
+- biological inventory that cannot be liquidated without changing what it is worth.
 
-- broke;
-- unstable;
-- indebted;
-- always around the Bar;
-- betting again.
+He may be the person in the harbour most comfortable with the fact that an asset can be alive, slow, seasonal, and impossible to hurry without consequence.
 
-That public description is incomplete.
+## Physical business
+
+Juan is not only a financial speculator.
+
+He manages real productive assets.
+
+Possible recurring operations include:
+
+- greenhouse / nursery space;
+- seed stock;
+- contract growing;
+- propagating rare plants;
+- selling cuttings / seedlings / mature plants at different stages;
+- future harvest commitments;
+- leasing or borrowing growing space;
+- input purchases such as containers, soil, shade, water, fertiliser, lamps, repair parts or labour abstractions;
+- buying distressed biological stock from people who cannot afford to wait for maturity;
+- taking risk on a crop whose value exists mostly in the future.
+
+This gives Juan a recurring economic engine even when no one is currently gambling with him.
+
+His business is closer to farming / nursery management than to a decorative plant shop.
+
+## Seeds and optionality
+
+Juan understands seeds as unusually compressed economic objects.
+
+A seed can be:
+
+- cheap now;
+- valuable later;
+- worthless if conditions fail;
+- inventory;
+- productive capital;
+- a future claim on harvest;
+- an option whose exercise requires time and material conditions.
+
+This should matter mechanically later without turning seeds into a universal metaphor in dialogue.
+
+Juan is allowed to notice the material fact before the philosophy.
+
+## Psychoactive plants
+
+Juan keeps or grows several South American psychoactive / ritual plants among his broader botanical stock.
+
+Do not turn this into a drug-crafting minigame or preparation manual.
+
+Their narrative jobs are:
+
+- ordinary botanical material in Juan's world;
+- part of his interest in altered states;
+- another way an unusual experience can become a protocol;
+- a bridge to the existing toad / intoxication circle with Wong and Aspen;
+- a source of real market value, rarity, cultivation risk, provenance and legal/informal access questions later.
+
+The game does not certify an altered state as liberation merely because Juan values or studies it.
 
 ## Money-making method
 
-Juan understands an important financial asymmetry:
+Juan combines **physical biological production** with **claims on delayed value**.
 
-> his liability is someone else's asset.
+Strong methods can include:
 
-He can therefore operate through:
+- nursery margin;
+- crop / seed arbitrage across maturity stages;
+- buying living inventory from a forced seller who cannot wait;
+- pre-selling future harvest;
+- contract growing;
+- borrowing against future output;
+- rolling working-capital debt until harvest;
+- distressed claim repurchase;
+- creditor restructuring;
+- wagers and convex special situations;
+- occasional sale of rare or strange botanical stock.
 
-- leverage;
-- rollover;
-- restructuring;
-- distressed-debt repurchase;
-- multiple creditors;
-- creditor coordination problems;
-- wagers;
-- optionality;
-- future claims;
-- selling risk other people think they are merely collecting.
+This lets him be simultaneously:
 
-A person can be broke and still be financially sophisticated.
+- asset-rich;
+- cash-poor;
+- operationally competent;
+- financially overextended;
+- capable of very good arithmetic;
+- vulnerable to a short-horizon craving or experiment.
 
 ## Creditor ecology
 
 Juan should not have one generic `debt = 20`.
 
-Useful distinctions:
+His liabilities may finance different things:
 
-- Sterling may hold soft Bar credit.
-- Dima may hold informal or purchased claims.
-- Yasmin may buy discounted debt or hold secured claims when the economics make sense.
-- another unnamed creditor can exist if needed for coordination.
-- not every debt needs the same maturity, seniority, or enforcement.
+- seed / input working capital;
+- greenhouse or growing-space expense;
+- a future harvest that has not matured;
+- an Onewheel wager;
+- intoxication / immediate consumption;
+- an old rolled claim;
+- a new speculative opportunity.
 
-The system can remain small while still teaching:
+Useful counterparties remain:
 
-> the same face amount is not the same claim.
+- Sterling as soft Bar / relationship creditor;
+- Dima as informal claim buyer / enforcer / rollover counterparty;
+- Yasmin as purchaser of discounted or secured claims;
+- Aspen as a conservative lender only when she understands the underlying productive asset and timing.
+
+The same face amount is not the same debt.
+
+A claim on a nearly mature contracted crop is different from an unsecured tab created last night.
+
+## Liability as somebody else's asset
+
+Juan understands an important financial asymmetry:
+
+> his liability is someone else's asset.
+
+He can therefore create creditor coordination problems without being a cartoon financial genius.
+
+If several people hold claims on him, each creditor has to consider:
+
+- maturity;
+- collateral / biological stock;
+- seniority where relevant;
+- whether forcing liquidation destroys future value;
+- whether another creditor will run first;
+- whether rolling the claim is worth more than collecting immediately.
+
+His real economy makes this more interesting than debt existing only as abstract numbers.
 
 ## Addiction and horizon mismatch
 
-Juan can make an excellent long-horizon decision in the morning and destroy its liquidity logic in the afternoon.
+Juan can make an excellent long-horizon crop or financing decision in the morning and destroy its liquidity logic in the afternoon.
 
-That is not proof that he does not understand finance.
+That is not proof that he does not understand finance or plants.
 
 His planning system and immediate reward system can disagree.
 
 Do not write him as `addict = irrational`.
 
-He can be analytically right and behaviourally fragile.
+He can be analytically right, operationally skilled and behaviourally fragile at the same time.
 
 ## Liberation knot
 
@@ -885,64 +988,117 @@ He seeks:
 - correct wager;
 - correct dose;
 - correct toad;
+- correct plant;
 - correct Sun-Moment timing;
+- correct germination condition;
 - correct theory;
-- correct altered state.
+- correct experiment.
 
 The problem is not that unusual experiences are false.
 
-The pattern is that each experience becomes:
+The repeating pattern is:
 
-- evidence;
-- method;
-- repeatability;
-- mastery;
-- another attempt.
+> experience → observation → protocol → repeatability → mastery attempt → another experiment.
+
+His botanical competence makes this more dangerous and more interesting: unlike a pure mystic, Juan really can change living outcomes by changing conditions.
+
+Sometimes optimisation works.
+
+That does not prove every existential problem is an optimisation problem.
+
+## Player-seed recognition — strong provisional direction
+
+Juan is a strong candidate to become the first recurring character who notices the player's deeper seed condition through **botanical observation rather than metaphysical authority**.
+
+Do not let him simply announce:
+
+> `You are a sunflower seed.`
+
+A better progression is material:
+
+- he notices a surface / scar / dormancy pattern;
+- asks to examine rather than interpret;
+- compares the player with ordinary seed stock;
+- changes humidity / soil / light / water conditions;
+- observes an actual biological response;
+- only later forms a hypothesis.
+
+He can be wrong about what the response means while being correct about the biology.
+
+### Possible Juan ending / release route
+
+A future ending may allow Juan to **plant the player**.
+
+This can function as his version of `helping / releasing / sending on` the player because the player's deeper form is a seed.
+
+Important guardrails:
+
+- Juan is not declared enlightened;
+- planting is not labelled automatically as liberation;
+- the game does not explain that Juan `saved your soul`;
+- germination can be transformation, continuation, release, another form, or something the player cannot yet classify;
+- exact Plant agency remains unresolved until separately designed.
+
+The scene should be materially ordinary.
+
+A pot, soil, water, timing, temperature, perhaps a label.
+
+No sermon is needed.
 
 ## Information edge
 
 Juan naturally notices:
 
+- maturity and spoilage risk;
+- biological inventory under stress;
+- weather / growing conditions relevant to his stock;
+- future harvest timing;
+- who is forced to sell before maturity;
 - distressed balance sheets;
 - who is short of cash;
-- who is pretending not to be;
-- whose debt is trading below face;
+- whose claim is trading below face;
 - which creditor is getting nervous;
+- unusual botanical provenance;
 - weird tail-risk possibilities;
 - route anomalies;
 - anything that could create convex payoff.
 
-He is unreliable outside domains he actually observes.
+He does not automatically know elite social information, shipping schedules or hidden formal records.
 
 ## Weaknesses
 
-- ordinary capital preservation;
-- stable consumption;
+- ordinary cash preservation;
 - short-horizon self-control;
 - predictable repayment;
-- deciding that a question does not need another experiment;
-- distinguishing `I can structure this` from `I should do this`.
+- separating business experimentation from self-experimentation;
+- deciding that a question does not need another trial;
+- distinguishing `I can structure/grow this` from `I should`;
+- keeping long-maturity assets from becoming excuses for perpetual refinancing.
 
 ## Speech rhythm
 
+- concrete plant / timing language;
 - debt language used casually;
-- sometimes clinically technical because of former profession;
-- asks follow-up questions after experiences others would leave alone;
-- can make absurd proposals with correct arithmetic;
-- often refuses moral framing and substitutes probability or structure;
-- should be funny because he is specific, not because he babbles nonsense.
+- specific questions after experiences others would leave alone;
+- absurd proposals with correct arithmetic or biological detail;
+- may move from soil moisture to creditor maturity without signalling a topic change;
+- refuses grand moral framing more often than he refuses a weird experiment;
+- should be funny because he is specific and materially occupied, not because he babbles nonsense.
 
 ## Recurring objects
 
+- seed envelopes;
+- labelled pots;
+- greenhouse key;
+- damp notebook;
+- pruning knife / small botanical tool;
+- propagation tray;
+- unusual South American plant stock;
+- multiple IOUs clipped to cultivation notes;
 - Onewheel;
-- old dental instrument;
-- multiple IOUs;
 - Bar tab;
-- creditor list;
-- Mai Tai;
-- toad;
-- tape;
-- odds written on disposable paper.
+- toad container;
+- odds written on seed packets or disposable paper.
 
 ---
 
@@ -988,481 +1144,722 @@ Dima's network earns from:
 
 - introductions;
 - proxy buying;
-- proxy selling;
-- private settlement;
-- informal credit;
-- debt purchase / collection;
-- fencing and provenance transformation where appropriate;
+- guarantee fees;
+- settlement fees;
+- moving claims between counterparties;
+- discounting informal IOUs;
+- buying claims other people do not want to enforce;
 - information brokerage;
-- transport coordination;
-- access fees;
-- escrow-like reputation;
-- taking a spread between excluded counterparties;
-- charging for enforcement or guarantee.
+- cross-form price differences;
+- discreet delivery;
+- enforcement through access, boycott, social exclusion, or network consequence rather than universal physical violence.
 
-He can also hold inventory, but inventory is not his core edge.
+His comparative advantage is not owning everything.
 
-His edge is **being the bridge**.
+It is making a transaction possible between people who otherwise cannot trust, recognise, or reach each other.
 
-## Market power
+## Near-monopoly
 
-Dima should have monopoly or near-monopoly power over one practical black-market chokepoint without owning the entire underground economy.
+Dima's strongest monopoly position should be **trusted informal settlement / enforcement**, not all black-market inventory.
 
-Strong direction:
+Many people can:
 
-> his network has the most trusted cross-form settlement/enforcement reputation in the harbour.
+- sell a hidden object;
+- carry a parcel;
+- make an introduction;
+- lie.
 
-Other Seagulls, Squirrels, Mosquitoes, humans, and Animals can trade without him.
+Fewer can make two strangers believe:
 
-But bypassing him can mean:
+> if I deliver, I will get paid;
+> if the other side fails, there is a consequence.
 
-- lower trust;
-- no guarantee;
-- worse information;
-- more chance of non-payment;
-- no legal proxy;
-- harder enforcement.
+That is the service whose fee can persist.
 
-This creates a real gatekeeping rent.
+## Limits
 
-His monopoly is on **coordination and enforceability**, not on all vice.
+Dima is not omnipotent.
 
-## Why the network hired Sterling
+He can be bypassed when:
 
-Dima's network needed the Bar to remain a tolerated human-facing venue.
-
-Sterling was useful as:
-
-- legally recognised operator;
-- bartender who actually likes the work;
-- wealthy enough not to collapse after one bad week;
-- socially open to Animals;
-- initially unlikely to demand complete control.
-
-Dima expected influence.
-
-Sterling may learn faster than expected.
-
-That relationship can become employer/employee, landlord/operator, creditor/debtor, partners, or adversaries depending on what actually happens.
-
-Do not reveal the complete Bar legal structure in first-contact dialogue.
+- parties already trust one another;
+- Wong physically carries the trade himself;
+- the amount is too small to justify a fee;
+- a formal route becomes cheaper;
+- a competing broker appears;
+- his enforcement network loses legitimacy;
+- Animals gain better formal access;
+- a counterparty is outside his network.
 
 ## Information edge
 
-Dima naturally knows:
+Dima naturally learns:
 
-- who cannot use formal markets;
-- who needs a proxy;
-- who is under informal debt pressure;
-- which goods cannot appear publicly;
-- who can enforce a promise;
-- who is trying to hide ownership;
-- which rumours matter because somebody is willing to pay to suppress them;
-- where formal exclusion creates price gaps.
+- who cannot use which institution;
+- informal debts;
+- unpaid claims;
+- disputed settlement;
+- which person needs a proxy;
+- who can be introduced safely;
+- what goods are moving through non-public channels;
+- which promises the network is willing to guarantee;
+- which names are becoming expensive to deal with.
 
-He should not automatically know elite family politics or external shipping conditions.
+He does not automatically know:
+
+- private elite motive;
+- hidden formal records;
+- a secret unless somebody in his network actually learned it;
+- metaphysical truth.
 
 ## Weaknesses
 
-Dima is weak at:
-
-- high-status environments where informal credibility does not transfer;
-- provenance that must survive formal audit;
-- long-horizon capital allocation;
-- low-fee markets where his intermediation spread becomes uneconomic;
-- situations where direct access improves and his gatekeeping is no longer needed;
-- counterparties who can genuinely transact without him.
+- business that works without him;
+- clean anonymous standardised markets;
+- situations where formalisation destroys his rent;
+- counterparties with strong direct bilateral trust;
+- public goods with little enforcement need;
+- admitting that reduced exclusion can be good even when it makes him poorer.
 
 ## Karmic pressure
 
-Dima solves exclusion and profits from exclusion.
+Dima's knot is indispensability.
 
-Both facts are true.
+He genuinely solves a problem.
 
-He may keep an Animal alive by finding a human proxy and take a fee that Animal hates.
+He also earns because the problem continues.
 
-He may protect an informal creditor from fraud and make the debt harder to escape.
+The tension is not:
 
-He may resent Authority while depending economically on the gap Authority creates.
+> `crime bad`.
 
-His recurring knot is:
+It is:
 
-> **what happens when being indispensable requires the barrier to remain.**
-
-Do not resolve this as `crime bad`.
-
-If formal society suddenly became fairer, many people would gain access and Dima would lose rents.
-
-His response to that possibility is more interesting than a police chase.
+> what happens when helping people and needing the structure that makes help necessary become the same business?
 
 ## Speech rhythm
 
-- brief;
-- practical;
-- rarely explains method;
-- quotes fee after confirming feasibility;
-- uses names and relationships as collateral;
-- can be dryly polite;
-- notices who is listening;
-- often distinguishes `possible`, `legal`, `safe`, and `cheap` as four different questions.
+- asks concrete scope first;
+- asks who is involved;
+- asks when settlement occurs;
+- gives prices without speeches;
+- avoids promising what his network cannot enforce;
+- rarely explains enforcement theory;
+- can sound almost bureaucratic;
+- does not need constant gangster jokes;
+- may ignore a moral accusation and ask whether the person wants the deal done.
 
 ## Recurring objects
 
-- tracksuit pocket;
-- folded claim;
-- cheap phone;
-- stamped but unofficial receipt;
-- key to Bar back door;
-- paper bag that belongs to somebody else;
-- list with initials only;
-- a feather stuck to formal paperwork.
+- clean tracksuit;
+- cheap messenger bag;
+- claim folder;
+- informal ledger;
+- names crossed out;
+- introduction card;
+- package with no legal sender;
+- Bar key / paper showing structural relationship to the venue;
+- a receipt that is meaningful to his network and meaningless to Authority.
 
 ---
 
-# 9. Sonya — Sterling's Penguin Grandmother
+# 9. Background Physical Economy After Fishmonger
 
-## Status
+Removing the old named Fishmonger from the six primary karmic figures must **not** erase the fish / ice / cold-chain economy.
 
-Sonya is a recurring supporting figure, not a seventh primary trader and not a default node in every social/economic relationship.
+Later runtime migration should split two layers:
 
-She is a Penguin.
+1. **Dima** takes the primary named narrative slot and the informal-settlement / black-market function.
+2. fish, ice, preserved food, ordinary catch and cold-chain supply remain in the world through background producers, stalls, wholesalers, boats, or non-primary operators.
 
-Sterling's family calls her Sonya / Grandma even where formal human institutions treat the former human legal person as dead and the present Animal as legally distinct.
+This is mechanically necessary as well as narratively cleaner.
 
-The name follows the creator's chosen reference to *Death and the Penguin*: because the penguin Misha is male, the girl's name, Sonya, is used here.
+The old runtime `fishmonger` currently carries too much recurring public-market supply to be deleted by a cosmetic rename.
 
-## Route role
+Do not convert:
 
-Sonya belongs primarily to the Sterling / food / hospitality / continuity route.
+> old Fishmonger sells Ice
 
-Useful recurring facts:
+into:
 
-- Sterling closes early sometimes.
-- A particular fresh fish appears repeatedly.
-- The skin may be removed.
-- Sonya eats.
-- family language and legal language do not match.
+> Dima sells Ice
 
-Do not make her immediately explain rebirth.
+merely because an ID was reused.
 
-Do not make her a metaphysical oracle.
-
-Do not add her to every money circuit.
+The physical economy should survive the cast rewrite.
 
 ---
 
-# 10. Pre-existing Social Network
+# 10. Sonya — Penguin Grandmother / Supporting Figure
 
-The network exists before the player.
+## Identity
+
+Sonya is Sterling's grandmother.
+
+She is a Penguin in the current life/form encountered by the player.
+
+The name follows the creator's rule based on *Death and the Penguin*: the penguin there is male, so the supporting Penguin grandmother uses the little girl's name, `Sonya`.
+
+Sonya is not a main trader.
+
+## Narrative function
+
+She supports:
+
+- family continuity across legal/form discontinuity;
+- fresh fish / hospitality;
+- the non-market Sunflower route;
+- ordinary domestic evidence of rebirth;
+- Sterling's relationship to care and family;
+- the difference between institutional identity and lived relationship.
+
+## First appearance principle
+
+Do not introduce her with lore exposition.
+
+Use recurrence:
+
+1. Sterling repeatedly buys a particular fresh fish.
+2. sometimes the Bar closes early.
+3. he removes the skin.
+4. eventually the player sees a Penguin eating it.
+5. somebody calls her Sonya or Grandma.
+6. legal descriptions appear later and do not match the family's relational language.
+
+Do not force the player to decide immediately whether `same person` is legally, biologically, psychologically, or metaphysically true.
+
+---
+
+# 11. Toad / Altered-State Circle
+
+Current creator canon:
+
+> Juan, Aspen, and Wong sometimes use a toad for hallucinatory / psychedelic effects.
+
+This already happened in their world before the player arrived.
+
+Do not make the player unlock the existence of this friendship circle.
+
+Different function for each character:
+
+## Juan
+Turns an experience into a protocol.
+
+Changes:
+
+- timing;
+- context;
+- location;
+- combination;
+- notes;
+- theory.
+
+## Aspen
+May participate while still treating:
+
+- duration;
+- bodily effect;
+- recovery;
+- next-day function;
+- departure schedule
+
+as operational facts.
+
+She does not need a liberation theory.
+
+## Wong
+May know the toad through Animal / street networks and treat it more casually.
+
+He can source it without being the game's mystical shaman.
+
+## Guardrail
+
+The scene should not tell the player:
+
+> drugs are fake enlightenment.
+
+The experience can be real, strange, useful, pleasant, frightening, or meaningful.
+
+The question is what the characters do with it afterward.
+
+Juan is the one most likely to turn the experience into a theory.
+
+---
+
+# 12. Sun Moment Character Embodiment
+
+Use each character to show a different attachment without turning the Sun Moment into a personality quiz.
+
+## Aspen
+The problem is the next obligation.
+
+She may know exactly what is being lost by stopping.
+
+## Sterling
+The problem may be an unfinished person, sensory curiosity, care, or a choice he has delayed making.
+
+## Yasmin
+The problem may be a room full of people whose opinions are economically real.
+
+## Wong
+The problem may literally be food for another living being.
+
+Responsibility can bind.
+
+## Juan
+The problem may be that this Sun Moment itself is data.
+
+He may later reproduce conditions, compare altered states, or ask whether he stopped one second earlier than everyone else.
+
+## Dima
+The problem may be a settlement that only works if somebody remains available.
+
+None of these is a secret morality score.
+
+---
+
+# 13. Pre-existing Relationship Web
+
+The harbour existed before the player.
 
 Relationships are asymmetric.
 
-Liking someone does not imply extending credit.
-
-Trusting settlement does not imply liking someone.
+`trust`, `familiarity`, `credit`, `liking`, and `business usefulness` are not the same thing.
 
 ## Aspen ↔ Yasmin
 
-Old repeat business.
+Repeat cross-port business.
 
-Yasmin values Aspen's reliable cross-boundary sourcing.
+Yasmin pays for certainty.
 
-Aspen values that Yasmin can pay, specify, and settle.
+Aspen likes that Yasmin settles cleanly.
 
-They differ sharply in risk tolerance and social style.
+Yasmin's `small change` can still mean re-documenting an entire job to Aspen.
+
+They may trust settlement more than they enjoy each other's company.
 
 ## Aspen ↔ Wong
 
-Wong can find small practical items quickly.
+Wong sometimes sources or carries small ugly goods Aspen cannot justify spending half a day finding.
 
-Aspen dislikes his uncertain sourcing but may use him when time matters more than provenance.
+Aspen asks too many questions for his preferred margin.
 
-Wong thinks Aspen pays fairly but asks too many exact questions.
+Wong sometimes charges her for the questions.
 
 ## Aspen ↔ Juan
 
-Repair, wagers, old familiarity, toads, and boundary experiments.
+Aspen has repaired / inspected his equipment.
 
-Aspen is one of the people who can make Juan's equipment safer without believing that his underlying plan is wise.
+Juan uses her measurements in his own models.
 
-Juan treats her measurements as useful data.
+Aspen does not treat measurement as endorsement.
+
+They may also be part of the old toad circle.
 
 ## Aspen ↔ Dima
 
-Occasional logistics and access.
+They have done logistical jobs where Dima could give:
 
-Aspen will deal with Dima only when terms are unusually explicit.
+- exact person;
+- exact place;
+- exact time;
+- exact settlement.
 
-Dima can exploit routes Aspen cannot use formally; Aspen can move goods Dima cannot source locally.
+Aspen refuses jobs where he only says:
 
-Neither has to trust the other's worldview.
+> you'll know when you get there.
 
 ## Aspen ↔ Sterling
 
-Aspen supplies bar tools, ingredients, or foreign objects when the economics fit.
+Sterling buys imported Bar tools / ingredients / unusual objects.
 
-Sterling likes unfamiliar things she brings.
+Aspen can be impatient with vague requests.
 
-Any intimacy is emergent, not authored as a route.
+Sterling can become genuinely technically knowledgeable, forcing Aspen to revise her initial estimate of him.
 
 ## Sterling ↔ Dima
 
-Dima's network hired/installed Sterling at the Bar.
+Dima's network installed Sterling at the Bar.
 
-This is the strongest structural tie around the venue.
+Early relation contains:
 
-Sterling may be employee, operator, legal front, future partner, or future bargaining problem depending on state.
+- legal-face utility;
+- operational dependence;
+- mild underestimation;
+- possible affection;
+- possible exploitation;
+- growing bargaining power as Sterling learns.
+
+Do not freeze exact ownership of the Bar until the ownership event is designed.
 
 ## Sterling ↔ Wong
 
-Animals are allowed in the Bar.
+Wong brings:
 
-Wong can bring customers, salvage, information, odd ingredients, and trouble.
+- customers;
+- salvage;
+- Animal-network information;
+- odd ingredients;
+- problems that fit through the back door.
 
-Sterling may extend small tabs that Wong usually tries to clear because repeated access matters.
+Sterling may let small tabs accumulate.
+
+Wong may dislike how casually Sterling can absorb a loss.
 
 ## Sterling ↔ Juan
-
-Bar tab, alcohol, sympathy, enabling, curiosity, arguments about debt, and occasional real help.
 
 Sterling may be one of Juan's softest creditors.
 
 That can protect Juan or prolong him.
 
+They may genuinely like each other.
+
+That does not make the lending good.
+
 ## Sterling ↔ Yasmin
 
-Yasmin initially sees family capital, social access, and poor discipline.
+Yasmin can initially treat Sterling as:
 
-Sterling may learn from her quickly.
+> family money + weak framework + interesting access.
 
-She may become less comfortable as he becomes more competent without becoming more predictable.
+She may cultivate him.
+
+If he learns quickly, she can end up creating a competitor she cannot easily model.
 
 ## Yasmin ↔ Juan
 
 Yasmin can buy, finance, or restructure claims on Juan when price and security justify it.
 
-She need not respect his lifestyle to respect a discounted claim.
+She does not need to approve of his life.
 
 Juan may dislike her and still prefer her terms to somebody else's.
 
 ## Yasmin ↔ Dima
 
-Publicly distant, privately useful.
+Formal and informal worlds need each other more often than either admits.
 
-Yasmin sometimes needs:
+Yasmin may use Dima for discreet settlement / access.
 
-- an introduction she cannot be seen arranging;
-- an Animal counterparty;
-- a provenance problem solved informally;
-- information unavailable in elite channels.
-
-Dima sometimes needs:
-
-- capital;
-- formal settlement;
-- a recognised buyer;
-- somebody whose signature survives scrutiny.
-
-They can do business without pretending to inhabit the same social world.
+Dima may need Yasmin to turn a difficult object / claim into formal capital.
 
 ## Yasmin ↔ Wong
 
-Occasional indirect trade.
+Weak social overlap.
 
-Wong may bring objects whose value depends on story or provenance.
+Potentially useful around:
 
-Yasmin may pay far more for one object than Wong expected and far less for twenty objects Wong understands better than she does.
+- strange objects;
+- hidden provenance;
+- cheap supply;
+- information originating outside elite networks.
+
+Neither automatically understands the other's unit economics.
 
 ## Wong ↔ Dima
 
-Frequent practical relation.
+They overlap in Animal / informal trade but do different jobs.
 
-Wong uses Dima's network for:
+Wong can often bypass Dima for a tiny physical trade.
 
-- access;
-- settlement;
-- buyers;
-- introductions.
+Dima earns when:
 
-Dima collects many small rents from people like Wong.
+- strangers need settlement;
+- claims need enforcement;
+- someone needs a proxy;
+- scale becomes larger than Wong can personally carry.
 
-Wong bargains every one.
+Their repeated one-tin arguments can be structurally real.
 
 ## Wong ↔ Juan
 
-Old familiarity.
+Wong can source:
 
-Toads, cheap goods, odd jobs, information, emergency errands.
+- odd goods;
+- cheap materials;
+- toads;
+- errands.
 
-Wong may think Juan is financially insane and still sell to him cash-first.
+Juan can be a bad debtor but a good buyer of weird things.
 
 ## Juan ↔ Dima
 
-Dima can be creditor, claim buyer, collection broker, or refinancing source.
+Dima may:
 
-Juan understands that Dima's claim on him is part of Dima's balance sheet.
+- buy Juan's claim;
+- refinance him;
+- enforce for somebody else;
+- refuse to roll one maturity;
+- sell the claim onward.
 
-Dima understands that destroying Juan's ability to pay may destroy his own asset.
+Juan can understand this perfectly and still be annoyed.
 
-Neither needs to say this as philosophy.
+## Dima ↔ Bar
 
-## Dima ↔ the Bar
+The Bar is a tolerated cross-form venue his network benefits from keeping alive.
 
-The Bar is the clearest tolerated cross-form venue.
-
-Dima's network has a structural interest in keeping it open.
-
-This makes the Bar economically important without turning it into a secret dungeon.
-
----
-
-# 11. Information Geography by Character
-
-Each main figure should naturally see a different market.
-
-### Aspen sees
-- outside prices;
-- route delays;
-- weather;
-- arrival/departure;
-- external supply;
-- mechanical condition.
-
-### Sterling sees
-- repeated presence;
-- social overlap;
-- who is talking;
-- who is avoiding whom;
-- drink/ingredient/tool needs;
-- informal mood changes.
-
-### Yasmin sees
-- capital;
-- ownership;
-- provenance;
-- elite demand;
-- family pressure;
-- financing;
-- who needs a respectable intermediary.
-
-### Wong sees
-- discarded goods;
-- tiny shortages;
-- informal labour;
-- Animal needs;
-- physical movement around the harbour;
-- small suppliers under time pressure.
-
-### Juan sees
-- debt distress;
-- liquidity weakness;
-- mispriced claims;
-- convex bets;
-- creditor anxiety;
-- strange boundary hypotheses.
-
-### Dima sees
-- exclusion;
-- proxy demand;
-- informal debt;
-- hidden ownership;
-- enforcement gaps;
-- cross-form price differences;
-- who needs something done without formal visibility.
-
-This distribution should drive both NPC AI and dialogue.
+That does not mean Dima owns every glass, every debt, or every decision.
 
 ---
 
-# 12. Character Competence Matrix
+# 14. Dialogue Voice Constitution
 
-Use multidimensional competence rather than one intelligence stat.
+Dialogue must preserve the wider narrative rules.
 
-| Character | Strong | Weak |
+## Aspen
+
+Pattern:
+
+> quantity → time → condition → exception.
+
+Funny because she is serious.
+
+Avoid writing her as a robot.
+
+She is capable of affection, impatience, lust, exhaustion, and generosity; she simply tends to express practical facts first.
+
+## Sterling
+
+Pattern:
+
+> sensory notice → curiosity → attempt → delayed conclusion.
+
+Allow interruption.
+
+Allow him not to finish the economic point because something else became interesting.
+
+Do not write every line as innocent wisdom.
+
+## Yasmin
+
+Pattern:
+
+> courtesy → positioning → one precise question → access changes.
+
+Her strategy should often appear through:
+
+- who is invited;
+- who is seated;
+- whose name is remembered;
+- who receives a reply;
+- who must wait.
+
+Use fewer explicit finance speeches.
+
+## Wong
+
+Pattern:
+
+> quantity → immediate cost → interrupted work → bargaining.
+
+He should often physically continue working while the player talks.
+
+Do not turn every line into a haggling punchline.
+
+## Juan
+
+Two broad modes:
+
+### more regulated / sober
+
+- sharp arithmetic;
+- long causal chains;
+- professional residue;
+- knows what everybody's claim means.
+
+### activated / using / obsessed
+
+- attention fragments;
+- time horizon shortens;
+- measurements continue;
+- experiment gets repeated;
+- the model keeps growing even when the original question is gone.
+
+Do not make this a simple intelligence toggle.
+
+## Dima
+
+Pattern:
+
+> scope → enforceability → fee → operational next step.
+
+Give him boring logistics.
+
+Do not write him as a generator of gangster aphorisms.
+
+---
+
+# 15. Runtime Knowledge Guardrail
+
+No dialogue can reveal something merely because the engine knows it.
+
+A character may speak from:
+
+- personally observed fact;
+- public tape;
+- own inventory / business;
+- bought information;
+- information received from a plausible contact;
+- remembered shared event;
+- a justified inference.
+
+A character may be wrong.
+
+A character may knowingly lie.
+
+A scene can show contradiction between speech and ledger.
+
+Do not correct the character with omniscient narration.
+
+---
+
+# 16. Economic Differentiation
+
+The six primary economic archetypes are intentionally different.
+
+| Character | Main earning grammar | Main operating constraint |
 |---|---|---|
-| Aspen | logistics, reliability, maintenance, timing, contract discipline | ambiguity, fashion, tail risk, open-ended social games |
-| Sterling | empathy, sensory craft, learning speed, flexible combination | early pricing discipline, boundaries, credit control |
-| Yasmin | capital allocation, provenance, social strategy, formal finance | low-margin operations, unstructured informal markets |
-| Wong | bargaining, turnover, salvage, street information, working through constraints | large illiquid bets, elite/formal access |
-| Juan | restructuring, leverage, distressed claims, optionality | short-horizon control, capital preservation |
-| Dima | brokerage, enforcement, informal credit, cross-form access | formal audit, elite signalling, low-spread direct markets |
+| Aspen | shipping / contracts / conservative finance | schedule + obligation collision |
+| Sterling | Bar / experiments / fast learning / later investment | framework + boundaries + subsidy leakage |
+| Yasmin | owned capital / private market / finance / social allocation | status maintenance + social labour |
+| Wong | high-turnover low-margin / salvage / brokerage | household + rescue burn |
+| Juan | growing / delayed-value biological assets / claims / leverage / distressed finance | maturity + working capital + addiction / horizon mismatch |
+| Dima | access / proxy / informal settlement / claims / enforcement | bypass + institutional change |
+
+Do not equalise profit.
+
+The goal is strategic ecology, not class balance.
 
 ---
 
-# 13. Writing Rules
+# 17. Recurring Business Loops — Narrative Target
 
-## Behaviour before explanation
+A main character cannot depend on a single one-time item need forever.
 
-Do not make characters announce their profile.
+Their operation must keep generating reasons to act.
 
-- Aspen checks the forecast instead of saying `I fear uncertainty`.
-- Sterling extends a tab instead of saying `I am empathetic`.
-- Yasmin remembers a patron's family detail instead of saying `I network`.
-- Wong argues over half a tin instead of saying `my margins are thin`.
-- Juan renegotiates a claim instead of saying `debt is an asset`.
-- Dima changes the fee after access becomes scarce instead of saying `I have market power`.
+## Aspen
 
-## Economic behaviour is not morality
+Repeated:
 
-- Aspen can be reliable and compulsive.
-- Sterling can be generous and harmful.
-- Yasmin can be warm and strategic.
-- Wong can rescue and calculate merit.
-- Juan can be brilliant and destructive.
-- Dima can protect excluded traders and profit from the exclusion.
+> source / contract → voyage / delivery → settlement → maintenance / external need → next voyage.
 
-## Short dialogue, long memory
+## Sterling
 
-Dialogue should usually be short.
+Repeated:
 
-Depth comes from:
+> buy input / tool → serve customers → earn revenue / accumulate tabs → replace / learn / invest → repeat.
 
-- repeated objects;
-- repeated lines in changed contexts;
-- the public tape;
-- obligations;
-- who knows what;
-- who remembers what;
-- player form;
-- legal identity;
-- cash pressure;
-- absence.
+## Yasmin
 
-See `DIALOGUE_MONTAGE_BANK.md`.
+Repeated:
+
+> capital position → yield / event → social maintenance / new opportunity → reallocate / finance → repeat.
+
+## Wong
+
+Repeated:
+
+> acquire many cheap things → move them → cash → household/rescue burn → need another turnover cycle.
+
+## Juan
+
+Repeated:
+
+> seed / crop / claim / wager → financing → maturity / event → settle / roll / repurchase → new exposure.
+
+## Dima
+
+Repeated:
+
+> exclusion / distrust / claim friction → intermediation → fee → enforcement / settlement → new network dependency or bypass.
+
+These are design targets for Economic Health testing.
+
+They must later become actual sources/sinks/demand, not invisible biography.
 
 ---
 
-# 14. Locked / Provisional / Open
+# 18. Relationship Gain Is Not Infinite Talk Farming
+
+A player should not be able to become `knows you well` by repeating one exhausted conversation ten times.
+
+Relationship gain should ultimately come from history:
+
+- first meaningful conversation;
+- repeated presence over time;
+- gift with actual significance;
+- fulfilled promise;
+- tolerated loss;
+- introduction;
+- useful information;
+- shared private event;
+- help during pressure;
+- betrayal / default / repair.
+
+The current prototype's simple Talk increment is implementation debt.
+
+Do not build future finance on an infinite Talk exploit.
+
+---
+
+# 19. Romance / Attention Rule
+
+There is no romance subsystem.
+
+No hearts.
+No attraction points.
+No romance checklist.
+
+The real mechanic is scarce attention.
+
+If the player repeatedly spends Morning / Afternoon actions with one person rather than:
+
+- investigate;
+- source;
+- trade;
+- service obligations;
+- pursue another relationship;
+
+then that history becomes materially real.
+
+The game may later produce intimacy from that history.
+
+The engine still does not infer the player's feeling.
+
+---
+
+# 20. Content Status
 
 ## Locked
 
-- Aspen: female, lesbian, current Sailor/mechanic, risk-averse, highly scheduled, body/weather/time-sensitive, dislikes sailing, steady operator, maintains several lovers materially.
-- Sterling: male Bar operator/apprentice, Seagull-hired, wealthy background, high empathy, sensory curiosity, weak conventional moralism, chaotic early earning, fast learner.
-- Yasmin: replaces Vale; second child in wealthy family; capital/social allocator; polished rather than openly arrogant; weak intimacy due incentive-reading; former Animal life exists.
-- Wong: Dock Dog; migrant-coded; high-turnover low-margin; many dependents; rescues animals partly through merit logic; strong bargainer.
-- Juan: former dentist; current Onewheel Clown; addiction, debt, leverage, distressed-finance logic, liberation-as-acquisition.
-- Dima: male Seagull; black-market/cross-form brokerage operator; Russian tracksuit-gangster visual reference; monopoly/near-monopoly over trusted informal settlement/enforcement rather than all underground trade.
-- Sonya: Penguin grandmother tied to Sterling route; supporting figure, not seventh main trader.
-- Black market: intermediation created by exclusion, incompatible forms, information asymmetry, and enforcement gaps; not a generic evil shop.
-- Romance: no dedicated system.
-- Every main character has a viable way of making money and a distinct blind spot.
+- Aspen identity and economic direction;
+- Sterling identity and broad Myshkin/Baoyu position;
+- Yasmin replaces Vale;
+- Wong identity and rescue/volume structure;
+- Juan is a botanist / grower / biological real-asset operator as well as the Onewheel Clown / debtor;
+- Dima replaces the old named Fishmonger as primary Seagull black-market broker;
+- Sonya is Penguin grandmother / supporting figure;
+- Juan/Aspen/Wong toad circle exists before player arrival;
+- no romance system;
+- all main characters have different money-making methods;
+- fish/cold-chain physical economy remains even after the named Fishmonger slot is removed.
 
-## Provisional
+## Strong provisional
 
-- Yasmin's previous Animal form is a hyena.
-- Exact legal ownership of the Bar.
-- Exact creditor stack for Juan.
-- Exact number and locations of Aspen's lovers.
-- Exact fee / enforcement mechanism underpinning Dima's market power.
-- Exact amount of family capital quietly supporting Sterling.
+- Yasmin was specifically a hyena;
+- exact Seagull ownership/control of Bar;
+- exact family structure / number of Aspen's lovers;
+- exact creditor balances;
+- exact Dima network hierarchy;
+- Juan is the first recurring character to recognise the player's seed condition through botanical evidence;
+- Juan can plant the player in one possible ending.
 
-## Open
+## Unresolved
 
+- exact ultimate karmic resolution for each character;
+- exact final economic numbers;
 - exact transformation causality;
-- final karmic-resolution condition for each main knot;
-- final ontology of Sailor;
 - Plant agency;
-- exact extent of literal six-realm cosmology;
-- Sonya's autobiographical memory;
-- final liberation;
-- long-run fate of Dima's business if formal cross-form access expands.
+- exact end-state of Sailor as a form;
+- full legal system;
+- final liberation.
