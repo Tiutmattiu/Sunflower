@@ -1,5 +1,7 @@
 import {
   AFTERNOON_ACTIONS,
+  DIMA_BROKER_FEE,
+  DIMA_PROXY_FEE,
   INFO_BASE_PRICE,
   INITIAL_TRADERS,
   ITEMS,
@@ -9,6 +11,7 @@ import {
   PLAYER_CONTEXT,
   PRODUCTION_RECIPES,
   PROXY_FEE,
+  RECURRING_ECONOMY,
   SOCIAL_GRAPH,
   SUSTENANCE_PER_DAY,
   VENUES,
@@ -90,6 +93,7 @@ function addInformation(game, payload) {
     claimType: payload.claimType || "observation",
     subjectId: payload.subjectId || null,
     item: payload.item || null,
+    claimId: payload.claimId || null,
     text: payload.text,
     source: payload.source || "unknown",
     precision: payload.precision || "context",
@@ -185,6 +189,17 @@ export function createGame() {
       lastMeal: null,
     },
     estates: [],
+    claims: [
+      { id: "juan-sterling-tab", debtorId: "juan", currentHolderId: "sterling", creditorId: "sterling", faceAmount: 7, dueDay: 4, status: "open", tag: "unsecured", secured: false, transferAsk: 5, linkedProductiveAsset: null, transferHistory: [], evidenceIds: [], extensionCount: 0, knownByPlayer: false },
+      { id: "juan-dima-roll", debtorId: "juan", currentHolderId: "dima", creditorId: "dima", faceAmount: 9, dueDay: 5, status: "open", tag: "informal", secured: false, transferAsk: 7, linkedProductiveAsset: "juan-crop-cycle", transferHistory: [], evidenceIds: [], extensionCount: 0, knownByPlayer: false },
+    ],
+    crops: [],
+    recurringDemands: [],
+    recurringLedger: [],
+    clearingBatches: [],
+    settlementFloat: 0,
+    sunMomentHistory: [{ day: 1, moment: "sunrise", state: "natural_pause", contextualOpportunityIds: [], action: "pause", effect: "The day begins after a brief natural pause.", evidenceIds: [], immediateConsequence: "Morning has not opened yet." }],
+    sunMoment: { moment: "sunrise", state: "natural_pause", eligible: false, opportunityIds: [], lateEditAvailable: false, lateEditUsed: false },
     obligations: [],
     badges: [],
     selected: "player",
@@ -201,7 +216,7 @@ export function createGame() {
     learningNotes: [],
     giftHistory: [],
     decisionEvidence: [],
-    systemMarkers: {},
+    systemMarkers: { aspenNextDepartureDay: RECURRING_ECONOMY.aspen.firstDepartureDay, sterlingServiceCycles: 0 },
     worldThreads: {
       barRecipe: { stage: "signal", keyItem: "Orgeat Bottle" },
       valeScreening: { stage: "signal", keyItem: "Sperm Whale Oil" },
@@ -295,14 +310,14 @@ export function knownItemsForTrader(game, traderId) {
   const trader = game.traders[traderId];
   if (!trader) return [];
   if (traderId === "player") return [...trader.inventory];
-  if (traderId === "mechanic" && game.flags.sailorDeparted) return [];
+  if (traderId === "aspen" && game.flags.sailorDeparted) return [];
 
   const known = [];
   (NPC_PROFILES[traderId]?.publicStock || []).forEach((item) => {
     if (trader.inventory.includes(item)) known.push(item);
   });
-  if (traderId === "bar" && trader.inventory.includes("Mai Tai")) known.push("Mai Tai");
-  if (traderId === "mechanic" && trader.inventory.includes("Built Onewheel")) known.push("Built Onewheel");
+  if (traderId === "sterling" && trader.inventory.includes("Mai Tai")) known.push("Mai Tai");
+  if (traderId === "aspen" && trader.inventory.includes("Built Onewheel")) known.push("Built Onewheel");
 
   const publicOwners = latestPublicOwners(game);
   Object.entries(publicOwners).forEach(([item, ownerId]) => {
@@ -323,7 +338,7 @@ export function informationBuyers(game, info) {
   if (!info?.sellable || info.claimType !== "holding" || !info.item || freshnessFor(game.day, info.observedDay) === "stale") return [];
   return Object.entries(NPC_PROFILES)
     .filter(([buyerId, profile]) => {
-      if (buyerId === "mechanic" && game.flags.sailorDeparted) return false;
+      if (buyerId === "aspen" && game.flags.sailorDeparted) return false;
       if (buyerId === info.subjectId || (info.knownBy || ["player", ...(info.soldTo || [])]).includes(buyerId)) return false;
       if (game.traders[buyerId]?.inventory.includes(info.item)) return false;
       return profileWantsItem(profile, info.item);
@@ -394,6 +409,124 @@ function recordEvidence(game, type, detail = {}) {
   return entry;
 }
 
+function recordRecurring(game, actorId, category, amount = 0, detail = {}) {
+  const entry = { id: `recurring-${game.recurringLedger.length + 1}`, day: game.day, actorId, category, amount, ...detail };
+  game.recurringLedger.push(entry);
+  recordEvidence(game, "recurring-economy", { ledgerId: entry.id, actorId, category, amount, ...detail });
+  return entry;
+}
+
+function addDemand(game, actorId, item, reason) {
+  const id = `${actorId}-${item}`;
+  const existing = game.recurringDemands.find((entry) => entry.id === id);
+  const demand = { id, actorId, item, reason, createdDay: game.day, expiresDay: game.day + 2 };
+  if (existing) Object.assign(existing, demand);
+  else game.recurringDemands.push(demand);
+  recordRecurring(game, actorId, "demand-created", 0, { item, reason });
+}
+
+function clearDemand(game, actorId, item) {
+  if (game.traders[actorId]?.inventory.includes(item)) game.recurringDemands = game.recurringDemands.filter((entry) => entry.actorId !== actorId || entry.item !== item);
+}
+
+export function buyJuanClaim(current, claimId) {
+  const game = clone(current);
+  const claim = game.claims.find((entry) => entry.id === claimId && entry.status === "open" && entry.knownByPlayer && entry.currentHolderId !== "player");
+  if (!claim || !["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0) return game;
+  const sellerId = claim.currentHolderId;
+  const fee = sellerId === "dima" ? 0 : DIMA_BROKER_FEE;
+  const total = claim.transferAsk + fee;
+  if (game.traders.player.sardines < total) return game;
+  game.traders.player.sardines -= total;
+  game.traders[sellerId].sardines += claim.transferAsk;
+  if (fee) game.traders.dima.sardines += fee;
+  game.actionsRemaining -= 1;
+  const evidence = recordEvidence(game, "claim-transferred", { claimId, oldHolder: sellerId, newHolder: "player", faceAmount: claim.faceAmount, transferPrice: claim.transferAsk, fee, brokerId: "dima" });
+  claim.transferHistory.push({ day: game.day, oldHolder: sellerId, newHolder: "player", faceAmount: claim.faceAmount, transferPrice: claim.transferAsk, fee, evidenceId: evidence.id });
+  claim.currentHolderId = "player";
+  claim.creditorId = "player";
+  claim.currentHolderLifeId = game.playerState.legalIdentity.lifeId;
+  claim.evidenceIds.push(evidence.id);
+  if (fee) recordRecurring(game, "dima", "brokerage-fee", fee, { claimId });
+  game.lastInteraction = { action: "claim-transfer", targetId: sellerId, text: `You pay ${claim.transferAsk}🥫 for Juan's ${claim.faceAmount}🥫 claim${fee ? ` and ${fee}🥫 to Dima for brokerage` : ""}.` };
+  return game;
+}
+
+export function acceptJuanBuyback(current, claimId) {
+  const game = clone(current);
+  const claim = game.claims.find((entry) => entry.id === claimId && entry.status === "open" && entry.currentHolderId === "player" && entry.dueDay > game.day);
+  if (!claim || !["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0) return game;
+  const price = Math.ceil(claim.faceAmount * .7);
+  if (game.traders.juan.sardines < price) return game;
+  game.traders.juan.sardines -= price;
+  game.traders.player.sardines += price;
+  game.actionsRemaining -= 1;
+  claim.status = "bought-back";
+  claim.settledDay = game.day;
+  const evidence = recordEvidence(game, "claim-buyback", { claimId, faceAmount: claim.faceAmount, price });
+  claim.evidenceIds.push(evidence.id);
+  recordRecurring(game, "juan", "claim-buyback", -price, { claimId, faceAmount: claim.faceAmount });
+  game.lastInteraction = { action: "claim-buyback", targetId: "juan", text: `Juan buys back the ${claim.faceAmount}🥫 claim for ${price}🥫 before it falls due.` };
+  return game;
+}
+
+export function resolveJuanClaim(current, claimId, action) {
+  const game = clone(current);
+  const claim = game.claims.find((entry) => entry.id === claimId && entry.status === "open" && entry.currentHolderId === "player" && entry.dueDay <= game.day);
+  if (!claim || game.phase !== "sunset") return game;
+  if (action === "extend" && claim.extensionCount < 1) {
+    claim.faceAmount += 2;
+    claim.dueDay += 2;
+    claim.extensionCount += 1;
+    const evidence = recordEvidence(game, "claim-extended", { claimId, newFaceAmount: claim.faceAmount, newDueDay: claim.dueDay, extensionCount: claim.extensionCount });
+    claim.evidenceIds.push(evidence.id);
+    return game;
+  }
+  const available = game.traders.juan.sardines;
+  let liquidationProceeds = 0;
+  let destroyedFutureValue = 0;
+  if (action === "liquidate" && claim.linkedProductiveAsset) {
+    const crop = game.crops.find((entry) => entry.status === "growing") || null;
+    const reference = crop ? Math.round(valueOf("Mature Nursery Plant") * Math.min(1, Math.max(.25, (game.day - crop.plantedDay) / RECURRING_ECONOMY.juan.maturityDays))) : 0;
+    liquidationProceeds = Math.floor(reference * .6);
+    destroyedFutureValue = Math.max(0, valueOf("Mature Nursery Plant") - liquidationProceeds);
+    if (crop) crop.status = "liquidated";
+  }
+  const recovered = Math.min(claim.faceAmount, available + liquidationProceeds);
+  game.traders.juan.sardines = Math.max(0, available - Math.max(0, recovered - liquidationProceeds));
+  game.traders.player.sardines += recovered;
+  claim.status = recovered === claim.faceAmount ? "collected" : "impaired";
+  claim.settledDay = game.day;
+  claim.recovery = recovered;
+  claim.impairment = claim.faceAmount - recovered;
+  const evidence = recordEvidence(game, action === "liquidate" ? "claim-forced-liquidation" : "claim-collected", { claimId, faceAmount: claim.faceAmount, recovered, liquidationProceeds, impairment: claim.impairment, destroyedFutureValue });
+  claim.evidenceIds.push(evidence.id);
+  recordRecurring(game, "juan", action === "liquidate" ? "forced-liquidation" : "claim-payment", -recovered, { claimId, liquidationProceeds, destroyedFutureValue, impairment: claim.impairment });
+  return game;
+}
+
+export function economicSnapshot(game) {
+  const lifeId = game.playerState.legalIdentity.lifeId;
+  const currentClaims = game.claims.filter((claim) => claim.currentHolderId === "player" && claim.currentHolderLifeId === lifeId && claim.status === "open").reduce((sum, claim) => sum + claim.faceAmount, 0);
+  const currentLiabilities = currentObligations(game).reduce((sum, entry) => sum + Number(entry.amount || 0), 0);
+  const formerEstateCash = game.estates.reduce((sum, estate) => sum + estate.sardines, 0);
+  const formerEstateInventoryReference = game.estates.reduce((sum, estate) => sum + estate.inventory.reduce((subtotal, item) => subtotal + valueOf(item), 0), 0);
+  const formerEstateClaimsReference = game.estates.reduce((sum, estate) => sum + Number(estate.claimsReference || 0), 0);
+  const formerEstateLiabilities = game.estates.reduce((sum, estate) => sum + Number(estate.liabilities || 0), 0);
+  const currentBodyCash = game.traders.player.sardines;
+  const currentBodyInventoryReference = game.traders.player.inventory.reduce((sum, item) => sum + valueOf(item), 0);
+  const currentBodyWealth = currentBodyCash + currentBodyInventoryReference + currentClaims - currentLiabilities;
+  const formerEstateWealth = formerEstateCash + formerEstateInventoryReference + formerEstateClaimsReference - formerEstateLiabilities;
+  return {
+    currentBodyCash, currentBodyInventoryReference, currentBodyClaimsReference: currentClaims, currentBodyLiabilities: currentLiabilities,
+    formerEstateCash, formerEstateInventoryReference, formerEstateClaimsReference, formerEstateLiabilities,
+    currentBodyWealth, formerEstateWealth, continuityLinkedRecordedWealth: currentBodyWealth + formerEstateWealth,
+    legallyAccessibleWealth: currentBodyWealth,
+    formTransitionCount: game.decisionEvidence.filter((entry) => entry.type === "form-transition").length,
+    formTransitionDays: game.decisionEvidence.filter((entry) => entry.type === "form-transition").map((entry) => entry.day),
+  };
+}
+
 function activeObligation(game, kind, creditorId = null) {
   return currentObligations(game).find((entry) => entry.kind === kind && (!creditorId || entry.creditorId === creditorId));
 }
@@ -412,9 +545,9 @@ function replanNPCMarket(game) {
   const committedBuyers = new Set(accepted.map((plan) => plan.from));
   game.marketPlan = [...planNPCMarket(game).filter((plan) => !committedBuyers.has(plan.from)), ...accepted];
   game.marketPlan.forEach((plan) => {
-    if (plan.from === "bar" && plan.wantItem === "Orgeat Bottle" && game.worldThreads.barRecipe.stage === "signal") game.worldThreads.barRecipe.stage = "contest";
-    if (plan.from === "vale" && plan.wantItem === "Sperm Whale Oil" && game.worldThreads.valeScreening.stage === "signal") game.worldThreads.valeScreening.stage = "contest";
-    if (plan.from === "mechanic" && PRODUCTION_RECIPES.onewheel.inputs.includes(plan.wantItem) && game.worldThreads.onewheel.stage === "signal") game.worldThreads.onewheel.stage = "contest";
+    if (plan.from === "sterling" && plan.wantItem === "Orgeat Bottle" && game.worldThreads.barRecipe.stage === "signal") game.worldThreads.barRecipe.stage = "contest";
+    if (plan.from === "yasmin" && plan.wantItem === "Sperm Whale Oil" && game.worldThreads.valeScreening.stage === "signal") game.worldThreads.valeScreening.stage = "contest";
+    if (plan.from === "aspen" && PRODUCTION_RECIPES.onewheel.inputs.includes(plan.wantItem) && game.worldThreads.onewheel.stage === "signal") game.worldThreads.onewheel.stage = "contest";
     if (!plan.knowledgeBasis || plan.knowledgeBasis === "public stock") return;
     game.npcMemory[plan.from].knownHoldings[plan.wantItem] = {
       holderId: plan.to,
@@ -492,34 +625,34 @@ export function sellInformationExclusive(current, infoId, buyerId) {
 }
 
 export function futureDeliveryAvailable(game) {
-  const sailor = game.traders.mechanic;
-  const knowsNeed = game.information.some((info) => info.subjectId === "mechanic" && info.item === "Lime Crate" && info.claimType === "need" && info.precision === "exact");
-  const knowsSource = game.information.some((info) => info.subjectId !== "mechanic" && info.item === "Lime Crate" && info.claimType === "holding");
+  const sailor = game.traders.aspen;
+  const knowsNeed = game.information.some((info) => info.subjectId === "aspen" && info.item === "Lime Crate" && info.claimType === "need" && info.precision === "exact");
+  const knowsSource = game.information.some((info) => info.subjectId !== "aspen" && info.item === "Lime Crate" && info.claimType === "holding");
   return ["morning", "afternoon"].includes(game.phase) && game.actionsRemaining > 0 && !game.flags.sailorDeparted &&
     !sailor.inventory.includes("Lime Crate") && !game.traders.player.inventory.includes("Lime Crate") &&
-    !activeObligation(game, "future-delivery", "mechanic") && knowsNeed && knowsSource &&
-    game.day <= NPC_PROFILES.mechanic.departureDay - 2 && sailor.sardines - 13 >= 6;
+    !activeObligation(game, "future-delivery", "aspen") && knowsNeed && knowsSource &&
+    game.day <= RECURRING_ECONOMY.aspen.firstDepartureDay - 2 && sailor.sardines - 13 >= 6;
 }
 
 export function acceptFutureDelivery(current) {
   const game = clone(current);
   if (!futureDeliveryAvailable(game)) return game;
   const player = game.traders.player;
-  const sailor = game.traders.mechanic;
+  const sailor = game.traders.aspen;
   const actionsBefore = game.actionsRemaining;
   const openingCash = game.traders.player.sardines;
   sailor.sardines -= 13;
   player.sardines += 4;
   game.actionsRemaining -= 1;
-  const evidence = recordEvidence(game, "future-delivery-bound", { counterpartyId: "mechanic", item: "Lime Crate", deposit: 4, reservedBalance: 9, dueDay: Math.min(game.day + 2, NPC_PROFILES.mechanic.departureDay - 1), ownedAtCommitment: false, openingCash, actionsBefore, actionsAfter: game.actionsRemaining });
+  const evidence = recordEvidence(game, "future-delivery-bound", { counterpartyId: "aspen", item: "Lime Crate", deposit: 4, reservedBalance: 9, dueDay: Math.min(game.day + 2, RECURRING_ECONOMY.aspen.firstDepartureDay - 1), ownedAtCommitment: false, openingCash, actionsBefore, actionsAfter: game.actionsRemaining });
   createObligation(game, {
-    kind: "future-delivery", creditorId: "mechanic", amount: 0, item: "Lime Crate", deposit: 4, reservedBalance: 9,
+    kind: "future-delivery", creditorId: "aspen", amount: 0, item: "Lime Crate", deposit: 4, reservedBalance: 9,
     dueDay: evidence.dueDay, ownedAtCommitment: false, commitmentEvidenceId: evidence.id, note: "A promise for lime.",
   });
   addLearningNote(game, "future-delivery", "Future delivery / sourcing risk", "A delivery promise can be bound before the seller owns the underlying good.", {
-    evidenceIds: [evidence.id], whatHappened: `The Sailor paid 4🥫 now and reserved 9🥫 for one Lime Crate due on Day ${evidence.dueDay}.`,
+    evidenceIds: [evidence.id], whatHappened: `Aspen paid 4🥫 now and reserved 9🥫 for one Lime Crate due on Day ${evidence.dueDay}.`,
   });
-  game.lastInteraction = { action: "future-delivery", targetId: "mechanic", text: `The Sailor pays 4🥫 now and reserves 9🥫 for one Lime Crate due Day ${evidence.dueDay}.` };
+  game.lastInteraction = { action: "future-delivery", targetId: "aspen", text: `Aspen pays 4🥫 now and reserves 9🥫 for one Lime Crate due Day ${evidence.dueDay}.` };
   return game;
 }
 
@@ -531,42 +664,42 @@ export function fulfillFutureDelivery(current, obligationId) {
   const openingCash = game.traders.player.sardines;
   const age = takePerishableAge(game, game.traders.player, obligation.item);
   game.traders.player.inventory = removeOne(game.traders.player.inventory, obligation.item);
-  addPerishableAge(game, game.traders.mechanic, obligation.item, age);
-  game.traders.mechanic.inventory.push(obligation.item);
+  addPerishableAge(game, game.traders.aspen, obligation.item, age);
+  game.traders.aspen.inventory.push(obligation.item);
   game.traders.player.sardines += obligation.reservedBalance;
   obligation.status = "settled";
   obligation.settledDay = game.day;
-  game.relationships.mechanic += 1;
+  game.relationships.aspen += 1;
   if (game.phase !== "sunset") game.actionsRemaining -= 1;
   const evidence = recordEvidence(game, "future-delivery-fulfilled", { obligationId, item: obligation.item, balance: obligation.reservedBalance, onTime: game.day <= obligation.dueDay, openingCash, actionsBefore, actionsAfter: game.actionsRemaining });
   if (!obligation.ownedAtCommitment && game.day <= obligation.dueDay) createBadge(game, { id: "sold-before-owned", title: "SOLD IT BEFORE YOU HAD IT", summary: "Promised Lime, sourced it later, and delivered on time.", evidenceIds: [obligation.commitmentEvidenceId, evidence.id] });
-  game.lastInteraction = { action: "future-delivery-fulfilled", targetId: "mechanic", text: `You deliver the exact Lime Crate. The reserved ${obligation.reservedBalance}🥫 is released.` };
+  game.lastInteraction = { action: "future-delivery-fulfilled", targetId: "aspen", text: `You deliver the exact Lime Crate. The reserved ${obligation.reservedBalance}🥫 is released.` };
   return game;
 }
 
 export function requestRelationshipLoan(current) {
   const game = clone(current);
-  const relationship = game.relationships.bar || 0;
+  const relationship = game.relationships.sterling || 0;
   const amount = relationship >= 3 ? 6 : 4;
-  if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || relationship < 2 || activeObligation(game, "relationship-loan", "bar") || game.traders.bar.sardines - amount < 18) return game;
+  if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || relationship < 2 || activeObligation(game, "relationship-loan", "sterling") || game.traders.sterling.sardines - amount < 18) return game;
   const openingCash = game.traders.player.sardines;
   const actionsBefore = game.actionsRemaining;
   const nearTermObligations = currentObligations(game).filter((entry) => entry.dueDay <= game.day + 2).map((entry) => entry.id);
-  game.traders.bar.sardines -= amount;
+  game.traders.sterling.sardines -= amount;
   game.traders.player.sardines += amount;
   game.actionsRemaining -= 1;
-  const evidence = recordEvidence(game, "relationship-loan-opened", { counterpartyId: "bar", amount, dueDay: game.day + 2, openingCash, nearTermObligations, actionsBefore, actionsAfter: game.actionsRemaining });
-  const obligation = createObligation(game, { kind: "relationship-loan", creditorId: "bar", amount, dueDay: game.day + 2, openingEvidenceId: evidence.id, note: "A few tins for a few days." });
-  teachCredit(game, obligation, evidence, `The Apprentice advanced ${amount}🥫 without interest, due Day ${obligation.dueDay}.`);
+  const evidence = recordEvidence(game, "relationship-loan-opened", { counterpartyId: "sterling", amount, dueDay: game.day + 2, openingCash, nearTermObligations, actionsBefore, actionsAfter: game.actionsRemaining });
+  const obligation = createObligation(game, { kind: "relationship-loan", creditorId: "sterling", amount, dueDay: game.day + 2, openingEvidenceId: evidence.id, note: "A few tins for a few days." });
+  teachCredit(game, obligation, evidence, `Sterling advanced ${amount}🥫 without interest, due Day ${obligation.dueDay}.`);
   game.stats.creditUsed += 1;
-  game.lastInteraction = { action: "relationship-loan", targetId: "bar", text: `The Apprentice lends you ${amount}🥫 until Day ${obligation.dueDay}.` };
+  game.lastInteraction = { action: "relationship-loan", targetId: "sterling", text: `Sterling lends you ${amount}🥫 until Day ${obligation.dueDay}.` };
   return game;
 }
 
 export function securedCollateralItems(game) {
   return unique(game.traders.player.inventory).filter((item) => {
     const type = ITEMS[item]?.type || "";
-    return Number(ITEMS[item]?.value || 0) > 0 && !ITEMS[item]?.shelfLife && (type.includes("Collateral") || type.includes("Durable")) &&
+    return Number(ITEMS[item]?.value || 0) > 0 && !ITEMS[item]?.shelfLife && (type.includes("Collateral") || type.includes("Durable") || type.includes("Prestige")) &&
       !["Sunflower", "Blue Glass Marble", "Built Onewheel", "Mai Tai"].includes(item);
   });
 }
@@ -576,20 +709,20 @@ export function requestSecuredLoan(current, item) {
   const reference = valueOf(item);
   const principal = Math.max(1, Math.floor(reference * .6));
   if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || game.playerState.legalIdentity.status !== "recognized" ||
-    (game.relationships.vale || 0) < 1 || activeObligation(game, "secured-loan", "vale") || !securedCollateralItems(game).includes(item) || game.traders.vale.sardines - principal < 16) return game;
+    (game.relationships.yasmin || 0) < 1 || activeObligation(game, "secured-loan", "yasmin") || !securedCollateralItems(game).includes(item) || game.traders.yasmin.sardines - principal < 16) return game;
   const actionsBefore = game.actionsRemaining;
   const openingCash = game.traders.player.sardines;
   const collateralAge = takePerishableAge(game, game.traders.player, item);
   game.traders.player.inventory = removeOne(game.traders.player.inventory, item);
-  game.traders.vale.sardines -= principal;
+  game.traders.yasmin.sardines -= principal;
   game.traders.player.sardines += principal;
   game.actionsRemaining -= 1;
-  const evidence = recordEvidence(game, "secured-loan-opened", { counterpartyId: "vale", item, referenceValue: reference, principal, repayment: principal + 1, haircut: reference - principal, openingCash, actionsBefore, actionsAfter: game.actionsRemaining });
-  const obligation = createObligation(game, { kind: "secured-loan", creditorId: "vale", amount: principal + 1, principal, collateral: item, collateralAge, dueDay: game.day + 2, openingEvidenceId: evidence.id, note: `Against the ${item}.` });
+  const evidence = recordEvidence(game, "secured-loan-opened", { counterpartyId: "yasmin", item, referenceValue: reference, principal, repayment: principal + 1, haircut: reference - principal, openingCash, actionsBefore, actionsAfter: game.actionsRemaining });
+  const obligation = createObligation(game, { kind: "secured-loan", creditorId: "yasmin", amount: principal + 1, principal, collateral: item, collateralAge, dueDay: game.day + 2, openingEvidenceId: evidence.id, note: `Against the ${item}.` });
   addLearningNote(game, "collateral-haircut", "Collateral haircut", "A lender advances less than an asset's reference value because liquidation and price risk remain.", {
-    evidenceIds: [evidence.id], whatHappened: `Vale held your ${item} and advanced ${principal}🥫 against its ${reference}🥫 reference value.`,
+    evidenceIds: [evidence.id], whatHappened: `Yasmin held your ${item} and advanced ${principal}🥫 against its ${reference}🥫 reference value.`,
   });
-  game.lastInteraction = { action: "secured-loan", targetId: "vale", text: `Vale takes the ${item} into custody and advances ${principal}🥫. Repayment is ${principal + 1}🥫 on Day ${obligation.dueDay}.` };
+  game.lastInteraction = { action: "secured-loan", targetId: "yasmin", text: `Yasmin takes the ${item} into custody and advances ${principal}🥫. Repayment is ${principal + 1}🥫 on Day ${obligation.dueDay}.` };
   return game;
 }
 
@@ -605,7 +738,7 @@ function interestUtility(buyerId, item) {
 
 function inboundItemOffer(game, buyerId, item) {
   const buyer = game.traders[buyerId];
-  if (!buyer || buyer.inventory.includes(item) || (buyerId === "mechanic" && game.flags.sailorDeparted)) return null;
+  if (!buyer || buyer.inventory.includes(item) || (buyerId === "aspen" && game.flags.sailorDeparted)) return null;
   const goalUtility = exactGoalUtility(buyerId, item);
   const tasteUtility = interestUtility(buyerId, item);
   const utility = Math.max(goalUtility, tasteUtility);
@@ -724,30 +857,32 @@ export function declineInboundOffer(current, offerId) {
   return game;
 }
 
-export function requestMarketProxy(current, targetId = "bar") {
+export function requestMarketProxy(current, targetId = "sterling") {
   const game = clone(current);
   if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || game.ended) return game;
   if (game.playerState.form !== "animal" || canAccessVenue(game, "formalMarket")) return game;
 
   const target = game.traders[targetId];
   const relationship = game.relationships[targetId] || 0;
-  if (!target || target.form !== "human" || targetId !== "bar" || relationship < 2) return game;
+  if (!target || !["sterling", "dima"].includes(targetId) || (targetId === "sterling" && relationship < 2)) return game;
 
   const player = game.traders.player;
-  const usedCredit = player.sardines < PROXY_FEE;
-  if (player.sardines >= PROXY_FEE) {
-    player.sardines -= PROXY_FEE;
-    target.sardines += PROXY_FEE;
-    game.lastInteraction = { action: "proxy", targetId, text: `${target.name} agrees to settle today's formal-market orders for ${PROXY_FEE}🥫.` };
-  } else if (relationship >= 3) {
+  const fee = targetId === "dima" ? DIMA_PROXY_FEE : PROXY_FEE;
+  const usedCredit = player.sardines < fee;
+  if (player.sardines >= fee) {
+    player.sardines -= fee;
+    target.sardines += fee;
+    if (targetId === "dima") recordRecurring(game, "dima", "proxy-fee", fee, { venueId: "formalMarket" });
+    game.lastInteraction = { action: "proxy", targetId, text: `${target.name} agrees to settle today's formal-market orders for ${fee}🥫.` };
+  } else if (targetId === "sterling" && relationship >= 3) {
     const obligation = createObligation(game, {
       kind: "proxy-fee",
       creditorId: targetId,
-      amount: PROXY_FEE,
+      amount: fee,
       dueDay: game.day + 2,
       note: "Formal-market proxy fee.",
     });
-    teachCredit(game, obligation, game.decisionEvidence.at(-1), `${target.name} advanced a ${PROXY_FEE}🥫 proxy fee, due Day ${obligation.dueDay}.`);
+    teachCredit(game, obligation, game.decisionEvidence.at(-1), `${target.name} advanced a ${fee}🥫 proxy fee, due Day ${obligation.dueDay}.`);
     game.stats.creditUsed += 1;
     game.lastInteraction = { action: "proxy", targetId, text: `${target.name} agrees to proxy today's market on credit.` };
   } else {
@@ -758,7 +893,7 @@ export function requestMarketProxy(current, targetId = "bar") {
   game.playerState.proxyAccess.push({ venueId: "formalMarket", via: targetId, expiresDay: game.day });
   game.stats.proxyUses += 1;
   game.actionsRemaining -= 1;
-  recordEvidence(game, "proxy-access", { via: targetId, fee: PROXY_FEE, onCredit: usedCredit });
+  recordEvidence(game, "proxy-access", { via: targetId, fee, onCredit: usedCredit });
   game.log.unshift(game.lastInteraction.text);
   return game;
 }
@@ -833,18 +968,18 @@ function produceIfReady(game, recipeId) {
   recordEvidence(game, "world-consequence", { thread: recipeId === "maiTai" ? "barRecipe" : "onewheel", consequence: "production", producerId: recipe.producerId, inputs: [...recipe.inputs], output: recipe.output });
   if (recipeId === "maiTai") {
     game.worldThreads.barRecipe.stage = "aftermath";
-    game.log.unshift("The Apprentice has the complete recipe and makes a proper Mai Tai for the Bar's stock.");
+    game.log.unshift("Sterling has the complete recipe and makes a proper Mai Tai for the Bar's stock.");
   } else {
     game.worldThreads.onewheel.stage = "aftermath";
-    game.log.unshift("The Sailor consumes the four bicycle parts and uses the torque wrench to assemble a working onewheel.");
+    game.log.unshift("Aspen consumes the four bicycle parts and uses the torque wrench to assemble a working onewheel.");
   }
   return true;
 }
 
 function applyWorldReceivedItem(game, receiverId, item) {
   if (!item || !game.traders[receiverId]) return;
-  if (receiverId === "bar" && item === "Orgeat Bottle") game.worldThreads.barRecipe.stage = "outcome";
-  if (receiverId === "vale" && item === "Sperm Whale Oil") game.worldThreads.valeScreening.stage = "outcome";
+  if (receiverId === "sterling" && item === "Orgeat Bottle") game.worldThreads.barRecipe.stage = "outcome";
+  if (receiverId === "yasmin" && item === "Sperm Whale Oil") game.worldThreads.valeScreening.stage = "outcome";
 }
 
 function applyTradeConsequences(game, trade) {
@@ -857,12 +992,12 @@ function applyTradeConsequences(game, trade) {
   }
   if (trade.to === "player") game.stats.inboundTrades += 1;
 
-  const isCheat = trade.from === "player" && trade.to === "mechanic" && trade.offerItem === "Bad Tangerine" && trade.claim !== "truthful" && !trade.inspectionAllowed;
+  const isCheat = trade.from === "player" && trade.to === "aspen" && trade.offerItem === "Bad Tangerine" && trade.claim !== "truthful" && !trade.inspectionAllowed;
   if (isCheat) {
     game.flags.cheated = true;
     game.stats.cheats += 1;
-    game.relationships.mechanic = Math.min(game.relationships.mechanic, -2);
-    game.log.unshift("A Bad Tangerine passed as citrus. The Sailor will remember this.");
+    game.relationships.aspen = Math.min(game.relationships.aspen, -2);
+    game.log.unshift("A Bad Tangerine passed as citrus. Aspen will remember this.");
     recordEvidence(game, "deception", { claim: trade.claim || "ambiguous", item: trade.offerItem, counterpartyId: trade.to, inspectionAllowed: trade.inspectionAllowed, outcome: "filled" });
   }
   applyWorldReceivedItem(game, trade.from, trade.wantItem);
@@ -899,12 +1034,16 @@ export function giveItem(current, targetId, item) {
 }
 
 export function duePrivateMatters(game) {
-  return currentObligations(game).filter((entry) => ["future-delivery", "secured-loan"].includes(entry.kind) && entry.dueDay <= game.day);
+  return [
+    ...currentObligations(game).filter((entry) => ["future-delivery", "secured-loan"].includes(entry.kind) && entry.dueDay <= game.day),
+    ...game.claims.filter((entry) => entry.status === "open" && entry.currentHolderId === "player" && entry.currentHolderLifeId === game.playerState.legalIdentity.lifeId && entry.dueDay <= game.day),
+  ];
 }
 
 export function resolveDuePrivateMatter(current, obligationId, action) {
   const obligation = duePrivateMatters(current).find((entry) => entry.id === obligationId);
   if (!obligation || current.phase !== "sunset") return clone(current);
+  if (current.claims.some((entry) => entry.id === obligationId)) return resolveJuanClaim(current, obligationId, action);
   if (obligation.kind === "future-delivery" && action === "deliver") return fulfillFutureDelivery(current, obligationId);
   if (obligation.kind === "secured-loan" && action === "repay") {
     return repayObligation(current, obligationId);
@@ -913,28 +1052,28 @@ export function resolveDuePrivateMatter(current, obligationId, action) {
   const game = clone(current);
   const live = game.obligations.find((entry) => entry.id === obligationId);
   if (live.kind === "future-delivery" && action === "default") {
-    game.traders.mechanic.sardines += live.reservedBalance;
+    game.traders.aspen.sardines += live.reservedBalance;
     live.status = "defaulted";
     live.settledDay = game.day;
-    game.relationships.mechanic -= 2;
+    game.relationships.aspen -= 2;
     game.stats.defaults += 1;
     const evidence = recordEvidence(game, "future-delivery-defaulted", { obligationId, item: live.item, reservedReturned: live.reservedBalance, openingCash: game.traders.player.sardines });
-    const restitution = createObligation(game, { kind: "restitution", creditorId: "mechanic", amount: 5, dueDay: game.day + 2, note: "Restitution after the missed Lime promise." });
-    teachCredit(game, restitution, evidence, `The reserved ${live.reservedBalance}🥫 returned to the Sailor and you now owe 5🥫 restitution.`);
-    game.lastInteraction = { action: "future-delivery-defaulted", targetId: "mechanic", text: "You do not deliver. The reserved balance returns to the Sailor; 5🥫 restitution is now due." };
+    const restitution = createObligation(game, { kind: "restitution", creditorId: "aspen", amount: 5, dueDay: game.day + 2, note: "Restitution after the missed Lime promise." });
+    teachCredit(game, restitution, evidence, `The reserved ${live.reservedBalance}🥫 returned to Aspen and you now owe 5🥫 restitution.`);
+    game.lastInteraction = { action: "future-delivery-defaulted", targetId: "aspen", text: "You do not deliver. The reserved balance returns to Aspen; 5🥫 restitution is now due." };
   } else if (live.kind === "secured-loan" && action === "seize") {
-    game.traders.vale.inventory.push(live.collateral);
-    addPerishableAge(game, game.traders.vale, live.collateral, live.collateralAge);
+    game.traders.yasmin.inventory.push(live.collateral);
+    addPerishableAge(game, game.traders.yasmin, live.collateral, live.collateralAge);
     live.status = "seized";
     live.settledDay = game.day;
     recordEvidence(game, "secured-collateral-seized", { obligationId, collateral: live.collateral, residualDebt: 0 });
-    game.lastInteraction = { action: "secured-collateral-seized", targetId: "vale", text: `Vale keeps the ${live.collateral}. The claim is closed with no residual debt.` };
+    game.lastInteraction = { action: "secured-collateral-seized", targetId: "yasmin", text: `Yasmin keeps the ${live.collateral}. The claim is closed with no residual debt.` };
   }
   return game;
 }
 
 function publicPostedAsk(game, sellerId, item) {
-  const produced = (sellerId === "bar" && item === "Mai Tai") || (sellerId === "mechanic" && item === "Built Onewheel");
+  const produced = (sellerId === "sterling" && item === "Mai Tai") || (sellerId === "aspen" && item === "Built Onewheel");
   const isPublic = ((NPC_PROFILES[sellerId]?.publicStock || []).includes(item) || produced) && game.traders[sellerId]?.inventory.includes(item);
   return isPublic ? sellerAsk(game, sellerId, item) : null;
 }
@@ -1004,7 +1143,7 @@ function clearCommittedOrders(game) {
       return;
     }
 
-    const isCheat = trade.to === "mechanic" && trade.offerItem === "Bad Tangerine" && trade.claim !== "truthful";
+    const isCheat = trade.to === "aspen" && trade.offerItem === "Bad Tangerine" && trade.claim !== "truthful";
     const utility = trade.offerItem ? privateUtility(game, trade.to, trade.offerItem) : 0;
     const mistakenCitrusUtility = isCheat && !trade.inspectionAllowed ? privateUtility(game, trade.to, "Lime Crate") : 0;
     const paymentValue = valueOf(trade.offerItem) + utility + mistakenCitrusUtility + trade.sardines;
@@ -1023,7 +1162,7 @@ function clearCommittedOrders(game) {
     const candidates = groups.get(key);
     const tieRanks = new Map();
     unique(candidates.map(({ paymentValue }) => paymentValue)).forEach((value) => {
-      const bidders = unique(candidates.filter((candidate) => candidate.paymentValue === value).map(({ trade }) => trade.from)).sort();
+      const bidders = unique(candidates.filter((candidate) => candidate.paymentValue === value).map(({ trade }) => trade.from)).sort((a, b) => (a === "player") - (b === "player") || a.localeCompare(b));
       bidders.forEach((id, index) => tieRanks.set(`${value}:${id}`, (index - (game.day - 1) % bidders.length + bidders.length) % bidders.length));
     });
     candidates.sort((a, b) => b.paymentValue - a.paymentValue ||
@@ -1176,9 +1315,33 @@ export function resolveNoonMarket(current) {
   const game = clone(current);
   if (game.phase !== "noon" || game.marketResolved || game.ended) return game;
 
+  if (!game.sunMomentHistory.some((entry) => entry.day === game.day && entry.moment === "noon")) {
+    recordSunMoment(game, "noon", "natural_pause", game.sunMoment?.opportunityIds || [], "continue", "Octopus Clearing opens after the natural pause.");
+  }
+
   game.marketOutcome = [];
   game.rejected = [];
+  const batch = {
+    id: `octopus-clearing-${game.day}-${game.clearingBatches.length + 1}`,
+    day: game.day,
+    settledBy: "octopus",
+    openingCommittedResources: {
+      traders: Object.fromEntries(Object.entries(game.traders).map(([id, trader]) => [id, { cash: trader.sardines, inventory: [...trader.inventory] }])),
+      playerOrders: clone(clearingPlayerOrders(game)),
+      npcOrders: clone(game.marketPlan),
+    },
+    settledTransfers: [], cashTotal: 0, goodsTotal: 0, settlementFloatPeak: 0, settlementFloat: 0, reconciled: false,
+  };
   clearCommittedOrders(game);
+  batch.settledTransfers = clone(game.marketOutcome);
+  batch.cashTotal = game.marketOutcome.reduce((sum, trade) => sum + Number(trade.sardines || 0), 0);
+  batch.goodsTotal = game.marketOutcome.length + game.marketOutcome.filter((trade) => trade.offerItem).length;
+  game.settlementFloat = batch.cashTotal;
+  batch.settlementFloatPeak = game.settlementFloat;
+  game.settlementFloat = 0;
+  batch.settlementFloat = 0;
+  batch.reconciled = true;
+  game.clearingBatches.push(batch);
   recordMarketOutcomes(game);
   applyExperienceFirstLearning(game);
   markInboundSettlement(game);
@@ -1186,7 +1349,7 @@ export function resolveNoonMarket(current) {
   settleInformationCovenants(game);
   game.marketResolved = true;
   game.playerOrders = resetOrders();
-  game.log.unshift(`Day ${game.day} noon market settled: ${game.marketOutcome.length} trade(s).`);
+  game.log.unshift(`Octopus Clearing ${batch.id} settled ${game.marketOutcome.length} trade(s); client float reconciled to 0🥫.`);
   game.pendingEvents = buildEvents(game);
   return game;
 }
@@ -1226,12 +1389,12 @@ function applyPerishables(game) {
   game.perishTimer = timer;
 }
 
-function settleValeScreening(game) {
-  if (game.worldThreads.valeScreening.stage === "aftermath" || !game.traders.vale.inventory.includes("Sperm Whale Oil")) return;
-  game.traders.vale.inventory = removeOne(game.traders.vale.inventory, "Sperm Whale Oil");
+function settleYasminScreening(game) {
+  if (game.worldThreads.valeScreening.stage === "aftermath" || !game.traders.yasmin.inventory.includes("Sperm Whale Oil")) return;
+  game.traders.yasmin.inventory = removeOne(game.traders.yasmin.inventory, "Sperm Whale Oil");
   game.worldThreads.valeScreening.stage = "aftermath";
-  recordEvidence(game, "world-consequence", { thread: "valeScreening", consequence: "consumption", actorId: "vale", item: "Sperm Whale Oil" });
-  game.log.unshift("Vale burns the whale oil in obsolete projection equipment and completes the private screening.");
+  recordEvidence(game, "world-consequence", { thread: "valeScreening", consequence: "consumption", actorId: "yasmin", item: "Sperm Whale Oil" });
+  game.log.unshift("Yasmin burns the whale oil in obsolete projection equipment and completes the private screening.");
 }
 
 function settleInformationResale(game) {
@@ -1267,102 +1430,184 @@ function settleInformationResale(game) {
   recordEvidence(game, "information-resold", { infoId: deal.info.id, sellerId: deal.sellerId, buyerId: deal.buyerId, price: deal.price, channel: "private", audienceSize: deal.info.knownBy.length });
 }
 
-function consumeConfiguredInputs(game) {
-  Object.entries(NPC_PROFILES).forEach(([traderId, profile]) => {
-    const business = profile.business;
-    const trader = game.traders[traderId];
-    if (!business || !trader) return;
+function settleRecurringActivity(game) {
+  const wong = game.traders.wong;
+  const wongConfig = RECURRING_ECONOMY.wong;
+  const householdPaid = Math.min(wongConfig.householdBurnPerSunset, wong.sardines);
+  wong.sardines -= householdPaid;
+  recordRecurring(game, "wong", "household-support-burn", -householdPaid, { shortfall: wongConfig.householdBurnPerSunset - householdPaid });
+  if (game.day % wongConfig.rescueFoodDemandEveryDays === 0) {
+    const meal = wong.inventory.find((item) => ITEMS[item]?.foodUnits);
+    if (meal) {
+      takePerishableAge(game, wong, meal);
+      wong.inventory = removeOne(wong.inventory, meal);
+      recordRecurring(game, "wong", "rescue-food-burn", -valueOf(meal), { item: meal });
+    } else addDemand(game, "wong", "Fresh Mackerel", "Food is needed for Wong's household and rescue work.");
+  }
 
-    if (traderId === "bar") {
-      const hadIce = trader.inventory.includes("Ice Block");
-      const revenue = hadIce ? business.serviceRevenueWithIce : business.serviceRevenueBase;
-      if (Number(revenue) > 0) {
-        trader.sardines += Number(revenue);
-        recordEvidence(game, "world-consequence", { consequence: "outside-revenue", actorId: traderId, amount: Number(revenue), inputUsed: hadIce ? "Ice Block" : null });
-        game.log.unshift(`The Bar closes service with ${revenue}🥫 of outside-customer revenue${hadIce ? " after a full cold-drink service" : " despite running short of ice"}.`);
-      }
+  const sterling = game.traders.sterling;
+  const sterlingConfig = RECURRING_ECONOMY.sterling;
+  const hadIce = sterling.inventory.includes("Ice Block");
+  const serviceRevenue = hadIce ? sterlingConfig.serviceRevenueWithIce : sterlingConfig.serviceRevenueBase;
+  if (hadIce) {
+    takePerishableAge(game, sterling, "Ice Block");
+    sterling.inventory = removeOne(sterling.inventory, "Ice Block");
+    recordRecurring(game, "sterling", "business-input", -valueOf("Ice Block"), { item: "Ice Block" });
+  }
+  sterling.sardines += serviceRevenue;
+  game.systemMarkers.sterlingServiceCycles += 1;
+  recordRecurring(game, "sterling", "outside-service-revenue", serviceRevenue, { inputUsed: hadIce ? "Ice Block" : null, cycle: game.systemMarkers.sterlingServiceCycles });
+  if (game.systemMarkers.sterlingServiceCycles % sterlingConfig.serviceInputEveryCycles === 0) {
+    const inputIndex = game.systemMarkers.sterlingServiceCycles / sterlingConfig.serviceInputEveryCycles - 1;
+    const item = sterlingConfig.serviceInputRotation[inputIndex % sterlingConfig.serviceInputRotation.length];
+    if (sterling.inventory.includes(item)) {
+      takePerishableAge(game, sterling, item);
+      sterling.inventory = removeOne(sterling.inventory, item);
+      recordRecurring(game, "sterling", "business-input", -valueOf(item), { item });
+    } else addDemand(game, "sterling", item, `Sterling needs ${item} for the next Bar service cycle.`);
+  }
+  const lastSubsidy = Number(game.systemMarkers.sterlingLastSubsidyDay || -Infinity);
+  if (sterling.sardines < sterlingConfig.familySubsidyThreshold && game.day - lastSubsidy >= sterlingConfig.familySubsidyCooldownDays) {
+    sterling.sardines += sterlingConfig.familySubsidy;
+    game.systemMarkers.sterlingLastSubsidyDay = game.day;
+    recordRecurring(game, "sterling", "family-subsidy", sterlingConfig.familySubsidy);
+  }
+
+  const aspen = game.traders.aspen;
+  const aspenConfig = RECURRING_ECONOMY.aspen;
+  if (game.day % aspenConfig.personalCostEveryDays === 0) {
+    const paid = Math.min(aspenConfig.personalCost, aspen.sardines);
+    aspen.sardines -= paid;
+    recordRecurring(game, "aspen", "outside-support-personal-cost", -paid);
+  }
+  if (!game.flags.sailorDeparted && game.day + 1 >= game.systemMarkers.aspenNextDepartureDay) addDemand(game, "aspen", "Lime Crate", "Aspen has a clear provisioning pressure before departure.");
+  if (!game.flags.sailorDeparted && game.day >= game.systemMarkers.aspenNextDepartureDay) {
+    const routeNumber = Number(game.systemMarkers.aspenRouteCount || 0);
+    const cargo = aspenConfig.cargoRotation[routeNumber % aspenConfig.cargoRotation.length];
+    const cargoCost = Math.floor(valueOf(cargo) * aspenConfig.cargoCostRate);
+    const totalCost = cargoCost + aspenConfig.maintenanceCost;
+    if (aspen.sardines >= totalCost) {
+      aspen.sardines -= totalCost;
+      game.flags.sailorDeparted = true;
+      game.systemMarkers.aspenRoute = { cargo, cargoCost, maintenanceCost: aspenConfig.maintenanceCost, departedDay: game.day, returnDay: game.day + aspenConfig.routeDurationDays };
+      game.systemMarkers.aspenRouteCount = routeNumber + 1;
+      recordRecurring(game, "aspen", "voyage-departure", -totalCost, { cargo, cargoCost, maintenanceCost: aspenConfig.maintenanceCost, returnDay: game.systemMarkers.aspenRoute.returnDay });
+    } else {
+      game.systemMarkers.aspenNextDepartureDay = game.day + 1;
+      recordRecurring(game, "aspen", "voyage-delay", 0, { required: totalCost, cash: aspen.sardines });
     }
+  }
 
-    if (business.consumeAny?.length) {
-      const item = business.consumeAny.find((candidate) => trader.inventory.includes(candidate));
-      if (item) {
-        takePerishableAge(game, trader, item);
-        trader.inventory = removeOne(trader.inventory, item);
-        recordEvidence(game, "world-consequence", { consequence: "business-consumption", actorId: traderId, item });
-        game.log.unshift(`${trader.name}'s ${labelShort(item)} ${business.consumeText || "is used up by sunset"}.`);
-      }
+  const yasmin = game.traders.yasmin;
+  const yasminConfig = RECURRING_ECONOMY.yasmin;
+  if (game.day % yasminConfig.maintenanceEveryDays === 0) {
+    const functioning = yasmin.sardines >= yasminConfig.socialMaintenanceCost;
+    const paid = functioning ? yasminConfig.socialMaintenanceCost : Math.min(yasmin.sardines, yasminConfig.socialMaintenanceCost);
+    yasmin.sardines -= paid;
+    recordRecurring(game, "yasmin", "social-position-maintenance", -paid, { functioning });
+    if (functioning) {
+      yasmin.sardines += yasminConfig.outsideYield;
+      recordRecurring(game, "yasmin", "outside-capital-family-yield", yasminConfig.outsideYield);
     }
+  }
+  if (game.day % yasminConfig.acquisitionPressureEveryDays === 0) {
+    const item = yasminConfig.acquisitionRotation[(game.day / yasminConfig.acquisitionPressureEveryDays - 1) % yasminConfig.acquisitionRotation.length];
+    if (!yasmin.inventory.includes(item)) addDemand(game, "yasmin", item, "Yasmin has a provenance/prestige acquisition pressure.");
+  }
 
-    (business.consume || []).forEach((item) => {
-      if (!trader.inventory.includes(item)) return;
-      takePerishableAge(game, trader, item);
-      trader.inventory = removeOne(trader.inventory, item);
-      recordEvidence(game, "world-consequence", { consequence: "business-consumption", actorId: traderId, item });
-      game.log.unshift(`${trader.name} uses ${labelShort(item)} during today's business.`);
-    });
-
-    if (business.outsideSaleAny?.length && game.day % Number(business.outsideSaleInterval || 1) === 0) {
-      const item = business.outsideSaleAny.find((candidate) => trader.inventory.includes(candidate));
-      if (item) {
-        const proceeds = Math.max(1, Math.round(valueOf(item) * Number(business.outsideSaleRate || 0.75)));
-        takePerishableAge(game, trader, item);
-        trader.inventory = removeOne(trader.inventory, item);
-        trader.sardines += proceeds;
-        recordEvidence(game, "world-consequence", { consequence: "outside-sale", actorId: traderId, item, proceeds });
-        game.log.unshift(`${trader.name} sells ${labelShort(item)} to ${business.outsideBuyer || "ordinary outside customers"} for ${proceeds}🥫 after the public market closes.`);
-      }
-    }
+  const juan = game.traders.juan;
+  const juanConfig = RECURRING_ECONOMY.juan;
+  game.crops.filter((crop) => crop.status === "growing" && crop.maturityDay <= game.day).forEach((crop) => {
+    crop.status = "mature";
+    crop.maturedDay = game.day;
+    juan.inventory.push("Mature Nursery Plant");
+    recordRecurring(game, "juan", "crop-maturity", valueOf("Mature Nursery Plant"), { cropId: crop.id, item: "Mature Nursery Plant" });
   });
-}
+  const fallbackCrop = game.crops.find((crop) => crop.status === "mature" && game.day - crop.maturedDay >= juanConfig.fallbackAfterDays);
+  if (fallbackCrop && juan.inventory.includes("Mature Nursery Plant")) {
+    juan.inventory = removeOne(juan.inventory, "Mature Nursery Plant");
+    juan.sardines += juanConfig.fallbackSale;
+    fallbackCrop.status = "sold-outside";
+    recordRecurring(game, "juan", "outside-fallback-sale", juanConfig.fallbackSale, { cropId: fallbackCrop.id, item: "Mature Nursery Plant" });
+  }
+  if (!game.crops.some((crop) => crop.status === "growing") && juan.inventory.includes("Nursery Seed Packet") && juan.sardines >= juanConfig.plantingInputCost) {
+    juan.inventory = removeOne(juan.inventory, "Nursery Seed Packet");
+    juan.sardines -= juanConfig.plantingInputCost;
+    const crop = { id: `juan-crop-${game.crops.length + 1}`, plantedDay: game.day, maturityDay: game.day + juanConfig.maturityDays, status: "growing", linkedAssetId: "juan-crop-cycle" };
+    game.crops.push(crop);
+    recordRecurring(game, "juan", "planting", -juanConfig.plantingInputCost, { cropId: crop.id, maturityDay: crop.maturityDay, seedConsumed: true });
+  }
 
-function settleBusinessArrivals(game) {
-  Object.entries(NPC_PROFILES).forEach(([traderId, profile]) => {
-    const business = profile.business;
-    const trader = game.traders[traderId];
-    if (!business?.arrivals?.length || !trader) return;
-    if (business.stopsAtDeparture && game.day >= (profile.departureDay || Infinity)) return;
-
-    const item = business.arrivals[(game.day - 1) % business.arrivals.length];
-    if (trader.inventory.includes(item)) return;
-
-    const rate = Number(business.arrivalCostRate || 0);
-    const cost = rate > 0 ? Math.max(1, Math.round(valueOf(item) * rate)) : 0;
-    if (trader.sardines < cost) {
-      recordEvidence(game, "world-consequence", { consequence: "arrival-unfunded", actorId: traderId, item, cost, cash: trader.sardines });
-      game.log.unshift(`${trader.name} cannot fund the next ${labelShort(item)} arrival tonight.`);
-      return;
-    }
-    trader.sardines -= cost;
-    trader.inventory.push(item);
-    recordEvidence(game, "world-consequence", { consequence: "business-arrival", actorId: traderId, item, cost });
-    const verb = traderId === "dog" ? "scavenges" : traderId === "fishmonger" ? "sources" : "unloads";
-    game.log.unshift(`${trader.name} ${verb} ${labelShort(item)} for tomorrow${cost ? ` at a ${cost}🥫 sourcing cost` : ""}.`);
-  });
-
-  if (game.day === NPC_PROFILES.mechanic.departureDay) {
-    game.flags.sailorDeparted = true;
-    game.log.unshift("The Sailor's departure window has arrived. Local cargo will stop refreshing after today.");
+  const octopus = game.traders.octopus;
+  const octopusConfig = RECURRING_ECONOMY.octopus;
+  const outsideItem = octopusConfig.outsideSaleAny.find((item) => octopus.inventory.includes(item));
+  if (outsideItem) {
+    const proceeds = Math.max(1, Math.round(valueOf(outsideItem) * octopusConfig.outsideSaleRate));
+    takePerishableAge(game, octopus, outsideItem);
+    octopus.inventory = removeOne(octopus.inventory, outsideItem);
+    octopus.sardines += proceeds;
+    recordRecurring(game, "octopus", "outside-sale", proceeds, { item: outsideItem });
   }
 }
 
-function settleBusinesses(game) {
-  consumeConfiguredInputs(game);
-  settleValeScreening(game);
-  settleInformationResale(game);
-  settleBusinessArrivals(game);
+function settleRecurringArrivals(game) {
+  const wong = game.traders.wong;
+  const wongConfig = RECURRING_ECONOMY.wong;
+  if (game.day % wongConfig.oddJobIncomeEveryDays === 0) {
+    wong.sardines += wongConfig.oddJobIncome;
+    recordRecurring(game, "wong", "odd-job-income", wongConfig.oddJobIncome);
+  }
+  if (game.day % wongConfig.salvageEveryDays === 0) {
+    const item = wongConfig.salvageRotation[(game.day / wongConfig.salvageEveryDays - 1) % wongConfig.salvageRotation.length];
+    wong.inventory.push(item);
+    recordRecurring(game, "wong", "labour-produced-salvage", valueOf(item), { item });
+  }
+
+  const route = game.systemMarkers.aspenRoute;
+  if (game.flags.sailorDeparted && route && route.returnDay <= game.day) {
+    game.traders.aspen.inventory.push(route.cargo);
+    game.traders.aspen.sardines += RECURRING_ECONOMY.aspen.outsideCommission;
+    game.flags.sailorDeparted = false;
+    game.systemMarkers.aspenNextDepartureDay = game.day + RECURRING_ECONOMY.aspen.localIntervalDays;
+    recordRecurring(game, "aspen", "voyage-return", RECURRING_ECONOMY.aspen.outsideCommission, { cargo: route.cargo, departedDay: route.departedDay, nextDepartureDay: game.systemMarkers.aspenNextDepartureDay });
+    game.systemMarkers.aspenRoute = null;
+  }
+
+  const juan = game.traders.juan;
+  const juanConfig = RECURRING_ECONOMY.juan;
+  if (!juan.inventory.includes("Nursery Seed Packet") && game.day % juanConfig.seedSourceEveryDays === 0 && juan.sardines >= juanConfig.seedSourceCost) {
+    juan.sardines -= juanConfig.seedSourceCost;
+    juan.inventory.push("Nursery Seed Packet");
+    recordRecurring(game, "juan", "seed-sourcing", -juanConfig.seedSourceCost, { item: "Nursery Seed Packet" });
+  }
+
+  const octopus = game.traders.octopus;
+  const octopusConfig = RECURRING_ECONOMY.octopus;
+  const item = octopusConfig.arrivals[(game.day - 1) % octopusConfig.arrivals.length];
+  if (!octopus.inventory.includes(item)) {
+    const cost = Math.max(1, Math.round(valueOf(item) * octopusConfig.arrivalCostRate));
+    if (octopus.sardines >= cost) {
+      octopus.sardines -= cost;
+      octopus.inventory.push(item);
+      recordRecurring(game, "octopus", "physical-arrival", -cost, { item, cost });
+    } else recordRecurring(game, "octopus", "arrival-unfunded", 0, { item, cost, cash: octopus.sardines });
+  }
+  game.recurringDemands = game.recurringDemands.filter((entry) => entry.expiresDay >= game.day);
+  game.recurringDemands.forEach((entry) => clearDemand(game, entry.actorId, entry.item));
 }
 
 function applyBarToolRevenue(game, settledDay) {
   if (game.systemMarkers.barToolBonusDay === settledDay) return;
-  const tools = PRODUCTION_RECIPES.maiTai.productivityTools.filter((item) => game.traders.bar.inventory.includes(item)).length;
+  const tools = PRODUCTION_RECIPES.maiTai.productivityTools.filter((item) => game.traders.sterling.inventory.includes(item)).length;
   if (!tools) return;
-  game.traders.bar.sardines += tools;
+  game.traders.sterling.sardines += tools;
   game.systemMarkers.barToolBonusDay = settledDay;
+  recordRecurring(game, "sterling", "tool-service-revenue", tools);
   game.log.unshift(`The Bar's upgraded professional tools add ${tools}🥫 of service value tonight.`);
 }
 
 function chooseMealCreditSource(game) {
-  return ["bar", "dog"]
+  return ["sterling", "wong"]
     .filter((id) => (game.relationships[id] || 0) >= 2 && (game.traders[id]?.sardines || 0) >= SUSTENANCE_PER_DAY)
     .sort((a, b) => (game.relationships[b] || 0) - (game.relationships[a] || 0) || a.localeCompare(b))[0] || null;
 }
@@ -1375,13 +1620,15 @@ function transformPlayerToAnimal(game) {
     endedDay: game.day,
     sardines: player.sardines,
     inventory: [...player.inventory],
+    claimsReference: game.claims.filter((claim) => claim.currentHolderId === "player" && claim.currentHolderLifeId === oldLifeId && claim.status === "open").reduce((sum, claim) => sum + claim.faceAmount, 0),
+    liabilities: currentObligations(game).reduce((sum, obligation) => sum + Number(obligation.amount || 0), 0),
     note: "Former legal identity. The current animal form cannot directly claim this estate.",
   });
   game.obligations.forEach((obligation) => {
     if (obligation.debtorLifeId !== oldLifeId || !["open", "overdue"].includes(obligation.status)) return;
     if (obligation.kind === "secured-loan") {
-      game.traders.vale.inventory.push(obligation.collateral);
-      addPerishableAge(game, game.traders.vale, obligation.collateral, obligation.collateralAge);
+      game.traders.yasmin.inventory.push(obligation.collateral);
+      addPerishableAge(game, game.traders.yasmin, obligation.collateral, obligation.collateralAge);
       obligation.status = "seized";
     } else if (obligation.kind === "information-exclusivity") obligation.status = "ended";
     else obligation.status = "estate";
@@ -1496,6 +1743,50 @@ function snapshotPlayerOrders(game) {
   return orders;
 }
 
+function recordSunMoment(game, moment, state, contextualOpportunityIds = [], action = "pause", effect = "", evidenceIds = [], immediateConsequence = null) {
+  const entry = { day: game.day, moment, state, contextualOpportunityIds, action, effect, evidenceIds, immediateConsequence };
+  game.sunMomentHistory.push(entry);
+  return entry;
+}
+
+function noonResistanceOpportunity(game) {
+  const informationEvidence = game.decisionEvidence.filter((entry) => entry.day === game.day && entry.phase === "morning" && entry.informationId && ["talk", "investigate"].includes(entry.type));
+  const opening = game.noonOpeningPlayer || { cash: game.traders.player.sardines, inventory: game.traders.player.inventory };
+  const fundable = game.lockedPlayerOrders.filter((order) => order.to && order.wantItem && order.sardines <= opening.cash && (!order.offerItem || opening.inventory.includes(order.offerItem)) && knownItemsForTrader(game, order.to).includes(order.wantItem));
+  if (!fundable.length || !informationEvidence.length) return [];
+  return [...fundable.map((order) => order.orderId), ...informationEvidence.map((entry) => entry.id)];
+}
+
+export function resistSunMoment(current) {
+  const game = clone(current);
+  if (game.phase !== "noon" || game.marketResolved || !game.sunMoment?.eligible || game.sunMoment.lateEditUsed || game.sunMoment.lateEditAvailable) return game;
+  const evidence = recordEvidence(game, "sun-moment-resisted", { moment: "noon", opportunityIds: game.sunMoment.opportunityIds });
+  recordSunMoment(game, "noon", "resisted", game.sunMoment.opportunityIds, "keep_working", "One late player order edit is available before the already-committed clearing batch.", [evidence.id], "NPC intentions remain committed and Octopus Clearing has not run.");
+  game.sunMoment.state = "resisted";
+  game.sunMoment.lateEditAvailable = true;
+  return game;
+}
+
+export function applyLateOrderEdit(current, index, order) {
+  const game = clone(current);
+  const opening = game.noonOpeningPlayer;
+  if (game.phase !== "noon" || game.marketResolved || !game.sunMoment?.lateEditAvailable || game.sunMoment.lateEditUsed || !opening || !game.lockedPlayerOrders[index]) return game;
+  const edited = { ...clone(order), orderId: game.lockedPlayerOrders[index].orderId, offerItem: order.offerItem || "", sardines: Number(order.sardines || 0), lockedDay: game.day, lateEdit: true };
+  const valid = game.traders[edited.to] && edited.to !== "player" && ITEMS[edited.wantItem] && Number.isFinite(edited.sardines) && edited.sardines >= 0 && edited.sardines <= opening.cash && (!edited.offerItem || opening.inventory.includes(edited.offerItem)) && knownItemsForTrader(game, edited.to).includes(edited.wantItem) && canAccessVenue(game, "formalMarket");
+  if (!valid) return game;
+  game.lockedPlayerOrders[index] = edited;
+  game.sunMoment.lateEditAvailable = false;
+  game.sunMoment.lateEditUsed = true;
+  const evidence = recordEvidence(game, "sun-moment-late-order-edit", { moment: "noon", orderId: edited.orderId, sellerId: edited.to, wantItem: edited.wantItem, cashOffered: edited.sardines, barterItem: edited.offerItem || null, openingCash: opening.cash, openingInventory: [...opening.inventory] });
+  const history = [...game.sunMomentHistory].reverse().find((entry) => entry.day === game.day && entry.moment === "noon" && entry.state === "resisted");
+  if (history) {
+    history.evidenceIds.push(evidence.id);
+    history.immediateConsequence = `Late order ${edited.orderId} was edited once; the clearing batch still uses opening resources.`;
+  }
+  game.lastInteraction = { action: "late-order-edit", targetId: edited.to, text: `You make one late edit to ${edited.orderId}. Octopus Clearing remains a single committed batch.` };
+  return game;
+}
+
 export function advancePhase(current) {
   const game = clone(current);
   if (game.ended || game.pendingEvents.length) return game;
@@ -1510,9 +1801,13 @@ export function advancePhase(current) {
   if (game.phase === "morning") {
     if (game.actionsRemaining > 0) recordEvidence(game, "phase-ended-with-unused-actions", { phase: "morning", unusedActions: game.actionsRemaining, cash: game.traders.player.sardines, openObligationCount: currentObligations(game).length });
     game.lockedPlayerOrders = snapshotPlayerOrders(game);
+    game.noonOpeningPlayer = { cash: game.traders.player.sardines, inventory: [...game.traders.player.inventory] };
     game.phase = "noon";
     game.actionsRemaining = 0;
     game.lastInteraction = null;
+    const opportunityIds = noonResistanceOpportunity(game);
+    game.sunMoment = { moment: "noon", state: opportunityIds.length ? "contextual_opportunity" : "natural_pause", eligible: opportunityIds.length > 0, opportunityIds, lateEditAvailable: false, lateEditUsed: false };
+    if (!opportunityIds.length) recordSunMoment(game, "noon", "natural_pause", [], "pause", "Octopus Clearing opens after the natural pause.");
     return game;
   }
   if (game.phase === "noon") {
@@ -1528,14 +1823,19 @@ export function advancePhase(current) {
     game.phase = "sunset";
     game.actionsRemaining = 0;
     game.lastInteraction = null;
+    game.sunMoment = { moment: "sunset", state: "natural_pause", eligible: false, opportunityIds: [], lateEditAvailable: false, lateEditUsed: false };
+    recordSunMoment(game, "sunset", "natural_pause", [], "pause", "The harbour pauses before sunset settlement.");
     return game;
   }
   if (game.phase === "sunset") {
     if (duePrivateMatters(game).length) return game;
     settleSustenance(game);
     markOverdueObligations(game);
+    settleYasminScreening(game);
+    settleInformationResale(game);
+    settleRecurringActivity(game);
     applyPerishables(game);
-    settleBusinesses(game);
+    settleRecurringArrivals(game);
     produceIfReady(game, "maiTai");
     produceIfReady(game, "onewheel");
     applyBarToolRevenue(game, game.day);
@@ -1557,6 +1857,9 @@ export function advancePhase(current) {
     game.pendingEvents = [];
     game.actionsRemaining = 0;
     game.lastInteraction = null;
+    game.noonOpeningPlayer = null;
+    game.sunMoment = { moment: "sunrise", state: "natural_pause", eligible: false, opportunityIds: [], lateEditAvailable: false, lateEditUsed: false };
+    recordSunMoment(game, "sunrise", "natural_pause", [], "pause", "The day begins after a brief natural pause.");
     game.playerState.proxyAccess = game.playerState.proxyAccess.filter((access) => access.expiresDay >= game.day);
     game.inboundOffers.forEach((offer) => { if (offer.status === "pending") offer.status = "expired"; });
     refreshInformation(game);
@@ -1606,6 +1909,7 @@ function revealInvestigationStage(game, targetId) {
     claimType: stage.claimType || "observation",
     subjectId: targetId,
     item: stage.item || null,
+    claimId: stage.claimId || null,
     text: stage.text,
     source: "personal investigation",
     precision: stage.precision || "context",
@@ -1684,6 +1988,14 @@ function investigate(game, targetId) {
       sellable: false,
     });
   }
+  if (info.claimId) {
+    const claim = game.claims.find((entry) => entry.id === info.claimId);
+    if (claim && !claim.knownByPlayer) {
+      claim.knownByPlayer = true;
+      const evidence = recordEvidence(game, "claim-discovered", { claimId: claim.id, debtorId: claim.debtorId, holderId: claim.currentHolderId, faceAmount: claim.faceAmount, dueDay: claim.dueDay });
+      claim.evidenceIds.push(evidence.id);
+    }
+  }
 
   game.lastInteraction = {
     action: "investigate",
@@ -1700,7 +2012,7 @@ export function performFreeAction(current, action, targetId) {
   if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || game.ended) return game;
   const target = game.traders[targetId];
   if (!target || targetId === "player") return game;
-  if (targetId === "mechanic" && game.flags.sailorDeparted) {
+  if (targetId === "aspen" && game.flags.sailorDeparted) {
     game.lastInteraction = { action, targetId, text: "The ship has left. There is nobody at the berth to answer or trade." };
     return game;
   }
@@ -1737,19 +2049,19 @@ export function buildEvents(game) {
   if (game.ended) return [];
   const player = game.traders.player;
   const events = [];
-  const soupFish = ["Fresh Mackerel", "Salted Cod", "Smoked Eel", "Two Octopus Tentacles"];
+  const soupFish = ["Fresh Mackerel", "Salted Cod", "Smoked Eel", "Sea Urchin Basket"];
   const alreadyHasFlower = player.inventory.includes("Sunflower") || game.flags.sunflowerAcquired;
   const auctionReserve = game.flags.cheated ? 68 : 52;
 
   if (
     !alreadyHasFlower && canAccessVenue(game, "bar") && !game.flags.cheated &&
     game.worldThreads.barRecipe.stage === "aftermath" && player.inventory.includes("Mai Tai") &&
-    player.inventory.some((item) => soupFish.includes(item)) && (game.relationships.bar || 0) >= 2
+    player.inventory.some((item) => soupFish.includes(item)) && (game.relationships.sterling || 0) >= 2
   ) {
     events.push({
       id: "grandma",
       title: "After closing",
-      text: "The Apprentice asks if you want to bring the fish and Mai Tai downstairs after the bar closes. This feels like an invitation, not a transaction.",
+      text: "Sterling asks if you want to bring the fish and Mai Tai downstairs after the bar closes. This feels like an invitation, not a transaction.",
       actions: ["Go", "Not tonight"],
     });
   }
@@ -1762,7 +2074,7 @@ export function buildEvents(game) {
     events.push({
       id: "auction",
       title: "A private auction invitation",
-      text: "Vale sends a card. One of the lots is a living sunflower.",
+      text: "Yasmin sends a card. One of the lots is a living sunflower.",
       actions: ["Attend", "Ignore"],
     });
   }
@@ -1770,12 +2082,12 @@ export function buildEvents(game) {
   if (
     !alreadyHasFlower && !game.flags.raced &&
     player.inventory.includes("Built Onewheel") &&
-    player.inventory.includes("Mai Tai") && (game.relationships.clown || 0) >= 1
+    player.inventory.includes("Mai Tai") && (game.relationships.juan || 0) >= 1
   ) {
     events.push({
       id: "cliff",
       title: "The cliff wager",
-      text: "Clown proposes one race at sunset. By now you have enough reason to suspect the cliff matters to him for more than the wager.",
+      text: "Juan proposes one race at sunset. By now you have enough reason to suspect the cliff matters to him for more than the wager.",
       actions: ["Race", "Decline"],
     });
   }
@@ -1805,7 +2117,7 @@ export function resolveEvent(current, id, action, bidAmount = null) {
   if (!game.pendingEvents.some((event) => event.id === id)) return game;
 
   if (id === "grandma" && action === "Go") {
-    const meal = ["Fresh Mackerel", "Salted Cod", "Smoked Eel", "Two Octopus Tentacles"].find((item) => player.inventory.includes(item));
+    const meal = ["Fresh Mackerel", "Salted Cod", "Smoked Eel", "Sea Urchin Basket"].find((item) => player.inventory.includes(item));
     takePerishableAge(game, player, "Mai Tai");
     takePerishableAge(game, player, meal);
     player.inventory = removeOne(removeOne(player.inventory, "Mai Tai"), meal);
@@ -1818,13 +2130,13 @@ export function resolveEvent(current, id, action, bidAmount = null) {
     const amount = Number(bidAmount);
     if (!Number.isFinite(amount) || amount < reserve || amount > player.sardines) {
       recordEvidence(game, "special-situation", { route: "auction", choice: "Attend", bid: amount, reserve, openingCash: player.sardines, channel: "private", outcome: "no-fill" });
-      game.log.unshift(`Vale's published reserve was ${reserve}🥫. Your bid did not clear.`);
+      game.log.unshift(`Yasmin's published reserve was ${reserve}🥫. Your bid did not clear.`);
       removePendingEvent(game, id);
       return game;
     }
     player.sardines -= amount;
     recordEvidence(game, "special-situation", { route: "auction", choice: "Attend", bid: amount, reserve, openingCash: player.sardines + amount, channel: "private", outcome: "sunflower" });
-    acquireSunflower(game, `Vale settles the sunflower lot at ${amount}🥫.`);
+    acquireSunflower(game, `Yasmin settles the sunflower lot at ${amount}🥫.`);
     return game;
   }
   if (id === "cliff" && action === "Race") {
@@ -1835,7 +2147,7 @@ export function resolveEvent(current, id, action, bidAmount = null) {
     player.inventory = removeOne(removeOne(player.inventory, "Mai Tai"), "Built Onewheel");
     if (preRaceWorth >= 60) {
       recordEvidence(game, "special-situation", { route: "cliff", choice: "Race", preRaceWorth, stake: ["Mai Tai", "Built Onewheel"], channel: "private", outcome: "sunflower" });
-      acquireSunflower(game, "You cross the cliff route with Clown. What you find is, unmistakably, a sunflower.");
+      acquireSunflower(game, "You cross the cliff route with Juan. What you find is, unmistakably, a sunflower.");
     } else {
       recordEvidence(game, "special-situation", { route: "cliff", choice: "Race", preRaceWorth, stake: ["Mai Tai", "Built Onewheel"], channel: "private", outcome: "lost" });
       game.log.unshift("The cliff wager fails. You had enough to enter the special situation, not enough margin for the current crude prototype odds model.");

@@ -31,8 +31,8 @@ function manualNoon() {
 function compete(playerCash, npcCash, day = 1) {
   const game = manualNoon();
   game.day = day;
-  game.playerOrders = [order("player", "fishmonger", "Fresh Mackerel", playerCash)];
-  game.marketPlan = [order("dog", "fishmonger", "Fresh Mackerel", npcCash)];
+  game.playerOrders = [order("player", "octopus", "Fresh Mackerel", playerCash)];
+  game.marketPlan = [order("wong", "octopus", "Fresh Mackerel", npcCash)];
   return game;
 }
 
@@ -53,32 +53,32 @@ function clear(game) {
 }
 
 const winner = (game) => clear(game).marketOutcome[0]?.from;
-assert.equal(winner(compete(10, 12)), "dog", "player must lose to a better NPC bid");
+assert.equal(winner(compete(10, 12)), "wong", "player must lose to a better NPC bid");
 assert.equal(winner(compete(12, 10)), "player", "player can outbid the NPC");
-assert.equal(winner(compete(10, 10, 1)), "dog");
+assert.equal(winner(compete(10, 10, 1)), "wong");
 assert.equal(winner(compete(10, 10, 2)), "player", "equal bids rotate across days");
 
 // First-day bounded rationality: the harbour must not solve its private needs before the player sees one tape.
 let game = createGame();
 const dayOnePlans = planNPCMarket(game);
 assert(dayOnePlans.length <= 2, `Day 1 should be quiet enough to read; got ${dayOnePlans.length} NPC orders`);
-assert(dayOnePlans.some((plan) => plan.from === "dog" && plan.wantItem === "Fresh Mackerel"));
-assert(dayOnePlans.some((plan) => plan.from === "bar" && plan.wantItem === "Ice Block"));
+assert(dayOnePlans.some((plan) => plan.from === "wong" && plan.wantItem === "Fresh Mackerel"));
+assert(dayOnePlans.some((plan) => plan.from === "sterling" && plan.wantItem === "Ice Block"));
 assert(!dayOnePlans.some((plan) => plan.wantItem === "Sperm Whale Oil"), "Vale must not magically locate hidden whale oil on Day 1");
 assert(!dayOnePlans.some((plan) => plan.wantItem === "Orgeat Bottle"), "Bar must not magically locate hidden Orgeat on Day 1");
-assert(!knownItemsForTrader(game, "mechanic").includes("Sperm Whale Oil"));
+assert(!knownItemsForTrader(game, "aspen").includes("Sperm Whale Oil"));
 assert(!visibleSellListings(game).some((listing) => listing.item === "Sperm Whale Oil"));
 assert(visibleMarketBoard(game).every((bid) => !["to", "reason", "score", "knowledgeBasis"].some((key) => key in bid)));
 
 // Talk and investigation are genuinely different verbs.
 game = morning();
-let talked = performFreeAction(game, "talk", "bar");
-assert.equal(talked.relationships.bar, 1);
+let talked = performFreeAction(game, "talk", "sterling");
+assert.equal(talked.relationships.sterling, 1);
 assert.equal(talked.lastInteraction.action, "talk");
 assert(talked.lastInteraction.text && !talked.lastInteraction.text.includes("+1"));
 assert(!talked.log[0].includes("relationship contact +1"));
-let investigated = performFreeAction(game, "investigate", "bar");
-assert.equal(investigated.relationships.bar, 0, "investigation must not silently build friendship");
+let investigated = performFreeAction(game, "investigate", "sterling");
+assert.equal(investigated.relationships.sterling, 0, "investigation must not silently build friendship");
 assert.equal(investigated.lastInteraction.action, "investigate");
 assert(investigated.lastInteraction.text.includes("Mai Tai"));
 assert(!investigated.lastInteraction.text.toLowerCase().includes("orgeat"), "first bartending clue must preserve expertise advantage");
@@ -86,7 +86,7 @@ assert(!investigated.lastInteraction.text.toLowerCase().includes("orgeat"), "fir
 // Morning writes orders; advancing to Noon locks a snapshot. Editing the draft afterward cannot rewrite history.
 game = morning();
 game.marketPlan = [];
-game.playerOrders[0] = order("player", "fishmonger", "Fresh Mackerel", 10);
+game.playerOrders[0] = order("player", "octopus", "Fresh Mackerel", 10);
 game = advancePhase(game);
 assert.equal(game.phase, "noon");
 assert.equal(game.lockedPlayerOrders.length, 1);
@@ -98,7 +98,7 @@ assert.equal(result.marketOutcome.find((trade) => trade.from === "player")?.sard
 // Better bid / tie / duplicate inventory / funding conservation.
 for (const day of [1, 2, 3]) {
   game = compete(10, 10, day);
-  game.marketPlan.push(order("bar", "fishmonger", "Fresh Mackerel", 10));
+  game.marketPlan.push(order("sterling", "octopus", "Fresh Mackerel", 10));
   const reversed = structuredClone(game);
   reversed.marketPlan.reverse();
   assert.deepEqual(clear(game).marketOutcome, clear(reversed).marketOutcome);
@@ -108,23 +108,23 @@ assert.equal(winner(game), "player", "unfunded high bidder cannot block a funded
 game = compete(9, 9);
 assert.equal(clear(game).marketOutcome.length, 0, "NPCs must also meet seller asks");
 game = compete(10, 12);
-game.traders.fishmonger.inventory.push("Fresh Mackerel");
+game.traders.octopus.inventory.push("Fresh Mackerel");
 assert.equal(clear(game).marketOutcome.length, 2, "two physical units can fill two bids");
 
 game = manualNoon();
 game.traders.player.inventory.push("Orgeat Bottle");
-game.playerOrders = [order("player", "bar", "Demerara Syrup", 0, "Orgeat Bottle")];
-game.marketPlan = [order("vale", "bar", "Demerara Syrup", 20)];
+game.playerOrders = [order("player", "sterling", "Demerara Syrup", 0, "Orgeat Bottle")];
+game.marketPlan = [order("yasmin", "sterling", "Demerara Syrup", 20)];
 result = clear(game);
 assert.equal(result.marketOutcome[0].from, "player");
 assert.equal(result.worldThreads.barRecipe.stage, "aftermath");
-assert(result.traders.bar.inventory.includes("Mai Tai"));
-assert(knownItemsForTrader(result, "bar").includes("Orgeat Bottle"), "barter ownership belongs on the public tape");
+assert(result.traders.sterling.inventory.includes("Mai Tai"));
+assert(knownItemsForTrader(result, "sterling").includes("Orgeat Bottle"), "barter ownership belongs on the public tape");
 
 for (const [item, cash, fills] of [["Hardtack Tin", 0, 1], ["Tiny Torque Wrench", 0, 0], ["Tiny Torque Wrench", 7, 1]]) {
   game = manualNoon();
-  game.information.push({ claimType: "holding", subjectId: "mechanic", item, observedDay: game.day, freshness: "current", sellable: false, soldTo: [] });
-  game.playerOrders = [order("player", "mechanic", item, cash, "Bad Tangerine")];
+  game.information.push({ claimType: "holding", subjectId: "aspen", item, observedDay: game.day, freshness: "current", sellable: false, soldTo: [] });
+  game.playerOrders = [order("player", "aspen", item, cash, "Bad Tangerine")];
   result = clear(game);
   assert.equal(result.marketOutcome.length, fills, "deception changes belief, not conservation or price floor");
   assert.equal(result.flags.cheated, Boolean(fills));
@@ -132,30 +132,30 @@ for (const [item, cash, fills] of [["Hardtack Tin", 0, 1], ["Tiny Torque Wrench"
 
 for (const invalid of [-1, NaN, Infinity, "not money"]) {
   game = manualNoon();
-  game.playerOrders = [order("player", "dog", "Glasses Wipe", invalid, "Fish Bones")];
+  game.playerOrders = [order("player", "wong", "Glasses Wipe", invalid, "Fish Bones")];
   assert.equal(clear(game).marketOutcome.length, 0, "invalid money cannot settle even with barter");
 }
 
 for (const copies of [1, 2]) {
   game = manualNoon();
   game.traders.player.inventory = Array(copies).fill("Fish Bones");
-  game.playerOrders = [order("player", "dog", "Glasses Wipe", 0, "Fish Bones"), order("player", "dog", "Pocket Match", 0, "Fish Bones")];
+  game.playerOrders = [order("player", "wong", "Glasses Wipe", 0, "Fish Bones"), order("player", "wong", "Pocket Match", 0, "Fish Bones")];
   assert.equal(clear(game).marketOutcome.length, copies);
 }
 game = manualNoon();
 game.traders.player.sardines = 10;
-game.playerOrders = [order("player", "dog", "Glasses Wipe", 10), order("player", "dog", "Pocket Match", 10)];
+game.playerOrders = [order("player", "wong", "Glasses Wipe", 10), order("player", "wong", "Pocket Match", 10)];
 assert.equal(clear(game).marketOutcome.length, 1, "one opening cash pool cannot fund two winning orders");
 game = manualNoon();
-game.playerOrders = [order("player", "dog", "Glasses Wipe", 6), order("player", "dog", "Pocket Match", 3, "Glasses Wipe")];
+game.playerOrders = [order("player", "wong", "Glasses Wipe", 6), order("player", "wong", "Pocket Match", 3, "Glasses Wipe")];
 assert.equal(clear(game).marketOutcome.length, 1, "newly purchased goods cannot fund the same batch");
 
 // Belief is not truth. Public tape can produce a rational but stale NPC order that fails at settlement.
 game = createGame();
 game.day = 2;
-game.history.push({ id: "old-oil", day: 1, phase: "noon", source: "public", from: "dog", to: "mechanic", item: "Sperm Whale Oil", paymentItem: null, sardines: 20 });
-game.traders.dog.inventory = game.traders.dog.inventory.filter((item) => item !== "Sperm Whale Oil");
-const stalePlan = planNPCMarket(game).find((plan) => plan.from === "vale" && plan.to === "dog" && plan.wantItem === "Sperm Whale Oil");
+game.history.push({ id: "old-oil", day: 1, phase: "noon", source: "public", from: "wong", to: "aspen", item: "Sperm Whale Oil", paymentItem: null, sardines: 20 });
+game.traders.wong.inventory = game.traders.wong.inventory.filter((item) => item !== "Sperm Whale Oil");
+const stalePlan = planNPCMarket(game).find((plan) => plan.from === "yasmin" && plan.to === "wong" && plan.wantItem === "Sperm Whale Oil");
 assert(stalePlan, "Vale should be able to act on a stale but public ownership belief");
 game.phase = "noon";
 game.marketResolved = false;
@@ -168,8 +168,8 @@ for (const proxy of [false, true]) {
   game = compete(12, 10);
   game.playerState.form = "animal";
   game.playerState.legalIdentity.status = "unrecognized";
-  if (proxy) game.playerState.proxyAccess.push({ venueId: "formalMarket", via: "bar", expiresDay: game.day });
-  assert.equal(winner(game), proxy ? "player" : "dog");
+  if (proxy) game.playerState.proxyAccess.push({ venueId: "formalMarket", via: "sterling", expiresDay: game.day });
+  assert.equal(winner(game), proxy ? "player" : "wong");
 }
 
 // Long idle run: business activity may exchange with outside customers, but nobody may print goods for free or go negative.
@@ -188,13 +188,14 @@ for (let step = 0; !game.ended && step < 120; step += 1) {
 assert(game.ended && game.day === 14);
 assert.equal(game.style, null);
 assert.deepEqual(game.playerOrders, resetOrders());
-assert.equal(sellerAsk(createGame(), "fishmonger", "Fresh Mackerel"), 10);
+assert.equal(sellerAsk(createGame(), "octopus", "Fresh Mackerel"), 10);
 assert.equal(game.worldThreads.valeScreening.stage, "aftermath", "Vale's early oil purchase should lead to the screening without player involvement");
 assert.equal(game.worldThreads.onewheel.stage, "aftermath", "Sailor should be able to complete the bicycle chain without player involvement");
 assert(game.history.some((trade) => trade.day > 8), "recurring needs should keep some trade alive after the first goals resolve");
-assert(!game.history.some((trade) => trade.day > 8 && (trade.from === "mechanic" || trade.to === "mechanic")), "the departed Sailor must not keep trading from an empty berth");
-assert(game.traders.bar.sardines > 0 && game.traders.vale.sardines > 0, "Bar and Vale must not structurally bleed to zero");
-assert(game.traders.fishmonger.sardines < 150, "named sourcing costs should prevent runaway free-production wealth");
+assert(!game.history.some((trade) => [9, 10, 11].includes(trade.day) && (trade.from === "aspen" || trade.to === "aspen")), "Aspen must not trade while the route is away");
+assert(game.decisionEvidence.some((entry) => entry.actorId === "aspen" && entry.category === "voyage-return"), "Aspen must return from the first route");
+assert(game.traders.sterling.sardines > 0 && game.traders.yasmin.sardines > 0, "Bar and Vale must not structurally bleed to zero");
+assert(game.traders.octopus.sardines < 150, "named sourcing costs should prevent runaway free-production wealth");
 
 console.log(`Living-day smoke passed. Day 1 NPC orders: ${dayOnePlans.length}. No-action public trades/day: ${dailyTrades.join(", ")}.`);
 console.log("Final NPC cash:", Object.fromEntries(Object.entries(game.traders).filter(([id]) => id !== "player").map(([id, trader]) => [id, trader.sardines])));

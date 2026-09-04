@@ -34,17 +34,17 @@ function enterMorning(game = createGame()) {
 // The world notices the player: Dog can see the Fish Bones the outsider is visibly carrying.
 let game = enterMorning();
 assert(publiclyKnownPlayerItems(game).includes("Fish Bones"));
-const dogOffer = game.inboundOffers.find((offer) => offer.kind === "buy-item" && offer.buyerId === "dog" && offer.item === "Fish Bones");
+const dogOffer = game.inboundOffers.find((offer) => offer.kind === "buy-item" && offer.buyerId === "wong" && offer.item === "Fish Bones");
 assert(dogOffer, "Day 1 should contain a causally justified inbound offer from Dog for visible Fish Bones");
 const beforeCash = game.traders.player.sardines;
 game = acceptInboundOffer(game, dogOffer.id);
 assert.equal(game.inboundOffers.find((offer) => offer.id === dogOffer.id).status, "accepted");
-assert(game.marketPlan.some((order) => order.from === "dog" && order.to === "player" && order.wantItem === "Fish Bones"));
-game = giveItem(game, "bar", "Chia Seeds");
+assert(game.marketPlan.some((order) => order.from === "wong" && order.to === "player" && order.wantItem === "Fish Bones"));
+game = giveItem(game, "sterling", "Chia Seeds");
 assert(game.marketPlan.some((order) => order.inboundOfferId === dogOffer.id), "later Morning replanning must preserve an accepted inbound commitment");
 game = advancePhase(game);
 game = resolveNoonMarket(game);
-assert(game.traders.dog.inventory.includes("Fish Bones"));
+assert(game.traders.wong.inventory.includes("Fish Bones"));
 assert(!game.traders.player.inventory.includes("Fish Bones"));
 assert(game.traders.player.sardines > beforeCash);
 
@@ -53,7 +53,7 @@ game = enterMorning();
 game.information.push({
   id: "manual-lead",
   claimType: "holding",
-  subjectId: "mechanic",
+  subjectId: "aspen",
   item: "Sperm Whale Oil",
   text: "Sailor has Sperm Whale Oil below deck.",
   source: "personal investigation",
@@ -70,43 +70,43 @@ game.information.push({
   personallyVerified: true,
 });
 const lead = game.information.find((info) => info.id === "manual-lead");
-const exclusivePrice = informationPrice(game, lead, "vale");
-lead.knownBy.push("dog", "bar");
+const exclusivePrice = informationPrice(game, lead, "yasmin");
+lead.knownBy.push("wong", "sterling");
 lead.diffusionCount = 2;
 lead.exclusive = false;
-const spreadPrice = informationPrice(game, lead, "vale");
+const spreadPrice = informationPrice(game, lead, "yasmin");
 assert(exclusivePrice > spreadPrice, "information should lose resale value as it diffuses");
 
 // Giving information as a favour converts information into relationship capital instead of cash.
 lead.knownBy = ["player"];
 lead.diffusionCount = 0;
 lead.exclusive = true;
-const valeRelationship = game.relationships.vale;
-game = shareInformationAsFavor(game, lead.id, "vale");
-assert.equal(game.relationships.vale, valeRelationship + 1);
+const valeRelationship = game.relationships.yasmin;
+game = shareInformationAsFavor(game, lead.id, "yasmin");
+assert.equal(game.relationships.yasmin, valeRelationship + 1);
 const relationshipNote = game.learningNotes.find((note) => note.id === "relationship-capital");
 assert(relationshipNote.occurrences[0].evidenceIds.every((id) => game.decisionEvidence.some((entry) => entry.id === id)));
 
 // A physical gift is also a non-market allocation path.
 game = enterMorning();
-const dogRelationship = game.relationships.dog;
-game = giveItem(game, "dog", "Chia Seeds");
-assert(game.relationships.dog > dogRelationship);
+const dogRelationship = game.relationships.wong;
+game = giveItem(game, "wong", "Chia Seeds");
+assert(game.relationships.wong > dogRelationship);
 assert(!game.traders.player.inventory.includes("Chia Seeds"));
-assert(game.traders.dog.inventory.includes("Chia Seeds"));
-game = giveItem(game, "dog", "Fish Bones");
+assert(game.traders.wong.inventory.includes("Chia Seeds"));
+game = giveItem(game, "wong", "Fish Bones");
 assert.equal(game.learningNotes.filter((note) => note.id === "gift-economy").length, 1);
 assert.equal(game.learningNotes.find((note) => note.id === "gift-economy").occurrences.length, 2);
 
 // Onewheel production now uses actual bicycle parts; Lime remains provisioning, not a magic repair ingredient.
 game = enterMorning();
-game.traders.mechanic.inventory = game.traders.mechanic.inventory.filter((item) => !["Built Onewheel", "Steel Rim", "Handlebar Tape"].includes(item));
-game.traders.mechanic.inventory.push("Chain Quick-Link", "Brake Cable", "Tiny Torque Wrench", "Handlebar Tape");
+game.traders.aspen.inventory = game.traders.aspen.inventory.filter((item) => !["Built Onewheel", "Steel Rim", "Handlebar Tape"].includes(item));
+game.traders.aspen.inventory.push("Chain Quick-Link", "Brake Cable", "Tiny Torque Wrench", "Handlebar Tape");
 game.traders.player.inventory.push("Steel Rim");
-game = giveItem(game, "mechanic", "Steel Rim");
-assert(game.traders.mechanic.inventory.includes("Built Onewheel"), "complete bicycle parts should produce a working onewheel");
-assert(!game.traders.mechanic.inventory.includes("Steel Rim"));
-assert(game.traders.mechanic.inventory.includes("Tiny Torque Wrench"), "durable tool should not be consumed as a part");
+game = giveItem(game, "aspen", "Steel Rim");
+assert(game.traders.aspen.inventory.includes("Built Onewheel"), "complete bicycle parts should produce a working onewheel");
+assert(!game.traders.aspen.inventory.includes("Steel Rim"));
+assert(game.traders.aspen.inventory.includes("Tiny Torque Wrench"), "durable tool should not be consumed as a part");
 
 // Broad inbound generation remains bounded rather than becoming another dashboard flood.
 game = enterMorning();
@@ -116,15 +116,15 @@ assert(buildInboundOffers(game, "morning").length <= 2);
 game = enterMorning();
 game = advancePhase(game);
 game.marketPlan = [
-  { from: "bar", to: "fishmonger", wantItem: "Orgeat Bottle", sardines: sellerAsk(game, "fishmonger", "Orgeat Bottle") },
-  { from: "vale", to: "mechanic", wantItem: "Sperm Whale Oil", sardines: sellerAsk(game, "mechanic", "Sperm Whale Oil") },
-  { from: "mechanic", to: "fishmonger", wantItem: "Steel Rim", sardines: sellerAsk(game, "fishmonger", "Steel Rim") },
+  { from: "sterling", to: "octopus", wantItem: "Orgeat Bottle", sardines: sellerAsk(game, "octopus", "Orgeat Bottle") },
+  { from: "yasmin", to: "aspen", wantItem: "Sperm Whale Oil", sardines: sellerAsk(game, "aspen", "Sperm Whale Oil") },
+  { from: "aspen", to: "octopus", wantItem: "Steel Rim", sardines: sellerAsk(game, "octopus", "Steel Rim") },
 ];
-game.traders.mechanic.inventory.push("Handlebar Tape");
+game.traders.aspen.inventory.push("Handlebar Tape");
 game = resolveNoonMarket(game);
-assert(game.traders.bar.inventory.includes("Mai Tai"), "NPC-delivered Orgeat should complete the real Bar recipe");
-assert(!["Rum Bottle", "Lime Crate", "Orange Curaçao", "Orgeat Bottle"].some((item) => game.traders.bar.inventory.includes(item)), "Mai Tai production must consume its ingredient copies");
-assert(game.traders.mechanic.inventory.includes("Built Onewheel"), "NPC-delivered parts should complete the mechanical recipe");
+assert(game.traders.sterling.inventory.includes("Mai Tai"), "NPC-delivered Orgeat should complete the real Bar recipe");
+assert(!["Rum Bottle", "Lime Crate", "Orange Curaçao", "Orgeat Bottle"].some((item) => game.traders.sterling.inventory.includes(item)), "Mai Tai production must consume its ingredient copies");
+assert(game.traders.aspen.inventory.includes("Built Onewheel"), "NPC-delivered parts should complete the mechanical recipe");
 assert.equal(game.worldThreads.valeScreening.stage, "outcome");
 assert.equal(game.stats.tradeCount, 0, "NPC world consequences must not become player statistics");
 assert(game.decisionEvidence.some((entry) => entry.type === "world-consequence" && entry.thread === "barRecipe"));
@@ -133,7 +133,7 @@ game = advancePhase(game);
 game = advancePhase(game);
 game = advancePhase(game);
 assert.equal(game.worldThreads.valeScreening.stage, "aftermath");
-assert(!game.traders.vale.inventory.includes("Sperm Whale Oil"), "the screening must consume its obsolete fuel");
+assert(!game.traders.yasmin.inventory.includes("Sperm Whale Oil"), "the screening must consume its obsolete fuel");
 game.traders.player.inventory.push("Blue Glass Marble");
 game.traders.player.sardines = 80;
 assert(buildEvents(game).some((event) => event.id === "auction"), "missing the oil trade must not close the later Capital route");
@@ -142,20 +142,20 @@ assert(buildEvents(game).some((event) => event.id === "auction"), "missing the o
 game = createGame();
 game.phase = "sunset";
 game.information.push({
-  id: "resale-lead", claimType: "holding", subjectId: "bar", item: "Lime Crate", text: "Bar has fresh limes.",
+  id: "resale-lead", claimType: "holding", subjectId: "sterling", item: "Lime Crate", text: "Bar has fresh limes.",
   source: "private trade", precision: "exact", confidence: "high", observedDay: 1, freshness: "current", exclusive: false,
-  sellable: true, soldTo: ["vale"], sharedWith: [], knownBy: ["player", "vale"], diffusionCount: 1, personallyVerified: false,
+  sellable: true, soldTo: ["yasmin"], sharedWith: [], knownBy: ["player", "yasmin"], diffusionCount: 1, personallyVerified: false,
 });
 game = advancePhase(game);
-assert(game.informationTrades.some((trade) => trade.from === "vale" && trade.to === "mechanic"));
+assert(game.informationTrades.some((trade) => trade.from === "yasmin" && trade.to === "aspen"));
 assert(game.decisionEvidence.some((entry) => entry.type === "information-resold" && entry.channel === "private"));
-assert(game.npcMemory.mechanic.knownHoldings["Lime Crate"]);
-assert(!game.information[0].knownBy.includes("dog"), "private resale must not globally broadcast the lead");
+assert(game.npcMemory.aspen.knownHoldings["Lime Crate"]);
+assert(!game.information[0].knownBy.includes("wong"), "private resale must not globally broadcast the lead");
 
 // Credit preserves a form, repayment repairs trust, and default damages it.
 game = createGame();
 game.phase = "sunset";
-game.relationships.bar = 2;
+game.relationships.sterling = 2;
 game.traders.player.sardines = 0;
 game.traders.player.inventory = [];
 game = advancePhase(game);
@@ -163,15 +163,15 @@ const mealDebt = game.obligations.find((obligation) => obligation.kind === "meal
 assert(mealDebt && game.playerState.form === "human");
 game = advancePhase(game);
 game.traders.player.sardines = 1;
-const beforeRepayRelationship = game.relationships.bar;
+const beforeRepayRelationship = game.relationships.sterling;
 game = repayObligation(game, mealDebt.id);
 assert.equal(game.obligations.find((obligation) => obligation.id === mealDebt.id).status, "settled");
-assert.equal(game.relationships.bar, beforeRepayRelationship + 1);
+assert.equal(game.relationships.sterling, beforeRepayRelationship + 1);
 assert.equal(game.learningNotes.find((note) => note.id === "credit").occurrences.length, 2, "credit creation and repayment should share one concept card");
 
 game = createGame();
 game.phase = "sunset";
-game.relationships.bar = 2;
+game.relationships.sterling = 2;
 game.traders.player.sardines = 0;
 game.traders.player.inventory = [];
 game = advancePhase(game);
@@ -179,32 +179,32 @@ const defaultDebt = game.obligations.find((obligation) => obligation.kind === "m
 game.day = defaultDebt.dueDay;
 game.phase = "sunset";
 game.traders.player.inventory = ["Chia Seeds"];
-const beforeDefaultRelationship = game.relationships.bar;
+const beforeDefaultRelationship = game.relationships.sterling;
 game = advancePhase(game);
 assert.equal(game.obligations.find((obligation) => obligation.id === defaultDebt.id).status, "overdue");
-assert.equal(game.relationships.bar, beforeDefaultRelationship - 1);
+assert.equal(game.relationships.sterling, beforeDefaultRelationship - 1);
 
 game = enterMorning();
 game.playerState.form = "animal";
 game.playerState.legalIdentity.status = "unrecognized";
-game.relationships.bar = 2;
-game = requestMarketProxy(game, "bar");
+game.relationships.sterling = 2;
+game = requestMarketProxy(game, "sterling");
 assert(game.playerState.proxyAccess.some((access) => access.venueId === "formalMarket"));
 
 // Same-name perishables age once per day per physical copy.
 game = createGame();
 game.phase = "sunset";
-game.traders.vale.inventory.push("Bruised Mint", "Bruised Mint");
+game.traders.yasmin.inventory.push("Bruised Mint", "Bruised Mint");
 game = advancePhase(game);
-assert.equal(game.traders.vale.inventory.filter((item) => item === "Bruised Mint").length, 2);
+assert.equal(game.traders.yasmin.inventory.filter((item) => item === "Bruised Mint").length, 2);
 game.phase = "sunset";
 game = advancePhase(game);
-assert.equal(game.traders.vale.inventory.filter((item) => item === "Bruised Mint").length, 0);
+assert.equal(game.traders.yasmin.inventory.filter((item) => item === "Bruised Mint").length, 0);
 
 // A perishable copy keeps its age when ownership changes.
 game = enterMorning();
-game.perishTimer["bar:Bruised Mint"] = [1];
-game.playerOrders[0] = { to: "bar", wantItem: "Bruised Mint", offerItem: "", sardines: sellerAsk(game, "bar", "Bruised Mint") };
+game.perishTimer["sterling:Bruised Mint"] = [1];
+game.playerOrders[0] = { to: "sterling", wantItem: "Bruised Mint", offerItem: "", sardines: sellerAsk(game, "sterling", "Bruised Mint") };
 game = advancePhase(game);
 const commitment = game.decisionEvidence.find((entry) => entry.type === "market-order-committed");
 assert.equal(commitment.channel, "public");
@@ -243,25 +243,25 @@ assert(!JSON.stringify(playerVisibleKnowledge(game)).includes("PRIVATE ENGINE FA
 
 // Talk gains at most once per target/day and exhausted authored stages do not farm relationship.
 game = enterMorning();
-game = performFreeAction(game, "talk", "dog");
-game = performFreeAction(game, "talk", "dog");
-assert.equal(game.relationships.dog, 1);
+game = performFreeAction(game, "talk", "wong");
+game = performFreeAction(game, "talk", "wong");
+assert.equal(game.relationships.wong, 1);
 for (let day = 2; day <= 4; day += 1) {
   game.day = day; game.phase = "morning"; game.actionsRemaining = 1;
-  game = performFreeAction(game, "talk", "dog");
+  game = performFreeAction(game, "talk", "wong");
 }
-assert.equal(game.relationships.dog, 2, "Dog has only three authored stages and Day 1 already consumed two of them");
+assert.equal(game.relationships.wong, 2, "Dog has only three authored stages and Day 1 already consumed two of them");
 
 // Promise Lime without owning it, source the exact physical good, deliver, and earn the idempotent badge.
 game = enterMorning();
-game = performFreeAction(game, "talk", "mechanic");
-game = performFreeAction(game, "talk", "mechanic");
+game = performFreeAction(game, "talk", "aspen");
+game = performFreeAction(game, "talk", "aspen");
 game = advancePhase(game); game = resolveNoonMarket(game); game = advancePhase(game);
 game = acceptFutureDelivery(game);
 const future = game.obligations.find((entry) => entry.kind === "future-delivery");
 assert(future && !future.ownedAtCommitment);
 game = advancePhase(game); game = advancePhase(game); game = advancePhase(game);
-game.playerOrders[0] = { to: "bar", wantItem: "Lime Crate", offerItem: "", sardines: sellerAsk(game, "bar", "Lime Crate") };
+game.playerOrders[0] = { to: "sterling", wantItem: "Lime Crate", offerItem: "", sardines: sellerAsk(game, "sterling", "Lime Crate") };
 game = advancePhase(game); game = resolveNoonMarket(game); game = advancePhase(game);
 assert(game.traders.player.inventory.includes("Lime Crate"));
 game = fulfillFutureDelivery(game, future.id);
@@ -271,8 +271,8 @@ assert.equal(game.badges.filter((badge) => badge.id === "sold-before-owned").len
 // Future default returns the reserve and creates restitution without ending the game.
 game = enterMorning();
 game.information.push(
-  { id: "lime-source", claimType: "holding", subjectId: "bar", item: "Lime Crate", precision: "exact", confidence: "high", freshness: "current", observedDay: 1, knownBy: ["player"] },
-  { id: "lime-need", claimType: "need", subjectId: "mechanic", item: "Lime Crate", precision: "exact", confidence: "high", freshness: "current", observedDay: 1, knownBy: ["player"] },
+  { id: "lime-source", claimType: "holding", subjectId: "sterling", item: "Lime Crate", precision: "exact", confidence: "high", freshness: "current", observedDay: 1, knownBy: ["player"] },
+  { id: "lime-need", claimType: "need", subjectId: "aspen", item: "Lime Crate", precision: "exact", confidence: "high", freshness: "current", observedDay: 1, knownBy: ["player"] },
 );
 game = acceptFutureDelivery(game);
 const failedFuture = game.obligations.find((entry) => entry.kind === "future-delivery");
@@ -283,7 +283,7 @@ assert(game.obligations.some((entry) => entry.kind === "restitution" && entry.am
 assert.equal(game.ended, false);
 
 // Bar allows one relationship-backed exposure at a time.
-game = enterMorning(); game.relationships.bar = 2;
+game = enterMorning(); game.relationships.sterling = 2;
 game = requestRelationshipLoan(game);
 assert.equal(game.traders.player.sardines, 22);
 const once = game.obligations.length;
@@ -292,41 +292,41 @@ game = requestRelationshipLoan(game);
 assert.equal(game.obligations.length, once);
 
 // Vale holds the exact collateral outside inventory, returns it on repayment, or keeps it with no residual debt.
-game = enterMorning(); game.relationships.vale = 1; game.traders.player.inventory.push("Brass Compass");
+game = enterMorning(); game.relationships.yasmin = 1; game.traders.player.inventory.push("Brass Compass");
 game = requestSecuredLoan(game, "Brass Compass");
 let secured = game.obligations.find((entry) => entry.kind === "secured-loan");
 assert(!game.traders.player.inventory.includes("Brass Compass"));
 game.traders.player.sardines = secured.amount; game.actionsRemaining = 1;
 game = repayObligation(game, secured.id);
 assert(game.traders.player.inventory.includes("Brass Compass"));
-game = enterMorning(); game.relationships.vale = 1; game.traders.player.inventory.push("Brass Compass");
+game = enterMorning(); game.relationships.yasmin = 1; game.traders.player.inventory.push("Brass Compass");
 game = requestSecuredLoan(game, "Brass Compass"); secured = game.obligations.find((entry) => entry.kind === "secured-loan");
 game.day = secured.dueDay; game.phase = "sunset"; game = resolveDuePrivateMatter(game, secured.id, "seize");
-assert(game.traders.vale.inventory.includes("Brass Compass"));
+assert(game.traders.yasmin.inventory.includes("Brass Compass"));
 assert.equal(game.obligations.find((entry) => entry.id === secured.id).status, "seized");
 
 // Exclusivity rewards compliant causal use; breach has no instant penalty but causal public use can expose it.
 function exclusiveLead(id, item) {
-  return { id, claimType: "holding", subjectId: "mechanic", item, text: `Sailor has ${item}.`, source: "personal investigation", precision: "exact", confidence: "high", observedDay: 1, freshness: "current", exclusive: true, sellable: true, soldTo: [], sharedWith: [], knownBy: ["player"], diffusionCount: 0, personallyVerified: true };
+  return { id, claimType: "holding", subjectId: "aspen", item, text: `Sailor has ${item}.`, source: "personal investigation", precision: "exact", confidence: "high", observedDay: 1, freshness: "current", exclusive: true, sellable: true, soldTo: [], sharedWith: [], knownBy: ["player"], diffusionCount: 0, personallyVerified: true };
 }
 game = enterMorning(); game.information.push(exclusiveLead("exclusive-oil", "Sperm Whale Oil"));
-game = sellInformationExclusive(game, "exclusive-oil", "vale");
+game = sellInformationExclusive(game, "exclusive-oil", "yasmin");
 game = advancePhase(game); game = resolveNoonMarket(game); game = advancePhase(game); game = advancePhase(game); game = advancePhase(game); game = advancePhase(game); game = advancePhase(game); game = resolveNoonMarket(game);
 assert(game.badges.some((badge) => badge.id === "exclusive"));
 
-game = enterMorning(); game.traders.mechanic.inventory.push("Sealed Parcel"); game.information.push(exclusiveLead("exclusive-parcel", "Sealed Parcel"));
-game = sellInformationExclusive(game, "exclusive-parcel", "clown");
+game = enterMorning(); game.traders.juan.sardines = 30; game.traders.aspen.inventory.push("Sealed Parcel"); game.information.push(exclusiveLead("exclusive-parcel", "Sealed Parcel"));
+game = sellInformationExclusive(game, "exclusive-parcel", "juan");
 game = advancePhase(game); game = resolveNoonMarket(game); game = advancePhase(game);
-const beforeDetection = game.relationships.clown;
-game = sellInformation(game, "exclusive-parcel", "vale");
-assert.equal(game.relationships.clown, beforeDetection, "breach alone must not punish instantly");
-game.traders.mechanic.inventory = game.traders.mechanic.inventory.filter((item) => item !== "Sperm Whale Oil");
+const beforeDetection = game.relationships.juan;
+game = sellInformation(game, "exclusive-parcel", "yasmin");
+assert.equal(game.relationships.juan, beforeDetection, "breach alone must not punish instantly");
+game.traders.aspen.inventory = game.traders.aspen.inventory.filter((item) => item !== "Sperm Whale Oil");
 game = advancePhase(game); game = advancePhase(game); game = advancePhase(game); game = advancePhase(game); game = resolveNoonMarket(game);
-assert.equal(game.relationships.clown, beforeDetection - 2);
+assert.equal(game.relationships.juan, beforeDetection - 2);
 
 // Raw evidence records action context and deliberately unused phase time.
 game = enterMorning();
-game = performFreeAction(game, "investigate", "vale");
+game = performFreeAction(game, "investigate", "yasmin");
 const investigation = game.decisionEvidence.find((entry) => entry.type === "investigate");
 assert.equal(investigation.actionsBefore, 2); assert.equal(investigation.actionsAfter, 1); assert.equal(investigation.relationshipBefore, investigation.relationshipAfter);
 game = advancePhase(game);

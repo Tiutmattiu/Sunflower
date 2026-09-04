@@ -208,6 +208,7 @@ button:disabled, input:disabled, select:disabled { opacity: .45; cursor: not-all
 
 .avatar-row { display: flex; gap: 8px; overflow-x: auto; padding: 5px 2px 9px; scrollbar-width: none; }
 .avatar-row::-webkit-scrollbar { display: none; }
+.avatar.supporting { border-style: dashed; }
 .avatar {
   position: relative;
   flex: 0 0 92px;
