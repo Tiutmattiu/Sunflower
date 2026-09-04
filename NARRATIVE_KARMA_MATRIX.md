@@ -1,791 +1,1247 @@
-# Sunflower — Narrative Karma Matrix v2
+# Sunflower — Narrative Karma Matrix v3
 
 > **Status: active narrative canon, September 2026.**
 >
-> This document defines how Sunflower should produce story from repeated market situations, changing forms, recurring characters, and unfinished actions. It is not a chapter outline and not a quest list.
+> Companion to `NPC_CHARACTER_BIBLE.md`, `GAME_DESIGN.md`, `REBIRTH_FORM_SYSTEM.md`, `WORLD_LORE_SUN_MOMENT.md`, and `DIALOGUE_MONTAGE_BANK.md`.
 >
-> Companion to `NPC_CHARACTER_BIBLE.md`, `GAME_DESIGN.md`, `REBIRTH_FORM_SYSTEM.md`, and `WORLD_LORE_SUN_MOMENT.md`.
+> **Core narrative rule:** the same concrete thing should be able to return in another life with a different economic, legal, social, bodily, or metaphysical meaning.
 >
-> **Core narrative rule:** the same concrete thing should be able to return in another life with a different economic, legal, social, or metaphysical meaning.
+> This file is not a chapter outline and not a quest list.
 
 ---
 
 # 1. Narrative Constitution
 
-## 1.1 Story is repeated structure, not a linear plot ladder
+## 1.1 Story is a spiral, not a ladder
 
-Sunflower should not be organised primarily as:
+Sunflower should not primarily be:
 
-> Act I → Act II → boss → revelation → ending.
+> Act I → Act II → revelation → final boss.
 
-Its stronger form is a spiral.
+The harbour is reused.
 
-The player repeatedly encounters:
+The same people recur.
 
-- the same harbour;
-- many of the same named people;
-- the same goods;
-- the same debts;
-- the same rooms;
-- the same public market;
-- the same Sun Moments;
-- the same kinds of pressure;
+The same objects recur.
 
-but returns with different knowledge, form, legal identity, access, relationships, and capital.
+The same obligations recur.
 
-A problem that first appears to be about price may later become a problem about ownership.
+The same places recur.
 
-A problem about ownership may later become a problem about identity.
+The player returns with different:
 
-A problem about identity may later become a problem about why identity must be secured at all.
+- knowledge;
+- form;
+- legal identity;
+- access;
+- relationships;
+- capital;
+- unfinished actions.
 
-Strong material situations should therefore recur instead of being discarded after one quest.
+A problem about price can later become a problem about ownership.
 
-## 1.2 Named NPCs are recurring karmic knots
+A problem about ownership can later become a problem about identity.
 
-Aspen, Sterling, Yasmin, Wong, Juan, and Fishmonger are not disposable arcs.
+A problem about identity can later become a problem about why identity must be secured at all.
 
-They should not permanently disappear because of:
+The game should deepen old material before inventing new lore locations.
 
-- ordinary bankruptcy;
-- losing one race;
-- a random accident;
-- a failed contract;
-- one dramatic scene;
-- a single morally approved dialogue choice.
+## 1.2 Major NPCs are recurring karmic knots
 
-They recur because the player's relation to the knot remains reproducible.
+The six primary knots are:
 
-If a named knot ever ceases to recur, that should represent a genuine structural resolution rather than event RNG.
+- Aspen;
+- Sterling;
+- Yasmin;
+- Wong;
+- Juan;
+- Dima.
 
-The NPC does not need to be morally improved, cured, redeemed, killed, or made enlightened.
+They generally do not disappear because of:
 
-## 1.3 Market state creates plot
+- bankruptcy;
+- an accident;
+- one failed contract;
+- one race;
+- one correct dialogue option;
+- one moral choice;
+- one dramatic cutscene.
+
+They recur because the relation can still reproduce itself.
+
+If one ever ceases to recur for the player, that should be rare and structural.
+
+The NPC does not need to be cured, redeemed, punished, morally improved, or enlightened.
+
+## 1.3 Sonya is supporting recurrence, not a seventh knot
+
+Sonya is Sterling's Penguin grandmother.
+
+She matters to:
+
+- family continuity;
+- food;
+- hospitality;
+- legal discontinuity;
+- the non-market Sunflower route.
+
+She should not be inserted into every relationship matrix or made into a large trader.
+
+Her strength comes partly from remaining ordinary and local.
+
+## 1.4 Market state creates plot
 
 Major story pressure should arise from the same state that drives trade.
 
-Examples:
+Do not write:
 
-- Wong's rescue crisis emerges from cash, food, dependents, supply, time, and social support.
-- Sterling's Bar trouble emerges from revenue, credit, ownership, operating costs, Seagull interests, and who keeps being allowed to run tabs.
-- Juan's debt crisis emerges from creditor structure, collateral, liquidity, belief in recovery, addiction shock, and competing claims.
-- Aspen's personal crisis can emerge when schedules, cargo, weather, lovers, maintenance, and obligations become mutually impossible.
-- Yasmin's social pressure emerges from family position, capital, patron relationships, and the cost of maintaining access.
-- Fishmonger's market conflict emerges from shortages, cold-chain capacity, competitor entry, perishability, and control of the chokepoint.
+> Day 6: Wong has a rescue crisis.
 
-Do not write `Day 8: character crisis` unless the state justifies it.
+Let it emerge from:
 
-## 1.4 Montage is the default narrative grammar
+- Wong's cash;
+- dependents;
+- food;
+- rescue intake;
+- access;
+- time;
+- Dima's fees;
+- market supply.
 
-Narrative material can be distributed across:
+Do not write:
+
+> Day 8: Aspen breaks down emotionally.
+
+Let the collision emerge when:
+
+- weather shifts;
+- two commissions conflict;
+- a lover needs something;
+- a maintenance issue appears;
+- a delivery is due;
+- the ship must leave.
+
+Do not write:
+
+> Day 10: Dima black-market conflict.
+
+Let it emerge when:
+
+- more Animals need access;
+- formal restrictions tighten or loosen;
+- one client bypasses his network;
+- a settlement fails;
+- an informal claim is disputed;
+- his guarantee is tested.
+
+An authored scene may exist.
+
+Its appearance must be justified by world state.
+
+## 1.5 Montage is the default grammar
+
+Narrative material can include:
 
 - public tape;
-- receipts;
-- order slips;
-- inventory changes;
-- legal notices;
+- receipt;
+- order slip;
+- invitation;
+- legal notice;
+- debt entry;
+- weather note;
+- tide sheet;
+- menu;
+- message;
+- private claim;
+- object;
+- inventory change;
+- room;
+- bodily sensation;
 - short dialogue;
-- body/perception fragments;
-- debt entries;
-- weather and tide sheets;
-- old signatures;
-- menus;
-- a fish order;
-- a room seen again;
-- who is present and who is absent.
+- who is present;
+- who is absent.
 
-A scene can cut between these without explaining the connection.
+A scene may cut among these without explaining the connection.
 
-The player may understand the connection much later.
+Meaning can arrive later.
 
-## 1.5 Player interiority is sensory, not interpretive
+## 1.6 Player interiority is sensory, not interpretive
 
-Fixed player narration may describe:
+Fixed narration may state:
 
 - smell;
-- temperature;
+- heat;
 - pressure;
-- involuntary physical response;
+- texture;
+- involuntary bodily response;
 - where attention lands;
-- a raw remembered image;
-- recognition of an objectively remembered fact.
+- a raw image from memory;
+- recognition of an objective remembered fact.
 
 Do not define:
 
 - love;
-- attachment;
 - grief;
-- moral judgement;
+- attachment;
 - enlightenment;
-- `what the player finally understands`.
+- moral judgement;
+- what the player `finally understands`.
 
-The player can recognise an old signature without being told how to feel about it.
+Allowed:
 
-## 1.6 Romance is not a system
+> The same scratch is still on the glass.
 
-There is no romance meter, romance route, heart count, dating menu, or required romantic ending.
+Not:
 
-Attraction or intimacy may grow from repeated attention.
+> You realise this place has become home.
 
-This already has an economic mechanic:
+Allowed:
 
-> time spent with one person is time not spent trading, investigating, verifying, or positioning elsewhere.
+> Your old signature is on the page.
 
-If the player keeps spending scarce actions with Sterling, Aspen, Yasmin, or anyone else, the world can remember the shared time and change behaviour accordingly.
+Not:
 
-The engine records shared history, not an inferred internal state such as `love = 4`.
+> You feel erased by the law.
 
-The player may ignore intimacy and concentrate on money.
+The player supplies interpretation.
 
-## 1.7 Do not make spirituality collectible
+## 1.7 Romance is not a subsystem
 
-Never turn the game's conceptual layer into another completion economy.
+No:
 
-Avoid:
+- heart meter;
+- romance route;
+- dating menu;
+- romance achievement path;
+- required romantic ending.
 
-- `13 / 16 concepts discovered`;
-- visible karmic completion;
-- form checklists;
-- spiritual progress bars;
-- an empty Notebook index inviting completion;
-- `collect all enlightened endings` logic.
+Repeated attention is already a mechanic.
 
-The player can become extremely good at collecting concepts while reproducing the same structure.
+Time spent with one person is time not spent:
+
+- trading;
+- investigating;
+- verifying;
+- positioning;
+- meeting somebody else.
+
+Shared history can become:
+
+- familiarity;
+- sex;
+- attraction;
+- attachment;
+- friendship;
+- jealousy;
+- avoidance;
+- nothing.
+
+The engine records events and time.
+
+It does not infer `player loves X`.
+
+The player can ignore all intimacy and make money.
+
+That is a complete play style.
+
+## 1.8 Knowledge is not a collectible spirituality system
+
+Do not show:
+
+- `13/16 concepts`;
+- karmic completion bars;
+- form completion;
+- liberation progress;
+- empty Notebook slots inviting completion.
+
+A player can become excellent at collecting economic terminology while reproducing the same pattern.
+
+The game should permit that contradiction.
 
 ---
 
-# 2. Conceptual Engine
+# 2. Literary Craft References
 
-## 2.1 Acquisition grammar
+The three literary references are craft sources, not voices to copy.
+
+No player-facing sentence should be copied from them.
+
+## 2.1 Richard Brautigan — *Revenge of the Lawn*
+
+Use:
+
+- short scenelets;
+- abrupt endings;
+- mundane objects treated as sufficient narrative material;
+- absurd facts stated without signalling that they are absurd;
+- small transactions and objects carrying disproportionate afterlife;
+- hard cuts between practical and strange;
+- comedy that arrives because nobody stops to explain the joke.
+
+Do not imitate:
+
+- his exact metaphors;
+- his sentence-level signature;
+- period-specific American voice.
+
+Sunflower application:
+
+> A toad in an ice bucket is already enough.  
+> No one needs to call it symbolic.
+
+## 2.2 Vladimir Nabokov — *Lolita*
+
+Use structurally:
+
+- a speaker's self-description can conflict with observable facts;
+- language can be self-justifying;
+- charm is not proof;
+- memory and narration can select evidence;
+- the world may quietly contradict what a person says about themselves.
+
+Do not turn Sunflower into an ornate first-person monologue.
+
+The game has a stronger tool than a narrator:
+
+- ledger;
+- debt;
+- public tape;
+- inventory;
+- other witnesses.
+
+Example design principle:
+
+> Juan says the debt is under control.  
+> The debt ledger remains visible.
+
+The game does not need to announce which one is `the real Juan`.
+
+## 2.3 Ocean Vuong — *On Earth We're Briefly Gorgeous*
+
+Use only high-level craft, not voice imitation:
+
+- memory triggered by material objects;
+- body and labour as carriers of history;
+- a present scene cut against an earlier one;
+- repeated objects changing meaning with context;
+- intimacy appearing through practical acts rather than declarations.
+
+Keep Sunflower plainer and less lyrical.
+
+Application:
+
+> The same watch appears first as comic punctuality, later as contract discipline, later as the object Aspen checks while everybody else has stopped.
+
+## 2.4 Combined Sunflower rule
+
+The blend should usually feel like:
+
+> **deadpan object → short exchange → economic record → hard cut → same object returns later.**
+
+Avoid the sentence that knows it is beautiful.
+
+---
+
+# 3. Conceptual Engine
+
+## 3.1 Acquisition grammar
 
 The market teaches:
 
-> identify a desired thing → acquire information → obtain resources → negotiate → secure the thing.
+> identify desire → gather information → obtain resources → negotiate → secure the thing.
 
-This grammar is useful and not morally bad.
+This grammar is useful.
 
-The deeper narrative begins when the same grammar spreads into areas where acquisition cannot close the problem:
+It is not evil.
+
+The deeper story begins when the same grammar spreads into problems that cannot be closed by acquisition:
 
 - Sunflower;
 - home;
 - human form;
-- freedom;
-- intimacy;
 - proof of identity;
-- a spiritual experience;
-- the correct explanation of the Sun Moment.
+- intimacy;
+- liberation;
+- the correct spiritual experience;
+- the correct theory of the Sun Moment.
 
 The game should not tell the player to stop wanting.
 
-It should let the player notice whether every new difficulty is automatically converted into one more thing to acquire, preserve, optimise, or become.
+It should let the player notice whether every difficulty becomes another thing to:
 
-## 2.2 Sunflower as organising object
+- acquire;
+- preserve;
+- optimise;
+- become.
+
+## 3.2 Sunflower as organising object
 
 The Sunflower is materially real.
 
-It can be moved, damaged, planted, cultivated, gifted, stolen, or valued differently by different actors.
+It may be:
 
-Its narrative function is separate.
+- held;
+- damaged;
+- moved;
+- planted;
+- gifted;
+- cultivated;
+- stolen;
+- priced differently by different actors.
 
 The conviction:
 
 > obtain a sunflower → get home
 
-organises the player's early activity.
+is separate from those material facts.
 
-When the player gets one and nothing metaphysical happens, the game should not frame this as a trick.
+When the player gets one and nothing metaphysical happens, the game should not frame it as a trick.
 
-The flower successfully organised action even though it could not close the gap assigned to it.
+The object successfully organised action.
 
-What matters next is what replaces it.
+It did not close the gap assigned to it.
 
-## 2.3 Spiritual materialism as playable structure
+The next question is what replaces it.
 
-A player can reject money while preserving acquisition grammar.
+## 3.3 Spiritual materialism is playable
 
-Juan is the clearest NPC expression of this.
+Juan is the clearest NPC expression.
 
-He has learned that ordinary accumulation does not solve repetition, then turns liberation into a new project:
+He learns that money does not end repetition.
+
+Then he turns liberation into a project:
 
 - correct cliff;
+- correct speed;
+- correct wager;
 - correct dose;
 - correct toad;
-- correct solar timing;
-- correct wager;
-- correct theory;
-- correct altered state.
+- correct Sun-Moment timing;
+- correct theory.
 
-The game must not claim that unusual experiences are fake.
+The game must not certify that unusual experiences are fake.
 
-The recurring pattern is that each experience is immediately converted into evidence, method, repeatability, mastery, and another attempt.
+The repeating pattern is that experience becomes:
 
-## 2.4 Karmic knot rather than hidden-message puzzle
+- evidence;
+- technique;
+- repeatability;
+- mastery;
+- another experiment.
 
-A recurring NPC is not solved by learning their backstory.
+The player may do the same.
 
-- Aspen is not solved by learning why she hates uncertainty.
-- Sterling is not solved by proving he is kind.
-- Yasmin is not solved by discovering her family history.
-- Wong is not solved by finding out why he rescues animals.
-- Juan is not solved by proving his cliff theory true or false.
-- Fishmonger is not solved by exposing one monopoly trick.
+## 3.4 Karmic knot, not hidden-message puzzle
 
-The knot persists because a relation keeps reproducing itself.
+Aspen is not solved by learning why she hates uncertainty.
 
-The narrative question is:
+Sterling is not solved by proving he is kind.
+
+Yasmin is not solved by discovering her family pressure.
+
+Wong is not solved by finding out why he rescues animals.
+
+Juan is not solved by proving his cliff theory true or false.
+
+Dima is not solved by discovering that the black market profits from exclusion.
+
+Backstory can clarify.
+
+It cannot complete the knot.
+
+The deeper question is:
 
 > Why does this keep becoming my problem again?
 
-## 2.5 Repetition changes meaning retroactively
+## 3.5 Repetition changes meaning retroactively
 
-An action may not finish meaning what it means on the day it occurs.
+An action can finish meaning something long after the original day.
 
 Examples:
 
-- a small Sterling tab later decides whether Animal-player has food or proxy access;
-- an Aspen delivery contract later becomes relevant when the player becomes Sailor;
-- a Yasmin provenance record later prevents a new legal identity from claiming an old asset;
-- a Wong favour later opens an animal network;
-- Juan's debt becomes another trader's asset and changes how creditors treat him;
-- Fishmonger's supply contract later becomes the barrier that prevents a new entrant from surviving;
-- an old signature remains valid evidence after the signer is no longer legally recognised as the same person.
+- a small Sterling tab later decides whether Animal-player can eat;
+- an Aspen delivery contract matters differently when the player becomes Sailor;
+- a Yasmin provenance record later blocks a new legal identity from claiming an old asset;
+- a Wong favour later opens an Animal route;
+- Juan's liability becomes Dima's or Yasmin's asset;
+- Dima's proxy receipt later proves a transaction happened while proving nothing about legal ownership;
+- a public trade becomes evidence in a later relationship dispute;
+- an old signature remains recognizable after its legal person has ended.
 
-Karma should return through ordinary causal objects:
+Karma should return through:
 
-- debts;
+- debt;
 - goods;
-- contracts;
-- records;
-- information provenance;
+- documents;
 - habits;
-- social memory;
+- information;
+- relationships;
 - bodies;
 - repeated people.
 
 No cosmic morality ledger is required.
 
-## 2.6 Form and realm-condition are not the same thing
+## 3.6 Form and realm-condition are different
 
-Human, Animal, Sailor/Liminal, Plant, and other future forms change participation in the economy.
+Human, Animal, Sailor/Liminal, Plant, and other forms change participation.
 
-They are not identical to a moral six-realm ladder.
+They are not a simple moral ladder.
 
-Useful realm-patterns remain available as design lenses in any form:
+Useful six-realm patterns can appear in any form:
 
-- **Hell-pattern:** action intensifies the wall around the actor.
-- **Hungry-Ghost-pattern:** each acquisition reorganises desire around the next lack.
-- **Animal-pattern:** habit makes alternatives difficult to perceive.
-- **Human-pattern:** comparison, valuation, hope, fear, planning, and explicit choice dominate.
-- **Asura-pattern:** relative performance becomes more important than sufficiency.
-- **Deva-pattern:** the optimised system works so well that nothing forces the actor to question its frame.
+### Hell-pattern
+Action intensifies the wall.
 
-These are internal lenses, not player classes.
+Debt → forced sale → worse liquidity → worse finance → more pressure.
 
----
+### Hungry-Ghost-pattern
+Each acquisition reorganises desire around the next absence.
 
-# 3. Karmic Knot Matrix
+Sunflower → home → human form → knowledge → freedom → next object.
 
-## 3.1 Aspen — usefulness, schedule, obligation
+### Animal-pattern
+Habit dominates attention.
 
-### Economic reality
-Aspen makes money through reliable cross-boundary work:
+The same strategy repeats because alternatives stop appearing.
 
-- shipping;
-- sourcing commissions;
-- predictable delivery contracts;
-- repair;
-- conservative finance;
-- repeat counterparties.
+This is not the same as being biologically Animal.
 
-She dislikes sailing, uncertainty, tail risk, and open-ended waiting.
+### Human-pattern
+Comparison, valuation, hope, fear, planning, explicit choice.
 
-She maintains several lovers materially and logistically.
+This is close to the ordinary trading condition.
 
-### Recurring knot
-Aspen experiences stability when she is useful.
+### Asura-pattern
+Relative performance dominates.
 
-A schedule proves the next action.
+The question becomes:
 
-A promise proves what she must do.
+> Why did Yasmin get there first?
 
-A dependent proves why she must continue.
+rather than:
 
-Her danger is not greed but becoming unable to stop serving obligations because usefulness has become identity.
+> Do I have enough?
 
-### Cross-form pressure
-If the player later becomes Sailor, Aspen's pattern can be encountered from inside the same liminal condition rather than from the outside.
+### Deva-pattern
+The system works too well to challenge itself.
 
-The player may learn that movement is not equivalent to release.
+Wealth, execution, access, and information become smooth enough that nothing forces the actor to leave the frame they optimised.
 
-### Motifs
-- watch;
-- tide sheet;
-- weather note;
-- maintenance list;
-- exact delivery window;
-- medicine or gift for a lover in another port;
-- bodily symptom recorded as operational data.
+These are internal lenses.
+
+Never show them as player classes.
 
 ---
 
-## 3.2 Sterling — care, curiosity, weak instrumental reflex
+# 4. Karmic Knot Matrix
 
-### Economic reality
-Sterling begins as a chaotic earner with family capital, Bar revenue, informal credit, sensory curiosity, and unusually fast learning.
+## 4.1 Aspen — usefulness / schedule / obligation
 
-His openness can make him easy to exploit early and dangerous to underestimate later.
+### Economic form
+Steady cross-boundary work.
 
-### Recurring knot
-Sterling does not instinctively monetise every piece of information, care, or intimacy.
+### Repeating problem
+A promise creates a next action.
 
-That can be generous.
+A dependent creates a reason.
 
-It can also become refusal to choose.
+Her competence makes more people willing to depend on her.
 
-He may protect Juan from consequences, preserve the Bar at somebody else's expense, or make incompatible promises because saying no feels worse in the moment.
+Success can therefore increase the number of things she cannot put down.
 
-His knot is not resolved by becoming cynical.
+### Player relation
+The player can:
 
-### Cross-form pressure
-Sterling's informal recognition can matter more than formal identity after the player becomes Animal.
+- become one more client;
+- become one more person she supports;
+- become a counterparty who relieves her;
+- become somebody who refuses her help;
+- later become Sailor and meet the same structure from inside.
 
-As Sailor, repeated leaving can test whether intimacy survives without possession.
+### No false resolution
+Do not solve her with a vacation.
 
-### Motifs
-- jigger;
-- ice;
-- unpaid tabs;
-- new drink experiments;
-- Seagull employment paperwork that makes little ordinary sense;
-- Penguin Grandma's fish;
-- a person being allowed to stay after everyone else thinks they should be removed.
+## 4.2 Sterling — care / curiosity / refusal to choose
 
----
+### Economic form
+Bar, family capital, informal credit, fast learning, experimental investment.
 
-## 3.3 Yasmin — provenance, incentive, position
+### Repeating problem
+He does not automatically instrumentalise people.
 
-### Economic reality
-Yasmin makes money through capital ownership and high-end intermediation:
+That can become generosity.
 
-- family business;
-- equity;
-- rent/lease income;
-- auction commissions;
-- secured finance;
-- private placements;
-- collectibles;
-- information control;
-- selective distressed acquisition.
+It can also become:
 
-Her `passive` wealth requires continuous social maintenance.
+- bad lending;
+- incompatible promises;
+- enabling;
+- curiosity without boundary;
+- losses transferred to others.
 
-### Recurring knot
-Yasmin is unusually skilled at modelling incentives.
+### Player relation
+The player can:
 
-This helps her survive elite social systems and makes intimacy difficult.
+- exploit him;
+- teach him;
+- be taught by him;
+- spend time with him for no clear economic reason;
+- become a business partner;
+- become one of the people he should say no to.
 
-If somebody wants her, she searches for the motive.
+### No false resolution
+Do not make him mature by becoming cynical.
 
-If somebody asks for nothing, that can look more suspicious rather than less.
+## 4.3 Yasmin — provenance / incentive / position
 
-As a former Animal — hyena remains provisional — she may be repeating hierarchy and social-resource reading across forms.
+### Economic form
+Capital ownership, elite intermediation, formal finance, auction, social maintenance.
 
-### Cross-form pressure
-A transformed player may confront Yasmin with a hard split between private belief and formal ownership.
+### Repeating problem
+She can read incentives so well that unpriced motive becomes suspicious.
 
-She may believe continuity while refusing to settle property as if legal identity had continued.
+Her position requires continuous reproduction.
 
-### Motifs
-- invitation list;
-- seating plan;
-- provenance label;
-- sealed lot;
-- family message answered immediately;
-- a gracious conversation that also changes access to capital;
-- an old signature she believes but cannot formally use.
+### Player relation
+The player can be:
 
----
+- client;
+- rival;
+- debtor;
+- invited outsider;
+- useful source;
+- former legal person she privately recognises but formally cannot settle with.
 
-## 3.4 Wong — circulation, merit, responsibility
+### No false resolution
+Do not solve her by making her warmer.
 
-### Economic reality
-Wong earns through high-volume low-margin work:
+## 4.4 Wong — circulation / merit / responsibility
 
-- salvage;
-- rubbish picking;
-- tiny resale margins;
-- dirty jobs;
-- delivery;
-- informal brokerage;
-- animal networks;
-- bargaining.
+### Economic form
+High-turnover low-margin work, salvage, informal brokerage, Animal networks.
 
-His high turnover supports a high household/rescue burn rate.
+### Repeating problem
+More capacity creates more dependents.
 
-### Recurring knot
-Wong rescues animals and believes rescue can accumulate merit.
+Rescue can become an expanding obligation.
 
-Care, accounting, survival, and spiritual bookkeeping can mix together.
+Merit can become spiritual accounting.
 
-More income can create capacity for more dependents rather than freedom from responsibility.
+### Player relation
+The player can:
 
-The knot is not whether rescue is morally good.
+- buy cheap information;
+- depend on his Animal network;
+- compete for low-margin goods;
+- help rescue;
+- become one more thing he is responsible for.
 
-It is whether every available unit of capacity must become another obligation.
+### No false resolution
+Do not tell him to stop caring.
 
-### Motifs
-- half-tin bargaining;
-- bags of salvaged junk;
-- bird cages being opened;
-- cat food;
-- another dependent appearing after income improves;
-- a toad acquired through animal networks;
-- jobs other traders refuse.
+## 4.5 Juan — debt / leverage / escape
 
----
+### Economic form
+Distressed finance, debt restructuring, wagers, optionality.
 
-## 3.5 Juan — debt, leverage, escape
+### Repeating problem
+A true insight becomes another experiment.
 
-### Economic reality
-Juan is a former dentist, publicly broke, addicted, and financially inventive.
+A liability becomes structure.
 
-He understands that his liability is somebody else's asset.
+A temporary altered state becomes protocol.
 
-His creditors can therefore become invested in his continued ability to pay.
+### Player relation
+The player can:
 
-He can survive through:
+- lend;
+- buy his debt;
+- race;
+- take his side bet;
+- refuse to refinance;
+- sell him information;
+- become his creditor and discover that enforcement is not simple.
 
-- leverage;
-- rollover;
-- restructuring;
-- distressed-debt repurchase;
-- creditor coordination problems;
-- wagers;
-- races;
-- optionality;
-- future claims.
+### No false resolution
+Do not decide the knot by proving him crazy.
 
-### Recurring knot
-Juan converts escape into a reproducible project.
+## 4.6 Dima — access / enforcement / indispensability
 
-He can make a brilliant restructuring and then destroy its liquidity logic through immediate reward seeking.
+### Economic form
+Cross-form brokerage, proxy settlement, informal credit, claim purchase, enforcement.
 
-He can have a true insight and still use it compulsively.
+### Repeating problem
+He solves exclusion and profits from exclusion.
 
-The question is not whether Juan is secretly wise or simply a failure.
+A better bridge makes him more useful.
 
-### Motifs
-- Onewheel;
-- dental instruments from an earlier life;
-- multiple IOUs;
-- creditor list;
-- Bar tab;
-- cliff;
-- Mai Tai;
-- toad;
-- revised odds immediately after an injury or altered state.
+A world with fewer barriers could make him less useful.
 
----
+### Player relation
+The player can:
 
-## 3.6 Fishmonger — necessity becoming control
+- pay him for access;
+- bypass him;
+- work for him;
+- compete with him;
+- need him after becoming Animal;
+- later become the formal counterparty he needs.
 
-### Economic reality
-Fishmonger controls a monopoly or near-monopoly around a practical fish-economy chokepoint.
-
-The exact legal mechanism remains provisional, but the strongest direction combines some of:
-
-- cold storage;
-- ice capacity;
-- wholesale access;
-- dock purchasing relationships;
-- supply contracts;
-- settlement/sardine conversion;
-- enough working capital to buy perishables from small sellers who cannot wait.
-
-Fishmonger's money-making method is market power built on real infrastructure.
-
-### Recurring knot
-Fishmonger can genuinely coordinate a difficult supply chain and genuinely exploit the dependence created by that coordination.
-
-Fragmented supply may waste fish.
-
-Centralised storage may save fish.
-
-The same structure can then become a barrier to entry, monopsony over suppliers, monopoly pricing downstream, or a choke point around settlement goods.
-
-The knot is not `monopoly bad`.
-
-It is how necessity becomes dependence and dependence becomes durable control.
-
-### Cross-form pressure
-Human-player may encounter Fishmonger as incumbent market power.
-
-Animal-player may gain alternative informal distribution routes through Wong and animal networks.
-
-Sailor-player may threaten the monopoly through imports or become a supplier Fishmonger wants to lock into contract.
-
-Plant-player may experience the supply chain from the side of something living being classified, stored, priced, and distributed.
-
-### Motifs
-- ice shortage;
-- fish ledger;
-- supplier waiting with product that will spoil;
-- wholesale condition changed with little ceremony;
-- `exclusive` storage access;
-- fish prices rising while Fishmonger complains about costs;
-- an attempted entrant who cannot survive long enough to build infrastructure.
+### No false resolution
+Do not solve him with a police crackdown.
 
 ---
 
-# 4. Relationship Matrix — First Strong Links
+# 5. Sonya Recurrence
 
-The harbour exists before the player.
+Sonya is a supporting figure.
 
-Current strong relationship directions:
+She should remain smaller than the systems around her.
 
-- **Wong ↔ Seagull network:** informal work, rescue, black-market access, low-value circulation.
-- **Sterling ↔ Seagull network:** his odd Bar appointment makes the gang part employer, part owner, part unexplained institution.
-- **Sterling ↔ Penguin Grandma/family:** food, care, identity continuity, non-market allocation.
-- **Sterling ↔ Juan:** Bar tab, alcohol, sympathy, enabling/boundary tension, possible rescue financing.
-- **Juan ↔ Wong:** toads, scavenged goods, informal information, cheap labour, long familiarity.
-- **Juan ↔ Aspen/Sailor circle:** repair, wager, transport, toads, boundary experiments.
-- **Aspen ↔ Yasmin:** highly reliable sourcing relationship between a low-risk operator and a capital/social allocator.
-- **Yasmin ↔ family/elite network:** constant social labour that continues even when the player does nothing.
-- **Fishmonger ↔ everyone:** food, ice, wholesale, settlement commodity, or monopoly power make contact structurally common without implying friendship.
-- **Wong ↔ Fishmonger:** natural tension between informal low-margin circulation and formal/incumbent market power.
-- **Aspen ↔ Fishmonger:** external supply can be both useful to the monopoly and a threat to it.
-- **Yasmin ↔ Fishmonger:** capital may finance infrastructure, buy claims on it, or negotiate privileged access without making either side subordinate.
+## First appearance pattern
+Sterling buys a fresh fish.
 
-Do not make every relationship symmetric.
+No explanation.
 
-One person can trust another more than the reverse.
+## Later
+He closes early.
 
-One person can like another and still refuse credit.
+Another fish.
 
----
+## Later
+The player sees a Penguin eating.
 
-# 5. Recurring Motifs
+The family uses `Sonya` or `Grandma`.
 
-## 5.1 Sunflower
+## Later
+A formal document may use a different legal description.
 
-First: desired object.
+The game does not explain which description is metaphysically correct.
 
-Later: acquired object that fails to produce home.
+## Route function
+Hospitality, family continuity, gift/non-market allocation, fresh food.
 
-Later again: seed, living asset, gift, specimen, responsibility, or another person's object of value.
-
-Do not give it one final universal price.
-
-## 5.2 Penguin fish
-
-First: Sterling repeatedly buys a particular fresh fish.
-
-Later: the player sees Penguin Grandma eating it.
-
-Later: legal/family/animal descriptions of Grandma diverge.
-
-The fish remains ordinary food while the surrounding meaning changes.
-
-## 5.3 Toad
-
-First: Wong, Juan, and Sailor/Aspen circles use psychedelic toads casually enough that the world does not stop to explain them.
-
-Later: Juan treats an altered state as experimental evidence.
-
-Later: a Sun Moment overlaps with intoxication and the game refuses to certify which experience `counted`.
-
-The toad is not a magic truth item.
-
-## 5.4 Aspen's timetable
-
-First: comic punctuality.
-
-Later: evidence of why she is so economically reliable.
-
-Later: several individually reasonable obligations become mutually impossible.
-
-The timetable can become both edge and trap.
-
-## 5.5 Yasmin provenance
-
-First: expensive-object competence.
-
-Later: access to secured finance and auction value.
-
-Later: the same logic applied to player identity becomes uncomfortable.
-
-## 5.6 Wong feeding / rescue
-
-First: background expense.
-
-Later: reason cash never accumulates despite large turnover.
-
-Later: his improved income expands the rescue network rather than reducing pressure.
-
-## 5.7 Sterling's Bar tab
-
-First: tiny informal debt.
-
-Later: credit history, enabling, access, or cross-form recognition.
-
-Later: who is allowed to owe becomes a social decision with real operating cost.
-
-## 5.8 Juan's IOUs
-
-First: evidence he is broke.
-
-Later: assets held by several creditors.
-
-Later: creditor incentives may protect, constrain, restructure, or destroy him.
-
-## 5.9 Fishmonger's ice
-
-First: cold-chain input.
-
-Later: source of bargaining power.
-
-Later: access to ice determines whether a competitor can enter the market at all.
-
-## 5.10 Old legal signature
-
-First: ordinary paperwork.
-
-Later: evidence from a legal person who no longer exists.
-
-Later: trusted privately, rejected formally, or used by different institutions in different ways.
-
-## 5.11 Sun Moment
-
-First: ordinary interruption.
-
-Later: opportunity cost.
-
-Later: character-specific inability to stop for very different reasons.
-
-Do not make one visible Entanglement meter explain all of them.
+Do not make Sonya negotiate large capital or sit in every ensemble scene.
 
 ---
 
-# 6. Scene Grammar
+# 6. Pre-existing Relationship Web
 
-Scenelets should remain short, concrete, and state-aware.
+The relationship graph should be causal, asymmetric, and useful for information flow.
 
-Avoid aphorism-heavy dialogue that announces the theme.
+## Aspen ↔ Yasmin
+Repeat cross-port business.
 
-Examples of scene logic rather than final prose:
+High settlement trust.
 
-### Fish / Sterling
+Low similarity.
 
-A fish order appears several times before the player meets Grandma.
+## Aspen ↔ Wong
+Practical small sourcing.
 
-Sterling removes the skin.
+Aspen dislikes uncertain provenance.
 
-No one explains why until the player happens to be present when the Penguin eats.
+Wong dislikes answering ten questions for a two-tin object.
 
-### Toad / Juan / Wong / Aspen
+## Aspen ↔ Juan
+Repair, old familiarity, toads, experiments.
 
-A toad appears in an ice bucket.
+She can make his equipment safer without endorsing his plan.
 
-Aspen rejects the wrong specimen because it bites or produces an operationally inconvenient effect.
+## Aspen ↔ Dima
+Occasional logistics.
 
-Juan wants to know whether that matters.
+Only works when Dima gives exact terms.
 
-Wong wants his toad back.
+## Aspen ↔ Sterling
+Imported tools, ingredients, objects.
 
-Sterling wants the toad out of the Bar equipment.
+Possible shared attention; no authored romance.
 
-No one says `this symbolises spiritual materialism`.
+## Sterling ↔ Dima
+Structural Bar tie.
 
-### Monopoly / Fishmonger
+Dima's network hired/installed Sterling.
 
-A small seller needs cold storage before the catch spoils.
+The Bar is both business and cross-form infrastructure.
 
-Fishmonger offers access on terms the seller dislikes.
+## Sterling ↔ Wong
+Animal access, customers, salvage, small tabs, practical friendship.
 
-The player can observe that refusing may be economically possible in theory and impossible before Sunset.
+## Sterling ↔ Juan
+Bar credit, enabling tension, alcohol, fascination, real care.
 
-No villain speech is necessary.
+## Sterling ↔ Yasmin
+Potential cultivation → learning → competition.
 
-### Yasmin / intimacy
+## Yasmin ↔ Juan
+Claims, distressed debt, secured finance, strategic distance.
 
-Someone gives Yasmin something without asking for payment.
+## Yasmin ↔ Dima
+Discreet business across formal/informal boundary.
 
-The scene does not declare her moved or suspicious.
+## Yasmin ↔ Wong
+Occasional object/information flow; weak social overlap.
 
-Her first response can simply be a question about why.
+## Wong ↔ Dima
+Frequent access/fee relation.
 
-### Aspen / lovers
+Many small rents.
 
-A cargo manifest and a personal shopping list share the same notebook page.
+Many small arguments.
 
-Medicine, machine part, rent transfer, and present all have deadlines.
+## Wong ↔ Juan
+Toads, cheap goods, errands, old familiarity.
 
-Do not explain the metaphor.
+## Juan ↔ Dima
+Debt, collection, refinancing, claim purchase.
+
+## Dima ↔ Bar
+The Bar is the tolerated cross-form venue his network wants kept open.
 
 ---
 
-# 7. State Hooks
+# 7. Large State-Driven Narrative Modules
 
-Narrative should reuse existing or near-term economic state wherever possible.
+These are authored pressure modules, not scheduled chapters.
 
-Useful hooks include:
+## 7.1 Aspen — Obligation Collision
 
-- player form;
-- legal-life ID;
-- relationships;
-- decision evidence;
-- obligations;
-- creditor identity;
-- information provenance;
-- market history;
+Possible inputs:
+
+- departure deadline;
+- weather deterioration;
+- repair requirement;
+- one lover's urgent need;
+- one promised delivery;
+- one high-value commission.
+
+The event exists only when not all can be completed.
+
+Meaningful choices include:
+
+- breach a commercial promise;
+- miss a personal promise;
+- pay somebody else to carry work;
+- overpay for speed;
+- stay and lose route revenue;
+- depart and leave a problem behind.
+
+Do not reveal `correct attachment choice`.
+
+## 7.2 Sterling — Bar Control / Capital Leakage
+
+Possible inputs:
+
+- too many tabs;
+- weak operating margin;
+- family cash covering losses;
+- Dima's network claiming its cut;
+- a profitable opportunity Sterling wants to try;
+- somebody needing shelter/access.
+
+The question can become:
+
+> Is the Bar a business, a family subsidy, a social institution, a Seagull front, or all four?
+
+Different stakeholders can answer differently.
+
+No single hidden true category is required.
+
+## 7.3 Yasmin — Position Maintenance
+
+Possible inputs:
+
+- family approval;
+- a patron event;
+- auction preparation;
+- one socially dangerous association;
+- an attractive investment that looks disreputable;
+- a sibling or family decision.
+
+Yasmin may have to choose between:
+
+- economic return;
+- social position;
+- autonomy;
+- family recognition;
+- secrecy.
+
+The player can profit from whichever constraint they correctly infer.
+
+## 7.4 Wong — Capacity Creates Dependents
+
+Possible inputs:
+
+- good week of profit;
+- new rescued animals;
+- rising food costs;
+- Dima's access fee;
+- child/household expense;
+- time.
+
+A successful Wong can become more pressured than an unsuccessful Wong because success expands what he believes he can carry.
+
+The player may exploit or support this without the game moralising.
+
+## 7.5 Juan — Creditor Coordination
+
+Possible inputs:
+
+- several debts;
+- one creditor wants cash now;
+- another is willing to extend;
+- one claim trades below face;
+- Juan has a high-upside opportunity;
+- available collateral.
+
+Possible worlds:
+
+- creditors coordinate and restructure;
+- one grabs payment first;
+- Juan buys back discounted debt;
+- Dima buys a claim;
+- Yasmin buys a secured claim;
+- Sterling forgives too much;
+- a run makes a previously viable Juan insolvent.
+
+This is both story and finance.
+
+## 7.6 Dima — Access Shock
+
+Possible inputs:
+
+- formal restriction;
+- formal liberalisation;
+- one failed informal settlement;
+- a client bypassing the network;
+- rival informal broker;
+- Authority pressure;
+- Bar access change.
+
+Interesting case:
+
+> formal access improves for Animals.
+
+This is good for many traders.
+
+It can be bad for Dima's rents.
+
+His reaction should reveal whether his attachment is to:
+
+- helping excluded traders;
+- being indispensable;
+- income;
+- status inside the network;
+- all of these.
+
+Do not pre-decide the answer.
+
+---
+
+# 8. Three Sunflower Routes — Current Narrative Names
+
+## 8.1 Sonya Supper — relationship / non-market allocation
+
+This is the old Grandma Supper route, now tied to Sonya.
+
+Progression remains social and indirect:
+
+- Sterling's Bar matters before Sonya appears;
+- repeated fresh-fish behaviour exists before explanation;
+- the player can become invited through actual shared history;
+- the Sunflower appears as an ordinary household/living object rather than quest loot.
+
+The player may receive:
+
+- flower;
+- seed;
+- access;
+- another form of non-market transfer.
+
+Do not require a visible recipe checklist.
+
+## 8.2 Yasmin Auction — capital / liquidity / private market
+
+Former Vale Auction.
+
+Must become a real market event.
+
+Important:
+
+- access;
+- proof of funds;
+- provenance;
+- rival valuation;
+- private vs common value;
+- financing;
+- settlement failure;
+- post-auction opportunity.
+
+Winning can be a bad trade.
+
+Losing can create a better trade.
+
+The Sunflower has extreme private value to the player and no universal reference price.
+
+## 8.3 Juan Cliff — risk / optionality / exit hypothesis
+
+Former Clown route.
+
+The cliff is:
+
+- race;
+- wager;
+- special situation;
+- possible boundary experiment.
+
+Researchable uncertainty:
+
+- weather;
+- equipment;
+- route;
+- body state;
+- private information;
+- sabotage;
+- odds.
+
+Juan's deeper motive should become visible gradually.
+
+The player can exploit the event economically without sharing his metaphysical theory.
+
+---
+
+# 9. Recurring Material Motifs
+
+## 9.1 Sunflower
+Desired object → acquired object that fails to produce home → living object → gift/asset/seed/specimen → another actor's object of value.
+
+## 9.2 Sonya's fish
+Ordinary purchase → repeated routine → Penguin meal → family/legal mismatch.
+
+## 9.3 Toad
+Casual Animal-network object → social use → Juan experiment → Sun Moment overlap → still no certified metaphysical answer.
+
+## 9.4 Aspen's watch
+Comic precision → contractual edge → obligation collision → object checked during a pause.
+
+## 9.5 Aspen's list
+Cargo and personal support on same page.
+
+No metaphor explanation.
+
+## 9.6 Sterling's jigger
+Craft tool → learning marker → repeated conversation object → something he eventually uses with precision.
+
+## 9.7 Sterling's tab book
+Small kindness → operating risk → credit evidence → cross-form access history.
+
+## 9.8 Yasmin's invitation
+Social nicety → access gate → capital signal → evidence of position maintenance.
+
+## 9.9 Yasmin's label
+Object provenance → collateral → identity problem.
+
+## 9.10 Wong's bag
+Junk → margin → information → another mouth to feed.
+
+## 9.11 Wong's half-tin argument
+Comedy → unit economics → household survival.
+
+## 9.12 Juan's IOU
+Proof of failure → somebody else's asset → restructuring instrument → social relation.
+
+## 9.13 Juan's dental tool
+Former respectable profession → useful precision → leftover object from another identity.
+
+## 9.14 Dima's unofficial receipt
+Informal proof → enforceable inside network → useless or partial in formal law → later evidence that something happened.
+
+## 9.15 Dima's back-door key
+Access → rent → infrastructure → question of who actually controls the Bar.
+
+## 9.16 Old legal signature
+Ordinary paperwork → evidence from ended legal person → privately believed, formally rejected.
+
+## 9.17 Sun Moment
+Ordinary pause → opportunity cost → character-specific inability to stop → no visible meter.
+
+---
+
+# 10. Cross-Life Repetition Matrix
+
+The same scene should be able to recur under different forms.
+
+## Human player
+
+- strongest formal access;
+- can sign;
+- can accumulate title;
+- can be one of Yasmin's recognised counterparties;
+- may treat Dima as optional.
+
+## Animal player
+
+- formal rights weaken;
+- Dima may become necessary;
+- Sterling's informal recognition can matter more;
+- Wong's network becomes more accessible;
+- Yasmin may privately recognise continuity but not legal title.
+
+## Sailor player
+
+- geography becomes tradable;
+- Aspen becomes a same-form comparison rather than an exotic counterparty;
+- local relationships become harder to maintain;
+- movement itself can become attachment.
+
+## Plant player
+
+- direct agency changes radically;
+- others value, classify, move, protect, finance, or own the player;
+- Yasmin's and Dima's systems can become external forces rather than counterparties;
+- Sterling may protect;
+- Wong may treat living material practically;
+- Juan may form a theory;
+- do not finalise Plant agency until its mechanics are actually designed.
+
+---
+
+# 11. Attention and Intimacy
+
+No authored romance track.
+
+Instead preserve evidence such as:
+
+- repeated voluntary talk actions;
+- returning after no economic need remains;
+- gifts with no priced return;
+- private disclosure;
+- shared intoxication;
+- staying after business is complete;
+- refusing another opportunity to remain;
+- physical proximity if a scene earns it;
+- later avoidance.
+
+These are facts.
+
+No engine field should assert:
+
+- love;
+- jealousy;
+- attraction;
+- heartbreak
+
+unless a character explicitly states their own belief.
+
+Even then it is actor belief, not engine truth.
+
+---
+
+# 12. Information and Dialogue Truth
+
+Characters may be wrong.
+
+Characters may lie.
+
+Characters may narrate themselves strategically.
+
+Dialogue should therefore carry provenance like any other information.
+
+Examples:
+
+- Yasmin says a deal is purely business.
+- Sterling says the Bar is fine.
+- Juan says he can pay next week.
+- Wong says he has no margin.
+- Dima says there is no other route.
+- Aspen says the schedule works.
+
+The engine should not automatically treat these as truth.
+
+Whenever possible, the world can later supply:
+
+- ledger;
+- tape;
 - inventory;
-- perishability;
-- world threads;
-- action/time expenditure;
-- NPC knowledge;
-- Aspen departure and commitments;
-- Sterling Bar revenue/credit exposure;
-- Yasmin capital/access/social obligations;
-- Wong dependents and household burn;
-- Juan creditor stack/addiction shocks;
-- Fishmonger cold-chain capacity and market share.
+- document;
+- failed settlement;
+- witness;
+- repeated behaviour.
 
-Do not create a second narrative-state universe where the prose claims a crisis the economy does not contain.
+This is a major literary device.
 
 ---
 
-# 8. Current Status
+# 13. Scene Trigger Rules
 
-## Locked
+A dialogue bank is not a random quote dispenser.
 
-- story is spiral/repetition rather than chapter ladder;
-- major NPCs are recurring karmic knots;
-- market state should generate major story pressure;
-- romance is emergent attention, not a dedicated system;
-- player interiority remains sensory rather than interpretive;
-- spirituality/knowledge is not a collection checklist;
-- Aspen, Sterling, Yasmin, Wong, Juan, and Fishmonger are the current named economic cast;
-- Penguin Grandma and the fresh-fish recurrence remain active narrative direction;
-- Wong/Juan/Sailor-Aspen toad use remains an active recurring motif;
-- Fishmonger is a monopoly/near-monopoly operator, not a neutral innocent producer;
-- each major trader has a distinct viable money-making method.
+Scenelets should be selected by:
 
-## Provisional
+- current phase;
+- current form;
+- relationship;
+- known information;
+- open obligations;
+- inventory;
+- cash pressure;
+- recent public tape;
+- recent private deal;
+- repeated attention;
+- business state;
+- relevant world thread.
 
-- Yasmin's former Animal form is a hyena;
-- exact Fishmonger monopoly mechanism;
-- exact structure of Juan's creditor stack;
-- exact Seagull ownership/employment relationship with Sterling;
-- exact number and locations of Aspen's maintained lovers;
-- exact state thresholds that turn character pressure into authored scenes.
+Bad:
 
-## Unresolved
+> random Juan quote about debt.
 
-- final karmic-resolution condition for each named knot;
-- literal extent of six-realm cosmology versus broader fictional forms;
+Better:
+
+> player holds Juan IOU + Yasmin recently bought another claim + Juan lacks cash → debt scenelet.
+
+Bad:
+
+> random Aspen quote about weather.
+
+Better:
+
+> storm forecast + future-delivery obligation + departure near → schedule scenelet.
+
+The same line may recur if repetition itself is meaningful.
+
+---
+
+# 14. What Must Stay Unresolved
+
+Do not use content production to accidentally solve ontology.
+
+Still open:
+
 - exact transformation causality;
+- literal extent of six-realm cosmology;
 - final liberation;
+- final karmic-resolution condition;
 - Plant agency;
-- final ontology of Sailor;
-- Penguin Grandma's autobiographical memory;
-- biological explanation and pharmacology of the psychedelic toads.
+- exact ontology of Sailor;
+- Sonya's autobiographical memory;
+- whether Yasmin's previous Animal form is definitely hyena;
+- exact biology/pharmacology of the toads.
+
+Story can produce pressure around an unresolved question without answering it.
+
+---
+
+# 15. Locked in v3
+
+- six main recurring knots: Aspen, Sterling, Yasmin, Wong, Juan, Dima;
+- Sonya is supporting Penguin grandmother, not main trader;
+- Dima replaces named Fishmonger and formally anchors the cross-form black-market brokerage layer;
+- black market remains intermediation, not an evil shop;
+- market state generates major plot pressure;
+- romance is emergent attention, not a system;
+- literary reference grammar is deadpan montage, contradiction through records, material recurrence, and hard cuts;
+- player narration is sensory rather than interpretive;
+- three Sunflower routes are now Sonya Supper, Yasmin Auction, Juan Cliff;
+- each main character has a different viable money-making method and blind spot;
+- no character is solved by backstory alone.
