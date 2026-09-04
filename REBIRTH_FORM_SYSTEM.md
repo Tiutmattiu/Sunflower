@@ -1,491 +1,375 @@
 # Sunflower — Rebirth, Forms & Persistent Karma
 
-> Status: **strong design direction**. This document collects the emerging replay / rebirth structure so it can be developed without forcing every NPC or every life into the same transformation rules.
->
-> Companion to `WORLD_LORE_SUN_MOMENT.md`, `NPC_CHARACTER_BIBLE.md`, and `INFORMATION_DISCOVERY_MODEL.md`.
+> Status: **current source of truth for form, legal identity, estate continuity, karmic recurrence, cross-form access, and replay**. Read with `WORLD_LORE_SUN_MOMENT.md`. Historical ritual/outside-transformation hypotheses are not canon.
 
 ---
 
-## 1. The Player Is a Continuing Point of View, Not a Permanent Legal Person
+## 1. The player is a continuing point of view, not a permanent legal person
 
-A run does not have to mean the same human body trying again.
+The player may continue across lives / forms while retaining memory of:
 
-The player may continue across lives / forms while retaining what matters most at the meta level:
-
-- remembered market structure;
-- remembered people;
-- remembered routes;
-- remembered information patterns;
-- remembered consequences;
+- market structure;
+- people and relationships;
+- routes;
+- information patterns;
+- consequences;
 - learned strategy.
 
-This gives an in-world explanation for the existing meta-progression rule:
+This is the core meta-progression rule:
 
-> **The player gets stronger because they know more, not because the avatar receives permanent stat bonuses.**
+> **The player gets stronger because they remember more, not because a new body receives permanent stat bonuses.**
 
-The player may remember a previous life even when the world cannot legally verify that continuity.
+Memory continuity is real to the player. It does not automatically prove legal continuity to the world.
 
 ---
 
-## 2. Legal Identity Ends at Transformation
+## 2. Legal identity ends when the recognised person ends
 
-When a human form dies / transforms, that human legal person ends.
+When a recognised legal person dies / transforms, that legal person ends unless the world has some separate institution that recognises continuity.
 
-The new form cannot automatically claim the old form's:
+The next form cannot automatically claim the former life’s:
 
 - cash accounts;
 - property;
 - equity;
-- formal debts owed to them;
+- receivables;
 - titles;
 - institutional reputation;
-- legal contracts.
+- formal contracts.
 
-Those assets remain in the human legal system, pass to family / estate structures, or otherwise become inaccessible to the transformed being.
+Those remain with the former estate / legal structure.
 
-This creates a powerful reason for some animals to want human form again:
+This is not a statement that the new form is metaphysically unrelated. It is a statement about enforceable institutional identity.
 
-> **They remember ownership, but cannot exercise ownership.**
+> **Memory continuity != legal-person continuity.**
 
-The design should avoid immediately adding a complicated probate simulator. The important first rule is simple:
+Wanting to become Human again can therefore be economically rational while also becoming another attachment.
 
-> continuity of memory does not imply continuity of legal personhood.
-
-Later systems may create narrow ways around this through proxies, trusts, family relationships, informal recognition or black-market agents, but none are required for the first playable rebirth version.
+Do not build a probate simulator unless later gameplay genuinely needs one.
 
 ---
 
-## 3. Desire to Become Human Can Itself Become Attachment
+## 3. Karma is not a quest backlog
 
-An animal who remembers a former human life may become obsessed with recovering human status.
+Keep the compact world formulation:
 
-That desire can be economically rational:
+> **Karma is action that has not finished happening.**
 
-- humans have better formal market access;
-- humans can sign recognised contracts;
-- humans can claim certain assets;
-- humans can enter venues that ban animals;
-- humans receive stronger institutional protection.
+Technical design gloss:
 
-But it can also become another attachment loop:
+> **Action continues as conditions for further action.**
 
-> I need to become human again so I can recover what was mine.
+A contract can be fully settled and still continue karmically if its completion makes someone more relied upon, more credible, more indebted socially, more habitually responsible, or more likely to repeat the same structure.
 
-The game should not automatically teach that `human = higher` or `animal = lower`.
+A rescue can succeed and create a dependent. A profitable route can close and teach rivals what to copy. A repaid loan can create future credit capacity.
 
-Human form provides one set of freedoms and one set of bindings. Animal form provides another.
+Karma is therefore not:
 
----
-
-## 4. NPCs Do Not Need Full Player-Style Rebirth
-
-The major named NPCs should remain narratively recognisable across the game.
-
-They function well as recurring **karmic knots**: stable people / roles / desires that the player repeatedly encounters and must understand.
-
-Therefore:
-
-- NPC identity continuity is more important than universal transformation symmetry;
-- not every NPC must change form between runs;
-- form changes should happen only when they deepen the character or story;
-- the player may be the only entity whose form-changing is a primary replay mechanic.
-
-This is not a metaphysical claim that NPCs cannot transform. It is a narrative scope rule.
-
-Examples:
-
-### Mirelle Vale
-Vale should probably remain recognisably Vale for most of the game.
-
-Her function depends on:
-
-- elite status;
-- social power;
-- institutional access;
-- capital allocation;
-- manipulation;
-- reliable settlement.
-
-Turning her into an animal casually would destroy more story than it creates.
-
-### Bar Apprentice
-The Apprentice is a much stronger candidate for transformation because their identity is still developing.
-
-A later life / route in which the player discovers that the Apprentice has become an animal could deepen:
-
-- the Bar's cross-form politics;
-- family continuity;
-- innocence / learning;
-- the meaning of relationships after legal death.
-
-### Dock Dog
-Dog already embodies continuity across forms unusually well and may retain behavioural residues from a former human life.
-
-### Clown
-Clown can remain a recurring human figure for most of the narrative because his core problem is not failure to understand samsara but obsessive pursuit of escape.
+- morality points;
+- unpaid-task count;
+- a list of psychological lessons;
+- a visible reincarnation score.
 
 ---
 
-## 5. NPCs as Recurring Karmic Problems
+## 4. The primary cast are karmic recurrences, not six therapy lessons
 
-A strong structural interpretation is that the named NPCs are not random quest-givers but recurring configurations of attachment the player repeatedly encounters.
+The six primary recurring figures are:
 
-They do not need to map literally to Buddhist categories.
+- **Aspen**
+- **Sterling**
+- **Yasmin**
+- **Wong**
+- **Juan**
+- **Dima**
 
-They can function as persistent problems such as:
+They remain full people with bounded knowledge, economic interests, contradictions, relationships and lives of their own.
 
-- accumulation;
-- status;
-- risk;
-- responsibility;
-- attachment to relationship;
-- attachment to expertise;
-- attachment to liberation;
-- ignorance / incomplete information;
-- aversion;
-- craving.
+Their recurrence in the player’s world is not random cast persistence. The player’s causal relationship with each figure can keep recreating the conditions for another encounter.
 
-The player does not necessarily become liberated by `finishing every quest` mechanically.
+A karmic knot does **not** end because:
 
-But repeated lives may force the player to understand these patterns from different economic positions.
+- the NPC becomes psychologically healthier;
+- the player chooses one correct dialogue option;
+- a relationship meter reaches a target;
+- every authored scene has been viewed.
 
-A problem that looks obvious as a human trader may feel different when encountered as an animal, Sailor, or plant.
+A knot may cease to recur only when the relation no longer reproduces the same causal structure. This should be rare and can remain ontologically ambiguous: the character may still exist, may appear elsewhere, may transform, or may simply no longer recur for this player.
 
----
+**Octopus** is important supporting physical-economy / public-clearing infrastructure, not a seventh primary karmic knot.
 
-## 6. The Same NPC Can Matter Differently in Different Forms
-
-The best use of rebirth is not to replace the cast.
-
-It is to make the same cast structurally different depending on the player's current form.
-
-Example:
-
-### As Human
-Vale may be a powerful but accessible counterparty.
-
-### As Animal
-Vale may be unreachable without a proxy.
-
-### As Sailor / Liminal Form
-Vale may become a major importer / client whose business is unusually valuable.
-
-### As Plant
-Vale may stop being a counterparty entirely and become someone trying to acquire, display or commercialise the player.
-
-The character remains Vale. The economic relationship changes.
-
-This preserves story continuity while making rebirth mechanically meaningful.
+**Sonya** is Sterling’s Penguin grandmother and a supporting continuity figure.
 
 ---
 
-## 7. Sailor Is Better as a Form / Function Than a Single Permanent NPC
+## 5. Six realms are real world ontology, not personality labels
 
-Current strongest direction:
+The six-realm cosmology is part of the world’s ontology.
 
-> `Sailor` may describe a category of liminal beings rather than one unique person.
+Do not reduce it to:
 
-There can be:
+- personality scores;
+- trader archetypes;
+- a visible progression ladder;
+- `Hungry Ghost 72%` style diagnosis.
 
-- a Sailor;
-- another Sailor;
-- the Sailor who returned yesterday;
-- an old Sailor known to Vale;
-- a Sailor the player becomes in another life.
+Human and Animal conditions are already materially present in the game world.
 
-Their defining feature is not species.
+Different realm-structures can echo psychologically or economically inside another form without turning that actor into a diagnostic label.
 
-It is **boundary-crossing**.
+The exact geographic / institutional relation among all six realms remains intentionally under-explained.
 
-Sailors can:
-
-- leave the local system;
-- return;
-- move goods between markets;
-- transport information;
-- carry commissions;
-- arbitrage geography;
-- connect otherwise separated economies.
-
-This makes Sailor an economic condition as much as a biological one.
+`Sailor` and future `Plant` are important Sunflower forms / conditions. Their exact mapping onto traditional six-realm ontology is unresolved and should not be invented merely for taxonomic neatness.
 
 ---
 
-## 8. Sailor Should Not Automatically Mean Enlightened
+## 6. Animal society is a real economy, not a debuff layer
 
-A fully liberated being continuing to speculate in Whale Oil and settle cargo invoices would require a very specific cosmology.
+Animal people have their own:
 
-The stronger provisional interpretation is:
+- language;
+- relationships;
+- markets;
+- occupations;
+- households;
+- informal institutions;
+- routes and spaces;
+- information networks.
 
-> **Sailors are less rooted, not fully free.**
+Formal Human institutions may refuse to recognise Animal ownership or legal personhood even when Animals possess goods and participate economically in practice.
 
-They may have loosened one form of attachment:
+This institutional mismatch creates real demand for:
 
-- property;
-- home;
-- fixed citizenship;
-- local social identity.
+- proxies;
+- tolerated venues;
+- guarantees;
+- informal settlement;
+- claim transfer;
+- information brokerage;
+- cross-form intermediaries.
 
-But still remain bound by:
+The black market therefore grows from **institutional exclusion + incompatible forms + information / enforcement friction**, not from a generic criminal-shop morality system.
 
-- movement;
-- trade;
-- obligation;
-- hunger;
-- curiosity;
-- return.
-
-This makes them liminal rather than transcendent.
-
-A genuinely liberated state, if it exists, should remain stranger and harder to name.
+Sterling’s Bar remains an important cross-form threshold venue. Dima is a natural informal broker. Wong participates in overlapping Animal and dock networks.
 
 ---
 
-## 9. Rebirth Paths Should Be Causal, Not a Random Skin Roll
+## 7. Sonya: continuity without a legal proof
 
-The player should not simply receive:
+Sonya is a Penguin grandmother.
 
-`RNG -> Seagull`
+Her importance is not that she provides an exposition answer about reincarnation.
 
-Transformation can contain uncertainty, but it should be shaped by the life just lived.
+She makes several kinds of continuity visibly separable:
 
-The exact mapping must stay hidden at first.
+- autobiographical memory;
+- behavioural familiarity;
+- family recognition;
+- legal recognition;
+- emotional continuity.
 
-The player should slowly discover patterns across lives.
+A family can continue treating an altered being as Grandma even when institutions do not.
 
-Possible drivers include:
+The fresh-fish / supper route can make this concrete through ordinary behaviour rather than a lore speech.
 
-- forms of attachment;
+---
+
+## 8. Form must change economic participation
+
+A form is worth implementing only if it changes what the same world permits.
+
+### Human
+
+- strongest formal property and contract recognition;
+- broad institutional access;
+- easiest accumulation of recognised capital;
+- may become deeply bound to status / optimisation without this implying automatic moral failure.
+
+### Animal
+
+- weak or absent formal recognition in some Human institutions;
+- stronger access to Animal networks;
+- more reliance on proxy / informal settlement;
+- can possess and trade in practice even when title is contested;
+- may rationally want Human status without Human being metaphysically “higher”.
+
+### Sailor / liminal
+
+`Sailor` is both a real economic role and a broader boundary-crossing condition.
+
+- geographic mobility;
+- external markets;
+- import / export;
+- commissions;
+- temporary local availability;
+- weaker rootedness;
+- different exposure to local institutions.
+
+Aspen is the current named Sailor / mechanic. Sailor does not mean enlightened: **less rooted, not fully free** remains the stronger rule.
+
+### Plant
+
+Plant is a serious future form, not a joke class.
+
+- extremely low direct mobility;
+- living / productive value;
+- can become food, collateral, specimen, decoration, reproductive stock or property in others’ eyes;
+- forces the player to experience being valued rather than only valuing;
+- may connect materially to the Sunflower / seed mystery.
+
+Do not lock final Plant agency or liberation semantics yet.
+
+---
+
+## 9. Rebirth is causal, not a random skin roll
+
+Transformation may contain uncertainty, but it should become retrospectively intelligible through repeated lives.
+
+Possible causal inputs include factual patterns such as:
+
 - repeated Sun Moment resistance;
-- social isolation;
-- dependency;
-- consumption pattern;
+- dependency structures;
+- consumption / hunger;
 - mobility;
 - relation to possessions;
 - relation to other forms;
-- unfinished obligations;
-- how the player responds to hunger / debt / loss.
+- obligation patterns;
+- responses to debt / loss;
+- forms of attachment.
 
-The goal is not a visible karma score.
+Do not expose a visible karma score or deterministic tooltip saying which action produces which form.
 
-The goal is retrospective intelligibility:
+The desired experience is closer to:
 
-> `I thought that transformation was random. Three lives later I can see what I kept doing.`
+> “I thought that was random. Several lives later I can see what kept continuing.”
 
----
-
-## 10. Hunger Can Trigger a Life Transition
-
-Strong current direction:
-
-At daily settlement, the player must obtain sustenance.
-
-If they cannot pay directly, the game checks social and credit relationships.
-
-Possible outcomes:
-
-- a friend feeds the player;
-- the Bar extends a tab;
-- Dog shares food;
-- a lender advances food under an obligation;
-- an employer / household covers upkeep;
-- an animal network supports one of its own.
-
-If the player has:
-
-- no food;
-- no cash;
-- no credit;
-- no relationship willing to help;
-
-then the life may end during sleep and a new form may emerge.
-
-The exact resulting form should not be pure random chance.
-
-This makes social capital economically real:
-
-> a relationship can preserve your current form when money cannot.
+Exact transformation thresholds remain unresolved until the market and Sun Moment systems are mature enough to support them.
 
 ---
 
-## 11. The Black Market Is a Cross-Form Agency System
+## 10. Hunger tests liquidity, credit and relationship before ending a life
 
-The black market emerges naturally because different forms do not have equal legal access.
+At daily settlement, the player needs sustenance.
 
-Participants may include:
+If direct food / cash is insufficient, the world may test legitimate support channels already earned or available:
 
-- animals;
-- humans willing to act as proxies;
-- people already losing ordinary access to the Sun Moment;
-- brokers who can enter multiple social spaces;
-- Dock Dog's Seagull / Squirrel / Mosquito network;
-- tolerated venues such as the Bar.
+- relationship credit;
+- a tab;
+- a friend feeding the player;
+- Animal-network support;
+- an advance / obligation;
+- household support.
 
-Services may include:
+If the player has no food, no cash, no credit and no relationship willing / able to help, the current life may end during settlement / sleep.
 
-- introductions;
-- proxy purchases;
-- delivery;
-- informal credit;
-- information brokerage;
-- access to excluded counterparties;
-- private settlement.
-
-This should remain a market of intermediation rather than a generic criminal shop.
-
-Its economic reason for existing is **institutional exclusion + incompatible forms + information asymmetry**.
+This makes relationship capital materially real without making friendship a free immortality button.
 
 ---
 
-## 12. Form Should Change Market Strategy
+## 11. Same people, different form, different market relation
 
-A form is only worth implementing if it changes how the player participates economically.
+The strength of replay is not replacing the cast every life. It is allowing the same person to occupy a different economic relationship to the player.
 
-### Human
-- strongest formal property rights;
-- strongest access to recognised contracts;
-- widest institutional access;
-- strongest ability to accumulate formal capital;
-- vulnerable to status / optimisation attachment.
+Examples:
 
-### Animal
-- weak or absent formal ownership recognition;
-- restricted access to human venues;
-- stronger animal networks;
-- stronger informal information channels;
-- natural access to black-market intermediation;
-- possible desire to recover human legal status.
+- Yasmin may be an accessible formal counterparty to a Human but require proxy / private mediation for an Animal;
+- Sterling may preserve a relationship across a legal discontinuity that formal institutions do not recognise;
+- Dima may become more useful when formal access weakens;
+- Aspen’s cross-border function may matter differently to a locally constrained form;
+- Juan may eventually treat a seed-like player as biological material rather than as a normal trading counterparty.
 
-### Sailor / Liminal
-- geographic mobility;
-- external market access;
-- import / export;
-- commissions;
-- weaker local rootedness;
-- temporary availability;
-- potentially different Sun Moment relation.
-
-### Plant
-- extremely low direct mobility;
-- may produce seeds / food / living value;
-- becomes an object of valuation by others;
-- forces the player to experience being an asset rather than an acquirer;
-- may connect directly to the Sunflower mystery.
-
-Other forms remain open.
+Recognition by a person is not the same as legal recognition.
 
 ---
 
-## 13. Plant Form and the Sunflower Are Potentially Central
+## 12. Claims, collateral and covenants across form change
 
-The player being able to become a plant is not merely a joke class.
+Keep existing v1 legal rules:
 
-It can invert the entire game.
+- ordinary unsecured / formal obligations remain attached to the former legal life / estate;
+- secured collateral has already left the player’s active possession, so the secured counterparty can realise that collateral and close the claim;
+- the new form does not automatically inherit the old legal person’s unsecured debt;
+- an information-exclusivity covenant does not become a soul-level promise by default;
+- former-life receivables may remain valuable to the estate even when the new form cannot directly collect them.
 
-Earlier lives ask:
-
-> How much is this thing worth to me?
-
-Plant form asks:
-
-> Why are other people assigning value to me?
-
-The player may become:
-
-- food;
-- collateral;
-- scientific material;
-- decoration;
-- reproductive stock;
-- cultural symbol;
-- property;
-- something loved without being owned.
-
-This can make the Sunflower itself part of the rebirth system rather than a static quest object.
+Economic-health accounting must distinguish current-body assets from former-estate assets without pretending both are immediately spendable.
 
 ---
 
-## 14. Collective Consciousness / Sunflower — Endgame Hypothesis
+## 13. The same structure persists across forms
 
-Very speculative but thematically strong:
+Sunflower does not become Trading Game -> Mystery Game -> Spiritual Game.
 
-The final `liberated` state may not be a superior individual form at all.
+The same primitives continue:
 
-Possible direction:
+- Goods
+- Cash
+- Information
+- Obligations
+- Relationships
+- Time
+- Body / Form
+- Access
+- Attention
 
-> the distinction between player, NPC, animal, plant, commodity and observer eventually becomes unstable.
+A change of form changes position inside that structure.
 
-The Sunflower may symbolise / instantiate a collective pattern in which apparent individuals are expressions of one larger process.
+A receipt that was merely proof of settlement in one life may later become evidence of an identity continuity claim. A commodity in one form may become a route, a burden, a body, collateral or living material in another.
 
-This can echo ideas of collective unconscious, non-separation and organism-level unity without requiring a literal one-to-one implementation of Jung or Buddhist doctrine.
-
-Important guardrail:
-
-Do not resolve this as:
-
-> `Congratulations, you reached Level 6: Buddha.`
-
-If liberation exists, it should probably involve the collapse of the very logic that made `higher form` attractive.
-
----
-
-## 15. Fixed NPCs + Variable Player Is the Best Current Scope
-
-Current recommendation:
-
-- keep the major named cast mostly fixed;
-- allow selective NPC transformations only where they add story;
-- let the player carry the main rebirth mechanic;
-- let the player's form radically change access to the same people;
-- use persistent NPCs as the stable structure against which changing player identities are understood.
-
-This solves two problems at once:
-
-1. narrative continuity survives replay;
-2. rebirth still meaningfully changes gameplay.
+The earlier economic meaning was not fake. Later conditions make more of the same event legible.
 
 ---
 
-## 16. Run Length Is Not Canonically Fourteen Days
+## 14. Plant / Sunflower endgame remains open
 
-`14 days` remains a prototype pacing choice only.
+Strong but unresolved endgame possibilities include:
 
-The final game should choose life length based on what produces the best combination of:
+- the player becoming seed / plant;
+- Juan recognising seed-like biology through ordinary observation rather than omniscience;
+- planting as germination, death, another form, home, release or continuation;
+- the distinction among player, commodity, living asset and observer becoming unstable;
+- total commodification as one possible trajectory rather than an automatically bad ending.
 
-- market learning;
-- character development;
-- economic consequences;
-- Sun Moment pressure;
-- hunger / debt cycles;
-- rebirth meaning;
-- replay momentum.
+Do not resolve these into:
 
-A life can end because of:
+- a Buddha level;
+- a true-ending checklist;
+- a single canonical scientific explanation;
+- a morality score.
 
+---
+
+## 15. Life length is not canonically fourteen days
+
+`14 days` is a prototype pacing constant only.
+
+Final life length must be chosen after the recurring economy, opportunity density, Sun Moment pressure, obligations, character arcs and replay structure are quantitatively tested.
+
+A life may end through:
+
+- hunger / collapse of support;
 - transformation;
-- starvation / failure of social credit;
-- route-specific events;
-- voluntary boundary crossing;
-- narrative closure;
-- other conditions still to be designed.
+- route-specific consequence;
+- boundary crossing;
+- other causal conditions still to be designed.
 
-Do not make the world imply that every life mechanically lasts exactly fourteen days.
+Do not imply every life lasts exactly fourteen days.
 
 ---
 
-## 17. Current Strong Principles
+## 16. Hard guardrails
 
-1. Player memory can continue across forms even when legal identity does not.
-2. A transformed player cannot automatically claim a former human legal estate.
-3. Wanting to become human again can itself become an attachment.
-4. Major named NPCs should remain mostly stable to preserve story continuity.
-5. Selective NPC transformation is allowed when it materially strengthens that character's story.
-6. The same NPC should create different economic relationships depending on player form.
-7. `Sailor` is moving toward a liminal form / social function rather than one fixed unique NPC.
-8. Sailor is not currently treated as fully enlightened; `less rooted, not fully free` is stronger.
-9. Hunger first tests credit / relationships before ending a life.
-10. Form transition should be causally shaped rather than a meaningless random roll.
-11. Black market economics arise partly from cross-form exclusion and agency.
-12. Plant form is a serious design possibility and may invert the acquisition game.
-13. The Sunflower may ultimately relate to collective consciousness / non-separation, but this remains endgame hypothesis rather than locked explanation.
-14. Fourteen days is a prototype pacing constant, not canon.
+The following historical hypotheses are **not current canon** and must not be revived from Git history without a new explicit design decision:
+
+- going outside itself causes animal transformation;
+- compulsory facing-the-sun civic ritual as the cause of the Sun Moment;
+- one missed ritual automatically causes petrification and animal rebirth;
+- the player is an acquisition agent sent by an employer / institute to export the sunflower;
+- Fishmonger as central bank, disguised boundary-crosser or escape conspiracy;
+- a giant Grandma / Bar / Clown conspiracy;
+- sunflower pre-decided as cure, virus, pathogen or key;
+- Animal society as a one-note oppressed-class allegory;
+- six realms as psychological diagnosis labels;
+- NPC release as completing a personality-improvement quest.
+
+When older documents or Git history conflict with `WORLD_LORE_SUN_MOMENT.md` and this document, the current consolidated canon wins.
