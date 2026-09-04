@@ -2048,3 +2048,348 @@ Until Codex returns the final raw tables, ChatGPT continues on three fronts with
    - do not create another art MD.
 
 When Living Samsara raw data arrives, quantitative interpretation takes priority over further feature authoring until structural issues are classified.
+
+---
+
+# 31. Provisional Core-Loop Redesign — Dual Time, Slow Market, Visible Opportunity
+
+Status: **design hypothesis only**.
+
+This chapter does not amend canon, replace the current implementation contract, or authorise a Codex implementation batch.
+
+The implemented Sunrise / Morning / Noon / Afternoon / Sunset loop, daily clearing, Sun Moment, estate continuity and current form rules remain the baseline until this redesign passes its gates and the relevant source-of-truth documents are deliberately reconciled.
+
+## 31.1 Design conclusion
+
+The current prototype spends too many clicks on discovering where play exists and too little consequence on deciding which play to pursue.
+
+The provisional replacement is:
+
+> **Make the opportunity space legible, keep truth incomplete, and make intervention consume scarce time.**
+
+The second governing rule is:
+
+> **Continuing past a natural stopping point borrows active time from another embodiment; time never appears for free.**
+
+Market depth should come from accumulated needs, committed resources and fewer meaningful clearings, not from daily repetition or one high-throughput actor.
+
+Death should provisionally end the run. Replay strength should come from player knowledge, not inherited money, permanent stat bonuses or karma currency.
+
+NPC economic styles are examples the player can reproduce, not character-exclusive powers.
+
+## 31.2 What this redesign rejects
+
+- no sacred `2 actions` rule;
+- no arbitrary maximum of three trades;
+- no Morning and Afternoon menus merely because they are convenient implementation phases;
+- no daily clearing merely because one day currently equals one round;
+- no Sun Moment that functions as a free bonus action;
+- no blind loop of opening every character and trying Talk / Investigate;
+- no universal mirror in which every Human transaction is mechanically reversed in Sun Time;
+- no full alternate life for every NPC in the first proof;
+- no Plant state that is only repeated Wait;
+- no inherited cash, estate power or passive upgrade after death;
+- no NPC-only business rule that prevents the player from using the same economic style;
+- no clearing operator, bar or voyage acting as an effectively unlimited liquidity or demand source.
+
+## 31.3 Two times and borrowed time
+
+Working terms only:
+
+- **Human Time** — ordinary Human institutions and Human bodies are active;
+- **Sun Time** — Animal / Plant bodies and their institutions are active.
+
+These names and their cosmological meaning are not canon.
+
+The two times are not two complete markets that mechanically invert every trade. They are two participation contexts in the same causal world. Some obligations, supply chains, goods and relationships cross the boundary; only selected cases create a mirrored consequence.
+
+At a visible stopping boundary, the player chooses:
+
+**Let Go**
+
+- the unfinished opportunity closes, pauses or proceeds without the player;
+- the current embodiment rests;
+- no time debt is created.
+
+**Continue**
+
+- available only when a specific unfinished action or deadline can genuinely be completed;
+- grants the exact additional time required, not a generic extra action;
+- produces the promised practical advantage if the action succeeds;
+- records equal borrowed-time debt;
+- transfers the burden into the player's counterpart embodiment in the other time.
+
+Prototype accounting hypothesis:
+
+`borrowed units now = active units owed in the counterpart embodiment`
+
+The player should see that continuing has a cost, but should not initially receive a complete deterministic explanation of the cross-form consequence. Character knowledge, player knowledge and engine truth remain separate.
+
+If the player also refuses rest while carrying Animal-side debt, further borrowed time cannot create a third fully active body. The current hypothesis routes that excess into Plant time.
+
+## 31.4 Plant as low agency, high information
+
+Plant must not be a punishment screen.
+
+During Plant time, the player provisionally cannot:
+
+- trade;
+- negotiate;
+- travel;
+- investigate;
+- directly alter events.
+
+The player can observe otherwise hidden connective tissue as it becomes materially observable:
+
+- orders accumulating and clearing;
+- claims changing hands;
+- cargo moving;
+- information spreading;
+- counterparties reacting;
+- missed opportunities resolving;
+- earlier actions changing later conditions.
+
+Plant therefore inverts the normal information economy:
+
+| State | Agency | Information |
+|---|---:|---:|
+| Human | high | bounded |
+| Animal | different rather than simply lower | bounded differently |
+| Plant | near zero | unusually broad observation |
+
+This is not omniscient access to private engine truth. It is a widened observational position with no immediate ability to exploit what is seen.
+
+Being eaten during Plant time provisionally ends the run. Germination / planting may be a special continuation or release route, but Juan's exact role and the metaphysical meaning remain unresolved.
+
+## 31.5 Slow public market
+
+First cadence candidate:
+
+> **one public clearing every two in-world days**
+
+Cycle A — accumulation / preparation:
+
+- needs and cargo develop;
+- public facts and leads surface;
+- investigation, inspection, financing and private negotiation occur;
+- orders accumulate in the book.
+
+Cycle B — final preparation / lock / clearing / aftermath:
+
+- last interventions occur;
+- committed orders lock;
+- the public market clears once;
+- ownership, cash and the public tape update;
+- consequences become new opportunities.
+
+There is no transaction-count cap. Real limits are:
+
+- reserved cash;
+- reserved physical inventory;
+- collateral;
+- counterparty capacity;
+- expiry and clearing time;
+- no same-clearing recycling;
+- the player's time spent reaching, inspecting or negotiating where required.
+
+A public-market visit may cost one time unit while allowing the player to prepare a feasible set of orders. Filling those orders does not consume one action per fill.
+
+Private deals, inspection, travel and relationship work consume active time because they require the player's presence.
+
+The first pacing hypothesis is a life with roughly:
+
+- 6–8 consequential public clearings;
+- 10–15 memorable player decisions;
+- 1–2 meaningful time crossings;
+- 2–5 genuinely valuable information items;
+- several visible opportunities deliberately left alone.
+
+A 16-day structure with eight two-day market cycles is a useful first paper test, not a fixed life length. The proposed `2 ordinary / 4 Sun / 4 ordinary / 4 Sun / 2 ordinary` rhythm is also only a test case. Compare it with shorter and longer versions by decision density, not symmetry alone.
+
+## 31.6 One continuous player-time budget
+
+Remove separate Morning and Afternoon action pools from the redesign hypothesis.
+
+Each active day or equivalent play interval has one budget `B`. Exact `B` is not yet frozen.
+
+First calibration language:
+
+- noticing public facts and surfaced leads: 0;
+- reading the public book/tape: 0;
+- one location visit or ordinary conversation: 1;
+- preparing/revising a feasible public order set: 1;
+- inspection or focused investigation: 1–2;
+- private negotiation / contract: 1–2;
+- substantial physical work: 2;
+- continuing beyond the boundary: borrowed units equal to actual overrun.
+
+The budget passes only if a normal interval supports several recognisably different shapes, for example:
+
+- several small interventions;
+- one deep investigation plus one small intervention;
+- one contract plus the sourcing needed to make it credible;
+- deliberate non-action while preserving time for a later deadline.
+
+Do not freeze `B` from intuition. Paper-test at least two values and measure meaningful decisions, abandoned opportunities and click count.
+
+## 31.7 Opportunity automatically surfaces
+
+The player should know where consequential activity exists without opening every NPC menu.
+
+The world view automatically exposes:
+
+- public facts;
+- visible pressures;
+- expiring commitments;
+- public market imbalance;
+- the existence of a lead worth investigating;
+- the time cost of intervention;
+- what remains unknown.
+
+It does not expose:
+
+- hidden inventory without a legitimate signal;
+- private valuation;
+- secret correspondence contents;
+- exact solvency;
+- NPC plans not yet made public or observed;
+- the correct choice.
+
+The distinction is:
+
+> **Opportunity-space visibility, not truth omniscience.**
+
+Investigating should deepen or verify a surfaced lead. It should not be required merely to learn that authored gameplay exists.
+
+Missed opportunities continue without the player. Their observable aftermath should return through later scenes, the public tape, changed goods, claims, absences or relationships.
+
+UI hypothesis:
+
+- current / expiring opportunities first;
+- upcoming pressures second;
+- background public state last;
+- all remain inspectable without character-by-character fishing;
+- the page stops and asks for input only at a real commitment.
+
+## 31.8 Death and replay
+
+Provisional replacement rule:
+
+> **Death ends the current run and restarts the game.**
+
+The next run does not inherit:
+
+- cash;
+- goods;
+- claims;
+- estate access;
+- skills or percentage bonuses;
+- karma points;
+- passive unlock power.
+
+The player retains real-world understanding. The game may make small authored changes based on previously witnessed events or run count, but those changes must recontextualise the world rather than make the next run mechanically richer by default.
+
+This directly conflicts with the current canon/implementation model in which legal death, estate wealth and continuing forms can coexist. Do not resolve that conflict inside this workbook. Before implementation, choose one of:
+
+1. hard run reset on every death;
+2. transformation can continue within a run, but actual death resets it;
+3. current estate-continuity model remains.
+
+The leading hypothesis is option 2 because it preserves playable Human / Animal / Plant shifts while keeping death sharp and replay clean.
+
+## 31.9 Player-copyable economic styles
+
+Every primary NPC style must satisfy a copyability contract:
+
+1. the player can observe enough of the method to understand that it exists;
+2. the player can acquire the same class of prerequisites through legal play;
+3. the player uses the same authoritative market transitions;
+4. the player pays equivalent costs and accepts equivalent risks;
+5. success depends on world state and execution, not an NPC-only income rule.
+
+Examples:
+
+- Aspen demonstrates deadline-aware contracting; the player can also provision and write future delivery;
+- Wong demonstrates working-capital turnover; the player can also buy, carry and resell small goods;
+- Yasmin demonstrates collateral and capital allocation; the player can also lend, pledge and bid;
+- Juan demonstrates duration and productive assets; the player can also hold claims and wait for maturity;
+- Dima demonstrates intermediation; the player can also earn fees when they build access and trust;
+- Sterling demonstrates relationship liquidity; the player can also build and spend reciprocal access.
+
+NPCs may begin with different knowledge, relationships, property or reputation. Those are world positions, not exclusive mechanics.
+
+Copyability does not require equal expected profit. It requires a legitimate route to attempt the same structure.
+
+## 31.10 Throughput and dominance guardrails
+
+**Octopus Clearing may monopolise settlement infrastructure; Octopus must not monopolise trade.**
+
+Octopus's own buying and selling require finite physical inventory, working capital, storage and recurring cargo capacity. Client settlement float remains separate.
+
+Sterling's Bar requires finite customers, service capacity and input consumption. It is not an unlimited demand sink.
+
+Aspen's voyages require working capital, cargo space, timing and external demand. They are not automatic outside-money injections.
+
+The player should not be structurally suppressed by an actor whose throughput exists only because the engine exempts that actor from ordinary constraints.
+
+Required diagnostics before balance tuning:
+
+- actor share of sales count and sales value;
+- net cash creation/destruction by loop;
+- capacity actually used versus declared capacity;
+- number of player-accessible substitute routes;
+- whether the player can reproduce the dominant style under comparable constraints;
+- whether slower clearing thickens competition rather than merely delaying the same dominant actor.
+
+## 31.11 Minimum proof and freeze gates
+
+Do not send the whole redesign to implementation at once.
+
+Before any implementation batch, complete these design checks:
+
+1. **Paper timeline** — run one 16-day candidate by hand with eight clearings, at least two unanswered leads and one borrowed-time event.
+2. **Debt conservation** — every continued unit has an equal, observable repayment path; no free extra action.
+3. **Market viability** — at least three actor styles and the player can pursue the same opportunity without one infinite counterparty deciding the result.
+4. **Information legality** — every surfaced card is derived from a public fact or legitimate lead, never hidden truth.
+5. **Death decision** — explicitly resolve reset versus estate continuity before code changes.
+6. **Plant playability** — observation remains interesting for the full debt interval without fake interaction.
+7. **Pacing comparison** — compare at least two time budgets and two life lengths using decision density and repeated-click count.
+
+Freeze only the smallest coherent vertical slice after these pass.
+
+## 31.12 Suggested future Codex division — do not start yet
+
+### Batch 0 — read-only impact map
+
+Map current clock, market clearing, Sun Moment, estate/form transitions, opportunity sources and UI entry points against this chapter. Return conflicts and reusable transitions. No edits.
+
+### Batch 1 — borrowed-time vertical slice
+
+After the death/canon decision is frozen, implement one Human boundary, one legitimate Continue action, equal Animal-side debt and one Plant observation interval. Reuse current state/evidence ownership. No Market Depth features.
+
+### Batch 2 — slow clearing and finite capacity
+
+Change one public market cycle to accumulate then clear, remove arbitrary trade-count limits, and give Octopus's own trade loop finite inventory/capital capacity. Preserve one authoritative clearing path.
+
+### Batch 3 — opportunity surfacing
+
+Expose public facts and legitimate leads from existing engine state in a scene feed. Do not reveal hidden truth. Only after the engine events and story bindings are stable should the comic/UI layer be upgraded.
+
+### Batch 4 — copyability and diagnostics
+
+Prove a small representative set: one player turnover route, one player intermediation route and one player duration route under the same rules as their NPC exemplars. Extend Economic Health to measure capacity, opportunity visibility and style copyability without auto-rebalancing.
+
+ChatGPT/design ownership before each batch:
+
+- freeze the rule and named scenario;
+- resolve any canon conflict;
+- specify player-visible information;
+- define success/failure evidence;
+- keep narrative and economic consequences aligned.
+
+Codex ownership after freeze:
+
+- trace existing implementation authority;
+- make the smallest coherent change;
+- leave one focused runnable check for non-trivial logic;
+- report raw diagnostics without independently rewriting world design or balance.
