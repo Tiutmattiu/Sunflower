@@ -1,6 +1,6 @@
 # Sunflower — Rebirth, Forms & Persistent Karma
 
-> Status: **current source of truth for form, legal identity, estate continuity, karmic recurrence, cross-form access, and replay**. Read with `WORLD_LORE_SUN_MOMENT.md`. Historical ritual/outside-transformation hypotheses are not canon.
+> Status: **current source of truth for form change, legal identity, estate continuity, karmic recurrence, cross-form access and replay.** Read with `WORLD_LORE_SUN_MOMENT.md`.
 
 ---
 
@@ -15,7 +15,7 @@ The player may continue across lives / forms while retaining memory of:
 - consequences;
 - learned strategy.
 
-This is the core meta-progression rule:
+Core meta-progression:
 
 > **The player gets stronger because they remember more, not because a new body receives permanent stat bonuses.**
 
@@ -23,9 +23,9 @@ Memory continuity is real to the player. It does not automatically prove legal c
 
 ---
 
-## 2. Legal identity ends when the recognised person ends
+## 2. Legal identity can end while memory continues
 
-When a recognised legal person dies / transforms, that legal person ends unless the world has some separate institution that recognises continuity.
+When a recognised legal person dies / transforms, that legal person ends unless an institution explicitly recognises continuity.
 
 The next form cannot automatically claim the former life’s:
 
@@ -39,11 +39,9 @@ The next form cannot automatically claim the former life’s:
 
 Those remain with the former estate / legal structure.
 
-This is not a statement that the new form is metaphysically unrelated. It is a statement about enforceable institutional identity.
-
 > **Memory continuity != legal-person continuity.**
 
-Wanting to become Human again can therefore be economically rational while also becoming another attachment.
+Wanting to regain a Human form can therefore be economically rational without Human being morally or metaphysically superior.
 
 Do not build a probate simulator unless later gameplay genuinely needs one.
 
@@ -59,7 +57,7 @@ Technical design gloss:
 
 > **Action continues as conditions for further action.**
 
-A contract can be fully settled and still continue karmically if its completion makes someone more relied upon, more credible, more indebted socially, more habitually responsible, or more likely to repeat the same structure.
+A contract can be settled and still continue karmically if completion makes someone more relied upon, more credible, more socially obligated, more habitually responsible, or more likely to repeat the same structure.
 
 A rescue can succeed and create a dependent. A profitable route can close and teach rivals what to copy. A repaid loan can create future credit capacity.
 
@@ -67,8 +65,8 @@ Karma is therefore not:
 
 - morality points;
 - unpaid-task count;
-- a list of psychological lessons;
-- a visible reincarnation score.
+- psychological lesson list;
+- reincarnation score.
 
 ---
 
@@ -94,32 +92,40 @@ A karmic knot does **not** end because:
 - a relationship meter reaches a target;
 - every authored scene has been viewed.
 
-A knot may cease to recur only when the relation no longer reproduces the same causal structure. This should be rare and can remain ontologically ambiguous: the character may still exist, may appear elsewhere, may transform, or may simply no longer recur for this player.
+A knot may cease to recur only when the relation no longer reproduces the same causal structure. This should be rare and can remain ontologically ambiguous.
 
-**Octopus** is important supporting physical-economy / public-clearing infrastructure, not a seventh primary karmic knot.
+**Octopus** is supporting physical-economy / public-clearing infrastructure, not a seventh primary karmic knot.
 
 **Sonya** is Sterling’s Penguin grandmother and a supporting continuity figure.
 
 ---
 
-## 5. Six realms are real world ontology, not personality labels
+## 5. Form / species cycle
 
-The six-realm cosmology is part of the world’s ontology.
+The world can move a continuing point of view through different living forms and species.
 
-Do not reduce it to:
+The game does not need to reproduce the Buddhist six realms as literal ontology.
 
-- personality scores;
-- trader archetypes;
-- a visible progression ladder;
-- `Hungry Ghost 72%` style diagnosis.
+The useful rule is:
 
-Human and Animal conditions are already materially present in the game world.
+> **form changes; the causal cycle continues.**
 
-Different realm-structures can echo psychologically or economically inside another form without turning that actor into a diagnostic label.
+A form matters because it changes concrete participation in the same world:
 
-The exact geographic / institutional relation among all six realms remains intentionally under-explained.
+- body;
+- mobility;
+- hunger / maintenance;
+- sensory access;
+- legal recognition;
+- market access;
+- social access;
+- time horizon;
+- what others can do to the player;
+- what the player can enforce.
 
-`Sailor` and future `Plant` are important Sunflower forms / conditions. Their exact mapping onto traditional six-realm ontology is unresolved and should not be invented merely for taxonomic neatness.
+Transformation is not moral punishment and not a spiritual rank ladder.
+
+Exact transformation mapping remains unresolved until the economic and Sun Moment systems can support it.
 
 ---
 
@@ -136,9 +142,9 @@ Animal people have their own:
 - routes and spaces;
 - information networks.
 
-Formal Human institutions may refuse to recognise Animal ownership or legal personhood even when Animals possess goods and participate economically in practice.
+Formal Human institutions may refuse equivalent recognition even when Animals possess goods and participate economically in practice.
 
-This institutional mismatch creates real demand for:
+This mismatch creates demand for:
 
 - proxies;
 - tolerated venues;
@@ -150,15 +156,15 @@ This institutional mismatch creates real demand for:
 
 The black market therefore grows from **institutional exclusion + incompatible forms + information / enforcement friction**, not from a generic criminal-shop morality system.
 
-Sterling’s Bar remains an important cross-form threshold venue. Dima is a natural informal broker. Wong participates in overlapping Animal and dock networks.
+Sterling’s Bar remains a cross-form threshold venue. Dima is a natural informal broker. Wong participates in overlapping Animal and dock networks.
 
 ---
 
-## 7. Sonya: continuity without a legal proof
+## 7. Sonya: continuity without legal proof
 
 Sonya is a Penguin grandmother.
 
-Her importance is not that she provides an exposition answer about reincarnation.
+Her importance is not that she explains reincarnation.
 
 She makes several kinds of continuity visibly separable:
 
@@ -170,11 +176,11 @@ She makes several kinds of continuity visibly separable:
 
 A family can continue treating an altered being as Grandma even when institutions do not.
 
-The fresh-fish / supper route can make this concrete through ordinary behaviour rather than a lore speech.
+The fresh-fish / supper route should make this concrete through ordinary behaviour rather than a lore speech.
 
 ---
 
-## 8. Form must change economic participation
+## 8. Current / future forms should change economic position
 
 A form is worth implementing only if it changes what the same world permits.
 
@@ -183,29 +189,35 @@ A form is worth implementing only if it changes what the same world permits.
 - strongest formal property and contract recognition;
 - broad institutional access;
 - easiest accumulation of recognised capital;
-- may become deeply bound to status / optimisation without this implying automatic moral failure.
+- this does not make Human spiritually superior.
 
 ### Animal
 
-- weak or absent formal recognition in some Human institutions;
+Animal is not one homogeneous gameplay class. Species should eventually matter.
+
+Shared tendencies may include:
+
+- weaker or inconsistent recognition in some Human institutions;
 - stronger access to Animal networks;
 - more reliance on proxy / informal settlement;
-- can possess and trade in practice even when title is contested;
-- may rationally want Human status without Human being metaphysically “higher”.
+- physical possession without fully recognised title.
 
-### Sailor / liminal
+But a Dog, Seagull, Penguin and Octopus should not have identical bodies, mobility, needs or social positions.
 
-`Sailor` is both a real economic role and a broader boundary-crossing condition.
+### Sailor / liminal operator
+
+`Sailor` is a real economic role and a boundary-crossing condition.
 
 - geographic mobility;
 - external markets;
 - import / export;
 - commissions;
 - temporary local availability;
-- weaker rootedness;
 - different exposure to local institutions.
 
-Aspen is the current named Sailor / mechanic. Sailor does not mean enlightened: **less rooted, not fully free** remains the stronger rule.
+Aspen is the current named Sailor / mechanic.
+
+Sailor does not mean enlightened: **less rooted, not fully free** remains the stronger rule.
 
 ### Plant
 
@@ -221,9 +233,34 @@ Do not lock final Plant agency or liberation semantics yet.
 
 ---
 
-## 9. Rebirth is causal, not a random skin roll
+## 9. Species must eventually have material traits
 
-Transformation may contain uncertainty, but it should become retrospectively intelligible through repeated lives.
+Future form design should not be cosmetic.
+
+When a species becomes playable or systemically important, define a small set of **material affordances / constraints**, not RPG stat bonuses.
+
+Examples of the kind of distinction the system may later support:
+
+- Dog: mobility, scent/social access, food/household needs;
+- Seagull: mobility and cross-space access, weak formal trust, transport of small goods;
+- Penguin: strong cold/fish ecology, limited mobility in ordinary Human spaces;
+- Octopus: marine access, physical handling, many-object throughput, public settlement role;
+- Human: documentation and formal enforcement;
+- Plant: immobility, growth, biological productive value.
+
+These examples are design directions, not locked numeric modifiers.
+
+The important rule is:
+
+> a changed body should change the opportunity set.
+
+Do not turn species into a collectible class tree.
+
+---
+
+## 10. Rebirth is causal, not a random skin roll
+
+Transformation may contain uncertainty, but repeated lives should make patterns retrospectively intelligible.
 
 Possible causal inputs include factual patterns such as:
 
@@ -239,15 +276,15 @@ Possible causal inputs include factual patterns such as:
 
 Do not expose a visible karma score or deterministic tooltip saying which action produces which form.
 
-The desired experience is closer to:
+Desired experience:
 
 > “I thought that was random. Several lives later I can see what kept continuing.”
 
-Exact transformation thresholds remain unresolved until the market and Sun Moment systems are mature enough to support them.
+Exact thresholds remain unresolved.
 
 ---
 
-## 10. Hunger tests liquidity, credit and relationship before ending a life
+## 11. Hunger tests liquidity, credit and relationship before ending a life
 
 At daily settlement, the player needs sustenance.
 
@@ -266,25 +303,25 @@ This makes relationship capital materially real without making friendship a free
 
 ---
 
-## 11. Same people, different form, different market relation
+## 12. Same people, different form, different market relation
 
-The strength of replay is not replacing the cast every life. It is allowing the same person to occupy a different economic relationship to the player.
+Replay strength comes from the same people occupying different economic relationships to the player.
 
 Examples:
 
 - Yasmin may be an accessible formal counterparty to a Human but require proxy / private mediation for an Animal;
 - Sterling may preserve a relationship across a legal discontinuity that formal institutions do not recognise;
 - Dima may become more useful when formal access weakens;
-- Aspen’s cross-border function may matter differently to a locally constrained form;
-- Juan may eventually treat a seed-like player as biological material rather than as a normal trading counterparty.
+- Aspen’s cross-border function may matter differently to a locally constrained body;
+- Juan may eventually treat a seed-like player as biological material rather than a normal trading counterparty.
 
 Recognition by a person is not the same as legal recognition.
 
 ---
 
-## 12. Claims, collateral and covenants across form change
+## 13. Claims, collateral and covenants across form change
 
-Keep existing v1 legal rules:
+Keep existing legal rules:
 
 - ordinary unsecured / formal obligations remain attached to the former legal life / estate;
 - secured collateral has already left the player’s active possession, so the secured counterparty can realise that collateral and close the claim;
@@ -292,11 +329,11 @@ Keep existing v1 legal rules:
 - an information-exclusivity covenant does not become a soul-level promise by default;
 - former-life receivables may remain valuable to the estate even when the new form cannot directly collect them.
 
-Economic-health accounting must distinguish current-body assets from former-estate assets without pretending both are immediately spendable.
+Economic-health accounting must distinguish current-body assets from former-estate assets without pretending both are spendable.
 
 ---
 
-## 13. The same structure persists across forms
+## 14. The same structure persists across forms
 
 Sunflower does not become Trading Game -> Mystery Game -> Spiritual Game.
 
@@ -314,36 +351,35 @@ The same primitives continue:
 
 A change of form changes position inside that structure.
 
-A receipt that was merely proof of settlement in one life may later become evidence of an identity continuity claim. A commodity in one form may become a route, a burden, a body, collateral or living material in another.
+A receipt that was merely proof of settlement in one life may later become evidence of identity continuity. A commodity in one form may become a route, burden, body, collateral or living material in another.
 
 The earlier economic meaning was not fake. Later conditions make more of the same event legible.
 
 ---
 
-## 14. Plant / Sunflower endgame remains open
+## 15. Plant / Sunflower endgame remains open
 
-Strong but unresolved endgame possibilities include:
+Strong but unresolved possibilities include:
 
-- the player becoming seed / plant;
+- player becoming seed / plant;
 - Juan recognising seed-like biology through ordinary observation rather than omniscience;
 - planting as germination, death, another form, home, release or continuation;
-- the distinction among player, commodity, living asset and observer becoming unstable;
+- distinction among player, commodity, living asset and observer becoming unstable;
 - total commodification as one possible trajectory rather than an automatically bad ending.
 
 Do not resolve these into:
 
-- a Buddha level;
 - a true-ending checklist;
-- a single canonical scientific explanation;
+- a single scientific explanation;
 - a morality score.
 
 ---
 
-## 15. Life length is not canonically fourteen days
+## 16. Life length is not canonically fourteen days
 
 `14 days` is a prototype pacing constant only.
 
-Final life length must be chosen after the recurring economy, opportunity density, Sun Moment pressure, obligations, character arcs and replay structure are quantitatively tested.
+Final life length must be chosen after recurring economy, opportunity density, Sun Moment pressure, obligations, character arcs and replay are quantitatively tested.
 
 A life may end through:
 
@@ -353,23 +389,22 @@ A life may end through:
 - boundary crossing;
 - other causal conditions still to be designed.
 
-Do not imply every life lasts exactly fourteen days.
-
 ---
 
-## 16. Hard guardrails
+## 17. Hard guardrails
 
-The following historical hypotheses are **not current canon** and must not be revived from Git history without a new explicit design decision:
+Do not revive from Git history without a new explicit decision:
 
-- going outside itself causes animal transformation;
-- compulsory facing-the-sun civic ritual as the cause of the Sun Moment;
-- one missed ritual automatically causes petrification and animal rebirth;
-- the player is an acquisition agent sent by an employer / institute to export the sunflower;
-- Fishmonger as central bank, disguised boundary-crosser or escape conspiracy;
-- a giant Grandma / Bar / Clown conspiracy;
+- going outside causes animal transformation;
+- compulsory facing-the-sun civic ritual;
+- one missed ritual -> petrification -> animal;
+- player as employer/institute acquisition agent;
+- Fishmonger as central bank / disguised boundary-crosser / master conspiracy;
+- giant Grandma / Bar / Clown conspiracy;
 - sunflower pre-decided as cure, virus, pathogen or key;
 - Animal society as a one-note oppressed-class allegory;
-- six realms as psychological diagnosis labels;
+- Buddhist six realms as literal required world structure;
+- species/forms as RPG spiritual ranks;
 - NPC release as completing a personality-improvement quest.
 
-When older documents or Git history conflict with `WORLD_LORE_SUN_MOMENT.md` and this document, the current consolidated canon wins.
+When older notes conflict with `WORLD_LORE_SUN_MOMENT.md` and this file, current consolidated canon wins.
