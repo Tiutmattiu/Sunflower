@@ -1,690 +1,874 @@
-# Sunflower — NPC Character & Economy Bible
+# Sunflower — NPC Character & Economy Bible v2
 
-> Companion to `GAME_DESIGN.md`, `SCENARIOS_TEACHING.md`, and `NPC_ENGINE_ROUTE_AUDIT.md`.
+> **Status: active narrative-economic canon, September 2026.**
 >
-> This file captures the narrative-economic character concepts established during the September 2026 freestyle session. These are **character truths and design hypotheses**, not yet final numerical balance.
-
----
-
-# 1. Core Rule: NPCs Are People Before They Are Functions
-
-NPCs are not quest dispensers and are not random market bots.
-
-Each NPC should have:
-
-- a life outside the player;
-- a reason to be at the harbour today;
-- recurring needs and expenses;
-- a source of goods / income;
-- things they personally value beyond resale price;
-- a social network;
-- a stable trading style;
-- incomplete beliefs about the market;
-- deadlines / schedules;
-- an ability to learn;
-- a reason to leave, stay, spend, save, speculate, or refuse a deal.
-
-The player is the seventh market participant entering a world that already moves without them.
-
-No NPC currently shares the player's sunflower objective by default. Their independent goals make the sunflower difficult to obtain indirectly.
-
----
-
-# 2. Dock Dog 🐕
-
-## Narrative identity
-
-Dock Dog is a ship-and-harbour dog who survives by roaming docks, ships, alleys, rubbish piles, and discarded cargo.
-
-Dog is also the local stray-cat rescuer / organiser and has personally taken in roughly seven or eight cats.
-
-This creates a recurring, non-market motive: Dog constantly needs food, cat supplies, bedding / litter-like materials, scraps, and other things useful for keeping the cats alive.
-
-Dog also needs food for themself.
-
-## Economic role
-
-Dog is a **high-volume, low-margin scavenger / junk dealer / informal intermediary**.
-
-Dog acquires:
-
-- discarded objects;
-- food scraps;
-- bones;
-- spoiled / decaying goods;
-- dead small animals / bizarre refuse;
-- ship leftovers;
-- low-value miscellaneous goods;
-- occasionally surprisingly valuable lost or abandoned objects.
-
-Dog is willing to buy things other traders consider worthless, especially if they can be resold in bulk or repurposed.
-
-Dog's basic profit model is simple:
-
-> pick up cheap / free things → trade them somewhere else → repeat at high volume.
-
-Dog is **not initially a sophisticated trader**. Their edge is access and information, not valuation expertise.
-
-## Information role
-
-Dog goes everywhere and knows many people. This makes Dog one of the harbour's strongest gossip / access nodes.
-
-Dog may know:
-
-- where people have been;
-- who is looking for something;
-- which ship arrived;
-- who was seen near the black market;
-- what was thrown away;
-- which trader suddenly has cash;
-- which official is corrupt;
-- which rumour is circulating.
-
-Dog may not always understand the economic significance of what they know.
-
-This creates a strong asymmetry:
-
-> information access: high
-> source evaluation / valuation skill: initially low-to-medium
-
-Dog can improve significantly over time by watching what the player does with information.
-
-## Black-market role
-
-Dock Dog is a natural **gateway to underground trading**.
-
-Dog has relationships with local criminal / informal networks. Candidate factions include seagull-run or squirrel-run gangs operating:
-
-- black-market access;
-- underground lending / money changing;
-- illicit goods;
-- fences for stolen goods;
-- unofficial information brokerage.
-
-The player should not unlock a generic `BLACK MARKET` button. Instead, access can arise socially through Dog or other contacts.
-
-## Daily life without player
-
-If the player never appears, Dog will:
-
-1. forage / scavenge;
-2. find food or useful scraps;
-3. trade low-value goods in volume;
-4. acquire cat food / supplies;
-5. maintain relationships across the harbour;
-6. occasionally stumble into high-value lost objects;
-7. potentially pass information between legitimate and illegitimate networks.
-
-## Stable trading style
-
-**High turnover / low margin / socially informed / cash-poor / inventory-tolerant.**
-
-Dog should remain recognisably Dog even as they become better at business.
-
-Potential growth arc:
-
-> naive junk flipper → socially informed dealer → surprisingly capable information intermediary / small-scale market maker.
-
----
-
-# 3. Fishmonger 🐠
-
-## Narrative identity
-
-Fishmonger owns / operates the fish market stall and is fundamentally **a fish trader / fisher**, not a general-purpose arbitrageur.
-
-Their identity should remain tied to fish even if other goods occasionally become more profitable.
-
-They may personally fish and occasionally pull strange non-fish objects from the water, allowing unusual items / machine parts / lost objects to enter the economy organically.
-
-## Critical world role: source of sardines
-
-Sardines are the harbour's primary currency. Fishmonger is therefore closely connected to the **primary source / conversion point of currency**.
-
-This makes Fishmonger partly analogous to:
-
-- a commodity producer;
-- a mint-like source of the settlement good;
-- an exchange house;
-- a liquidity source.
-
-This requires careful design so Fishmonger does not literally create infinite free money.
-
-The world must eventually define why sardines function as money and how new sardines enter circulation.
-
-## Possible multi-currency / FX direction
-
-A possible later system is to have several fish / settlement commodities with changing exchange rates while sardines remain the dominant unit of account.
-
-Relative abundance could move with:
-
-- catch conditions;
-- season;
-- ship arrival;
-- spoilage;
-- local demand.
-
-Fishmonger could then act partly like a **currency exchange / commodity exchange point**.
-
-This is not yet approved for 1.0; it is a promising expansion only if it can remain legible.
-
-## Stable trading style
-
-Fishmonger should not abandon fish merely because steel rims temporarily have better margins.
-
-Likely traits:
-
-- understands fish quality and fish demand very well;
-- knows local food buyers;
-- manages fresh inventory and spoilage;
-- may be less skilled outside their domain;
-- can learn from repeated market behaviour;
-- may notice downstream demand when the player repeatedly buys the same fish;
-- may gradually improve at pricing / market inference without becoming Vale.
-
-## Daily life without player
-
-Fishmonger:
-
-- catches / sources fish;
-- sells fish;
-- manages perishable inventory;
-- exchanges fish-related settlement goods;
-- occasionally introduces strange recovered items from the harbour / sea;
-- maintains the monetary / food-liquidity backbone of the local market.
-
----
-
-# 4. Sailor / Mechanic ⚙️
-
-## Narrative identity
-
-The current `Ship Mechanic` should be understood more broadly as a **sailor / seafarer who can repair things** rather than a stationary repair-shop owner.
-
-They travel with a ship and will **leave the harbour at a known or discoverable round**.
-
-Their presence is temporary.
-
-## Economic role
-
-The Sailor arrives with varied goods from elsewhere and primarily wants to **sell cargo / foreign or shipborne goods** before departure.
-
-They are not especially motivated by hoarding sardines or becoming wealthy in the harbour.
-
-They mainly need to provision the ship for departure.
-
-Likely purchases include:
-
-- food;
-- clothing / practical supplies;
-- ship necessities;
-- citrus / limes;
-- repair-related materials when relevant.
-
-## Lime need
-
-The Sailor has a hard requirement to acquire limes before departure, originally inspired by preventing scurvy on a sea voyage.
-
-Therefore Lime has unusually high private utility to the Sailor near departure.
-
-The Sailor's willingness to pay should increase as departure approaches if the need remains unsatisfied.
-
-This is a natural deadline-driven valuation mechanic.
-
-## Repair function / Onewheel route
-
-The Sailor can repair or assemble the Clown's broken onewheel, but this should **not be visible as a menu service from the beginning**.
-
-The player may discover the ability socially:
-
-> Sailor asks what the player is trying to do.
+> Companion to `GAME_DESIGN.md`, `NARRATIVE_KARMA_MATRIX.md`, `REBIRTH_FORM_SYSTEM.md`, `WORLD_LORE_SUN_MOMENT.md`, `SCENARIOS_TEACHING.md`, and `ITEM_ECONOMY.md`.
 >
-> Player mentions the wager / broken onewheel.
->
-> Sailor says they can probably repair it if the parts are found.
-
-Repair parts may enter the world organically through:
-
-- Fishmonger pulling something strange from the water;
-- Dock Dog scavenging ship waste;
-- cargo from another trader;
-- formal / black-market purchase.
-
-This turns the route from a checklist into relationship-driven discovery.
-
-## Stable trading style
-
-**Seller-heavy, practical, deadline-driven, moderately skilled, widely trusted.**
-
-The Sailor is not the best trader but most people are willing to do business with them.
-
-Their credibility may come from:
-
-- repeated voyages;
-- practical reliability;
-- being known across ports;
-- limited interest in manipulating local prices;
-- a reputation for completing what they promise before departure.
+> This revision supersedes the earlier generic character labels in this file. Runtime IDs such as `dog`, `mechanic`, `vale`, `clown`, `bar`, and `fishmonger` may remain temporarily for implementation compatibility, but player-facing narrative should use the current identities below.
 
 ---
 
-# 5. Mirelle Vale 🎬
+# 1. Core Character Rule
 
-## Narrative identity
+The named traders are not quest dispensers, moral exemplars, or six finance tutorials wearing costumes.
 
-Mirelle Vale is an art-gallery aristocrat / socialite / auction operator.
+They are people with different ways of making money, different recurring costs, different blind spots, and different reasons they cannot simply stop doing what they do.
 
-She makes money through auctions and operates in privileged, high-end social markets rather than Dock Dog's high-volume low-value world.
+Every major character should have:
 
-She has connections across elite and criminal circles.
+- a real income model;
+- real recurring expenses or obligations;
+- a reason their strategy works often enough to persist;
+- a domain in which they are genuinely competent;
+- a domain in which they are weak or structurally disadvantaged;
+- social relationships that exist before the player arrives;
+- incomplete beliefs rather than engine omniscience;
+- a recognisable rhythm of work and speech;
+- a recurring karmic problem that can return across lives without becoming a morality lesson.
 
-She is wealthy, sophisticated, socially powerful, and not especially pleasant.
+The harbour should therefore support the proposition:
 
-## Economic role
+> **Everybody has a way of making money. Nobody has the whole market figured out.**
 
-Vale's edge comes from:
+The player is entering an economy that already contains several viable business models.
 
-- auction expertise;
-- collector networks;
-- access to wealthy buyers;
-- social status;
-- specialised valuation of prestige goods;
-- strategic relationship building;
-- patient capital;
-- access to investment opportunities;
-- information control.
+No one is the game's official `good capitalist`, `bad capitalist`, `wise poor person`, or `evil rich person`.
 
-She seeks rare / collectible objects and unusual goods rather than bulk necessities.
-
-The temporary presence of the Sailor is therefore strategically interesting to her: seafarers may bring things unavailable locally.
-
-## Whale Oil need
-
-Vale is hosting a prestige film screening using an old projector / historical apparatus whose operation requires sperm-whale oil or a similarly rare old fuel.
-
-This creates an urgent private demand for a rare item brought by the Sailor.
-
-Important design principle:
-
-The oil should have a real world use to Vale, not exist merely as an auction-route key.
-
-## Auction role
-
-Vale runs the sunflower auction route.
-
-This route should eventually teach:
-
-- auction strategy;
-- liquidity;
-- financing;
-- bidder information;
-- bluffing;
-- winner's curse / overpayment;
-- settlement risk;
-- strategic bidding;
-- potentially bidder collusion / dirty trade scenarios.
-
-## Stable trading style
-
-**High sophistication / patient / status-sensitive / information-controlled / high selectivity / strong auction ability.**
-
-Vale should often force others to reveal information first.
-
-She can begin as one of the strongest traders in the harbour and still improve in fraud detection / player-specific modelling.
+A profitable strategy can be exhausting, exploitative, caring, fragile, socially dependent, highly skilled, or all of those at once.
 
 ---
 
-# 6. Onewheel Clown 🤡
+# 2. Aspen — Current Sailor / Mechanic
 
-## Narrative identity
+## Identity
 
-Clown is an alcoholic / heavy drinker, a frequent bar customer, and especially loves Mai Tais.
+Aspen is the current Sailor encountered in the opening harbour cycle.
 
-Clown is also indebted and uses wagers / races as a way to make money.
+She is a lesbian woman, mechanically skilled, highly punctual, and unusually sensitive to:
 
-They are not racing merely for honour. They have a financial motive.
-
-## Long-term goal
-
-The current bar owner is absent / trying to sell the establishment.
-
-Clown's aspirational goal is to make enough money to **buy / take over / invest in the bar**.
-
-This creates a natural bridge into ownership / investment concepts.
-
-Clown may therefore be both:
-
-- a debtor;
-- a gambler / speculator;
-- a would-be entrepreneur / acquisition buyer.
-
-## Mai Tai dependency
-
-Clown wants Mai Tai.
-
-Mai Tai requires a special ingredient that the player must locate / finance / negotiate for through the market, after which the Bar Apprentice can prepare it.
-
-The exact ingredient chain remains to be cleaned up from the prototype.
-
-## Race role
-
-Clown proposes races / wagers because that is part of their income strategy.
-
-They should have **high risk tolerance**, not random behaviour.
-
-Race outcomes should eventually depend on analysable uncertainty rather than a naked random roll:
-
-- equipment condition;
-- route knowledge;
+- time;
 - weather;
-- rider ability;
-- alcohol / condition;
-- sabotage;
-- information quality;
-- odds / betting market.
+- tide;
+- route duration;
+- maintenance intervals;
+- food and sleep timing;
+- small changes in her own body;
+- anything that could make a schedule less predictable.
 
-Clown may also bet on things beyond the race if this fits the final system.
+Her surface rhythm should evoke the nervous exactness of the White Rabbit without turning her into a quotation or costume reference.
 
-## Stable trading style
+Aspen checks clocks, lists, pressure readings, forecasts, body sensations, and departure windows because uncertainty is expensive to her.
 
-**High-risk / leveraged / speculative / opportunistic / willing to bet / weak capital preservation.**
+She does **not** like risk.
 
-Clown can be smart without being prudent.
+She does **not** like the unknown.
 
-Their learning should improve odds assessment and deal structure while preserving appetite for risk.
+She does **not** especially like sailing.
 
----
-
-# 7. Bar Apprentice 🍸
-
-## Narrative identity
-
-The Bar Apprentice works at a bar whose owner is currently absent and intends to sell the business.
-
-The Apprentice is there primarily because they **love bartending, alcohol culture, socialising, and learning the craft**.
-
-They are not primarily motivated by money.
-
-Their family may in fact be wealthy, potentially connected to a winery / alcohol business or another comfortable background.
-
-This creates the useful inversion:
-
-> Vale looks richest;
-> Bar Apprentice may secretly have the strongest family resources.
+This is important because `Sailor` remains a liminal form/function in the larger cosmology. Aspen should not romanticise mobility merely because she occupies a boundary-crossing role.
 
 ## Economic role
 
-The Apprentice is likely:
+Aspen prefers steady, legible, repeatable cash flow.
 
-- not highly profit-maximising;
-- relationship-oriented;
-- socially connected;
-- knowledgeable about drinks / ingredients;
-- willing to trade value for experiences / favours / relationships;
-- capable of providing production transformation (ingredients → cocktails);
-- potentially an important source of soft information from customers.
+Her strongest money-making methods are:
 
-They may eventually become one of the NPCs everyone likes doing business with despite only average trading sophistication.
+- scheduled shipping and delivery contracts;
+- commissions to source specific goods abroad;
+- low-volatility cross-port trade;
+- repair work she can scope before accepting;
+- reliable future delivery;
+- conservative private lending or financing only where she understands the underlying activity;
+- repeat counterparties whose behaviour she has already observed.
 
-## Grandma route
+She is willing to leave some upside on the table in exchange for lower uncertainty.
 
-The Grandma Supper route should grow naturally from the Apprentice's family / personal life rather than appearing as a checklist.
+She should often reject trades that Juan would love and Yasmin would at least analyse.
 
-The player may build a relationship, learn about Grandma, help with drinks / food, and eventually receive an invitation.
+Her edge is not bravery. It is reliability, preparation, and the willingness to do the same useful thing correctly many times.
 
-This route remains the strongest candidate for a non-market resolution of the sunflower goal.
+## Patronage and lovers
 
----
+Aspen is also a patron with several mistresses or maintained lovers across different places.
 
-# 8. Relative Wealth / Reputation — Current Hypotheses
+This should not be written simply as glamorous promiscuity.
 
-Not fully final.
+The important structure is obligation.
 
-Current narrative direction:
+She remembers:
 
-- **Poorest:** Dock Dog.
-- **Looks richest / strongest visible wealth:** Mirelle Vale.
-- **Potentially richest background / hidden family resources:** Bar Apprentice.
-- **Most sophisticated trader:** Vale.
-- **Most broadly trusted despite only moderate trading skill:** Sailor / Mechanic.
-- **Highest risk appetite / most speculative:** Clown.
-- **Most socially connected at street / informal level:** Dock Dog.
-- **Most privileged social-network access:** Vale.
+- who needs rent;
+- who asked for medicine;
+- who wants a particular object from another port;
+- birthdays and return dates;
+- who is ill;
+- who expects her on which week;
+- which promise must be fulfilled before the next departure.
 
-Still missing:
+Her personal relationships can become another logistical network.
 
-- who is cash-rich but asset-poor;
-- who is asset-rich but liquidity-poor;
-- who is secretly overleveraged;
-- whether a new NPC should embody explicit investment / speculation expertise, or whether Clown + Vale already cover enough of that space.
+She can experience genuine satisfaction in being useful, necessary, and dependable.
 
----
+## Karmic pressure
 
-# 9. Pre-existing Social Network — Not Yet Designed
+Aspen's attachment is not adventure and not primarily greed.
 
-This is now a critical missing piece.
+It is closer to:
 
-The harbour needs a network before the player arrives.
+> **I know what I am for when somebody needs me to do something.**
 
-Likely connections already implied:
+This makes her a strong Sun-Moment character.
 
-- Dog knows underground / criminal actors.
-- Vale has some connection to criminal and elite networks.
-- Clown frequents the Bar and knows the Apprentice.
-- Sailor is valuable to Vale because of rare foreign cargo.
-- Sailor is generally trusted by local traders.
-- Apprentice hears customer gossip through the Bar.
+She may be one of the least conventionally greedy people in the harbour while still being unable to stop because a schedule, person, machine, cargo, or promise depends on her.
 
-Still to design explicitly:
+The recurring problem is not `learn to relax`.
 
-- friendships;
-- grudges;
-- debts;
-- family ties;
-- previous failed deals;
-- gossip pathways;
-- authority relationships;
-- who trusts which information source;
-- which networks overlap and which remain separate.
+It is whether usefulness can remain a choice rather than becoming the only stable proof that she should exist.
 
-This network is necessary so rumours and reputation propagate through relationships rather than teleporting globally.
+## Weaknesses
 
----
+Aspen is structurally weak at:
 
-# 10. Market Day Variability
+- highly ambiguous speculation;
+- open-ended ventures with no clear timetable;
+- businesses whose outcomes depend on social fashion she cannot model;
+- large unhedged tail risks;
+- situations where the correct move is to wait without knowing for how long;
+- accepting that another person may want her without needing a service.
 
-Runs should not begin identically.
+## Dialogue / scene rhythm
 
-Characters remain recognisable, but starting conditions can vary:
+Aspen should rarely make grand speeches.
 
-- ship arrival / departure timing;
-- Sailor inventory;
-- fish catch;
-- available strange salvage;
-- Vale's current prestige event;
-- Bar sale conditions;
-- Clown's debt pressure;
-- Dog's scavenged finds;
-- active rumours;
-- Authority scrutiny;
-- available credit;
-- weather / race conditions;
-- temporary shortages.
+Useful recurring details:
 
-The player should learn **market structure and people**, not memorise a deterministic answer sheet.
+- checks the time before answering;
+- asks for exact quantities;
+- notices weather before anyone else;
+- leaves conversations on schedule;
+- gives unusually specific arrival windows;
+- treats physical symptoms as operational information;
+- has low tolerance for phrases such as `probably`, `sometime`, and `we'll see`.
+
+The comedy comes from the fact that she is a Sailor who dislikes the sea and a boundary-crosser who tries to make every boundary crossing routine.
 
 ---
 
-# 11. NPCs Do Not Compete for the Sunflower by Default
+# 3. Sterling — Bar Operator / Apprentice
 
-No current major NPC begins with the same stated objective as the player.
+## Identity
 
-They do not know the player wants the sunflower unless the player reveals it or their behaviour makes it inferable.
+Sterling is a young man working the Bar.
 
-Their independent actions can nevertheless:
+The Seagull gang unexpectedly hired or installed him to operate it. The exact transaction behind that appointment can remain partly opaque at first; the world does not need to explain every absurd institutional fact immediately.
 
-- buy needed route items;
-- consume scarce inputs;
-- alter prices;
-- close arbitrage;
-- change auction conditions;
-- create / remove credit;
-- strengthen competitors;
-- trigger Authority action;
-- make a route harder or easier.
+The name `Sterling` deliberately sits close to `stirring` without becoming a joke every character must comment on.
 
-This is preferable to artificially making everyone race for the same quest object.
+Sterling combines some of the social position of Jia Baoyu with a Myshkin-like disruption of ordinary instrumental thinking, but he must remain his own character.
 
----
+He has unusually strong empathy and is highly responsive to sensory experience.
 
-# 12. Emerging Character-Economy Contrast
+He likes:
 
-The six characters now represent meaningfully different economic worlds:
+- tastes;
+- smells;
+- textures;
+- alcohol craft;
+- new people;
+- unfamiliar techniques;
+- strange invitations;
+- trying something once to see what happens.
 
-| NPC | Economic world | Natural lesson space |
-|---|---|---|
-| Dock Dog | scavenging, low-margin turnover, informal networks | volume, spread, information access, black markets |
-| Fishmonger | food production, perishables, settlement commodity | supply, inventory, liquidity, commodity / currency ideas |
-| Sailor | temporary foreign supply, provisioning, deadlines | scarcity, private utility, deadline pricing, trust |
-| Vale | elite auctions, collectibles, privileged networks | auctions, valuation, financing, information strategy |
-| Clown | debt, gambling, acquisition ambition | risk, leverage, odds, speculation, entrepreneurship |
-| Bar Apprentice | production, relationships, low money motive | non-financial utility, transformation, relationship capital |
+He comes from money.
 
-This is strong because the NPC cast can teach different economic intuitions without becoming tutorial characters.
+He is therefore capable of making decisions that look irrational to poorer traders because the same loss does not threaten him in the same way.
 
----
+## Moral position
 
-# 13. Critical Design Questions Produced by This Freestyle
+Sterling is **not** the moral centre of the game.
 
-These must be resolved before detailed NPC implementation.
+He does not need a strong conventional good/evil framework.
 
-1. **What exactly makes sardines money?**
-   - Are sardines literal preserved fish?
-   - Who accepts them and why?
-   - Can Fishmonger create them at will?
-   - What constrains supply?
-   - Are they commodity money, minted tokens backed by fish, or a joke world convention?
+He can be generous without thinking `this is virtue`.
 
-2. **Does 1.0 need multiple currencies?**
-   - FX / exchange-rate gameplay is attractive but may duplicate commodity speculation and dramatically increase cognitive load.
+He can do something reckless, selfish, or strange because it interests him.
 
-3. **Who supplies Lime?**
-   - Lime must exist for reasons beyond Sailor route gating.
-   - Who imports / grows / holds it, and who else wants it?
+He may understand that a person is lying and still decide the interaction is worth continuing.
 
-4. **What is the exact Mai Tai supply chain?**
-   - Which special ingredient is scarce?
-   - Why is it scarce today?
-   - Who normally supplies it?
+He may also hurt someone through inattention, curiosity, refusal to choose, or an inability to see why a boundary matters to them.
 
-5. **How does the Bar sale work?**
-   - Asking price?
-   - Existing debt / revenue?
-   - Does the player or Clown have access to financial statements?
-   - Can multiple NPCs bid / invest?
-   - Can the player finance Clown or buy a stake?
+## Economic role
 
-6. **Does Sunflower 1.0 need another explicitly investment-oriented NPC?**
-   - Vale already covers sophisticated capital / auctions.
-   - Clown covers speculation / leverage.
-   - Adding another may broaden concepts but risks character bloat.
+Sterling begins as a chaotic earner rather than a disciplined trader.
 
-7. **What social relationships exist before Round 1?**
+His early economic behaviours can include:
 
-8. **What is one round in story time and action economy?**
+- Bar service revenue;
+- cocktail production;
+- accepting odd forms of payment;
+- extending informal credit;
+- taking small speculative positions because they sound interesting;
+- investing in a person or idea before fully understanding it;
+- spending on experiences rather than maximising cash;
+- entering partnerships without the usual degree of suspicion.
 
-9. **What goods are sourced, transformed, consumed, and permanently sunk each run?**
+His critical long-run trait is **learning speed**.
 
-10. **What information can each NPC observe without spending an action?**
+Sterling must not remain a permanent rich idiot.
 
-11. **What does each NPC optimise?** Money cannot be the sole utility function.
+A plausible trajectory is:
 
-12. **What does each NPC consider an unacceptable outcome?**
+> weak framework → repeated experience → rapid pattern acquisition → dangerous flexibility.
 
----
+He can eventually become a powerful competitor, large investor, skilled bartender-business operator, or catastrophic source of misallocated capital depending on what he repeatedly experiences and whom he learns from.
 
-# 14. Provisional Utility Functions — Narrative First
+## Social effect
 
-NPC decision-making should not reduce to `maximise sardines`.
+Sterling should be polarising rather than universally lovable.
 
-A useful conceptual model is:
+Some people trust or enjoy him quickly.
 
-`utility = money + goal progress + survival / obligations + relationship value + personal utility + strategic option value - risk - time pressure - reputation / legal cost`
+Others find him:
 
-Weights differ dramatically by NPC.
+- irritating;
+- unserious;
+- spoiled;
+- impossible to model;
+- offensively casual about losses that would ruin them;
+- too open;
+- too easily distracted;
+- too willing to invite the wrong person into the room.
 
-Examples:
+His family wealth also attracts people who want:
 
-### Dock Dog
-High weight on:
-- cat food / supplies;
-- immediate usable goods;
-- small positive margins at high turnover;
-- relationships / access;
-- information;
-- avoiding total cash starvation.
+- his capital;
+- his introductions;
+- Bar access;
+- social legitimacy;
+- a naive co-investor;
+- a rescue lender;
+- a partner they expect to control.
 
-Lower initial weight on:
-- sophisticated long-term portfolio optimisation.
+## Karmic pressure
 
-### Fishmonger
-High weight on:
-- fish business continuity;
-- inventory turnover;
-- avoiding spoilage;
-- maintaining exchange / settlement role;
-- domain-specific profit.
+Sterling's unusual strength is a low instrumental reflex.
 
-### Sailor
-High weight on:
-- provisioning before departure;
-- liquidating excess cargo;
-- reliability;
-- leaving on time.
+He does not automatically convert every piece of information, care, or intimacy into leverage.
 
-Money matters, but missing departure-critical supplies matters more.
+His recurring danger is that care and openness can become refusal to choose.
 
-### Vale
-High weight on:
-- profit;
-- rare acquisitions;
-- prestige;
-- maintaining elite network position;
-- optionality;
-- information advantage.
+He may:
 
-### Clown
-High weight on:
-- upside;
-- immediate liquidity;
-- debt escape;
-- funding bar acquisition;
-- thrill / risk preference.
+- lend when refusal would be healthier;
+- keep Juan's cycle running because he understands why Juan is struggling;
+- make incompatible promises;
+- preserve the Bar at other people's cost;
+- absorb losses that eventually fall on staff or family;
+- confuse empathy with responsibility for another person's entire life.
 
-High tolerance for downside.
+The knot is not solved by teaching him to become Yasmin.
 
-### Bar Apprentice
-High weight on:
-- relationships;
-- craft / learning;
-- interesting ingredients;
-- social experience;
-- helping people they like.
+Competence must not require cynicism.
 
-Profit maximisation is relatively low priority.
+## Romance / intimacy rule
+
+Sterling is not a romance route.
+
+If attraction or intimacy develops, it should grow from repeated attention and shared situations.
+
+The player may spend three mornings talking to Sterling and miss three profitable investigations. The engine can remember the shared time but must not infer `the player is in love`.
+
+The player can also ignore Sterling and concentrate on making money.
+
+## Penguin Grandma
+
+Grandma is a Penguin.
+
+Sterling's family continues to call her Grandma even where formal human institutions treat the former legal person as dead and the present animal as legally distinct.
+
+The Grandma/Fish route should first appear through ordinary behaviour:
+
+- Sterling closes early;
+- a specific fish is bought repeatedly;
+- the skin is removed;
+- a Penguin is present;
+- the family calls her Grandma.
+
+Do not turn this immediately into a speech proving or disproving soul continuity.
 
 ---
 
-# 15. Key Implementation Principle
+# 4. Yasmin — Capital Owner / Social Allocator
 
-The engine should be able to explain an NPC action in human terms.
+## Identity
 
-For internal debugging, every major NPC decision should be able to produce a hidden reasoning summary such as:
+Yasmin replaces the earlier `Mirelle Vale` identity.
 
-> Sailor bought Lime at 8 because departure is in 2 rounds, no confirmed alternative supplier exists, current belief assigns a 70% chance of no future supply, and player is considered reliable.
+She is the second child in a wealthy or commercially important family.
 
-or:
+She has spent years learning how to remain useful to people above, beside, and adjacent to her family's position.
 
-> Dog bought three low-value scraps because cat-supply need is high, resale spread is small but positive, cash reserve remains above Dog's minimum, and the goods are easy to move through the informal network.
+She is polished, socially competent, and usually pleasant in ordinary interaction.
 
-The player need not see this explanation directly. It exists so designers can verify that the market is behaving logically rather than randomly.
+Do **not** write her as a sneering aristocrat.
+
+Most people should be able to meet Yasmin and conclude that she is gracious, observant, and good company.
+
+Her strategic social behaviour becomes most visible around people whose approval, capital, status, access, or patronage matters to her.
+
+## Previous form
+
+Yasmin lived a previous life as an Animal.
+
+A hyena is the current strongest candidate, but the exact species remains provisional.
+
+The value of the hyena direction is not `hyena = cruel`.
+
+It is the structural echo between:
+
+- clan hierarchy;
+- social ranking;
+- access to resources through group position;
+- reading who can approach what and when;
+- highly social competition.
+
+Her current upper-class human life may therefore reproduce an older social ecology in a new form.
+
+## Economic role
+
+Yasmin specialises in wealth that can produce more wealth without requiring her to personally sell low-margin goods all day.
+
+Possible methods include:
+
+- family business ownership;
+- minority equity stakes;
+- rental or lease income;
+- auction commissions;
+- private placements;
+- provenance-heavy collectibles;
+- secured lending;
+- selective distressed acquisition;
+- information control;
+- high-end intermediation;
+- arranging access between people who would not otherwise transact.
+
+This is `passive income` only at the asset level.
+
+Maintaining the social structure that protects those assets is labor.
+
+Yasmin spends substantial time on:
+
+- dinners;
+- screenings;
+- private events;
+- introductions;
+- remembering family facts;
+- making the correct people feel recognised;
+- protecting reputation;
+- keeping useful relationships warm.
+
+Her wealth can therefore be economically passive while her life is socially exhausting.
+
+## Family pressure
+
+As the second child, Yasmin may have learned that recognition is not automatic.
+
+Early motivation can include pleasing parents, senior relatives, or family decision-makers to receive greater control, trust, capital, or status.
+
+Later, even after she has secured her own position, the maintenance behaviour can persist because the position now requires continual reproduction.
+
+## Intimacy problem
+
+Yasmin is very good at modelling incentives.
+
+This makes intimacy difficult.
+
+If somebody wants her:
+
+> What do they want from her?
+
+If somebody helps her:
+
+> What are they buying?
+
+If somebody asks for nothing:
+
+> What is the hidden price?
+
+This should not make her incapable of affection. It makes affection hard to distinguish from strategy from inside her own model of the world.
+
+Sterling can be particularly destabilising because his motives may be genuinely under-specified even to himself.
+
+## Weaknesses
+
+Yasmin should not be best at every business.
+
+She is comparatively weak at:
+
+- high-turnover low-margin operations;
+- dirty physical work;
+- businesses where tiny unit economics matter more than access;
+- volatile operations that cannot be made respectable by structure;
+- situations where the best information lives in networks that do not care about her status;
+- accepting value that cannot be traced, certified, introduced, or socially located.
+
+## Karmic pressure
+
+Yasmin's knot concerns:
+
+- provenance;
+- ownership;
+- status;
+- proof;
+- incentive;
+- control;
+- the cost of maintaining position.
+
+A future player transformation can make this especially sharp: Yasmin may privately believe that Animal-you is continuous with a former human while still refusing to treat the new legal person as the owner of the old estate.
+
+Belief and settlement are not the same thing.
+
+---
+
+# 5. Wong — Dock Dog / Migrant Dealer
+
+## Identity
+
+Wong is Dock Dog.
+
+He has many dependents and high recurring household costs.
+
+His world includes children, rescued animals, food expenses, informal obligations, and the constant practical work of keeping several lives going.
+
+He believes that rescuing animals kept or exploited by humans — including birds and cats — can accumulate merit.
+
+This belief can be sincere, useful, self-serving, compassionate, compulsive, or several of those things at once.
+
+## Economic role
+
+Wong is a high-turnover, low-margin operator.
+
+He is not poor because he cannot make money.
+
+Money moves through him quickly.
+
+His methods include:
+
+- scavenging;
+- rubbish picking;
+- resale of low-value objects;
+- odd jobs;
+- dirty work other people refuse;
+- informal delivery;
+- small brokerage;
+- animal-network information;
+- buying in tiny lots and reselling repeatedly;
+- bargaining over almost everything;
+- recovering value from goods other traders ignore.
+
+The correct mental model is often:
+
+> earn 1🥫 twenty times
+
+rather than:
+
+> risk everything for 30🥫 once.
+
+## Survival economics
+
+Wong's business can show high gross turnover while his personal liquid wealth remains low.
+
+That is not a contradiction.
+
+He has a high burn rate.
+
+If he stops turning over inventory for too long, household and rescue costs catch him.
+
+This makes him a good expression of:
+
+- working capital;
+- thin margins;
+- volume;
+- cash conversion;
+- recurring consumption;
+- informal labour;
+- bargaining;
+- the difference between revenue and retained wealth.
+
+## Karmic pressure
+
+Wong's attachment is responsibility mediated through accounting.
+
+He may genuinely care for vulnerable animals while also thinking in terms of merit, obligation, and the number of lives he can support.
+
+More money may not solve his knot because more capacity can produce more dependents.
+
+The recurring question is not whether rescue is good or bad.
+
+It is whether care can stop expanding into an obligation that makes stopping impossible.
+
+## Social role
+
+Wong has broad contact with:
+
+- animal networks;
+- informal workers;
+- rubbish and salvage streams;
+- Seagull contacts;
+- people who need cheap labour;
+- people who need something moved quietly;
+- Sterling's Bar;
+- Juan;
+- Sailors passing through.
+
+He can plausibly be one of the people who knows where to find the psychedelic toads used socially by Juan, Aspen/Sailor circles, and himself.
+
+The toad should remain a recurring material fact, not a quest item labelled `psychedelic enlightenment`.
+
+---
+
+# 6. Juan — Onewheel Clown / Former Dentist
+
+## Identity
+
+Juan is the current design name for the Onewheel Clown.
+
+Before this identity, he was a dentist.
+
+That previous career matters because it establishes a credible earlier life of:
+
+- technical professional skill;
+- predictable income;
+- respectable social position;
+- clinic assets;
+- routine;
+- a profession with ordinary status and solvency.
+
+He later developed serious addiction problems and is publicly understood as bankrupt or perpetually broke.
+
+He should not be reduced to `addict = irresponsible idiot`.
+
+Juan can be genuinely sophisticated in specific financial structures while still having a reward horizon that repeatedly destabilises long-term plans.
+
+## Economic role
+
+Juan lives inside liabilities.
+
+His key insight is simple:
+
+> **One person's liability is another person's asset.**
+
+If Juan owes several people money, those claims appear as assets on their side of the relationship.
+
+This can create a strange form of bargaining power when too many people become invested in his continued ability to pay.
+
+Possible money-making / survival methods include:
+
+- leverage;
+- rolling debt forward;
+- refinancing;
+- distressed-debt negotiation;
+- repurchasing his own debt below face value when creditors lose confidence;
+- wagers;
+- races;
+- speculative positions;
+- selling optionality or future claims;
+- exploiting differences between secured, unsecured, formal, and informal creditors;
+- persuading creditors that restructuring is worth more than immediate collection.
+
+## Debt ecology
+
+Juan's debt should eventually be distributed across different counterparties rather than represented by one generic `Debt = 42` number.
+
+For example, claims may differ by:
+
+- creditor;
+- collateral;
+- due date;
+- legal enforceability;
+- relationship;
+- seniority in practice;
+- whether the creditor needs cash now;
+- whether the creditor believes Juan can recover.
+
+This allows creditor coordination problems without building a bankruptcy simulator.
+
+A creditor may rationally prefer to extend Juan rather than destroy the value of their own claim.
+
+Another may try to collect first before everyone else does.
+
+## Addiction and planning
+
+Juan can make a brilliant long-horizon restructuring decision in the morning and destroy its liquidity logic in the afternoon.
+
+The problem is not necessarily lack of intelligence.
+
+His planning horizon and immediate reward system can disagree.
+
+This makes him a strong source of evidence for separating:
+
+- skill;
+- outcome;
+- self-control;
+- liquidity;
+- leverage;
+- risk appetite;
+- addiction;
+- luck.
+
+## Clown / liberation knot
+
+Juan remains the strongest expression of liberation converted into acquisition.
+
+He has learned that ordinary wealth does not solve the repeating problem.
+
+He therefore pursues:
+
+- cliff experiments;
+- wagers;
+- speed;
+- intoxication;
+- psychedelic toads;
+- altered states;
+- Sun-Moment timing;
+- theories of exit.
+
+The mistake is not that every strange experience is false.
+
+The recurring pattern is that he turns experience immediately into method:
+
+> What dose? What time? Which cliff? Again under what conditions?
+
+He tries to optimise escape.
+
+## Toad circle
+
+Juan frequently uses psychedelic toads with Wong and Sailor/Aspen circles.
+
+The same toad should not mean the same thing to each person.
+
+For Juan it tends to become experiment and evidence.
+
+For Wong it can be ordinary animal-network culture, recreation, exchange, habit, or sociality.
+
+For Aspen it can be tightly bounded, scheduled, or treated as another bodily variable rather than a sacred event.
+
+Do not write the toad as a moral lesson about drugs or a guaranteed route to truth.
+
+---
+
+# 7. Fishmonger — Monopoly Operator / Real-Economy Chokepoint
+
+## Identity
+
+Fishmonger is not the harbour's innocent practical straight man.
+
+They operate a monopoly or near-monopoly around an essential part of the fish economy.
+
+The exact legal mechanism can remain provisional, but the economic fact should be clear:
+
+> **other people may be able to catch, eat, or sell fish, but Fishmonger controls a chokepoint that makes scale, storage, settlement, or regular market access much easier through them than around them.**
+
+This keeps the character grounded in physical production while giving them a distinctly different way of making money.
+
+## Possible monopoly structure
+
+The strongest implementation direction is a combination of several practical advantages rather than a magical exclusive right:
+
+- control of the best cold-storage / ice capacity;
+- preferred dock purchasing relationships;
+- long-term supply contracts;
+- first access to large catch lots;
+- control of regular wholesale distribution;
+- influence over sardine-tin conversion / settlement supply;
+- the ability to wait while small sellers must liquidate perishables quickly;
+- enough working capital to buy when others cannot store inventory.
+
+The exact bundle should be simplified for play, but the result is recognisable market power.
+
+Fishmonger can therefore earn from:
+
+- producer margin;
+- wholesale spread;
+- storage access;
+- monopsony-like buying power over small fish suppliers;
+- monopoly/oligopoly pricing to downstream buyers;
+- control of a settlement commodity that everyone needs.
+
+## Why this is not unlimited power
+
+Fish still rot.
+
+Weather still changes catch.
+
+Ice still costs money.
+
+Workers still need paying.
+
+Sailors can import substitutes.
+
+Animals can create informal channels.
+
+Wong can route small lots around formal distribution.
+
+A monopoly can be powerful without making physical constraints disappear.
+
+This makes Fishmonger the strongest expression of:
+
+> **market power sitting on top of real material bottlenecks.**
+
+## Economic lesson space
+
+Fishmonger can naturally produce situations involving:
+
+- monopoly pricing;
+- barriers to entry;
+- vertical integration;
+- essential facilities;
+- monopsony power;
+- working capital;
+- inventory spoilage;
+- price discrimination where believable;
+- supplier dependence;
+- substitution;
+- informal competition;
+- the difference between controlling a market and controlling nature.
+
+## Social presentation
+
+Fishmonger does not need to act theatrical or villainous.
+
+They can be ordinary, competent, practical, and very willing to use a structural advantage.
+
+A person can complain sincerely about thin margins while simultaneously using market power against suppliers.
+
+A person can be excellent at fish and still be bad for anyone trying to enter the fish business.
+
+## Karmic pressure
+
+Fishmonger's knot is provisionally about turning necessity into control.
+
+Because everybody needs food, cold chain, settlement goods, or market access, a practical service can gradually become a position other people cannot easily refuse.
+
+The knot should not reduce to `monopoly bad`.
+
+A fragmented fish market may genuinely waste food, destroy cold-chain efficiency, and make supply less reliable.
+
+The recurring question is how much coordination becomes dependence, and how much dependence becomes power that perpetuates itself.
+
+---
+
+# 8. Current Economic Contrast
+
+| Character | Primary earning logic | Why it works | Main structural weakness | Recurring karmic pressure |
+|---|---|---|---|---|
+| **Aspen** | scheduled shipping, commissions, reliable contracts, conservative finance | precision, routine, trust, boundary access | ambiguity, tail risk, open-ended waiting | usefulness / obligation / inability to stop being needed |
+| **Sterling** | Bar operations, experiments, informal deals, later investment | sensory curiosity, social access, fast learning, family capital | weak early framework, poor boundaries, exploitable openness | care / experience / refusal to choose |
+| **Yasmin** | family assets, equity, auctions, secured finance, high-end intermediation | capital ownership, provenance, elite social maintenance | low-margin operations, unstructured informal markets, distrust of unpriced motives | status / proof / incentive / control |
+| **Wong** | high-volume low-margin trade, salvage, odd jobs, informal brokerage | turnover, bargaining, labour, broad network | high burn rate, little room for catastrophic loss | responsibility / merit accumulation / endless dependents |
+| **Juan** | leverage, restructuring, distressed debt, wagers, optionality | financial creativity, creditor interdependence, risk tolerance | addiction, horizon mismatch, solvency fragility | escape / repetition / turning freedom into a project |
+| **Fishmonger** | monopoly/near-monopoly over fish chokepoint, wholesale spread, storage and supply control | market power plus physical infrastructure | perishability, weather, substitutes, informal bypass | necessity becoming control |
+
+This table is not a class system.
+
+A character may learn another person's technique without becoming that person.
+
+The point is that the harbour contains several economically coherent ways to survive and accumulate.
+
+---
+
+# 9. Pre-existing Social Network — Current Direction
+
+The social graph should exist before the player arrives.
+
+Strong current links:
+
+- **Wong ↔ Seagull networks:** work, rescue, informal trade, black-market introductions.
+- **Sterling ↔ Seagulls:** Sterling's unexpected Bar appointment gives the Seagulls a concrete reason to remain socially relevant.
+- **Sterling ↔ Penguin Grandma / family:** care, food, legal discontinuity, non-market allocation.
+- **Juan ↔ Sterling:** Bar tab, alcohol, rescue/enabling tension, possible financing.
+- **Juan ↔ Wong:** informal network, scavenged goods, toads, cheap labour/information, mutual familiarity.
+- **Juan ↔ Sailor/Aspen circle:** wagers, repairs, toad use, transport, boundary experiments.
+- **Aspen ↔ Yasmin:** repeat cross-boundary trade can make Aspen one of Yasmin's reliable sourcing counterparties even if their risk appetites differ strongly.
+- **Yasmin ↔ family/elite network:** economic maintenance work that does not depend on player attention.
+- **Fishmonger ↔ almost everyone:** food, ice, settlement goods, wholesale access, or market power create unavoidable contact without requiring friendship.
+- **Wong ↔ Fishmonger:** structurally tense potential relation between thin-margin informal circulation and an incumbent chokepoint operator.
+
+These links should create gossip, credit, conflict, and information pathways. They should not imply that every pair are close friends.
+
+---
+
+# 10. Character Writing Rules
+
+## Do not explain personality directly in dialogue
+
+Prefer behaviour.
+
+Aspen checks the tide sheet.
+
+Sterling offers somebody a drink before asking whether they can pay.
+
+Yasmin remembers the patron's daughter's school.
+
+Wong argues over half a tin because it matters at volume.
+
+Juan renegotiates a debt that everyone else assumed was fixed.
+
+Fishmonger changes the wholesale condition instead of saying `I have market power`.
+
+## Do not make economic behaviour equal morality
+
+- Yasmin can be socially warm and strategically self-interested.
+- Sterling can be generous and harmful.
+- Wong can rescue animals and still calculate merit.
+- Aspen can be reliable and compulsively unable to stop serving others.
+- Juan can be brilliant and destructive.
+- Fishmonger can improve supply reliability and exploit monopoly power at the same time.
+
+## Dialogue should remain short and state-aware
+
+The richer story should come from:
+
+- repeated scenes;
+- market consequences;
+- objects returning;
+- obligations;
+- public tape;
+- social memory;
+- legal identity changes;
+- who knows what;
+- who is present.
+
+Do not turn the character bible into permission for long exposition speeches.
+
+---
+
+# 11. Locked / Provisional / Unresolved
+
+## Locked in this revision
+
+- Aspen is the current female Sailor/Mechanic identity; she is lesbian, highly scheduled, risk-averse, body/weather/time sensitive, dislikes sailing, earns through reliable cross-boundary work, and maintains multiple lovers through material support and obligation.
+- Sterling is the male Bar operator/apprentice, unexpectedly hired by Seagull interests, wealthy-background, highly empathic and sensory, morally non-didactic, initially chaotic economically, and capable of very rapid learning.
+- Yasmin replaces Mirelle Vale as the high-capital/social-allocation character.
+- Wong is Dock Dog, high-turnover/low-margin, high-cost, bargain-heavy, migrant-coded, rescue-oriented, and connected to informal animal networks.
+- Juan is the current Onewheel Clown identity and a former dentist with addiction, debt, leverage, and restructuring as part of his real economic life.
+- Fishmonger is a monopoly/near-monopoly operator around a fish-economy chokepoint, not an innocent neutral producer.
+- Every major participant has a distinct way of making money.
+- No character's earning method is the game's official correct method.
+
+## Provisional
+
+- Yasmin's previous Animal form is a hyena.
+- The exact composition of Fishmonger's monopoly: cold storage, distribution, dock contracts, settlement conversion, or some subset.
+- Exact number and geography of Aspen's mistresses/lovers.
+- Sterling's exact legal/employment relationship with the Seagull gang and Bar ownership.
+- Juan's detailed creditor stack and which debts are formal, secured, or informal.
+
+## Unresolved
+
+- The final karmic-resolution condition for each named knot.
+- Whether named NPC biological forms change in later cycles and under what causes.
+- The final metaphysical status of Sailor as a form/function.
+- The exact relationship between Yasmin's former Animal life and current autobiographical memory.
+- Fishmonger's deeper cross-life history beyond monopoly power.
+- The extent to which Penguin Grandma retains autobiographical memory versus behavioural/emotional continuity.
