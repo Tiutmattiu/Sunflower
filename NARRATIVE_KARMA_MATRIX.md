@@ -1,10 +1,10 @@
-# Sunflower — Narrative Karma Matrix
+# Sunflower — Narrative Karma Matrix v2
 
-> **Status: first narrative canon batch, September 2026.**
+> **Status: active narrative canon, September 2026.**
 >
 > This document defines how Sunflower should produce story from repeated market situations, changing forms, recurring characters, and unfinished actions. It is not a chapter outline and not a quest list.
 >
-> It is intended to sit between `GAME_DESIGN.md`, `NPC_CHARACTER_BIBLE.md`, `REBIRTH_FORM_SYSTEM.md`, and `WORLD_LORE_SUN_MOMENT.md`.
+> Companion to `NPC_CHARACTER_BIBLE.md`, `GAME_DESIGN.md`, `REBIRTH_FORM_SYSTEM.md`, and `WORLD_LORE_SUN_MOMENT.md`.
 >
 > **Core narrative rule:** the same concrete thing should be able to return in another life with a different economic, legal, social, or metaphysical meaning.
 
@@ -18,7 +18,7 @@ Sunflower should not be organised primarily as:
 
 > Act I → Act II → boss → revelation → ending.
 
-Its strongest narrative form is closer to a spiral.
+Its stronger form is a spiral.
 
 The player repeatedly encounters:
 
@@ -31,88 +31,51 @@ The player repeatedly encounters:
 - the same Sun Moments;
 - the same kinds of pressure;
 
-but the player returns with a different body, legal identity, knowledge, access, relationship history, and economic position.
-
-The repeated situation should become legible only gradually.
+but returns with different knowledge, form, legal identity, access, relationships, and capital.
 
 A problem that first appears to be about price may later become a problem about ownership.
 
-A problem that first appears to be about ownership may later become a problem about identity.
+A problem about ownership may later become a problem about identity.
 
-A problem that first appears to be about identity may later become a problem about the need to secure identity at all.
+A problem about identity may later become a problem about why identity must be secured at all.
 
-The game should therefore reuse strong material situations instead of constantly inventing new lore locations.
+Strong material situations should therefore recur instead of being discarded after one quest.
 
----
+## 1.2 Named NPCs are recurring karmic knots
 
-## 1.2 NPCs are recurring karmic knots, not disposable character arcs
-
-Major NPCs are stable recurring problems through which unfinished patterns return.
-
-They are not ordinary quest-givers whose personal arc is completed after one side quest.
-
-They generally continue to exist across lives.
+Aspen, Sterling, Yasmin, Wong, Juan, and Fishmonger are not disposable arcs.
 
 They should not permanently disappear because of:
 
-- a random accident;
 - ordinary bankruptcy;
 - losing one race;
+- a random accident;
 - a failed contract;
-- a dramatic cutscene;
-- the player selecting a morally approved dialogue option.
+- one dramatic scene;
+- a single morally approved dialogue choice.
 
-If a major NPC ever ceases to recur for the player, that should represent a genuine structural resolution of the knot, not event RNG.
+They recur because the player's relation to the knot remains reproducible.
 
-The NPC does not need to be morally improved, cured, redeemed, killed, or enlightened.
+If a named knot ever ceases to recur, that should represent a genuine structural resolution rather than event RNG.
 
-A knot is resolved when the player and that recurring situation can no longer reproduce the same relation in the old way.
-
-This should be rare.
-
----
+The NPC does not need to be morally improved, cured, redeemed, killed, or made enlightened.
 
 ## 1.3 Market state creates plot
 
-Large story events should arise from the same state that drives trade.
+Major story pressure should arise from the same state that drives trade.
 
-Do not schedule:
+Examples:
 
-> Day 6: Cat Crisis.
+- Wong's rescue crisis emerges from cash, food, dependents, supply, time, and social support.
+- Sterling's Bar trouble emerges from revenue, credit, ownership, operating costs, Seagull interests, and who keeps being allowed to run tabs.
+- Juan's debt crisis emerges from creditor structure, collateral, liquidity, belief in recovery, addiction shock, and competing claims.
+- Aspen's personal crisis can emerge when schedules, cargo, weather, lovers, maintenance, and obligations become mutually impossible.
+- Yasmin's social pressure emerges from family position, capital, patron relationships, and the cost of maintaining access.
+- Fishmonger's market conflict emerges from shortages, cold-chain capacity, competitor entry, perishability, and control of the chokepoint.
 
-Instead let crisis emerge from:
-
-- Dog's food stock;
-- fresh-food supply;
-- cash;
-- obligations;
-- outside demand;
-- social support;
-- time.
-
-Do not schedule:
-
-> Day 8: Bar Sale Drama.
-
-Let sale pressure arise from:
-
-- revenue;
-- costs;
-- ownership structure;
-- buyer capital;
-- credit availability;
-- the Apprentice's decisions;
-- Clown's debt and liquidity;
-- Vale's view of the asset;
-- the player's relationship and financing capacity.
-
-A scene may be authored, but its appearance should be justified by world state.
-
----
+Do not write `Day 8: character crisis` unless the state justifies it.
 
 ## 1.4 Montage is the default narrative grammar
-
-Do not stop gameplay for repeated explanatory speeches.
 
 Narrative material can be distributed across:
 
@@ -121,159 +84,108 @@ Narrative material can be distributed across:
 - order slips;
 - inventory changes;
 - legal notices;
-- short conversation;
+- short dialogue;
 - body/perception fragments;
-- a market listing;
-- a debt entry;
-- an old signature;
-- a missing object;
+- debt entries;
+- weather and tide sheets;
+- old signatures;
+- menus;
+- a fish order;
 - a room seen again;
-- an NPC remembering or failing to remember something.
+- who is present and who is absent.
 
 A scene can cut between these without explaining the connection.
 
-The player should often understand the connection later.
-
----
+The player may understand the connection much later.
 
 ## 1.5 Player interiority is sensory, not interpretive
 
-The game may provide a small amount of fixed player narration.
-
-Allowed:
+Fixed player narration may describe:
 
 - smell;
-- pressure;
 - temperature;
+- pressure;
 - involuntary physical response;
 - where attention lands;
 - a raw remembered image;
 - recognition of an objectively remembered fact.
 
-Avoid defining the player's emotion, desire, attachment, or interpretation.
+Do not define:
 
-Do not write:
+- love;
+- attachment;
+- grief;
+- moral judgement;
+- enlightenment;
+- `what the player finally understands`.
 
-> You feel at home.
-
-Do not write:
-
-> You realise you love the Apprentice.
-
-Do not write:
-
-> You finally understand that this is karma.
-
-Possible:
-
-> The same glass is on the shelf.
-
-> The fish smell reaches the stairwell before the Bar does.
-
-> Your old signature is still on the page.
-
-The player decides what these facts mean.
-
----
+The player can recognise an old signature without being told how to feel about it.
 
 ## 1.6 Romance is not a system
 
-There is no romance meter, romance route, heart count, dating menu, or romance ending requirement.
+There is no romance meter, romance route, heart count, dating menu, or required romantic ending.
 
-Attraction or intimacy may emerge from repeated attention.
+Attraction or intimacy may grow from repeated attention.
 
-The economic structure already provides the mechanic:
+This already has an economic mechanic:
 
-> time spent with one person is time not spent finding information, trading, verifying, or pursuing another opportunity.
+> time spent with one person is time not spent trading, investigating, verifying, or positioning elsewhere.
 
-If the player repeatedly spends scarce Morning/Afternoon actions talking to someone, the world should remember the shared time.
+If the player keeps spending scarce actions with Sterling, Aspen, Yasmin, or anyone else, the world can remember the shared time and change behaviour accordingly.
 
-That history may become:
+The engine records shared history, not an inferred internal state such as `love = 4`.
 
-- familiarity;
-- attraction;
-- physical intimacy;
-- friendship;
-- dependence;
-- avoidance;
-- jealousy;
-- nothing in particular.
-
-The engine records behaviour and shared history, not an inferred internal romantic state.
-
-A player may ignore all of this and concentrate on making money.
-
-That is a complete way to play.
-
----
+The player may ignore intimacy and concentrate on money.
 
 ## 1.7 Do not make spirituality collectible
 
-Knowledge is not another inventory.
+Never turn the game's conceptual layer into another completion economy.
 
-Never show:
+Avoid:
 
 - `13 / 16 concepts discovered`;
-- `spiritual progress 72%`;
-- an empty Notebook index that invites completion;
-- a checklist of karmic knots;
-- a visible liberation path;
-- a completion bar for forms or realms.
+- visible karmic completion;
+- form checklists;
+- spiritual progress bars;
+- an empty Notebook index inviting completion;
+- `collect all enlightened endings` logic.
 
-The player can become very skilled at collecting concepts while remaining trapped in the same structure.
-
-The game should permit that contradiction rather than reward collection as transcendence.
+The player can become extremely good at collecting concepts while reproducing the same structure.
 
 ---
 
 # 2. Conceptual Engine
 
-This section is internal design language. Most of these terms should not appear in ordinary player-facing text.
+## 2.1 Acquisition grammar
 
-## 2.1 The acquisition grammar
-
-The market teaches a useful grammar:
+The market teaches:
 
 > identify a desired thing → acquire information → obtain resources → negotiate → secure the thing.
 
-This grammar is not evil.
+This grammar is useful and not morally bad.
 
-It is how the player becomes competent.
+The deeper narrative begins when the same grammar spreads into areas where acquisition cannot close the problem:
 
-The deeper narrative begins when the same grammar spreads into areas where acquisition cannot close the problem.
+- Sunflower;
+- home;
+- human form;
+- freedom;
+- intimacy;
+- proof of identity;
+- a spiritual experience;
+- the correct explanation of the Sun Moment.
 
-Examples:
+The game should not tell the player to stop wanting.
 
-- acquire the Sunflower;
-- acquire enough money to feel secure;
-- acquire a human form again;
-- acquire the correct explanation of the Sun Moment;
-- acquire the right spiritual experience;
-- acquire freedom;
-- acquire a relationship;
-- acquire proof that the current self is the old self.
-
-The game should not simply tell the player to stop wanting.
-
-It should allow the player to notice when every new difficulty is converted into one more object of acquisition.
-
----
+It should let the player notice whether every new difficulty is automatically converted into one more thing to acquire, preserve, optimise, or become.
 
 ## 2.2 Sunflower as organising object
 
-The Sunflower is a real living object.
+The Sunflower is materially real.
 
-It can be:
+It can be moved, damaged, planted, cultivated, gifted, stolen, or valued differently by different actors.
 
-- held;
-- moved;
-- given;
-- planted;
-- damaged;
-- cultivated;
-- valued differently by different people.
-
-Its narrative function is separate from these material facts.
+Its narrative function is separate.
 
 The conviction:
 
@@ -281,66 +193,48 @@ The conviction:
 
 organises the player's early activity.
 
-It gives direction to learning, trading, relationships, and risk.
+When the player gets one and nothing metaphysical happens, the game should not frame this as a trick.
 
-When the player obtains the flower and nothing metaphysical happens, the game should not frame this as a trick.
+The flower successfully organised action even though it could not close the gap assigned to it.
 
-The object succeeded at organising action even though it could not close the gap the player assigned to it.
+What matters next is what replaces it.
 
-The important question becomes what replaces it.
+## 2.3 Spiritual materialism as playable structure
 
----
+A player can reject money while preserving acquisition grammar.
 
-## 2.3 Spiritual materialism as a playable risk
+Juan is the clearest NPC expression of this.
 
-A player can reject money while preserving the same acquisition structure.
+He has learned that ordinary accumulation does not solve repetition, then turns liberation into a new project:
 
-Clown is the clearest NPC expression of this.
+- correct cliff;
+- correct dose;
+- correct toad;
+- correct solar timing;
+- correct wager;
+- correct theory;
+- correct altered state.
 
-He has already discovered that wealth does not end repetition.
+The game must not claim that unusual experiences are fake.
 
-He therefore attempts to obtain liberation as a final acquisition.
+The recurring pattern is that each experience is immediately converted into evidence, method, repeatability, mastery, and another attempt.
 
-His use of gambling, speed, intoxication, psychedelic experience, and dangerous hypotheses should not be presented as random madness.
+## 2.4 Karmic knot rather than hidden-message puzzle
 
-The recurring mistake is not that unusual experiences are fake.
+A recurring NPC is not solved by learning their backstory.
 
-The recurring mistake is that each experience is immediately converted into:
+- Aspen is not solved by learning why she hates uncertainty.
+- Sterling is not solved by proving he is kind.
+- Yasmin is not solved by discovering her family history.
+- Wong is not solved by finding out why he rescues animals.
+- Juan is not solved by proving his cliff theory true or false.
+- Fishmonger is not solved by exposing one monopoly trick.
 
-- evidence;
-- method;
-- repeatability;
-- technique;
-- mastery;
-- a possible route out.
+The knot persists because a relation keeps reproducing itself.
 
-He cannot easily let an experience finish without turning it into a project.
+The narrative question is:
 
-The player must be allowed to make the same move.
-
----
-
-## 2.4 Symptom / knot rather than hidden message
-
-A recurring NPC should not function like a puzzle whose secret explanation makes the NPC disappear.
-
-Vale is not solved by learning her backstory.
-
-Dog is not solved by discovering why the cats matter.
-
-Clown is not solved by proving which of his theories is correct.
-
-The knot persists because it is a repeated mode of relation.
-
-The narrative question is not merely:
-
-> What does this character symbolise?
-
-It is:
-
-> Why does this situation keep becoming my situation again?
-
----
+> Why does this keep becoming my problem again?
 
 ## 2.5 Repetition changes meaning retroactively
 
@@ -348,1161 +242,550 @@ An action may not finish meaning what it means on the day it occurs.
 
 Examples:
 
-- information sold today creates a competitor three days later;
-- a small Bar debt later determines whether the player has a proxy as an Animal;
-- an old collateral agreement determines who controls an object after a life transition;
-- a free fish given to Dog later creates access to an animal network;
-- a signature written by an old legal identity becomes evidence the new form cannot legally use;
-- an apparently ordinary Sailor transaction becomes important after the player later becomes a Sailor.
+- a small Sterling tab later decides whether Animal-player has food or proxy access;
+- an Aspen delivery contract later becomes relevant when the player becomes Sailor;
+- a Yasmin provenance record later prevents a new legal identity from claiming an old asset;
+- a Wong favour later opens an animal network;
+- Juan's debt becomes another trader's asset and changes how creditors treat him;
+- Fishmonger's supply contract later becomes the barrier that prevents a new entrant from surviving;
+- an old signature remains valid evidence after the signer is no longer legally recognised as the same person.
 
-Karma should therefore be represented through ordinary causal objects:
+Karma should return through ordinary causal objects:
 
 - debts;
 - goods;
+- contracts;
 - records;
-- habits;
 - information provenance;
-- relationships;
-- legal identity;
-- recurring people.
+- habits;
+- social memory;
+- bodies;
+- repeated people.
 
 No cosmic morality ledger is required.
 
----
-
 ## 2.6 Form and realm-condition are not the same thing
 
-Sunflower may draw structural inspiration from six-realm models without reducing biological/social form to a moral ladder.
+Human, Animal, Sailor/Liminal, Plant, and other future forms change participation in the economy.
 
-A Human can behave in a Hungry-Ghost-like condition.
+They are not identical to a moral six-realm ladder.
 
-An Animal can occupy a highly reflective condition.
+Useful realm-patterns remain available as design lenses in any form:
 
-A Sailor can be competitive, hungry, generous, trapped, or calm.
+- **Hell-pattern:** action intensifies the wall around the actor.
+- **Hungry-Ghost-pattern:** each acquisition reorganises desire around the next lack.
+- **Animal-pattern:** habit makes alternatives difficult to perceive.
+- **Human-pattern:** comparison, valuation, hope, fear, planning, and explicit choice dominate.
+- **Asura-pattern:** relative performance becomes more important than sufficiency.
+- **Deva-pattern:** the optimised system works so well that nothing forces the actor to question its frame.
 
-A Plant form can still participate in attachment even if ordinary agency changes radically.
-
-Useful realm-patterns for design:
-
-### Hell-pattern
-Action intensifies the wall around the actor.
-
-Debt pressure → fire sale → worse liquidity → worse financing → more pressure.
-
-### Hungry-Ghost-pattern
-Each acquisition immediately reorganises desire around the next missing thing.
-
-Sunflower → home → human form → knowledge → freedom → another object.
-
-### Animal-pattern
-Habit and familiarity dominate attention.
-
-The actor repeats the known strategy because alternatives stop appearing as alternatives.
-
-This is not the same as being biologically Animal.
-
-### Human-pattern
-Comparison, valuation, hope, fear, planning, and explicit choice dominate.
-
-This is close to the ordinary trading condition.
-
-### Asura-pattern
-Relative performance becomes central.
-
-The important question becomes not `Did I make enough?` but `Why did Vale get there first?`
-
-### Deva-pattern
-The system works too well to challenge itself.
-
-Wealth, access, information, and execution become so smooth that nothing forces the actor to leave the frame they optimised.
-
-These are design lenses, not player-visible classes.
+These are internal lenses, not player classes.
 
 ---
 
 # 3. Karmic Knot Matrix
 
-## 3.1 Bar Apprentice — care without instrumental reflex
+## 3.1 Aspen — usefulness, schedule, obligation
 
-### Stable function
-The Apprentice has an unusually weak reflex to convert every social fact into leverage.
+### Economic reality
+Aspen makes money through reliable cross-boundary work:
 
-They may:
+- shipping;
+- sourcing commissions;
+- predictable delivery contracts;
+- repair;
+- conservative finance;
+- repeat counterparties.
 
-- feed someone before pricing the transaction;
-- tell useful information without first checking resale value;
-- extend small relationship credit;
-- keep talking to an Animal whom formal society treats as legally unrelated to a former person;
-- allow people to remain in the Bar because removing them feels worse than the immediate economic cost.
+She dislikes sailing, uncertainty, tail risk, and open-ended waiting.
 
-This is not proof of superior morality.
+She maintains several lovers materially and logistically.
 
-### Recurring danger
-Care can become refusal to choose.
+### Recurring knot
+Aspen experiences stability when she is useful.
 
-The Apprentice may:
+A schedule proves the next action.
 
-- lend to people who should be refused;
-- protect Clown from consequences that might otherwise interrupt his cycle;
-- preserve the Bar at someone else's cost;
-- make two incompatible promises because saying no feels like abandonment;
-- absorb losses that eventually fall on family, staff, lenders, or customers;
-- treat understanding another person as a reason not to set a boundary.
+A promise proves what she must do.
 
-### Economic expression
-- informal credit;
-- gifts;
-- food;
-- relationship-based access;
-- weak pricing discipline;
-- Bar operating losses;
-- under-enforcement;
-- willingness to take non-cash consideration;
-- possible partnership or co-investment.
+A dependent proves why she must continue.
 
-### False resolution
-`Teach the Apprentice to become Vale.`
+Her danger is not greed but becoming unable to stop serving obligations because usefulness has become identity.
 
-Do not make competence require cynicism.
+### Cross-form pressure
+If the player later becomes Sailor, Aspen's pattern can be encountered from inside the same liminal condition rather than from the outside.
 
-### Stronger resolution direction
-The knot changes when care no longer requires taking responsibility for another person's entire choice.
+The player may learn that movement is not equivalent to release.
 
-This is not yet a scripted answer.
+### Motifs
+- watch;
+- tide sheet;
+- weather note;
+- maintenance list;
+- exact delivery window;
+- medicine or gift for a lover in another port;
+- bodily symptom recorded as operational data.
 
-### Material motifs
+---
+
+## 3.2 Sterling — care, curiosity, weak instrumental reflex
+
+### Economic reality
+Sterling begins as a chaotic earner with family capital, Bar revenue, informal credit, sensory curiosity, and unusually fast learning.
+
+His openness can make him easy to exploit early and dangerous to underestimate later.
+
+### Recurring knot
+Sterling does not instinctively monetise every piece of information, care, or intimacy.
+
+That can be generous.
+
+It can also become refusal to choose.
+
+He may protect Juan from consequences, preserve the Bar at somebody else's expense, or make incompatible promises because saying no feels worse in the moment.
+
+His knot is not resolved by becoming cynical.
+
+### Cross-form pressure
+Sterling's informal recognition can matter more than formal identity after the player becomes Animal.
+
+As Sailor, repeated leaving can test whether intimacy survives without possession.
+
+### Motifs
 - jigger;
 - ice;
 - unpaid tabs;
-- fish prepared for Grandma;
-- closing the Bar early;
-- a glass left on the wrong side of the counter;
-- keys to rooms the Apprentice does not technically own.
-
-### Cross-form pressure
-As Animal, the player may discover that the Apprentice's informal recognition matters more than formal identity.
-
-As Sailor, the player may become someone who repeatedly leaves, testing whether care can survive without possession.
-
-As Plant, the player may become an object the Apprentice wants to protect without knowing whether protection is another form of control.
+- new drink experiments;
+- Seagull employment paperwork that makes little ordinary sense;
+- Penguin Grandma's fish;
+- a person being allowed to stay after everyone else thinks they should be removed.
 
 ---
 
-## 3.2 Mirelle Vale — provenance, control, settlement
+## 3.3 Yasmin — provenance, incentive, position
 
-### Stable function
-Vale treats provenance as an economic technology.
+### Economic reality
+Yasmin makes money through capital ownership and high-end intermediation:
 
-She asks:
-
-- where did this come from;
-- who held it;
-- who can prove that;
-- who has authority to sell it;
-- what story will another buyer pay for;
-- what survives dispute.
-
-She may be manipulative and unpleasant while remaining highly reliable at formal settlement.
-
-### Recurring danger
-Vale can mistake provability for reality.
-
-A thing that cannot be traced may be economically discounted even when it is materially real.
-
-A person who cannot prove continuity may be socially or legally discounted even when behavioural continuity is obvious.
-
-### Economic expression
-- auctions;
-- provenance premium;
-- collateral;
+- family business;
+- equity;
+- rent/lease income;
+- auction commissions;
 - secured finance;
-- exclusivity;
-- formal access;
-- selective private markets;
-- reliable settlement;
-- distressed acquisition.
+- private placements;
+- collectibles;
+- information control;
+- selective distressed acquisition.
 
-### False resolution
-`Make Vale kinder.`
+Her `passive` wealth requires continuous social maintenance.
 
-Her knot is not solved by warmth.
+### Recurring knot
+Yasmin is unusually skilled at modelling incentives.
 
-### Stronger resolution direction
-The knot changes when the player can deal with proof, ownership, and control without treating them as either total truth or meaningless fiction.
+This helps her survive elite social systems and makes intimacy difficult.
 
-### Material motifs
-- labels;
-- sleeves;
-- certificates;
-- catalogues;
-- old signatures;
-- sealed lots;
-- a clean receipt after an ugly interaction;
-- an object whose story is worth more than its material.
+If somebody wants her, she searches for the motive.
+
+If somebody asks for nothing, that can look more suspicious rather than less.
+
+As a former Animal — hyena remains provisional — she may be repeating hierarchy and social-resource reading across forms.
 
 ### Cross-form pressure
-Human player: Vale can transact with the recognised legal person.
+A transformed player may confront Yasmin with a hard split between private belief and formal ownership.
 
-Animal player: Vale may believe continuity while still refusing formal title.
+She may believe continuity while refusing to settle property as if legal identity had continued.
 
-Sailor player: Vale values cross-boundary sourcing and chain of custody.
-
-Plant player: Vale may attempt to classify, protect, display, finance, or acquire the player as a living asset.
+### Motifs
+- invitation list;
+- seating plan;
+- provenance label;
+- sealed lot;
+- family message answered immediately;
+- a gracious conversation that also changes access to capital;
+- an old signature she believes but cannot formally use.
 
 ---
 
-## 3.3 Clown — liberation as final acquisition
+## 3.4 Wong — circulation, merit, responsibility
 
-### Stable function
-Clown has unusually high tolerance for risk and unusually low faith in conventional security.
+### Economic reality
+Wong earns through high-volume low-margin work:
 
-He is capable of recognising real anomalies.
+- salvage;
+- rubbish picking;
+- tiny resale margins;
+- dirty jobs;
+- delivery;
+- informal brokerage;
+- animal networks;
+- bargaining.
 
-He is not correct about everything.
+His high turnover supports a high household/rescue burn rate.
 
-### Recurring danger
-Clown turns escape into a project of optimisation.
+### Recurring knot
+Wong rescues animals and believes rescue can accumulate merit.
 
-He seeks:
+Care, accounting, survival, and spiritual bookkeeping can mix together.
 
-- the correct cliff;
-- the correct speed;
-- the correct intoxication;
-- the correct solar timing;
-- the correct wager;
-- the correct theory;
-- the correct state of consciousness.
+More income can create capacity for more dependents rather than freedom from responsibility.
 
-Every failure produces another experiment.
+The knot is not whether rescue is morally good.
 
-### Economic expression
+It is whether every available unit of capacity must become another obligation.
+
+### Motifs
+- half-tin bargaining;
+- bags of salvaged junk;
+- bird cages being opened;
+- cat food;
+- another dependent appearing after income improves;
+- a toad acquired through animal networks;
+- jobs other traders refuse.
+
+---
+
+## 3.5 Juan — debt, leverage, escape
+
+### Economic reality
+Juan is a former dentist, publicly broke, addicted, and financially inventive.
+
+He understands that his liability is somebody else's asset.
+
+His creditors can therefore become invested in his continued ability to pay.
+
+He can survive through:
+
 - leverage;
+- rollover;
+- restructuring;
+- distressed-debt repurchase;
+- creditor coordination problems;
 - wagers;
-- debt;
-- extreme position sizing;
-- tail-risk seeking;
-- low value placed on ordinary solvency;
-- information with highly uneven reliability;
-- willingness to pay for unusual optionality.
+- races;
+- optionality;
+- future claims.
 
-### False resolution
-`Prove Clown right or wrong.`
+### Recurring knot
+Juan converts escape into a reproducible project.
 
-A correct theory can still be used compulsively.
+He can make a brilliant restructuring and then destroy its liquidity logic through immediate reward seeking.
 
-### Stronger resolution direction
-The knot changes only when escape no longer has to be secured as a possession or reproducible method.
+He can have a true insight and still use it compulsively.
 
-Do not script the exact final act yet.
+The question is not whether Juan is secretly wise or simply a failure.
 
-### Material motifs
-- onewheel;
+### Motifs
+- Onewheel;
+- dental instruments from an earlier life;
+- multiple IOUs;
+- creditor list;
 - Bar tab;
 - cliff;
-- odds scratched on paper;
 - Mai Tai;
 - toad;
-- injuries treated as data;
-- a theory revised immediately after an experience.
+- revised odds immediately after an injury or altered state.
 
 ---
 
-## 3.4 Dock Dog — circulation, care, responsibility
+## 3.6 Fishmonger — necessity becoming control
 
-### Stable function
-Dog is a high-turnover low-margin intermediary with unusually broad informal access.
+### Economic reality
+Fishmonger controls a monopoly or near-monopoly around a practical fish-economy chokepoint.
 
-Dog is also responsible for cats.
+The exact legal mechanism remains provisional, but the strongest direction combines some of:
 
-### Recurring danger
-Dog may be unable to stop maintaining a network of dependents.
+- cold storage;
+- ice capacity;
+- wholesale access;
+- dock purchasing relationships;
+- supply contracts;
+- settlement/sardine conversion;
+- enough working capital to buy perishables from small sellers who cannot wait.
 
-Low personal attachment to prestige does not imply low attachment.
+Fishmonger's money-making method is market power built on real infrastructure.
 
-Responsibility itself can become the thing that cannot be released.
+### Recurring knot
+Fishmonger can genuinely coordinate a difficult supply chain and genuinely exploit the dependence created by that coordination.
 
-### Economic expression
-- scavenging;
-- small spreads;
-- barter;
-- informal information;
-- cat-food demand;
-- high inventory turnover;
-- weak cash accumulation;
-- animal-network introductions;
-- favours.
+Fragmented supply may waste fish.
 
-### False resolution
-`Make Dog rich enough that the problem goes away.`
+Centralised storage may save fish.
 
-More resources can expand the number of beings Dog feels responsible for.
+The same structure can then become a barrier to entry, monopsony over suppliers, monopoly pricing downstream, or a choke point around settlement goods.
 
-### Stronger resolution direction
-Unresolved. The important constraint is that care must not be treated as spiritually inferior to detachment.
+The knot is not `monopoly bad`.
 
-### Material motifs
-- fish bones;
-- fresh fish disappearing from inventory;
-- cat bowls;
-- rubbish finds;
-- pockets containing things that should not be in pockets;
-- toads;
-- names of animals who never become formal NPC cards.
+It is how necessity becomes dependence and dependence becomes durable control.
 
----
+### Cross-form pressure
+Human-player may encounter Fishmonger as incumbent market power.
 
-## 3.5 Sailor — movement is not release
+Animal-player may gain alternative informal distribution routes through Wong and animal networks.
 
-### Stable function
-`Sailor` is moving toward a liminal form/function rather than one permanent conventional profession.
+Sailor-player may threaten the monopoly through imports or become a supplier Fishmonger wants to lock into contract.
 
-There may be:
+Plant-player may experience the supply chain from the side of something living being classified, stored, priced, and distributed.
 
-- this Sailor;
-- another Sailor;
-- a Sailor who returned;
-- an older Sailor known to Vale;
-- a life in which the player becomes a Sailor.
-
-The category is defined by boundary-crossing.
-
-### Stable abilities
-- leave the local market;
-- return;
-- move goods between regions/worlds;
-- carry information;
-- carry commissions;
-- arbitrage geography;
-- connect systems that otherwise do not meet directly.
-
-### Recurring danger
-Movement can become another form of rootedness.
-
-A being can be attached to:
-
-- departure;
-- non-belonging;
-- perpetual circulation;
-- usefulness as intermediary;
-- never staying long enough to be claimed by a place.
-
-### Economic expression
-- imports;
-- deadlines;
-- future delivery;
-- sourcing risk;
-- freight;
-- external price differences;
-- commissions;
-- temporary liquidity;
-- trusted settlement across ports.
-
-### False resolution
-`Leaving the harbour equals liberation.`
-
-A Sailor can cross boundaries and still remain inside repetition.
-
-### Stronger resolution direction
-Unresolved. `Less rooted, not fully free` remains the guardrail.
-
-### Material motifs
-- changed ship names;
-- tide sheets;
-- old invoices;
-- goods that are ordinary elsewhere and rare here;
-- return dates;
-- rope damage on hands;
-- toad knowledge treated as ordinary port knowledge;
-- contracts written before departure.
+### Motifs
+- ice shortage;
+- fish ledger;
+- supplier waiting with product that will spoil;
+- wholesale condition changed with little ceremony;
+- `exclusive` storage access;
+- fish prices rising while Fishmonger complains about costs;
+- an attempted entrant who cannot survive long enough to build infrastructure.
 
 ---
 
-## 3.6 Fishmonger — ordinary continuity under pressure
+# 4. Relationship Matrix — First Strong Links
 
-### Status
-The deeper Fishmonger knot is not yet locked.
+The harbour exists before the player.
 
-Do not force the old competing hypotheses into one answer.
+Current strong relationship directions:
 
-For now preserve what is already strong:
+- **Wong ↔ Seagull network:** informal work, rescue, black-market access, low-value circulation.
+- **Sterling ↔ Seagull network:** his odd Bar appointment makes the gang part employer, part owner, part unexplained institution.
+- **Sterling ↔ Penguin Grandma/family:** food, care, identity continuity, non-market allocation.
+- **Sterling ↔ Juan:** Bar tab, alcohol, sympathy, enabling/boundary tension, possible rescue financing.
+- **Juan ↔ Wong:** toads, scavenged goods, informal information, cheap labour, long familiarity.
+- **Juan ↔ Aspen/Sailor circle:** repair, wager, transport, toads, boundary experiments.
+- **Aspen ↔ Yasmin:** highly reliable sourcing relationship between a low-risk operator and a capital/social allocator.
+- **Yasmin ↔ family/elite network:** constant social labour that continues even when the player does nothing.
+- **Fishmonger ↔ everyone:** food, ice, wholesale, settlement commodity, or monopoly power make contact structurally common without implying friendship.
+- **Wong ↔ Fishmonger:** natural tension between informal low-margin circulation and formal/incumbent market power.
+- **Aspen ↔ Fishmonger:** external supply can be both useful to the monopoly and a threat to it.
+- **Yasmin ↔ Fishmonger:** capital may finance infrastructure, buy claims on it, or negotiate privileged access without making either side subordinate.
 
-- conservative operator;
-- domain expertise in fish;
-- perishability;
-- ordinary customers;
-- working capital;
-- recurring fresh-food supply;
-- practical memory for debts and repeat customers.
+Do not make every relationship symmetric.
 
-Fishmonger provides a useful narrative floor because not every character should constantly speak in metaphysical terms.
+One person can trust another more than the reverse.
 
-Possible future knot must emerge from the market/world logic rather than from a need to give every NPC an exotic secret.
-
-### Material motifs
-- ice;
-- scales;
-- knives;
-- fish skin;
-- yesterday's catch;
-- short debts remembered without ceremony;
-- strange non-fish objects under the counter.
+One person can like another and still refuse credit.
 
 ---
 
-## 3.7 Penguin Grandma — continuity without legal equivalence
+# 5. Recurring Motifs
 
-Grandma is a Penguin.
+## 5.1 Sunflower
 
-The family continues to call her Grandma.
+First: desired object.
 
-Formal systems may treat the former human grandmother as dead and the Penguin as another legal being.
+Later: acquired object that fails to produce home.
 
-The game should not resolve this by announcing a metaphysical proof of personal identity.
+Later again: seed, living asset, gift, specimen, responsibility, or another person's object of value.
 
-Different systems can produce different valid consequences:
+Do not give it one final universal price.
 
-- family relation;
-- legal discontinuity;
-- animal social identity;
-- memory or lack of autobiographical memory;
-- retained habits;
-- food preference;
-- ordinary physical presence.
+## 5.2 Penguin fish
 
-### Core route
-The strongest Grandma route remains a fresh-fish meal / supper route.
+First: Sterling repeatedly buys a particular fresh fish.
 
-It should not feel like:
+Later: the player sees Penguin Grandma eating it.
 
-> Fish + Mai Tai + relationship threshold = sunflower recipe.
+Later: legal/family/animal descriptions of Grandma diverge.
 
-Grandma exists socially before the route exists mechanically.
+The fish remains ordinary food while the surrounding meaning changes.
 
-The player may first learn only:
+## 5.3 Toad
 
-- the Bar closes early sometimes;
-- the Apprentice buys specific fish;
-- the fish skin is removed;
-- there is a Penguin in the family space;
-- everyone calls her Grandma without explaining why.
+First: Wong, Juan, and Sailor/Aspen circles use psychedelic toads casually enough that the world does not stop to explain them.
 
-The Sunflower may later change hands in this social context without a market price.
+Later: Juan treats an altered state as experimental evidence.
 
-### Material motifs
-- fish with skin removed;
-- early Bar closing;
-- a family chair unsuitable for a Penguin but still kept;
-- old human records;
-- current animal food needs;
-- the same nickname used across incompatible legal categories.
+Later: a Sun Moment overlaps with intoxication and the game refuses to certify which experience `counted`.
 
----
+The toad is not a magic truth item.
 
-# 4. Recurring Motif Matrix
+## 5.4 Aspen's timetable
 
-These motifs should reappear across lives. They are not collectible lore tokens.
+First: comic punctuality.
 
-## 4.1 Sunflower
+Later: evidence of why she is so economically reliable.
 
-### First encounter
-Desired object.
+Later: several individually reasonable obligations become mutually impossible.
 
-### First acquisition
-`You got it.`
+The timetable can become both edge and trap.
 
-No metaphysical completion.
+## 5.5 Yasmin provenance
 
-### Later recurrence
-The same object category becomes:
+First: expensive-object competence.
 
-- gift;
-- plant;
-- unpriced living matter;
-- something another person wants to own;
-- something that produces seeds;
-- something the player may eventually resemble or become related to biologically.
+Later: access to secured finance and auction value.
 
-### Narrative job
-Expose the difference between a material object and the function assigned to it by desire.
+Later: the same logic applied to player identity becomes uncomfortable.
 
----
+## 5.6 Wong feeding / rescue
 
-## 4.2 Penguin fish
+First: background expense.
 
-### First encounter
-The Apprentice repeatedly buys or prepares a particular fresh fish.
+Later: reason cash never accumulates despite large turnover.
 
-### Later encounter
-Player sees a Penguin eating it.
+Later: his improved income expands the rescue network rather than reducing pressure.
 
-### Later encounter
-An old human-family record and current animal reality fail to line up legally.
+## 5.7 Sterling's Bar tab
 
-### Later encounter
-The same food preference persists without proving a complete autobiographical identity.
+First: tiny informal debt.
 
-### Narrative job
-Make continuity concrete without resolving it into a soul-detection mechanic.
+Later: credit history, enabling, access, or cross-form recognition.
 
----
+Later: who is allowed to owe becomes a social decision with real operating cost.
 
-## 4.3 Toad
+## 5.8 Juan's IOUs
 
-### First encounter
-Dog, Clown, and Sailor use a toad for a psychedelic/intoxicating effect.
+First: evidence he is broke.
 
-The situation is treated as socially ordinary by the participants.
+Later: assets held by several creditors.
 
-### Character difference
-Dog: may treat it as animal/harbour knowledge, recreation, or habit.
+Later: creditor incentives may protect, constrain, restructure, or destroy him.
 
-Sailor: may treat it as port culture or one more boundary-crossing practice.
+## 5.9 Fishmonger's ice
 
-Clown: converts the experience into a theory about exit, Sun Moment, or self-loss.
+First: cold-chain input.
 
-### Later recurrence
-The toad experience overlaps temporally with a Sun Moment.
+Later: source of bargaining power.
 
-Do not state whether the experience is spiritually true or false.
+Later: access to ice determines whether a competitor can enter the market at all.
 
-The important difference is what each person does with the experience afterward.
+## 5.10 Old legal signature
 
-### Narrative job
-Separate altered experience from the compulsion to turn experience into a method of liberation.
+First: ordinary paperwork.
+
+Later: evidence from a legal person who no longer exists.
+
+Later: trusted privately, rejected formally, or used by different institutions in different ways.
+
+## 5.11 Sun Moment
+
+First: ordinary interruption.
+
+Later: opportunity cost.
+
+Later: character-specific inability to stop for very different reasons.
+
+Do not make one visible Entanglement meter explain all of them.
 
 ---
 
-## 4.4 Sailor return
+# 6. Scene Grammar
 
-### First encounter
-A temporary merchant leaves on schedule.
+Scenelets should remain short, concrete, and state-aware.
 
-### Later encounter
-A Sailor returns with different goods.
+Avoid aphorism-heavy dialogue that announces the theme.
 
-### Later encounter
-A ship name changes; an old invoice or relationship remains.
+Examples of scene logic rather than final prose:
 
-### Later encounter
-The player becomes a Sailor or deals with a different Sailor who occupies the same function differently.
+### Fish / Sterling
 
-### Narrative job
-Make movement, return, and continuity unstable without equating mobility with freedom.
+A fish order appears several times before the player meets Grandma.
 
----
+Sterling removes the skin.
 
-## 4.5 Vale provenance
+No one explains why until the player happens to be present when the Penguin eats.
 
-### First encounter
-Provenance raises or lowers an object's price.
+### Toad / Juan / Wong / Aspen
 
-### Later encounter
-Provenance affects collateral, auction access, or private-market trust.
+A toad appears in an ice bucket.
 
-### Later encounter
-The player remembers a former life but cannot prove legal continuity.
+Aspen rejects the wrong specimen because it bites or produces an operationally inconvenient effect.
 
-Vale may privately believe the continuity while still refusing to settle property on that basis.
+Juan wants to know whether that matters.
 
-### Narrative job
-Force proof, belief, ownership, and reality to separate.
+Wong wants his toad back.
 
----
+Sterling wants the toad out of the Bar equipment.
 
-## 4.6 Dog feeding
+No one says `this symbolises spiritual materialism`.
 
-### First encounter
-Dog's good fish disappears into cat care.
+### Monopoly / Fishmonger
 
-### Later encounter
-The player realises this is recurring operating demand, not a sentimental cutscene.
+A small seller needs cold storage before the catch spoils.
 
-### Later encounter
-A shortage or price shock makes Dog's care economically dangerous.
+Fishmonger offers access on terms the seller dislikes.
 
-### Later encounter
-Dog may resist a Sun Moment or abandon another opportunity because a dependent animal needs something now.
+The player can observe that refusing may be economically possible in theory and impossible before Sunset.
 
-### Narrative job
-Show that responsibility can bind as strongly as greed without making care morally suspect.
+No villain speech is necessary.
 
----
+### Yasmin / intimacy
 
-## 4.7 Bar debt
+Someone gives Yasmin something without asking for payment.
 
-### First encounter
-A small informal tab.
+The scene does not declare her moved or suspicious.
 
-### Later encounter
-Repayment repairs trust.
+Her first response can simply be a question about why.
 
-### Later encounter
-Default creates a real relationship consequence.
+### Aspen / lovers
 
-### Later encounter
-A former-life debt remains attached to an old legal identity while a current relationship may recognise continuity differently.
+A cargo manifest and a personal shopping list share the same notebook page.
 
-### Later encounter
-The Apprentice's willingness to carry people becomes a threat to the Bar itself.
+Medicine, machine part, rent transfer, and present all have deadlines.
 
-### Narrative job
-Turn `relationship capital` into a concrete conflict between care, liquidity, boundaries, and identity.
+Do not explain the metaphor.
 
 ---
 
-## 4.8 Old legal signature
+# 7. State Hooks
 
-### First encounter
-Ordinary contract signature.
+Narrative should reuse existing or near-term economic state wherever possible.
 
-### Later encounter
-The same document survives a life transition.
+Useful hooks include:
 
-The new form recognises the signature as their own former act.
-
-The institution does not recognise the new form as the signer.
-
-### Later encounter
-Another NPC may accept behavioural continuity, reject legal continuity, or exploit the gap.
-
-### Narrative job
-Make memory continuity and legal personhood collide without a philosophical speech.
-
----
-
-## 4.9 Clown wager
-
-### First encounter
-A profitable or stupid-looking bet.
-
-### Later encounter
-The player learns Clown's utility is not ordinary capital preservation.
-
-### Later encounter
-The wager becomes linked to the cliff, Sun Moment timing, or an exit hypothesis.
-
-### Later encounter
-The same structure returns with different stakes: money, body, form, information, or the chance not to return.
-
-### Narrative job
-Keep asking whether risk is speculation, experiment, compulsion, or a real route beyond the current frame.
-
----
-
-## 4.10 Sun Moment
-
-### First encounters
-Ordinary world rhythm.
-
-People stop.
-
-Then continue.
-
-Do not make it solemn by default.
-
-### Later encounters
-A profitable opportunity remains available during the pause.
-
-### Later encounters
-The player can resist.
-
-### Later encounters
-Repeated resistance changes the ease of disengagement.
-
-### Late expression
-The disturbing state is not a morality warning.
-
-It is that the world pauses and the player remains able to act, perhaps eventually without a meaningful sense of how to stop.
-
-### Narrative job
-Turn the capacity to disengage into something mechanically real without making `not trading` the morally correct answer.
-
----
-
-# 5. Repetition Across Forms
-
-The following are examples of how one knot may return. They are not a fixed reincarnation order.
-
-## 5.1 Ownership repetition
-
-### Human
-Player cannot afford an object.
-
-### Later Human
-Player can afford it but must decide whether the price is sensible.
-
-### Animal
-Player remembers owning the object in a former life but cannot legally claim it.
-
-### Sailor
-Player can move the object across boundaries but has weak local rootedness.
-
-### Plant
-Player becomes something other actors attempt to own, classify, protect, finance, or trade.
-
-The repeated question changes from:
-
-> Can I buy it?
-
-to:
-
-> What does it mean to say this is mine?
-
-Do not state this question directly in the UI.
-
----
-
-## 5.2 Care repetition
-
-### Human
-Player gives Dog food or accepts food from the Bar.
-
-### Animal
-Player depends on informal care networks unavailable to formal Human institutions.
-
-### Sailor
-Player can leave and return, testing whether repeated departure is compatible with responsibility.
-
-### Plant
-The player may depend entirely on others for placement, water, protection, or movement.
-
-Care changes from optional relationship spending into material infrastructure.
-
----
-
-## 5.3 Escape repetition
-
-### Human
-Clown's cliff theory looks reckless.
-
-### Animal
-Formal Human life may now look desirable enough that `returning to Human` becomes the player's own escape project.
-
-### Sailor
-Leaving the harbour becomes possible, but leaving does not necessarily end recurrence.
-
-### Later form
-The player may notice that each escape becomes another condition to secure.
-
-The game should never resolve this with a visible `attachment score`.
-
----
-
-# 6. Scenelet Batch 1
-
-These are prototype montage units, not final literary prose. Their purpose is to establish tone, recurrence, and state dependence.
-
-## Scenelet A — The fish
-
-**Trigger:** Bar relationship exists; Apprentice has purchased the relevant fresh fish; Grandma has not been explained.
-
-`BAR NOTICE`
-
-Closing at 18:00 today.
-
----
-
-The Apprentice removes the skin from a fish.
-
-Player options may include asking why, helping, ignoring it, or returning to market work.
-
-No lore explanation is required.
-
-Later the player sees the Penguin eating the same preparation.
-
-Nobody introduces her with a transformation lecture.
-
-Someone says:
-
-> Grandma doesn't like the skin.
-
-Then the scene continues.
-
----
-
-## Scenelet B — The toad in the ice bucket
-
-**Trigger:** Clown, Dog, and a Sailor are all present at the Bar; no urgent blocking event.
-
-Dog has put a toad in an empty ice bucket.
-
-Sailor removes it.
-
-> Not that one.
-
-Dog puts it back.
-
-Clown asks why.
-
-> It bites.
-
-The Apprentice enters, sees the bucket, and says:
-
-> No.
-
-No one had asked a question.
-
-The scene can end there on the first occurrence.
-
-Later occurrences may expose what the group was actually doing.
-
----
-
-## Scenelet C — Public tape / private life
-
-**Trigger:** player is carrying Bar debt while spending another action talking at the Bar.
-
-`PUBLIC TAPE`
-
-A conspicuous trade prints elsewhere in the harbour.
-
----
-
-Inside the Bar, the player remains in conversation.
-
----
-
-`OPEN OBLIGATION`
-
-Bar Apprentice — 4🥫 due tomorrow.
-
-No narrator says the player is distracted, attached, irresponsible, or in love.
-
-The opportunity cost is visible in state.
-
----
-
-## Scenelet D — Vale and the signature
-
-**Trigger:** player has transformed; an old-life document still exists; Vale has enough relationship/history to recognise details.
-
-Vale places the old document beside the current player.
-
-The old signature is visible.
-
-The player remembers making it.
-
-Vale does not need to deny that memory.
-
-Her settlement position remains:
-
-> This name cannot take delivery.
-
-She may still continue the conversation as though she believes more than the legal document permits.
-
-No metaphysical ruling is issued.
-
----
-
-## Scenelet E — Sailor return
-
-**Trigger:** a Sailor returns after a prior departure.
-
-The ship has a different name.
-
-One old crate mark is the same.
-
-Vale already has an invoice ready.
-
-Dog asks about a port the player has never seen.
-
-The Sailor answers as if Dog has asked before.
-
-No one explains whether this is the same Sailor in the metaphysical sense.
-
-The market consequences are concrete: new cargo, external prices, new deadlines.
-
----
-
-## Scenelet F — Clown after the toad
-
-**Trigger:** Clown used the toad and later has a chance to discuss/investigate the experience.
-
-Do not write a revelation monologue.
-
-Clown is already changing a practical variable.
-
-Examples:
-
-- timing;
-- dose;
-- location;
-- whether it happened before or after Noon;
-- whether the cliff wind mattered.
-
-A previous extraordinary experience has become a new experimental protocol.
-
-The humour comes from the speed of this conversion, not from calling Clown stupid.
-
----
-
-## Scenelet G — Dog during shortage
-
-**Trigger:** cat-food demand persists while fresh food is expensive or scarce.
-
-Dog sells something they normally would have kept.
-
-Later, one good fish disappears from Dog's stock anyway.
-
-No `Dog loves cats` dialogue is necessary.
-
-If the player investigates, the explanation can remain practical:
-
-> They still have to eat.
-
----
-
-## Scenelet H — Fishmonger remembers the debt
-
-**Trigger:** player returns in altered form and interacts with Fishmonger after an old informal debt/history.
-
-Do not force Fishmonger into a metaphysical position.
-
-Fishmonger may care about the practical continuity first.
-
-For example, they can recognise a repeated ordering habit, a market behaviour, or an old unpaid amount while leaving identity unresolved.
-
-This scene should remain plain enough to keep the world grounded.
-
----
-
-## Scenelet I — Sun Moment with bad timing
-
-**Trigger:** an economically meaningful action remains available exactly when the Sun Moment arrives.
-
-A public/private opportunity is still open.
-
-Other actors stop.
-
-The UI does not display a moral warning.
-
-The player may stop or continue if current entanglement/state permits.
-
-If the player continues, the result can be materially profitable.
-
-The scene must preserve that advantage.
-
----
-
-## Scenelet J — Sunflower after acquisition
-
-**Trigger:** player has acquired the Sunflower.
-
-Inventory:
-
-`Sunflower ×1`
-
-No reference value.
-
-No immediate transformation.
-
-No victory cutscene.
-
-The market continues.
-
-NPC reactions depend on what they know and care about.
-
-The objective changes to:
-
-> Go home.
-
-The game should allow the player to continue making ordinary market decisions while carrying the unresolved object.
-
----
-
-# 7. Economic and State Hooks
-
-Narrative content should reuse existing state wherever possible.
-
-## 7.1 Minimum useful state for recurring scenelets
-
-- current player form;
-- current legal life ID;
-- prior legal life IDs;
+- player form;
+- legal-life ID;
 - relationships;
 - decision evidence;
 - obligations;
+- creditor identity;
 - information provenance;
 - market history;
-- world-thread stages;
-- public inventory observations;
-- actual inventory;
-- NPC known history;
-- time/action expenditure;
-- Sun Moment resistance history when implemented;
-- whether an NPC can reasonably know the relevant fact.
+- inventory;
+- perishability;
+- world threads;
+- action/time expenditure;
+- NPC knowledge;
+- Aspen departure and commitments;
+- Sterling Bar revenue/credit exposure;
+- Yasmin capital/access/social obligations;
+- Wong dependents and household burn;
+- Juan creditor stack/addiction shocks;
+- Fishmonger cold-chain capacity and market share.
 
-Do not add a parallel `story truth` system that contradicts engine state.
-
----
-
-## 7.2 Attention as narrative evidence
-
-Repeated voluntary time allocation can become relationship history.
-
-It is valid evidence that:
-
-> the player repeatedly chose to spend time here.
-
-It is not valid evidence that:
-
-> the player was in love;
-> the player trusted the NPC;
-> the player was avoiding work;
-> the player felt safe.
-
-NPC interpretation may exist as actor belief, not engine truth.
+Do not create a second narrative-state universe where the prose claims a crisis the economy does not contain.
 
 ---
 
-## 7.3 Karmic repetition should use evidence, not counters alone
+# 8. Current Status
 
-Do not implement:
+## Locked
 
-`valeKarma = 7`
-
-or:
-
-`clownArcProgress = 82%`.
-
-A future resolver may examine meaningful completed situations across lives.
-
-Examples:
-
-- repeated ownership disputes under different forms;
-- repeated strategic defaults;
-- repeated attempts to convert altered states into exit methods;
-- repeated rescue/care decisions under different resource constraints;
-- repeated decisions to prioritise or refuse relationship time when opportunity cost differs.
-
-No evidence means no conclusion.
-
-Contradictory evidence remains useful.
-
----
-
-# 8. Tone Rules
-
-## 8.1 Concrete before symbolic
-
-Use:
-
-- fish;
-- wet floor;
-- invoice;
-- cracked glass;
-- toad;
-- badly folded receipt;
-- expired ticket;
-- market price;
-- chair;
-- ice;
-- rope;
-
-before abstract explanation.
-
-The object can accumulate meaning by returning.
-
----
-
-## 8.2 Absurdity should not wink at the player
-
-Characters do not need to comment that the world is quirky.
-
-A toad, Penguin Grandma, sardine currency, and animal market should be handled with the same practical seriousness as debt or fish spoilage.
-
-The humour should often come from juxtaposition and ordinary treatment.
-
----
-
-## 8.3 Do not manufacture quotable profundity
-
-Avoid dialogue written to sound like the thesis of the game.
-
-Do not give every NPC aphorisms.
-
-Do not make Clown the writer's mouthpiece.
-
-Do not let Vale explain Lacan through auction metaphors.
-
-Do not let Apprentice announce the moral meaning of kindness.
-
-If a line sounds designed mainly to be quoted outside the scene, simplify it.
-
----
-
-## 8.4 Character self-description can be wrong
-
-NPCs may rationalise themselves.
-
-Clown may call a compulsion an experiment.
-
-Vale may call extraction preservation.
-
-Apprentice may call avoidance kindness.
-
-Dog may say the cats are fine while the inventory says otherwise.
-
-The game does not need a narrator to correct them.
-
-World state can provide the contradiction.
-
----
-
-## 8.5 Deep scenes should not become ceremonially serious
-
-Sun Moment, rebirth, animal continuity, intimacy, and possible liberation can coexist with:
-
-- badly timed business;
-- practical irritation;
-- food;
-- debt;
-- a toad in the wrong container;
-- somebody needing to close the Bar;
-- somebody still owing two tins.
-
-Humour is not relief from the philosophy.
-
-It is part of the correct scale of the world.
-
----
-
-# 9. Locked, Provisional, Unresolved
-
-## Locked by this batch
-
-- Major NPCs are recurring karmic knots and generally do not disappear through ordinary/random events.
-- Narrative uses repetition and montage rather than a chapter-first plot structure.
-- Player narration remains sensory/factual and does not define feelings or attachment.
-- Romance is not a designed route/system; intimacy may emerge from repeated attention and history.
-- Knowledge/spirituality must not become a visible collectible completion system.
-- Penguin Grandma is retained as a strong current character/world element.
-- Fresh fish is central to the Grandma social route.
-- Dog, Clown, and Sailor may share the recurring toad/intoxication motif.
-- Clown's problem is liberation treated through acquisition/optimisation grammar, not simple ignorance.
-- Sailor remains a liminal boundary-crossing form/function: less rooted, not automatically liberated.
-- Biological/social form and six-realm-inspired condition are separate design dimensions.
-- Karmic consequences should travel through ordinary state: goods, debt, records, information, relationships, habits, and legal identity.
-- A major knot is not resolved by one morally approved choice or by discovering one explanatory secret.
+- story is spiral/repetition rather than chapter ladder;
+- major NPCs are recurring karmic knots;
+- market state should generate major story pressure;
+- romance is emergent attention, not a dedicated system;
+- player interiority remains sensory rather than interpretive;
+- spirituality/knowledge is not a collection checklist;
+- Aspen, Sterling, Yasmin, Wong, Juan, and Fishmonger are the current named economic cast;
+- Penguin Grandma and the fresh-fish recurrence remain active narrative direction;
+- Wong/Juan/Sailor-Aspen toad use remains an active recurring motif;
+- Fishmonger is a monopoly/near-monopoly operator, not a neutral innocent producer;
+- each major trader has a distinct viable money-making method.
 
 ## Provisional
 
-- Apprentice carries the strongest Myshkin-like structural position: low instrumental reflex, generosity, and care that can become boundary failure.
-- Vale's deeper knot is provenance/control and the gap between proof and continuity.
-- Dog's deeper knot includes responsibility that may become impossible to release.
-- Toad scenes can become one recurring way to contrast altered experience with the attempt to convert experience into method.
-- Deva-like success may be one of the strongest late-game traps because optimisation can become frictionless and self-confirming.
+- Yasmin's former Animal form is a hyena;
+- exact Fishmonger monopoly mechanism;
+- exact structure of Juan's creditor stack;
+- exact Seagull ownership/employment relationship with Sterling;
+- exact number and locations of Aspen's maintained lovers;
+- exact state thresholds that turn character pressure into authored scenes.
 
-## Still unresolved
+## Unresolved
 
-- Exact Fishmonger karmic knot.
-- Exact causal mapping between repeated life-patterns and future forms.
-- Whether the world's other realms/forms correspond literally to any traditional six-realm ontology or remain a fictional cycle inspired by it.
-- Exact conditions under which a karmic knot ceases to recur.
-- Exact final liberation / exit condition.
-- Full Plant agency.
-- Whether a Sailor is numerically one continuing individual, a role inherited across forms, or both in different cases.
-- Whether Penguin Grandma retains any autobiographical memory, and if so how much.
-- Exact biological mechanism of the toad's effect.
-
-These unresolved points should not be filled in merely to make implementation easier.
+- final karmic-resolution condition for each named knot;
+- literal extent of six-realm cosmology versus broader fictional forms;
+- exact transformation causality;
+- final liberation;
+- Plant agency;
+- final ontology of Sailor;
+- Penguin Grandma's autobiographical memory;
+- biological explanation and pharmacology of the psychedelic toads.
