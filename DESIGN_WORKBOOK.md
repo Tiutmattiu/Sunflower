@@ -2393,3 +2393,426 @@ Codex ownership after freeze:
 - make the smallest coherent change;
 - leave one focused runnable check for non-trivial logic;
 - report raw diagnostics without independently rewriting world design or balance.
+
+---
+
+# 32. Quantitative Harbour Economy & Demand Ecology — Stress-Tested Design Pass
+
+Status: **paper-model evidence + provisional implementation guidance, not canon.**
+
+This chapter records the September 5 design tests that followed the Living Samsara diagnostics and Joel Bar demand work. It exists so the test-backed conclusions are not lost in chat. Numerical results below are from deliberately simplified Monte Carlo / paper models, **not current-engine Economic Health traces**. They establish structural direction and falsification targets; exact constants remain provisional until the engine reproduces the same effects.
+
+The surface objective remains unchanged:
+
+> **Get a sunflower.**
+>
+> After acquisition: **Go home.**
+
+Demand ecology, the Bar, clearing, background trade and any future dual-time mechanic must support that game rather than replace it.
+
+## 32.1 Economic-organ model
+
+The harbour should be understood as interacting economic organs rather than six NPC minigames:
+
+- **Joel's Bar** — consumption, demand discovery, customer choice, inventory risk, social information, hospitality;
+- **Juan's greenhouse / nursery** — production, maturity, biological capital, waste recovery, crop-linked debt;
+- **Aspen's routes** — import/export, working capital, deadlines, cargo capacity, external demand;
+- **Wong's network** — secondary liquidity, salvage, household/rescue demand, low-margin turnover;
+- **Dima** — access, claims, guarantees, private settlement, enforcement and other friction-dependent intermediation;
+- **Octopus Clearing** — standardised public execution, settlement, public tape and potentially standardised project-claim administration;
+- **Yasmin** — capital allocation, auctions/provenance and lumpy social demand across several organs rather than one shop;
+- **anonymous harbour population** — households, visiting crews, small boats, stalls, background buyers/sellers and other people who make the six named characters inhabitants of an economy rather than its entire population.
+
+Hard accounting principle:
+
+> **No return without a balance-sheet path.**
+
+Every recurring gain must answer who paid, why they paid, what good/service/asset left or was produced, and who supplied capital, labour, inventory, information or risk.
+
+## 32.2 Demand ecology constitution
+
+Replace direct recurring cash burns where possible with market-facing needs:
+
+`Need -> local demand -> trade if feasible -> use/sink -> outside fallback only if needed`
+
+Examples:
+
+- Wong household support should first create actual food / household demand rather than only `cash -= burn`;
+- Aspen support/provisioning should create goods/logistics demand;
+- Yasmin social maintenance should sometimes become hosting, gifts, venue or event demand;
+- Joel's operating cost should arise from actual customers, ingredients, breakage, capacity and service;
+- Juan's productive spending should purchase actual biological inputs / containers / capacity.
+
+Finance is downstream of this chain. Credit, claims and pooled capital exist because a real need/project has a timing or capital mismatch; finance must not create a self-contained claim economy with no final user.
+
+### Final-demand sinks
+
+A healthy good eventually has at least one real sink or lock:
+
+- consumption;
+- wear / maintenance;
+- production input;
+- social use / gift / hosting;
+- external export;
+- destruction / spoilage / failed project;
+- long-duration productive or collection lock.
+
+Ordinary high-frequency goods should usually have **2–3 independent demand sources**. A rare story/provenance object may rationally have one buyer or no current buyer.
+
+## 32.3 Where new goods can come from
+
+A physical good may enter effective local circulation through only a small number of auditable paths:
+
+1. **production / transformation** — inputs + time/capability -> output;
+2. **import** — local cash/claim finances an external purchase and the good enters the harbour;
+3. **biological / physical harvest** — catch, crop, propagation or other capacity-limited production;
+4. **salvage / recovery** — existing low-liquidity material returns to usable circulation at a haircut;
+5. **discovery / brokerage** — Dima or another intermediary reveals or connects an already-existing seller; brokerage changes access/liquidity, not physical supply.
+
+Never use `day passed -> valuable inventory appeared` as an unexplained income engine.
+
+## 32.4 Background economy is required
+
+A stylised 8-category harbour model was run with anonymous households, marine lots, visiting sellers/buyers and the named actors. Baseline public clearing plus limited Dima fallback produced about **3.12 fills per market window** with **3.2% dead windows**.
+
+Stress tests:
+
+| Scenario | Fills/window | Dead-window share |
+|---|---:|---:|
+| baseline with anonymous background economy | 3.12 | 3.2% |
+| remove background supply | 1.11 | 31.4% |
+| remove background demand | 1.89 | 13.8% |
+| remove both background supply and demand | 0.90 | 38.9% |
+
+Conclusion:
+
+> **The six named characters cannot be the whole economy.**
+
+Anonymous boats, households, visiting buyers, small vendors and event guests are not filler NPCs. They are the population that prevents every price and story from depending on one named person.
+
+Do not give these background actors full character bibles. They are bounded economic populations with visible aggregate effects.
+
+## 32.5 Actor-removal stress
+
+With the same anonymous background sector retained, random primary-actor removals were much less destructive:
+
+| Removed primary actors | Mean fills/window | Mean dead share |
+|---:|---:|---:|
+| 1 | 2.78 | 4.8% |
+| 2 | 2.45 | 6.8% |
+| 3 | 2.14 | 9.6% |
+
+Worst tested triple was roughly Aspen + Wong + Joel:
+
+- fills/window ≈ **1.63**;
+- dead share ≈ **16.3%**.
+
+This is the desired direction: named people matter, but the harbour does not stop existing because one person is unavailable.
+
+## 32.6 Joel absent means the Bar is closed unless somebody actually operates it
+
+Do not silently spawn a substitute bartender.
+
+In the stylised public-market model:
+
+- baseline: **3.12 fills/window**, **3.2% dead**;
+- Joel removed and Bar demand removed: **2.71 fills/window**, **5.0% dead**;
+- Joel removed but a deliberately modelled lower-capability replacement operator exists: **2.99 fills/window**, **3.6% dead**.
+
+Interpretation:
+
+- the overall harbour survives without Joel;
+- cocktail production and Bar hospitality do not;
+- the physical venue may still exist or be used for some non-Bar purpose, but drinks do not magically appear;
+- a player or another actor may eventually operate the Bar only through a real acquisition/lease/work/relationship transition and then uses the same production constraints as Joel.
+
+Temporary Joel absence during a phase is therefore much less dangerous than deleting Joel from the entire run. Standing public orders can remain while the Bar itself is shut.
+
+## 32.7 Joel Bar vertical-slice constitution
+
+The Bar is now the preferred first full Demand Ecology component because it naturally connects:
+
+`demand information -> procurement -> complementary inputs -> production -> customer choice -> revenue -> leftovers -> markdown -> spoilage -> waste -> recovery`
+
+### Cocktail generation
+
+Do not make hundreds of fixed recipes the main system.
+
+Use a master ingredient pool, while one run exposes only a bounded active set. The real-world inspiration is a generative menu grammar:
+
+- style: fruity / spirit-forward / dry / sweet / balanced;
+- extras: sour / smoky / savoury / spicy / surprise me;
+- alcoholic or non-alcoholic base;
+- actual tonight inventory constrains what can be made.
+
+A small number of classics can remain benchmark recipes and story anchors, including Mai Tai where needed by current routes.
+
+Each ingredient can contribute to a flavour vector such as:
+
+`sweet, sour, dry/bitter, fruity, herbal, spicy, savoury, smoky, strength, novelty`
+
+Customer segments have preference vectors, price sensitivity and alcohol/NA constraints. Stable character design should primarily determine **demand shape and constraints**, not one fixed favourite drink.
+
+### Complementary-input rule
+
+Joel must procure complete production bundles, not independently maximise `utility(item)` for every ingredient.
+
+A production business can be profitable on paper while illiquid because money is tied in bottles, perishables, equipment and tabs.
+
+### Demand information value
+
+Information value should approximate:
+
+`EV(best decision after info) - EV(best decision before info)`
+
+Ordinary taste gossip can therefore be worth ~0. A high-confidence event lead that changes an irreversible procurement decision can be worth several tins.
+
+Once the procurement/commitment has happened, the same true fact can become economically worthless.
+
+Relationship trust may increase how much of Joel's working capital the player can influence. It must not delete Joel's BATNA, ingredient substitution or basic budget discipline.
+
+### Character-specific Bar demand
+
+- **Juan** — relatively frequent consumption and tab/credit risk; addiction/horizon mismatch does not mean infinite daily demand;
+- **Aspen** — schedule-sensitive; departure/recovery obligations can reduce attendance or push demand toward NA options;
+- **Wong** — low discretionary budget; more important as markdown buyer, cheap supplier or waste/salvage handler than as a large drink customer;
+- **Yasmin** — lumpy group demand through dinners/screenings/hosting; this **does not replace her auction/capital role**;
+- **Dima** — low personal-drink importance; private meetings/venue use can occupy capacity;
+- **player** — may consume, supply, design, speculate or later operate, but is not included as guaranteed baseline demand.
+
+### Waste
+
+Waste is an outcome, not a cute starting inventory category.
+
+Perishable ingredient -> unsold/spoiled -> `Organic Scrap` with reference value approximately zero.
+
+A bounded Juan/greenhouse compost process may recover a small fraction of material value. The intended order of magnitude is roughly **10–25% recovery of destroyed input value**, not 1:1 recycling.
+
+Ordinary harmless waste should leave the system automatically unless the player deliberately diverts it into a real recovery route. Special hazardous/awkward disposal may create occasional liabilities, not a daily garbage-management minigame.
+
+## 32.8 Octopus and Dima must remain institutionally separate
+
+Earlier chat discussion added an important Octopus concept not yet present in the MDs: a **finite-capacity pooled shipment / investment project**. This must be recorded together with the clearing distinction.
+
+### Public rail vs informal rail stress test
+
+Stylised result:
+
+| Institutional structure | Fills/window | Dead share |
+|---|---:|---:|
+| cheap public clearing + Dima edge-case route | 3.12 | 3.2% |
+| no public rail; Dima-like ~3🥫 friction on all trades | 1.43 | 20.5% |
+| public rail but Dima removed | 3.10 | 3.3% |
+
+The interpretation is not that Dima is unimportant. It is that his comparative advantage is **high-value friction cases**, not aggregate volume.
+
+Therefore:
+
+> **Do not merge Octopus Clearing and Dima.**
+
+Octopus Clearing exists to make ordinary, low-surplus trade cheap, standardised, visible and batch-settled. Dima earns because some transactions remain private, excluded, disputed or difficult to enforce. Successful formalisation should be capable of reducing Dima's rents.
+
+If the Octopus character were removed but an equivalent public clearing institution remained, the market can function. If the low-cost public institution itself disappears, low-margin trade collapses.
+
+### Clearing is not merchant inventory
+
+`Octopus Clearing != Octopus personal merchant book`.
+
+Marine physical supply should be fragmented among small boats, wharf lots, catches, visiting sellers and occasional Octopus-owned inventory. The clearing operator may process a majority of trades without owning their goods or counting settlement float as wealth.
+
+### Finite pooled shipment candidate
+
+The strongest current Octopus-side investment design is a one-shot project per eligible market cycle, not a permanent stock and not a fixed/random yield button.
+
+Example structure:
+
+- target/cap contribution basis around 20🥫 in the paper test;
+- accepts cash and only project-relevant in-kind goods;
+- each in-kind good has a pre-announced project bid/haircut and quantity cap;
+- contribution creates a delayed project claim, not immediate cash;
+- actual external demand, spoilage/delay and realised sales determine proceeds;
+- unsold residual assets remain economically real;
+- no same-cycle contribution -> payout -> recontribution loop;
+- Octopus may receive a small carry on realised profit, not a fixed daily return;
+- player/NPC claims may later be sold through the normal claim/intermediation system.
+
+Illustrative Monte Carlo calibration only:
+
+- funded basis: 20🥫;
+- carry: 12% of positive project profit;
+- mean investor multiple ≈ **1.047x**;
+- loss probability ≈ **36.1%**;
+- 5th/95th percentile multiple ≈ **0.79x / 1.28x**;
+- average Octopus carry ≈ **0.24🥫 per completed project**.
+
+An illiquid item with reference 8🥫 but project contribution bid 5🥫 produced an illustrative expected payout ≈ **5.24🥫**, with 5th/95th ≈ **3.94 / 6.42🥫**. That is intentional liquidity transformation: haircut + delay + venture risk, not guaranteed value washing.
+
+When the finite pool was added to the stylised harbour supply model, fills rose from **3.12 to 3.59/window** and dead windows fell from **3.2% to 1.9%**. In that run the project accounted for about 18% of sale count. Treat that volume as **project throughput**, not Octopus personal wealth.
+
+This pool remains **provisional and should not be in the next implementation slice** until the basic demand economy is live.
+
+## 32.9 Slow clearing and dual-time stress tests
+
+### Fixed accumulation beats thin daily clearing in the paper model
+
+Using the same harbour supply/demand model:
+
+- one-window clearing: about **3.12 fills/window**, **3.3% dead clearings**;
+- two-window accumulation with ~15% aged-fresh spoilage: about **3.90 fills per underlying window / 7.80 per clearing**, near-zero dead clearings;
+- two-window accumulation with ~30% aged-fresh spoilage: about **3.81 fills/window / 7.61 per clearing**, near-zero dead clearings.
+
+Even after allowing substantial first-window demand expiry, the two-window version remained thicker than daily clearing in this stylised model.
+
+This strengthens the **fixed two-window / two-day shared clearing** candidate. A volume-triggered clearing can also thicken the market, but unpredictable timing creates a player-legibility cost. Prefer fixed predictable settlement for the first real test.
+
+### Never split Human and Sun liquidity into separate books
+
+Randomly splitting supply and demand into two phase-specific books reduced the same model from:
+
+- shared book: **3.12 fills/window**, **3.2% dead**;
+- split phase books: **2.19 fills/window**, **9.9% dead**.
+
+Therefore, if dual time survives design:
+
+> **Human/Sun participation may differ, but committed orders enter one shared settlement book.**
+
+Dual time is a participation/access rule, not two independent economies.
+
+## 32.10 Borrowed-time test
+
+A stylised opportunity-knapsack test used 1–2 unit tasks with noisy economic value and compared free extra time against exact debt shifted into the next participation window.
+
+With base budget `B=4`, max borrow 2:
+
+- exact equal debt was rational in about **38.6%** of windows;
+- average debt taken ≈ **0.53 units**;
+- average value gain ≈ **0.78** model-value units;
+- free extra time was used in about **69.4%** of windows and generated much larger advantage.
+
+With `B=5`:
+
+- exact debt use ≈ **35.0%**;
+- free-extra use ≈ **54.5%**.
+
+Conclusion:
+
+> **Continue only works if borrowed time is conserved.**
+
+Free late actions are predictably too attractive. `B=4` and `B=5` both remain useful candidates; do not freeze the number yet.
+
+### Plant-information farming guardrail
+
+Estimated marginal active-time value in the same stylised opportunity distribution was roughly:
+
+- `B=4`: **1.90 value units per marginal active unit**;
+- `B=5`: **1.32**.
+
+If Plant observation automatically creates saleable/provenanced information worth more than the active time the player gives up, rational players will deliberately farm Plant debt.
+
+Therefore Plant may widen observation, but most Plant observations must be:
+
+- player knowledge without automatic saleability;
+- weakly provenanced;
+- useful for future inference;
+- monetisable only after later verification, access or a separate causal observation.
+
+This keeps Plant as low-agency/high-observation rather than a hidden information mine.
+
+## 32.11 Sunflower-route resilience remains first-class
+
+The economic sandbox does not supersede the authored objective routes. Current anchors remain:
+
+1. **Sonya / Grandma Supper** — relationship, hospitality, fresh fish, non-market allocation;
+2. **Yasmin Auction** — capital, private market, access, provenance/valuation;
+3. **Juan Cliff** — risk/boundary route, currently linked to drink + Onewheel requirements.
+
+Simple dependency audit of the current route concepts:
+
+- remove Joel for a whole run: Supper and current Cliff drink path fail; Auction remains;
+- remove Yasmin: Supper + Cliff remain;
+- remove Juan: Supper + Auction remain;
+- remove Aspen under current prototype Onewheel-production monopoly: Cliff can fail;
+- Wong/Dima removal need not directly delete a route if goods/access have substitutes.
+
+So Joel is currently a **route-diversity single point of failure**, though not a total goal-reachability failure.
+
+Player-copyable drink production can restore the Cliff route when Joel is unavailable; player-copyable vehicle/repair production can remove Aspen as an unintended hard monopoly. The Sonya route can remain specifically Joel/family-linked without needing a generic replacement.
+
+Guardrails:
+
+- any single primary NPC unavailable for an entire run should leave **>=1 legal Sunflower acquisition route**;
+- temporary phase absence should not permanently kill a route unless the player knowingly misses a real timed event;
+- no acquisition route should depend on more than one unrelated unreplaceable production monopoly;
+- the living Sunflower remains unpriced and acquisition still transitions the objective to **Go home**.
+
+### Sonya's scope
+
+Do not turn Sonya into a seventh economic archetype to justify her existence.
+
+Her useful roles are already enough:
+
+- recurring fresh-fish/hospitality demand;
+- family continuity that does not map cleanly onto legal identity;
+- a supporting social sink around Joel;
+- one non-market Sunflower-allocation route.
+
+Her exact ontology/continuity meaning can remain unresolved while these material behaviours stay concrete.
+
+## 32.12 Yasmin: hosting does not replace auction/capital allocation
+
+The Bar tests gave Yasmin a useful **secondary** channel: lumpy hosted demand can create a predictable headcount but uncertain taste distribution, making procurement information valuable and creating capacity congestion.
+
+Do not let this flatten her into `rich Bar customer`.
+
+Her major strategic grammar remains:
+
+- auction;
+- provenance;
+- secured finance;
+- ownership/capital allocation;
+- selective social labour that creates or protects access.
+
+Investment in Joel's Bar should appear only if the Bar has a real capital need such as expansion, cold storage, lease restructuring, event capacity or working-capital distress. No capital need -> no investment story.
+
+## 32.13 Wong species is reopened, not silently changed
+
+Current canon still uses Wong as a Dog. The creator has reopened whether that complexity is actually earned.
+
+A small access-sensitivity test changed Wong's formal-access probability from dog-like ~0.55 to human-like ~0.95. Aggregate fills changed only from roughly **3.11 to 3.18/window** (~2%), while Dima-route use fell. That means the current economy does **not yet** mechanically justify the full Human/Animal distinction through Wong alone.
+
+Decision gate:
+
+> Keep Dog Wong only if his body/form changes at least several concrete opportunity dimensions in play — e.g. formal access, Animal-network information, mobility/handling, household/rescue ecology — rather than functioning as a human trader with a dog portrait.
+
+Until that gate is tested, **do not migrate Wong to Human and do not add more species-specific complexity.** The visual/social appeal of Dog Wong is real, but mechanics must earn the ontology.
+
+The same standard applies to all forms: communication can be ordinary world fact, but form must materially change opportunity rather than exist only as surreal decoration.
+
+## 32.14 Implementation decision after this pass
+
+The paper models are strong enough to authorise a **limited Demand Ecology implementation slice**, but **not** the full dual-time/rebirth redesign.
+
+Safe to implement next because these rules survive either daily or slower future clocks:
+
+1. full runtime/display migration `sterling -> joel`;
+2. Joel Bar revenue from actual customer demand + capacity + complementary inputs + actual sales;
+3. serving/batch-yield semantics so whole bottles/crates are not destroyed into one drink;
+4. local vs external payer accounting;
+5. leftovers, perishability, bounded markdown and Organic Scrap / bounded compost recovery;
+6. anonymous background buyers/sellers as bounded populations rather than new named NPCs;
+7. split Octopus Clearing authority/float from personal merchant inventory and finite marine supply;
+8. preserve Juan claim asset/liability symmetry and all current Sunflower routes;
+9. extend Economic Health with money-source/sink, capacity, waste, customer, route-reachability and actor-removal diagnostics.
+
+Still **do not implement yet**:
+
+- full Human/Sun/Plant phase system;
+- death/reset rewrite;
+- Wong species change;
+- Octopus pooled shipment investment project;
+- Yasmin Auction v2 if it would distract from the living demand substrate;
+- final comic/art polish.
+
+UI work may proceed only for the reusable economic shell: Bar stock/menu/customer-result surfaces and opportunity cards derived from real public/lead state. Do not hard-code old Morning/Afternoon or daily-Noon assumptions into the new UI.
+
+This chapter supersedes the blanket `do not start yet` language in 31.12 **only for this limited Demand Ecology slice**. The borrowed-time/core-rebirth batches remain gated.
