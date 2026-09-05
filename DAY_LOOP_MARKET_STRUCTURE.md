@@ -1,10 +1,10 @@
 # Sunflower — Solar Day Loop & Market Structure
 
-> **Status: incumbent implemented daily-loop baseline, not final canon.** It complements `GAME_DESIGN.md`, `DESIGN_WORKBOOK.md`, and `WORLD_LORE_SUN_MOMENT.md`.
+> **Status: incumbent implemented daily-loop baseline, not final canon.** It complements `GAME_DESIGN.md`, `DESIGN_WORKBOOK.md`, and `WORLD_CANON.md`.
 >
 > `DESIGN_WORKBOOK.md` Chapters 31–32 explicitly challenge daily Noon clearing, separate Morning/Afternoon action pools and the current action counts with a continuous-time and fixed two-window/two-day candidate. Do not deepen implementation dependence on these constants until that redesign is resolved. Human/Sun naming and borrowed-time mechanics remain open.
 
-## 1. Core Time Rule
+## 1. Incumbent Time Rule — final architecture Open
 
 **One in-game day = one strategic round.**
 
@@ -106,7 +106,7 @@ Current provisional implementation target:
 - 2 meaningful Morning actions;
 - preparation of up to 3 noon offers/orders.
 
-These values are balance constants, not lore canon.
+These are historical prototype parameters, not frozen design values. The final action budget remains Open.
 
 ---
 
@@ -124,7 +124,7 @@ and
 
 > “The market cleared. This actually happened.”
 
-The public tape created at noon becomes information for the afternoon and future days.
+Octopus market records created at noon inform later decisions. The strong information design also has a general newspaper and private phone, whose publication/receipt timing is independent of this incumbent market cadence. No new clock is frozen by those surfaces.
 
 A correct rumour can still lead to a losing trade if supply, competition or interpretation differs from what the player expected.
 
@@ -154,7 +154,7 @@ Current provisional implementation target:
 
 - 2 meaningful Afternoon actions.
 
-Again, this is a balance constant rather than final canon.
+This is a historical prototype parameter; the final budget remains Open.
 
 ---
 
@@ -242,7 +242,7 @@ Or narratively:
 
 ## 11. Implementation Milestone: One Living Day
 
-Before contracts, black markets, leverage, Sun-Moment attachment consequences, multi-currency FX, or the full conspiracy layer, the engine must prove that one complete day is coherent.
+Historical milestone ordering: prove a coherent day before expanding depth. This checklist is not current implementation authorisation, and retired conspiracy lore is not a future layer.
 
 Milestone 1 should support:
 

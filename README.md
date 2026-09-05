@@ -63,7 +63,7 @@ node scripts/living-smoke.mjs
 - `ITEM_ECONOMY.md` — item roles and price philosophy
 - `NPC_CHARACTER_BIBLE.md` — NPC identity / behavior direction
 - `REBIRTH_FORM_SYSTEM.md` — form, legal identity and rebirth hypotheses
-- `WORLD_LORE_SUN_MOMENT.md` — current Sun Moment metaphysics
+- `WORLD_CANON.md` — current world canon and Sun Moment ontology
 - `CODEX_VERIFICATION.md` — verified results, clearing rules, and remaining checks
 
 ## Verification status

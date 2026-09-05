@@ -22,6 +22,32 @@ Decision evidence records information available to the player at commitment time
 
 ---
 
+## Three information layers — STRONG CANDIDATE
+
+This is the current information architecture, not a claim that newspaper/phone runtime exists.
+
+| Layer | Timing / reach | Material content |
+|---|---|---|
+| **Newspaper** | broad, public, slower, delayed; beyond the player's contacts | world, harbour, weather, shipping, society, culture, accidents, public notices, classifieds and external events |
+| **Phone** | fast, narrow, private and timely | personal messages, quotes, relationship updates, leads, order changes, project/investment reports, logistics alerts and sudden failures |
+| **Local / market / scene** | immediate actionable state | visible goods, offers, people, opportunity panels, Octopus board, clearing outcomes and scene facts |
+
+The newspaper is **general social/world media**, closer to a small BBC-style publication than a Bloomberg terminal. It reports social facts: “Thunderstorms expected east of the cape,” not “Lime +20% tomorrow.” Aspen infers route-delay risk; Joel considers visitor demand; the player considers perishable cargo; suppliers consider provisioning. These are uncertain interpretations, not guaranteed forecasts of profit.
+
+Octopus publishes public orders, completed public trades, prices, clearing data and settlement records. This is **market data only**, not the world's general information medium. A market record establishes what publicly settled, not the buyer's secret motive or continuing ownership forever.
+
+Phone claims must retain **source, provenance, credibility, motive and freshness**, alongside precision. A private message can be stale, mistaken or strategically misleading. Keep event/observation time distinct from receipt/publication time; a fast delivery does not make an old observation fresh.
+
+### Public disclosure and the cost of attention
+
+**Private edge → public disclosure → alpha decay.** A private shortage message can arrive before Aspen places a classified ad or the newspaper reports a disruption. More sellers then learn about demand, competing quotes change, and the earlier edge can shrink or disappear. Publicity does not mechanically force a fixed price change.
+
+Aspen can use classifieds, Octopus, background suppliers or direct sourcing herself. The player has no exclusive courier permission: earlier knowledge, existing stock, supplier relationships, faster verification and willingness to carry delivery risk can create a temporary advantage.
+
+Evaluate information against the best action available without it, including acquisition/verification cost, inventory/carry risk, capital lock, delay and **opportunity cost of attention**. A positive gross EV can still be worse than another use of the same window. Section 32.15 of `DESIGN_WORKBOOK.md` preserves the provisional Aspen signal experiment; its reliability band is not canon.
+
+Physical newspaper, phone and local documents belong on the desk; `ART_DIRECTION.md` owns presentation. The Notebook is the persistent evidence/concept archive, not a fourth omniscient live feed.
+
 ## Why this matters
 
 If every NPC begins Day 1 knowing exactly who owns every item, most private needs are solved immediately:
@@ -136,7 +162,7 @@ Confirmed direction:
 
 Public stock is knowable without spending an information action.
 
-### 2. Public transaction tape
+### 2. Octopus completed-public-trade records
 
 A completed public-market trade creates market knowledge.
 
@@ -150,7 +176,7 @@ then market participants can reasonably update beliefs:
 - Aspen no longer necessarily has that specific unit;
 - somebody was willing to pay the observed price.
 
-The public tape should therefore train both NPCs and the player.
+These market records should inform both NPCs and the player without becoming a universal world-news feed.
 
 ### 3. Active search / social discovery
 
@@ -332,10 +358,10 @@ Those are different informational states even though the underlying world state 
 Information can exist as a real game object with fields such as:
 
 - proposition / claim;
-- source;
+- source, provenance and source motive;
 - **precision**;
 - confidence;
-- freshness;
+- observation/event time, receipt/publication time and freshness;
 - who currently knows it;
 - whether it was personally verified;
 - whether it has already diffused;
@@ -362,13 +388,13 @@ The player can then choose among economically different actions:
 
 Information value must decay when it spreads.
 
-### Current implemented resale / diffusion contract
+### Documented prototype resale / diffusion contract
 
 - A holding lead records source, precision, confidence, freshness, personal verification, known actors, sales, favours, diffusion count and resale state.
 - Selling or sharing teaches only the named recipient; it does not broadcast the lead globally.
 - A recipient may later resell through an established bilateral relationship. That private transfer moves cash, updates the buyer's bounded memory and appends a structured resale record.
 - Price falls as the audience grows and as the lead ages; stale leads cannot be sold.
-- The engine preserves this history for later diagnosis but does not yet assign final badges or archetype scores.
+- The verification snapshot documents this history without final scoring; `SCENARIOS_TEACHING.md` separately records badge implementation claims. This design pass does not establish new runtime coverage.
 
 ---
 

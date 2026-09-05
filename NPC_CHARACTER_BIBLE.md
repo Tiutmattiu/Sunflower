@@ -2,7 +2,7 @@
 
 > **Status: active narrative-economic canon, September 2026.**
 >
-> Companion to `GAME_DESIGN.md`, `DESIGN_WORKBOOK.md`, `REBIRTH_FORM_SYSTEM.md`, `WORLD_LORE_SUN_MOMENT.md`, `SCENARIOS_TEACHING.md`, and `ITEM_ECONOMY.md`.
+> Companion to `GAME_DESIGN.md`, `DESIGN_WORKBOOK.md`, `REBIRTH_FORM_SYSTEM.md`, `WORLD_CANON.md`, `SCENARIOS_TEACHING.md`, and `ITEM_ECONOMY.md`.
 >
 > This revision supersedes the earlier generic player-facing identities. One compatibility/history map is retained here only: Sterling / Bar Apprentice / runtime `sterling` or `bar` → Joel; Mirelle Vale / runtime `vale` → Yasmin; Onewheel Clown / runtime `clown` → Juan; Dock Dog / runtime `dog` → Wong; Mechanic or Sailor used as a personal name / runtime `mechanic` → Aspen. Runtime `fishmonger` must be split by function rather than treated as a current primary character. Narrative canon uses the names below.
 >
@@ -33,10 +33,10 @@ The harbour should support:
 
 The six main recurring figures are:
 
-1. **Aspen** — current Sailor / mechanic / conservative operator.
+1. **Aspen** — current Sailor / mechanic; logistics / contract operator.
 2. **Joel** — Bar operator / apprentice / fast-learning experiential investor.
-3. **Yasmin** — capital owner / family allocator / elite social operator.
-4. **Wong** — high-turnover low-margin migrant dealer; current presentation uses a Dog body.
+3. **Yasmin** — family capital; strong candidate private capital allocator / elite social operator.
+4. **Wong** — household enterprise / high-turnover low-margin migrant dealer; Dog presentation, final species Open.
 5. **Juan** — botanist / grower / boundary-risk and distressed-finance operator.
 6. **Dima** — Seagull black-market broker / cross-form gatekeeper.
 
@@ -75,11 +75,11 @@ Avoid turning the cast into a coordinated fantasy naming set.
 
 ---
 
-# 3. Aspen — Current Sailor / Mechanic
+# 3. Aspen — Logistics / Contract Operator
 
 ## Identity
 
-Aspen is a lesbian woman and the current Sailor encountered in the opening harbour cycle.
+Aspen is a Japanese lesbian woman and the current Sailor encountered in the opening harbour cycle.
 
 She is mechanically skilled, exact, punctual, and unusually sensitive to:
 
@@ -105,14 +105,14 @@ This matters because `Sailor` is a liminal form/function in the larger cosmology
 
 ## Money-making method
 
-Aspen prefers steady, legible, repeatable cash flow.
+Aspen prefers steady, legible, repeatable cash flow. Logistics and contract performance define her role; geographic arbitrage may arise from her routes but heavy speculation does not define her personality.
 
 Strong earning methods:
 
 - scheduled shipping;
 - delivery contracts;
 - sourcing commissions;
-- repeat cross-port arbitrage whose costs are already known;
+- repeat cross-port commerce whose sourcing and logistics costs are understood;
 - repairs she can scope before accepting;
 - future delivery;
 - conservative private lending where she understands the underlying business;
@@ -142,32 +142,25 @@ Aspen's costs should be visible enough to justify her prices:
 - time lost to delay;
 - external sourcing cost;
 - contractual penalties;
-- gifts, medicine, rent, and support for several lovers.
+- lumpy dated social obligations, gifts and discretionary quality/provenance-sensitive purchases.
 
 Her cash flow can be healthy while her free time is almost nonexistent.
 
-## Patronage and lovers
+## Relationship obligations
 
-Aspen maintains several mistresses or lovers across different places.
+Aspen's lesbian identity is current canon; exact lover/support-network details remain Open. Do not create lover NPCs or a “remember which girlfriend arrives tonight” memory minigame, and do not canonize Aspen/Yasmin romance.
 
-Do not write this as a glamour montage of promiscuity.
+Economically relevant social commitments should be lumpy, deadline-sensitive, discretionary and quality/provenance-sensitive: a birthday gift, dinner, imported object or dated promise. She may enjoy a clearly useful patron role, yet usefulness can become compulsion. This differs from Wong's frequent, necessary, price-sensitive household/rescue burn.
 
-The important structure is **material obligation**.
+## Routes, weather and outside options — STRONG CANDIDATE
 
-She remembers:
+Travel time determines route reach, available external ports, arrivals of seeds/cuttings/imports, perishable survival and missed contracts. This is a causal way to introduce goods gradually, not “Day 5 unlocks seeds.” Weather can shift the travel-time distribution and damage probability; forecasts may precede the event in the newspaper. Exact durations, weather effects and action costs remain Open.
 
-- rent dates;
-- medicine;
-- birthdays;
-- a requested object from another port;
-- who is ill;
-- who expects her on which week;
-- what she promised to bring back;
-- which visit must fit between two departures.
+Aspen need not sail every voyage personally. Background crew can be aggregate crew count, payroll and provision demand; no additional named cast is needed. Paid wages become background purchasing power unless explicitly accounted as external outflow.
 
-She may genuinely enjoy being a patron.
+**BATNA = Best Alternative To a Negotiated Agreement:** her best real fallback if this deal fails, not a negotiation-stat bonus. An illustrative 18-can emergency Lime offer must be compared with an actually reachable 20-can guaranteed wholesaler, Juan's partial stock, a delayed voyage plus penalty, or a disclosed substitute package with greater risk. These figures are examples, not price constants; timing, quantity, quality and enforceability determine comparability and acceptance.
 
-She may also prefer relationships in which her role is obvious.
+Aspen can source directly, post a classified, use Octopus or pay a background supplier. The player's stock, early phone lead, supplier relation, verification speed or risk-bearing can matter without magical exclusive access. Public disclosure can bring competitors and erode that edge. Short Shipment / contract misrepresentation is the strong inspection case in `SCENARIOS_TEACHING.md`; the old Bad Tangerine premise is retired.
 
 ## Information edge
 
@@ -446,7 +439,7 @@ The engine records time and events, not `love`.
 
 ---
 
-# 5. Yasmin — Capital Owner / Social Allocator
+# 5. Yasmin — Private Capital Allocator / Social Operator
 
 ## Identity
 
@@ -497,23 +490,19 @@ Her current upper-class life may repeat a former social ecology in another form.
 
 ## Money-making method
 
-Yasmin specialises in capital that produces more capital.
+**Strong candidate:** a private capital allocator, analogous to a family office / merchant-bank-like principal. She is neither the public exchange nor merely a rich auction buyer.
 
-Methods may include:
+| Activity | Real economic basis |
+|---|---|
+| Secured lending | eligible collateral, haircut, recovery value, maturity and repayment risk |
+| Distressed acquisition | cash urgency can discount a real asset/claim; face value is not recovery value |
+| Provenance / appraisal | evidence changes collateral value, willingness to pay, trust and buyer access |
+| Consignment / private auction | seller retains ownership until sale; Yasmin may verify, organise, match and charge commission |
+| Private investment | a real working-capital or productive need, such as Joel's operation or Juan's immature stock, on economically credible terms |
 
-- family business ownership;
-- minority equity;
-- lease/rent income;
-- auction commission;
-- private placement;
-- secured finance;
-- distressed acquisition;
-- provenance-heavy collectibles;
-- information control;
-- introductions;
-- arranging access between capital and opportunity.
+Family holdings can generate future operating value, but returns require a payer and underlying activity. Hosting, screenings and introductions maintain capital access; they do not replace this role. The Sunflower auction is a special route within her larger economic life. Antique vessel/pot plus incidental flower is a strong candidate; exact Auction v2 internals remain Open.
 
-Her wealth is passive at the asset level and active at the social level.
+Juan's maturity mismatch makes secured lending meaningful: more retained upside than selling future output can come with fixed repayment and sharper default exposure. This must not strictly dominate a Dima risk-sharing claim, an early sale or abstention. The illustrative comparison lives only in `DESIGN_WORKBOOK.md` §32.15.
 
 ## Social labour
 
@@ -647,7 +636,7 @@ Belief is not settlement.
 
 ---
 
-# 6. Wong — High-Turnover Dealer
+# 6. Wong — Household Enterprise / Capital Accumulation
 
 ## Identity
 
@@ -696,9 +685,21 @@ Wong is good at:
 - Animal-network introductions;
 - buying something another trader cannot be bothered to monetise.
 
-The key is volume.
+The key is volume constrained by supply, buyers and working capital. A half-tin matters when repeated often. This is **household enterprise / small-business capital accumulation**, not an ethnic work-ethic explanation of wealth. Wong is frugal, but effort alone does not remove household burden or financing constraints.
 
-A half-tin matters when repeated often.
+### Productive base — STRONG CANDIDATE, not implemented canon
+
+One multi-use small shop/counter, operated by Wong and possibly one employee, could combine ordinary goods/basic general remedies, parcel pickup/dispatch, luggage/storage and salvage/resale. No regulated pharmacy simulation is proposed.
+
+It earns through real retail margins, parcel/storage fees, reduced carrying/travel costs, better storage/lower spoilage, inventory staging and information flow. A simple “+3 inventory capacity” upgrade may not cover rent, staff and locked capital. Shop economics must be tested, not assumed.
+
+Small retained surplus builds working capital, an operating buffer and eventually a **productive fixed asset**: a persistent asset or right that improves future earning capacity, such as a cart, shelves, refrigeration, storage, parcel equipment or shop/lease right. Cash spent is not automatically wealth destroyed; residual value and the exact asset system remain Candidate/Open.
+
+Network credit can help cross a fixed-asset threshold but creates repayment/default risk and can reduce near-term net wealth. **Credit improves the possibility set, not guaranteed success.** The capital/burn/credit experiments are consolidated in `DESIGN_WORKBOOK.md` §32.15.
+
+Two-sided market making remains Candidate: an illustrative bottle bid of 1 and ask of 1.5 earns a spread only if sellers and buyers arrive and inventory can be financed. Unmatched purchases leave inventory risk; these are not fixed prices or guaranteed profit.
+
+International chains, Canada-store expansion, franchises, public companies, shareholders and IPOs remain Deferred. Frequent necessary household/rescue spending stays price-sensitive, distinct from Aspen's lumpy social expenditure.
 
 ## Risk profile
 
@@ -970,11 +971,21 @@ Juan can make an excellent long-horizon crop or financing decision in the mornin
 
 That is not proof that he does not understand finance or plants.
 
-His planning system and immediate reward system can disagree.
+Do not write him as `addict = irrational`: he can be analytically right, operationally skilled and behaviourally fragile. His planning system and immediate reward system can disagree. This duality is intentional: he can wait patiently for plants and impulsively risk liquid cash tonight through Bar tabs, drinking, wagers, the Cliff challenge or future promises.
 
-Do not write him as `addict = irrational`.
+## Maturity mismatch — STRONG CANDIDATE choice structure
 
-He can be analytically right, operationally skilled and behaviourally fragile at the same time.
+Juan can be asset-rich and cash-poor because debt falls due before productive biological stock matures:
+
+- **Wait:** retain future upside but risk failing today's payment.
+- **Distressed early sale:** obtain safer current cash while sacrificing maturity upside.
+- **Sell/assign future output:** receive liquidity and give a priced share of later harvest to Dima or another counterparty; output risk is shared.
+- **Secured loan:** retain more upside while accepting fixed repayment, collateral and default risk, plausibly through Yasmin.
+
+These alternatives teach maturity mismatch, fire sale, productive capital, secured credit, claims, risk sharing and default. No option should strictly dominate across risk/liquidity states. Dima is not guaranteed to fund a workout; doing nothing can produce distress without a magical immediate game-over flag. Numbers are provisional toy evidence in `DESIGN_WORKBOOK.md` §32.15.
+
+Seeds, cuttings, propagation, seedlings, mature plants and bounded Organic Scrap recovery support the real operation. Spirituality may consume real time/goods but creates no alchemy, potion or magical-buff economy. Extra grape → wine → packaging → Bar production chains are Deferred; do not expand the catalogue here.
+
 
 ## Liberation knot
 
@@ -1103,7 +1114,7 @@ He does not automatically know elite social information, shipping schedules or h
 
 ---
 
-# 8. Dima — Seagull Black-Market Broker
+# 8. Dima — Informal Intermediation / Distressed Workout
 
 ## Identity
 
@@ -1158,6 +1169,14 @@ Dima's network earns from:
 His comparative advantage is not owning everything.
 
 It is making a transaction possible between people who otherwise cannot trust, recognise, or reach each other.
+
+## Distressed workout — STRONG CANDIDATE
+
+Proxy buying, guarantees, private access, information brokerage, claim transfer, informal settlement, enforcement, discreet delivery and privacy/reputation handling are current direction. Distress assistance is a priced **workout/restructuring**, never free bankruptcy rescue.
+
+He may extend maturity for a fee, buy a claim at a haircut, replace a creditor, negotiate settlement for collateral/claim/favour, find a fire-sale buyer or guarantee a deal for compensation. A future-output claim can share biological downside while taking a large part of Juan's upside. Losses and risk must remain allocated to real parties; network limits, refusal and default remain possible.
+
+Cheap guaranteed rescue would create moral hazard by rewarding reckless risk-taking. Dima needs neither universal goods ownership nor his own Sunflower route to matter structurally. `DESIGN_WORKBOOK.md` §32.15 compares the provisional economics with Yasmin's fixed secured claim.
 
 ## Near-monopoly
 
@@ -1264,30 +1283,15 @@ It is:
 
 ---
 
-# 9. Background Physical Economy After Fishmonger
+# 9. Background Physical Economy and Octopus
 
-Removing the old named Fishmonger from the six primary karmic figures must **not** erase the fish / ice / cold-chain economy.
+**History:** the old named Fishmonger combined physical supply and functions now assigned elsewhere. Do not cosmetically rename all that stock to Dima; compatibility labels are recorded at the top of this file.
 
-Later runtime migration should split two layers:
+Keep three ledgers/roles distinct: **Octopus Clearing** (public payment, settlement and price discovery, with client float), **Octopus personal inventory** (finite owned goods), and **background marine supply** (boats, catches, wharf sellers and visitors). Processing a trade does not mean owning its goods or money.
 
-1. **Dima** takes the primary named narrative slot and the informal-settlement / black-market function.
-2. fish, ice, preserved food, ordinary catch and cold-chain supply remain in the world through background producers, stalls, wholesalers, boats, or non-primary operators.
+Households, crews, workers, visitors and outside buyers/sellers are aggregate populations with finite income, stock, food/drink/lodging needs and operating costs. Payroll becomes purchasing power unless explicitly external. They need no additional named personalities.
 
-This is mechanically necessary as well as narratively cleaner.
-
-The old runtime `fishmonger` currently carries too much recurring public-market supply to be deleted by a cosmetic rename.
-
-Do not convert:
-
-> old Fishmonger sells Ice
-
-into:
-
-> Dima sells Ice
-
-merely because an ID was reused.
-
-The physical economy should survive the cast rewrite.
+Pooled shipment/project investment is **Deferred/Open**: contributed cash/in-kind goods would be locked against delayed, loss-bearing project claims and a real external outcome. Exact ownership, terms and implementation are unresolved; Chapter 32.8 of `DESIGN_WORKBOOK.md` preserves earlier paper evidence.
 
 ---
 
@@ -1696,7 +1700,8 @@ No dialogue can reveal something merely because the engine knows it.
 A character may speak from:
 
 - personally observed fact;
-- public tape;
+- general newspaper reports, Octopus public market records or local scene facts, with source and timing;
+- private phone/contact messages, whose motive and credibility may be uncertain;
 - own inventory / business;
 - bought information;
 - information received from a plausible contact;
@@ -1713,70 +1718,22 @@ Do not correct the character with omniscient narration.
 
 ---
 
-# 16. Economic Differentiation
+# 16. Economic Differentiation and Recurring Loops
 
-The six primary economic archetypes are intentionally different.
+The six actors are not the **Trade / Operate / Invest / Finance / Intermediate / Speculate** return classes (`GAME_DESIGN.md` §2). Each can combine classes. Do not equalise profit; test whether real sources/sinks and repeat demand support distinct niches.
 
-| Character | Main earning grammar | Main operating constraint |
+| Actor | Recurring economic loop | Main constraint |
 |---|---|---|
-| Aspen | shipping / contracts / conservative finance | schedule + obligation collision |
-| Joel | Bar / experiments / fast learning / later investment | framework + boundaries + subsidy leakage |
-| Yasmin | owned capital / private market / finance / social allocation | status maintenance + social labour |
-| Wong | high-turnover low-margin / salvage / brokerage | household + rescue burn |
-| Juan | growing / delayed-value biological assets / claims / leverage / distressed finance | maturity + working capital + addiction / horizon mismatch |
-| Dima | access / proxy / informal settlement / claims / enforcement | bypass + institutional change |
+| Aspen | source/contract → voyage/delivery → settlement → maintenance/provisions → next contract | schedule, weather, obligations and real fallbacks |
+| Joel | procure → serve actual customers → cash/tabs → replace/learn/invest | inputs, capacity, boundaries and subsidy leakage |
+| Yasmin | capital position → return/event → social maintenance → allocate/finance | collateral/recovery and social labour |
+| Wong | cheap stock/services → turnover → household/rescue burn → buffer/surplus → candidate productive asset | liquidity, necessary spending, fixed-asset threshold |
+| Juan | seed/crop/claim/wager → financing → maturity/event → settle/roll/sell → new exposure | maturity mismatch and impulsive liquid spending |
+| Dima | access/trust/claim friction → brokerage → fee → settlement/enforcement → dependency or bypass | network reach, refusal, institutional change |
 
-Do not equalise profit.
+## 17. Recurring Business Loops — Consolidated
 
-The goal is strategic ecology, not class balance.
-
----
-
-# 17. Recurring Business Loops — Narrative Target
-
-A main character cannot depend on a single one-time item need forever.
-
-Their operation must keep generating reasons to act.
-
-## Aspen
-
-Repeated:
-
-> source / contract → voyage / delivery → settlement → maintenance / external need → next voyage.
-
-## Joel
-
-Repeated:
-
-> buy input / tool → serve customers → earn revenue / accumulate tabs → replace / learn / invest → repeat.
-
-## Yasmin
-
-Repeated:
-
-> capital position → yield / event → social maintenance / new opportunity → reallocate / finance → repeat.
-
-## Wong
-
-Repeated:
-
-> acquire many cheap things → move them → cash → household/rescue burn → need another turnover cycle.
-
-## Juan
-
-Repeated:
-
-> seed / crop / claim / wager → financing → maturity / event → settle / roll / repurchase → new exposure.
-
-## Dima
-
-Repeated:
-
-> exclusion / distrust / claim friction → intermediation → fee → enforcement / settlement → new network dependency or bypass.
-
-These are design targets for Economic Health testing.
-
-They must later become actual sources/sinks/demand, not invisible biography.
+The table above replaces the repeated per-character loop list. Detailed operations remain in each character section; Economic Health should test their causal repetition, not invisible biography or one-time quest needs.
 
 ---
 
@@ -1835,7 +1792,7 @@ The engine still does not infer the player's feeling.
 
 - Aspen identity and economic direction;
 - Joel identity and broad Myshkin/Baoyu position;
-- Yasmin's canonical identity and economic direction;
+- Yasmin's identity, family capital and provenance/access direction; private allocator mechanics remain Strong Candidate;
 - Wong identity and rescue/volume structure;
 - Juan is a botanist / grower / biological real-asset operator as well as a boundary-risk operator / debtor;
 - Dima replaces the old named Fishmonger as primary Seagull black-market broker;
@@ -1845,8 +1802,12 @@ The engine still does not infer the player's feeling.
 - all main characters have different money-making methods;
 - fish/cold-chain physical economy remains even after the named Fishmonger slot is removed.
 
-## Strong provisional
+## Strong provisional / Candidate
 
+- Aspen route/weather/BATNA mechanics and dated social-demand modelling;
+- Wong multi-use shop, capital formation, network credit and two-sided quotes;
+- Yasmin private capital allocation and Juan maturity-finance choices;
+- Dima costly distressed workout;
 - Yasmin was specifically a hyena;
 - exact Seagull ownership/control of Bar;
 - exact family structure / number of Aspen's lovers;

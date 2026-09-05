@@ -1,6 +1,6 @@
 # Sunflower — Item Economy
 
-> Status: active system design and live-code audit. Keep this document focused on what goods *do economically* and how the market feels. Do not collect objects merely to inflate the catalogue.
+> Status: active item design with a historical prototype audit snapshot, not a fresh runtime verification. Keep this document focused on what goods *do economically* and how the market feels. Do not collect objects merely to inflate the catalogue.
 
 ## Demand ecology
 
@@ -43,7 +43,7 @@ The engine should not award hidden partial credit for designer-only associations
 
 ## Current catalogue size
 
-As of the September 4 live audit, `ITEMS` contains **67 item definitions** after deleting the obsolete `Auction Sunflower` pseudo-item.
+The September 4 audit recorded that `ITEMS` contains **67 item definitions** after deleting the obsolete `Auction Sunflower` pseudo-item.
 
 That is enough for the current design phase.
 
@@ -58,7 +58,7 @@ Do not add another large batch until this pool has been played, cut and aestheti
 
 ---
 
-# Live-item rule
+# Prototype reachability snapshot / live-item rule
 
 A kept item should satisfy at least one of these in live code:
 
@@ -149,12 +149,12 @@ This is deliberately small and legible:
 - **background marine suppliers** — food commodities, cold-chain goods, harbour material;
 - **Aspen** — bicycle goods, repair inputs, tools, durable goods;
 - **Yasmin** — prestige, collectibles, provenance/story, information-bearing goods, curios, mystery assets;
-- **Juan** — speculative junk, vehicles, bicycle goods, mystery assets, strange stories;
+- **Juan** — the prototype interest list emphasises speculative junk, vehicles and mystery assets; current design also centres productive biological stock, maturity and future output, without claiming those additions implemented;
 - **Joel** — cocktail ingredients, professional bar tools, barware, containers.
 
 A market interest is **not** omniscience.
 
-NPCs may act on interests only when the item is public, appears on the public tape, or has become known through acquired information. Broad interests do not scan hidden inventories.
+NPCs may act on interests only when the item is public, appears in Octopus public market records, or has become known through acquired information. Broad interests do not scan hidden inventories.
 
 Explicit needs can still motivate targeted investigation through plausible contacts.
 
@@ -209,7 +209,7 @@ Typical goods:
 - Three Metres of Stolen Theatre Wire
 - Patch Cut from the Ship Mercy
 
-Aspen's stock should carry geography, provenance and mobility.
+Aspen's stock should carry geography, provenance and mobility. **Strong candidate:** route reach, travel time and weather determine whether seeds/cuttings/imports arrive, survive and meet contracts, rather than arbitrary day unlocks. Crew provision demand is finite; wages fund background purchases unless explicitly external. Exact routes, weather parameters and shipment sizes remain Open.
 
 ## Yasmin — story fragments + elite / illiquid collectibles
 
@@ -239,9 +239,9 @@ Typical goods / needs:
 
 The Bar should reward actual cocktail knowledge without becoming a recipe quiz. A knowledgeable player may infer more from incomplete observations and therefore spend fewer information actions.
 
-## Juan — surreal everyday goods + speculative junk + mobility debris
+## Juan — biological capital alongside speculative / mobility goods
 
-Typical goods:
+Prototype goods (not a complete description of his current economic role):
 
 - Lollipop
 - Lucky Sticker
@@ -250,7 +250,9 @@ Typical goods:
 - Key That Opens Nothing
 - Tool Roll
 
-Juan can assign coherent private utility to things other traders dismiss without turning every weird item into a secret quest key.
+Juan's current productive direction covers seeds, cuttings, propagation, seedlings and mature plants, whose liquidation value depends on maturity and condition. Future-output claims must name a debtor/holder and real productive backing; they are not goods spawned by paperwork. Biological patience coexists intentionally with wagers and impulsive spending. Do not add a large botanical SKU catalogue or grape/wine/packaging chain here.
+
+Juan can assign coherent private utility to unusual objects without making every one a quest key.
 
 ---
 
@@ -267,6 +269,16 @@ Ice, Bruised Mint, Lime, Fresh Mackerel and Tentacles produce storage and fire-s
 ### Recurring inputs
 
 The Bar consumes ice. Wong consumes fresh fish for the cat colony. Demand should return because businesses and bodies continue doing things, not because a quest flag resets.
+
+### Contract quantity / quality risk — STRONG CANDIDATE
+
+**History/Retired:** Bad Tangerine masquerading as Lime. Short Shipment / contract misrepresentation instead concerns promised acceptable quantity versus delivered count/condition, possibly concealed under a normal top layer. It needs no new substitute SKU. Inspection, counting, supplier reputation and paid verification have costs; exact sizes/probabilities remain Open. `SCENARIOS_TEACHING.md` Scenario 3 owns the teaching case.
+
+### Productive assets, residual value and bridge uses — CANDIDATE
+
+Wong's multi-use counter/shop may connect ordinary goods, parcel dispatch, storage and salvage. Carts, shelves, refrigeration or equipment can retain productive/residual value after cash is spent; cash != wealth. Buyers, fees, rent/staff costs, carrying savings and capacity must be real. Exact assets/residual values remain Open, and the shop is not implemented canon. Avoid regulated-pharmacy complexity or new SKU expansion.
+
+Food, citrus, containers, tools and selected botanicals should bridge consumption, provisioning, hosting, production or storage rather than become player-only quest keys. Organic Scrap is a spoilage/waste outcome with bounded recovery, not a free starting-value/recycling engine; its provisional model belongs in `DESIGN_WORKBOOK.md` §32.7.
 
 ### Professional durable tools
 

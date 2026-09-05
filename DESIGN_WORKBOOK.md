@@ -8,7 +8,11 @@
 >
 > Dialogue remains separate because it is content, not systems design: `DIALOGUE_MONTAGE_BANK.md` + its temporary state audit until the next narrative consolidation.
 >
-> **Current reconciliation:** Joel is the frozen canonical name; older `sterling` runtime/history references are compatibility only. Chapters 31–32 challenge but do not yet replace the incumbent daily loop or estate model. The fixed two-window/two-day clearing, dual-time, borrowed-time, death/reset, Wong species, Plant gameplay and Octopus pooled shipment remain candidate/open as labelled below.
+> **Status discipline:** FROZEN / CURRENT CANON is stable direction; STRONG CANDIDATE is supported but not a final mechanic; OPEN is unresolved; DEFERRED is outside the current implementation target; HISTORY / RETIRED is not current authority. IMPLEMENTED requires explicit runtime evidence, not design prose.
+>
+> All numerical mechanics, diagnostic thresholds and paper results in this workbook are **PROVISIONAL design assumptions/evidence**, not frozen balancing constants or current-engine results. §32.15 holds the new chat-side toy models. Chapters 31–32 do not replace the incumbent clock or estate baseline.
+>
+> Runtime ownership remains separate. This reconciliation authorises documentation only; older work-board/batch language is not a new implementation instruction. Existing implementation claims need their own dated verification.
 
 ---
 
@@ -36,83 +40,23 @@ The economic simulation must be strong enough that the narrative and metaphysica
 
 # 1. Production Roadmap
 
-## Phase 1 — Playable Harbour
-Status: substantially complete.
+This is sequencing, not runtime completion evidence. `CODEX_VERIFICATION.md` owns the dated prototype snapshot; the separate implementation lane owns subsequent results.
 
-- bounded actor knowledge;
-- public Noon settlement;
-- evidence / Notebook;
-- bilateral finance;
-- onboarding;
-- scene-first foundation;
-- first Economic Health harness.
-
-## Phase 2 — Living Samsara Core
-Status: current Codex implementation batch.
-
-- canonical runtime cast;
-- Octopus Clearing separated from finite personal inventory and background marine supply;
-- Dima runtime;
-- Sun Moment reintegration;
-- recurring actor loops;
-- Juan botanical productive assets;
-- transferable Juan claims;
-- estate/current-body accounting;
-- Economic Health v2;
-- system coverage.
-
-## Phase 3 — Market Depth
-ChatGPT design-owned.
-
-- Yasmin Auction v2;
-- negotiation / BATNA;
-- quality / inspection / deception;
-- market making / spread / inventory risk;
-- Juan confidence run / reflexivity / fire sale;
-- deeper formal/informal venue choice.
-
-## Phase 4 — Assessment + Replay Freeze
-
-- mature decision evidence;
-- Outcome / Process / Style synthesis;
-- ending/capstone reachability;
-- teaching/case coverage;
-- opportunity density;
-- life length / rebirth pacing;
-- Sunflower / Go Home pacing.
-
-## Phase 5 — Narrative Embodiment
-
-- state-aware montage bank;
-- multi-character scenes;
-- cross-life recognition;
-- object recurrence;
-- relationship memory;
-- no random personality quote dispenser.
-
-## Phase 6 — Final Scene UI + Art
-
-- illustrated locations;
-- portraits;
-- active papers / objects;
-- progressive desk clutter;
-- commodification UI transformation;
-- sound / motion restraint.
-
-## Phase 7 — Real Playtest + Final Balance
-
-- novice;
-- finance-literate;
-- exploit-seeking;
-- narrative-first;
-- repeated-run;
-- ending-coverage players.
+| Phase | Scope / gate |
+|---|---|
+| Playable Harbour | bounded knowledge, coherent clearing, finance/evidence/Notebook and understandable first play |
+| Living Samsara Core | canonical cast, distinct Octopus ledgers, Dima, recurring economy, Juan assets/claims, incumbent forms/estates and diagnostic coverage; historical separate-lane scope |
+| Market Depth | candidate Auction v2, real BATNA, inspection, market making, confidence and venue cases; Chapter 5 |
+| Assessment / replay | evidence, opportunity density, route/capstone reachability and explicit time/rebirth decisions before scoring freeze |
+| Narrative embodiment | state-aware montage, shared scenes, object/relationship recurrence and cross-life recognition |
+| Scene UI / art | `ART_DIRECTION.md`; stable state binding before polish |
+| Playtest / balance | novice, finance-literate, exploit-seeking, narrative-first and repeated-run/ending-coverage policies |
 
 ---
 
-# 2. Primary Economic Styles
+# 2. Actor Niches and Balance Regimes
 
-Balance does **not** mean equal wealth.
+Balance does **not** mean equal wealth. These actor niches are distinct from the **FROZEN six return classes** owned by `GAME_DESIGN.md` §2: Trade, Operate, Invest, Finance, Intermediate, Speculate. No player profession choice or skill tree is implied.
 
 Each style should be locally strong in some world states and weak in others.
 
@@ -120,13 +64,13 @@ Each style should be locally strong in some world states and weak in others.
 |---|---|---|---|
 | Aspen | low-variance contracts / execution | deadlines, repeat counterparties, known cashflow | ambiguity, tail risk, open-ended speculation |
 | Joel | relationship + experiential optionality | soft info, social access, fast learning, bridge liquidity | weak boundaries, bad stories, early credit discipline |
-| Yasmin | capital allocation / provenance | collateral, auction, ownership, private placement | tiny-margin operations, undocumented mess, unpriced motive |
-| Wong | high-turnover low-margin | fragmented demand, salvage, bargaining, working-capital velocity | long lockups, one large loss, expensive provenance |
+| Yasmin | private capital allocation / provenance | collateral, recovery, auction, real productive financing | tiny-margin operations, undocumented mess, unpriced motive |
+| Wong | household enterprise / capital accumulation | fragmented demand, salvage, small services, working-capital velocity | household burn, fixed-asset threshold, long lockups, one large loss |
 | Juan | duration / biological assets / distressed finance | maturity mismatch, discounted claims, future productive value | immediate liquidity, horizon mismatch, self-experimentation |
 | Dima | intermediation / informal enforcement | formal exclusion, fragmented trust, claim transfer | direct trust, disintermediation, successful formalisation |
-| Octopus | public clearing + optional finite personal inventory | standard settlement throughput; occasional owned marine lots | not a primary strategic/karmic archetype |
+| Octopus | public clearing / payment / price discovery | low-friction standard settlement | institution, not primary archetype; personal stock and background supply accounted separately |
 
-Healthy balance target:
+Provisional falsification targets (not equal-profit requirements):
 
 - every primary style has at least **2 environment regimes** where it is top-2;
 - every primary style has at least **2 regimes** where it is bottom-2;
@@ -134,184 +78,42 @@ Healthy balance target:
 - high transaction count alone does not equal dominance;
 - dominance requires several dimensions: cash, wealth, sales value, access, information, claims or dependency.
 
-Environment regimes to test:
+Environment hypotheses to test (not guaranteed rankings):
 
-1. high liquidity / low information;
-2. low liquidity / high collateral;
-3. high information asymmetry;
-4. urgent perishables;
-5. long-duration productive assets;
-6. formal-access restriction;
-7. confidence shock;
-8. crowded public spread;
-9. relationship-rich / cash-poor;
-10. outside-demand / import cycle.
+| Regime | Expected locally strong | Expected pressured |
+|---|---|---|
+| high liquidity, low information | Wong / Aspen | Dima / info-heavy |
+| low liquidity, high collateral | Yasmin / Joel | pure cash dealer |
+| high information asymmetry | Dima / Yasmin | naive public dealer |
+| urgent perishables | Aspen / Wong / marine suppliers | Juan duration |
+| long-duration productive assets | Juan / Yasmin | impatient turnover |
+| formal exclusion | Dima / Joel | formal-only |
+| confidence shock | Juan specialists / Yasmin / Dima | face-value naive holder |
+| crowded public spread | private/info routes | simple arbitrage |
+| relationship-rich, cash-poor | Joel / Wong | collateral-only |
+| import/outside-demand cycle | Aspen / external suppliers | actors without external route |
+
 
 ---
 
 # 3. Opportunity Ecology
 
-The game generates **pressure first**. Multiple systems may answer the same pressure.
+Generate **pressure first**, then multiple feasible responses. Meaningful alternatives differ in timing, collateral, relationship, information loss, legal access, future obligation, certainty or visibility. `SCENARIOS_TEACHING.md` owns authored case details.
 
-A choice is meaningful only when at least two materially different routes are visible.
-
-Routes are materially different when they differ in time, collateral, relationship dependence, information loss, legal access, future obligation, certainty or public visibility.
-
-## 3.1 Liquidity squeeze
-
-Possible routes:
-
-- public sale;
-- inbound bid;
-- wait for clearing;
-- normal information sale;
-- exclusive information sale;
-- Joel relationship loan;
-- Yasmin secured advance;
-- sell / collect / accept buyback on a Juan claim;
-- Dima access route;
-- Aspen future-delivery advance;
-- abandon opportunity.
-
-## 3.2 Information edge
-
-Possible routes:
-
-- exploit personally;
-- sell;
-- sell exclusive;
-- relationship favour;
-- verify;
-- wait;
-- leak/breach;
-- ignore.
-
-## 3.3 Distressed receivable
-
-Possible routes:
-
-- buy claim;
-- sell onward;
-- hold;
-- debtor buyback;
-- extend;
-- collect;
-- liquidate productive backing;
-- abstain.
-
-## 3.4 Scarce asset
-
-Possible routes:
-
-- buy outright;
-- auction bid;
-- secured finance;
-- relationship finance;
-- sell another asset;
-- acquire more information;
-- wait;
-- abstain.
-
-## 3.5 Sourcing obligation
-
-Possible routes:
-
-- source first;
-- contract first;
-- secure backup;
-- public source;
-- relationship source;
-- pay certainty premium;
-- default;
-- decline.
-
-## 3.6 Venue problem
-
-Possible routes:
-
-- Octopus public settlement;
-- Dima informal/proxy;
-- Joel relationship proxy;
-- wait for formal access;
-- no transaction.
-
-## 3.7 Negotiation
-
-Possible routes:
-
-- accept;
-- one counter;
-- invoke a real outside option;
-- walk.
-
-## 3.8 Quality uncertainty
-
-Possible routes:
-
-- inspect;
-- disclose;
-- state uncertainty;
-- omit;
-- exaggerate;
-- lie;
-- warranty;
-- walk.
-
-## 3.9 Market-making inventory pressure
-
-Possible routes:
-
-- maintain quote;
-- widen;
-- tighten;
-- stop;
-- liquidate;
-- hold;
-- change good.
-
-## 3.10 Confidence event
-
-Possible routes:
-
-- sell claim;
-- hold;
-- extend;
-- collect;
-- buy distressed claim;
-- liquidate;
-- use/share information when legitimate.
-
-## 3.11 Relationship allocation
-
-Possible routes:
-
-- sell;
-- gift;
-- information favour;
-- ask for credit;
-- keep the resource.
-
-## 3.12 Sun Moment opportunity
-
-Possible routes:
-
-- natural pause;
-- keep working when a real contextual late-order opportunity exists.
-
-Never score this spiritually.
-
-## 3.13 Form-change recovery
-
-Possible routes depend on body/access:
-
-- formal recognition;
-- Dima proxy;
-- Joel relationship support;
-- current-form work/salvage;
-- current assets;
-- information;
-- waiting;
-- later form transition.
+| Pressure | Candidate channels to compare when actually available |
+|---|---|
+| Liquidity squeeze | public/inbound/private sale, wait for clearing, information sale/exclusive, Joel credit, Yasmin secured advance, Juan claim sale/collection, Dima workout, Aspen advance, abstain |
+| Information edge | personal use, sale/exclusive, favour, verification, wait, disclose/breach, ignore |
+| Distressed receivable | buy/sell/hold, debtor buyback, extend/collect, permitted early liquidation, abstain |
+| Scarce asset | buy/bid, collateral/relationship finance, sell another asset, investigate, wait/abstain |
+| Sourcing promise | source first, contract first, backup supplier, public/relationship source, certainty premium, default/decline |
+| Venue / negotiation | Octopus, direct deal, Joel/Dima, wait for access; accept/counter/real BATNA/walk |
+| Quantity/quality uncertainty | skip/spot/full/paid inspection, disclose/qualify/omit/misrepresent, warranty if agreed, walk |
+| Two-sided inventory pressure | maintain/widen/tighten/withdraw quote, hold or liquidate, change good |
+| Confidence shock | verify/share, hold/sell/extend/collect/buy or permitted liquidation |
+| Relationship allocation | sale, gift, information favour, earned credit, retain resource |
+| Sun Moment | natural pause versus a real contextual continuation; exact mechanic Open, never spiritually scored |
+| Form-change recovery | under the tested model: recognition/proxy, relationship support, current-form work/assets/information, wait or later transition |
 
 ---
 
@@ -337,544 +139,117 @@ Warn when one channel is chosen in >60% of rich states across capable policies.
 
 ---
 
-# 5. Market Depth v1 — Concrete First-Pass Mechanics
+# 5. Market Depth — Candidate Mechanics and Open Terms
 
-## 5.1 Yasmin Auction v2
+**Status: STRONG CANDIDATE / OPEN**, not an implementation contract. The earlier duplicated exact specifications in Chapter 20 have been consolidated here. Historical numerical presets remain in Git history rather than masquerading as current constants.
 
-First teaching lot:
+## 5.1 Yasmin Auction v2 — OPEN
 
-**Bent Silver Fork — Shipwreck Lot**
+The Sunflower route's strong candidate lot is a valuable antique vessel/pot with an incidental Sunflower: rivals may want the vessel while the player wants the flower. Yasmin can organise consignment, verify provenance, match buyers and charge commission without owning the seller's asset. This sits inside her private capital role, not public exchange operations.
 
-Public reference: 10🥫  
-Reserve: 8🥫  
-Auction: sealed first-price.
+A separate common-value teaching lot can expose noisy estimates, provenance and winner's curse. **History:** Bent Silver Fork / Shipwreck Lot, sealed-first-price format, priors, price states and bidder formulas were exploratory presets, not frozen Auction v2 internals. No replacement format, reserve, signal distribution, access chain or NPC bid policy is selected here.
 
-Hidden common-value state:
+Preserve commitment-time evidence, private versus common/resale value, uncertain rival information and liquidity constraints. A sound bid can lose; a poor bid can profit. Other bids never define the player's value for the flower.
 
-- ordinary hotel silver: 10🥫;
-- documented wreck silver: 20🥫.
+## 5.2 Negotiation / BATNA — STRONG CANDIDATE
 
-Prototype prior:
+**BATNA = Best Alternative To a Negotiated Agreement:** the best feasible fallback if agreement fails. A short accept/counter/invoke alternative/walk sequence is a candidate presentation; exact rounds and action costs remain Open.
 
-`P(wreck)=0.40`
+Compare actual quantity, condition, timing, risk, access and enforceability. Aspen can use a wholesaler, partial Juan supply, a delayed voyage/penalty or a disclosed substitute. Wong can hold, clear elsewhere or take another small job; Dima/Joel and Yasmin's alternatives depend on real availability and terms.
 
-Prior expected common value = 14🥫.
+**Retired:** fixed “one alternative = +1 can, two = +2” adjustments and fixed counter-percentage limits as current contract. An outside option is not a negotiation skill bonus. The number of alternatives alone does not establish their value.
 
-### Evidence channels
+## 5.3 Short Shipment / Contract Misrepresentation — STRONG CANDIDATE
 
-Inspection clue:
+**History/Retired:** Bad Tangerine pretending to be Lime, its `item_is_lime` warranty and fixed restitution preset. Preserve adverse selection, representation, fraud, inspection and trust through shipment specification instead.
 
-- P(+|wreck)=.70
-- P(+|ordinary)=.30
+An illustrative crate promises 12 acceptable Limes; the visible top looks normal, but there may be filler/paper/stone beneath or only 8 fruit. Sizes, probabilities, inspection costs and remedies remain Open. Options include skip, spot-check, full count, supplier reputation or paid verification.
 
-Posterior EV:
+Record what the seller knew and claimed, the agreed quantity/quality, what the buyer could observe, offered/refused verification, later discovery and compensation/denial. Do not infer `cheater=true` or apply omniscient reputation penalties. `SCENARIOS_TEACHING.md` Scenario 3 owns the case.
 
-- positive ≈16.1🥫;
-- negative ≈12.2🥫.
+Aspen has public classifieds, Octopus, suppliers and direct sourcing. The player's advantage can be stock, early information, relationships, verification or delivery risk; public disclosure can bring competing sellers.
 
-Provenance document:
+## 5.4 Wong Market Making — CANDIDATE
 
-- P(+|wreck)=.90
-- P(+|ordinary)=.10
+A small two-sided quote on an existing bridge good requires real cash, inventory and counterparties. BID < ASK does not guarantee a completed round trip. Reserve resources, preserve physical copies and prevent same-clearing recycling.
 
-Posterior EV:
+An illustrative Empty Bottle bid 1 / ask 1.5 can earn only if both sides arrive. Measure realised spread separately from inventory mark and later disposal losses. One-sided flow can force quote widening, withdrawal or a loss. Exact goods, observation prerequisites, quote counts, tick sizes and reserves remain Open.
 
-- positive ≈18.6🥫;
-- negative ≈10.7🥫.
+**Retired as current constraint:** hard `reference ± 2` quote bands or known floors/caps that let players extract free money. Wong's productive shop is a separate Strong Candidate, not merely a quote unlock or inventory-capacity bonus; see his bible and §32.15.
 
-The player sees material clues, not Bayesian formulas.
+## 5.5 Juan Confidence Run — CANDIDATE backlog
 
-NPCs bid only from their own clue set, estimate and liquidity.
+A true but non-conclusive operational signal, such as greenhouse heat failure delaying maturity, can expose a mismatch between current cash and claims. Eligibility should require real creditors, claims and immature productive backing, not a fixed day or panic meter. Exact trigger counts, delay and haircut remain Open.
 
-Prototype bidder rules:
+Creditor collection reduces liquidity; forced sale can destroy productive value; lower expected recovery can prompt more collection/selling. Hold, extend, sell, buy or liquidate only when legally available. Preserve belief versus solvency and observe both a reflexive run and a scare that resolves without insolvency.
 
-- Aspen: bid cap floor(estimate × .85), retain 10🥫.
-- Wong: bid cap floor(estimate - 2), retain 8🥫.
-- Joel: cap floor(estimate × .95 + up to 1 private utility), retain 12🥫.
-- Dima: cap floor(estimate - 1), only with resale route, retain 8🥫.
-- Yasmin is auctioneer and does not bid against herself.
+The simpler Juan financing comparison in §32.15 supports distinct early-sale, Dima output-sharing, Yasmin fixed-loan and distress paths; no single financing path should strictly dominate.
 
-Winner's-curse case requires:
+## 5.6 Formal vs Informal Venue — current distinction, candidate terms
 
-- common-value dominant lot;
-- highest estimate wins;
-- ex-post common value / realised margin disappoints;
-- commitment-time evidence preserved.
+Octopus supplies public orders, execution, payment, price discovery and settlement records. Dima charges for private access, trust, guarantees, claim transfer or enforcement; Joel may offer a relationship-mediated proxy. Compare only actually available routes.
 
-A sound bid may lose. A bad bid may profit.
-
-Sunflower can later reuse the auction grammar, but its private player value must never be inferred from other bids.
+Cheap public clearing should preserve low-surplus trade. Privacy, delay, access and enforceability can justify a costlier intermediary. Fees and final cadence are not frozen. Dima's distress assistance must be a costly workout with a payer, loss allocation and possible refusal/default, never a free bailout.
 
 ---
 
-## 5.2 Negotiation / BATNA
+# 6. Assessment Mathematics — PROVISIONAL
 
-Maximum sequence:
-
-opening offer → Accept / Counter / Invoke real alternative / Walk → one final response.
-
-No repeated haggling.
-
-Counter magnitude guardrail:
-
-<=25% of opening transfer value.
-
-Real outside option can improve counterparty terms:
-
-- one credible alternative: up to 1🥫 / equivalent term;
-- two independent alternatives: up to 2🥫.
-
-No real alternative = no magical persuasion bonus.
-
-First hosts:
-
-- Wong salvage/bulk;
-- Dima proxy/claim fee;
-- Yasmin secured-finance fee.
-
-Dima proxy:
-
-- opening 3🥫;
-- may reduce to 2🥫 when Joel's cheaper route is genuinely available.
-
-Yasmin:
-
-- strong BATNA may waive +1 financing fee;
-- does not casually improve 60% haircut.
-
----
-
-## 5.3 Quality / Inspection / Deception
-
-First object:
-
-**Bad Tangerine**
-
-It is materially not Lime.
-
-Statement categories stored factually:
-
-- full_disclosure;
-- uncertain_description;
-- strategic_omission;
-- exaggeration;
-- direct_falsehood.
-
-No `cheater=true`.
-
-Inspection in this first case reliably distinguishes Tangerine from Lime but costs time/opportunity.
-
-Simple warranty:
-
-`item_is_lime`
-
-If accepted and later false:
-
-- buyer gets a 2🥫 restitution claim;
-- normal relationship/information consequences follow only through discoverable evidence.
-
-No universal warranty code.
-
-Deception can remain undetected until:
-
-- inspection;
-- attempted use;
-- resale;
-- third-party evidence.
-
-No omniscient reputation hit.
-
----
-
-## 5.4 Market Making
-
-Initial eligible goods:
-
-- Fish Bones, ref 3;
-- Empty Green Bottle, ref 2.
-
-Unlock only after enough observed market familiarity.
-
-One active two-sided quote in v1:
-
-- BID reserves cash for one unit;
-- ASK reserves one owned physical unit.
-
-Requirement:
-
-`BID < ASK`
-
-Minimum spread 1🥫.
-
-Allowed quote distance:
-
-`reference ± 2🥫`.
-
-Typical examples:
-
-- Fish Bones 2 / 4;
-- Green Bottle 1 / 3.
-
-NPC seller hits BID when reservation <= bid.
-
-NPC buyer lifts ASK when buyer max >= ask.
-
-No same-batch recycling.
-
-Measure:
-
-- realised spread P&L;
-- inventory mark;
-- later disposal P&L.
-
-A maker must be able to lose from inventory.
-
----
-
-## 5.5 Juan Confidence Run
-
-Eligibility:
-
-- >=2 open claims;
-- >=2 creditors;
-- total face >=12🥫;
-- >=1 immature productive asset;
-- at least 40% of face cannot be paid from current cash.
-
-No fixed Day trigger.
-
-First operational signal:
-
-**Glasshouse heat failure**
-
-- one growing crop maturity delayed 2 days;
-- no immediate crop destruction;
-- true operational bad news;
-- not proof of insolvency.
-
-Creditor actions:
-
-- collect;
-- extend;
-- sell claim;
-- wait;
-- buy distressed claim;
-- force liquidation if allowed.
-
-No panic meter.
-
-Reflexivity occurs through actual balance-sheet changes:
-
-claim sale → lower observed claim price  
-collection → lower Juan liquidity  
-forced liquidation → less productive capacity  
-less productive capacity → lower expected recovery  
-→ more selling/collection can follow.
-
-Current forced-liquidation haircut:
-
-`floor(current productive-stage reference × .60)`
-
-Record destroyed future value.
-
----
-
-## 5.6 Formal vs Informal Venue
-
-Octopus:
-
-- public;
-- tape-visible;
-- standard settlement;
-- batch timing;
-- no clearing fee v1;
-- formal access requirements.
-
-Dima:
-
-- private;
-- fee-bearing;
-- can bridge some exclusion;
-- lower public price discovery;
-- network-based enforcement.
-
-Joel:
-
-- potentially cheaper relationship proxy;
-- requires relationship/time investment.
-
-Target relative ordering:
-
-public direct < trusted Joel proxy < Dima proxy
-
-when otherwise equivalent and available.
-
-Privacy/access/enforcement may reverse practical value.
-
----
-
-# 6. Assessment Mathematics
-
-Assessment has three outputs.
-
-## Outcome
-
-What happened.
-
-Examples:
-
-- accessible cash/wealth;
-- estate wealth;
-- Sunflower progress;
-- realised P&L;
-- defaults;
-- claims;
-- relationships;
-- lives/forms;
-- realised cases.
-
-## Process / Skill
-
-What the commitment-time evidence supports about decision quality.
-
-## Style
-
-Repeated preference for structuring choices.
-
-Style is not skill.
-
-No evidence != average.
-
----
+Current distinction: **Outcome** describes what happened (accessible/estate wealth separately, P&L, defaults, claims, relationships, forms, routes/cases); **Process/Skill** describes decision quality supported by commitment-time evidence; **Style** describes repeated, opportunity-conditioned preferences. No evidence != average. No final scoring/radar is frozen.
 
 ## 6.1 Independent Decision Case
 
-One click is not one case.
-
-A case needs:
-
-- at least two materially different alternatives;
-- factual information set;
-- resources/constraints;
-- commitment/decline;
-- optional later outcome.
-
-Context key can approximate:
-
-`lifeId + domain + eventType + counterparty + underlyingOpportunityId`
-
-Repeated clicks in one context are strongly down-weighted.
-
----
+A case requires materially different alternatives, a factual information set, resources/constraints, commitment/decline and optional later outcome. Repeated clicks in one event are not independent. A candidate context key is `lifeId + domain + eventType + counterparty + underlyingOpportunityId`; Chapter 24 owns stored fields.
 
 ## 6.2 Opportunity Richness
 
-Conceptual R:
-
-- 0.0 forced;
-- .35 one plausible alternative;
-- .60 two distinct routes;
-- .80 three+ distinct routes;
-- 1.0 several genuinely different trade-offs.
-
----
+Provisional R: 0 forced; .35 one plausible alternative; .60 two distinct routes; .80 three-plus; 1 several materially different trade-offs.
 
 ## 6.3 Evidence Weight
 
-Prototype conceptual weight:
+Experimental `w = R × S × I × D`: richness × stake relevance × information adequacy × independence/diversity. Candidate bounds S [.5,1.25], I [.5,1], D [.4,1]. Cap stakes so a jackpot cannot dominate diagnosis.
 
-`w = R × S × I × D`
+## 6.4 Process Dimensions
 
-- R = opportunity richness;
-- S = stake relevance, capped;
-- I = information adequacy;
-- D = context independence/diversity.
+Candidate dimensions: execution, liquidity, valuation, information, obligation/credit, sourcing/operations, position sizing, negotiation/alternatives, institutions, relationship stewardship and adaptability.
 
-Suggested bounds:
-
-- S [.5, 1.25]
-- I [.5, 1]
-- D [.4, 1]
-
-No jackpot should dominate a whole diagnosis.
-
----
-
-## 6.4 Core Process Dimensions
-
-1. Execution / settlement discipline
-2. Liquidity management
-3. Valuation discipline
-4. Information practice
-5. Obligation / credit discipline
-6. Sourcing / operational planning
-7. Position sizing / exposure
-8. Negotiation / alternatives
-9. Institutional navigation
-10. Relationship-capital stewardship
-11. Adaptability / updating
-
-Each independent case can support +1 / 0 / -1 in one or more dimensions, but only when the factual context actually supports that inference.
-
-Aggregate:
-
-`direction_j = sum(w_i * sign_i) / sum(w_i)`
-
-Do not display a 0 when there is no evidence.
-
-Conflicting contexts remain visible.
-
-Example:
-
-> reliable on explicit delivery promises, but willing to restructure distressed claims.
-
-Do not collapse this to `Reliability 50`.
-
----
+A case may support +1/0/−1 only where evidence justifies it. Candidate aggregation: `direction_j = sum(w_i*sign_i)/sum(w_i)`. No zero for missing evidence; preserve conflicts such as reliable delivery but willingness to restructure debt instead of averaging them into “Reliability 50.”
 
 ## 6.5 Confidence
 
-- 1 case: anecdote;
-- 2 independent contexts: emerging;
-- 3+ across >=2 context types: supported;
-- 5+ across >=3 context types: high confidence.
+`SCENARIOS_TEACHING.md` owns provisional categorical confidence thresholds. An optional hidden experiment is `C = 1-exp(-n_eff/3)`; do not display pseudo-scientific percentages.
 
-Possible hidden smooth estimate:
+## 6.6 Style — OPEN
 
-`C = 1 - exp(-n_eff/3)`
+Outcome != Style: either high- or low-risk play may succeed/fail or obtain/miss Sunflower. Valuation, liquidity, information discipline, relationship investment, risk appetite, credit discipline, integrity and adaptability remain candidate axes, not a player-facing radar.
 
-Display categorical wording, not pseudo-scientific percentages.
-
----
-
-## 6.6 Style Axes
-
-Examples:
-
-- short ↔ long horizon;
-- liquid ↔ committed/illiquid;
-- Goods ↔ Information ↔ Claims;
-- public ↔ private;
-- formal ↔ informal;
-- concentrated ↔ diversified;
-- verify-first ↔ act-under-uncertainty;
-- transactional ↔ relationship-mediated;
-- exploit ↔ explore;
-- hold ↔ realise;
-- low-variance ↔ convex/special;
-- natural Sun-Moment pause ↔ resistance when opportunity exists.
-
-Only count opportunities where both relevant directions were actually possible.
-
-Never infer:
-
-- love;
-- greed;
-- spirituality;
-- moral worth;
-- cowardice;
-- kindness;
-- enlightenment.
+Possible contrasts include horizon, liquid/locked capital, goods/information/claims, public/private, formal/informal, concentration/diversification, verification/uncertainty, transactional/relationship, exploit/explore and hold/realise. Only count contexts offering both sides. Sun Moment choices may be observed but never scored spiritually. Do not infer love, greed, moral worth, cowardice, kindness or enlightenment.
 
 ---
 
 # 7. Assessment Cross-Context Requirements
 
-A stable process judgement should not come from one NPC alone.
-
-Suggested anchors:
-
-- Execution: Aspen + Octopus + Juan.
-- Liquidity: Joel + Yasmin + Juan + public selling.
-- Valuation: auction + public gap + claim + collateral + gift/sale.
-- Information: investigations + auction clues + exclusivity + inspection + confidence signals.
-- Obligation: Aspen + Joel + exclusivity + claims.
-- Sourcing: Aspen + Joel inputs + Juan crops.
-- Position sizing: auction + market making + leverage/claims.
-- Negotiation: Wong + Dima + Yasmin.
-- Institutional navigation: Octopus vs Dima + form change.
-- Relationship stewardship: Joel + Wong/Sonya support + favours.
-- Adaptability: alpha decay + auction learning + confidence event + form change.
-
-If only one narrow repeated context exists, report low confidence.
+`SCENARIOS_TEACHING.md` §3 owns the character coverage map. No stable process judgement should come from one NPC or a single repeated event. Compare execution across Aspen/Octopus/Juan; liquidity across credit/collateral/claims/sales; information across leads, inspection, exclusivity and event interpretation; relationships across genuine access/credit differences. Apply the same cross-context rule to valuation, sourcing, risk, negotiation, institutions and adaptation. Report low confidence where coverage is narrow; do not infer neutrality from no evidence.
 
 ---
 
-# 8. Realised Cases / Badges
+# 8. Realised Cases / Market Scars
 
-Badges are market stories, not progress points.
+`SCENARIOS_TEACHING.md` owns case definitions and badge status. A realised case needs a causal sequence and evidence IDs, not a button count, moral praise, spiritual progress or completion percentage. A case may coexist with poor process.
 
-Rules:
+That document records **SOLD IT BEFORE YOU HAD IT** and **EXCLUSIVE** as implemented; `CODEX_VERIFICATION.md` describes a narrower earlier verification scope without final badge scoring. This documentation pass does not settle runtime coverage or invent a new implementation result.
 
-- causal sequence required;
-- clicking a mechanic is insufficient;
-- badge can coexist with poor process;
-- no completion percentage;
-- idempotent;
-- diagnosis reads evidence, not badge count;
-- first 14-day life should usually produce ~1–4 cases.
+Additional working-title ideas, not awards to implement now:
 
-Implemented:
+| Candidate | Required distinctive causal evidence |
+|---|---|
+| Bought Somebody Else's Problem | discounted Juan claim acquired, then transferred/collected/bought back or impaired |
+| Let It Grow | extension permits maturity; compare recovery with a genuinely available early-sale option |
+| Too Good to Be True | optimistic common-value bid wins but later recovery disappoints |
+| Market in the Middle / Bagholder | genuine two-sided spread versus one-sided inventory loss |
+| Walked Away / Paid Over Ask | a real alternative or later private utility supports interpretation of the price decision |
 
-## SOLD IT BEFORE YOU HAD IT
-Binding future delivery signed without underlying → later source → on-time delivery.
-
-## EXCLUSIVE
-Premium received → no breach → buyer actually uses information.
-
-High-priority next:
-
-## FIRST THROUGH THE GAP
-Contextual Noon resistance → late edit → materially favourable changed clearing result.
-
-No spiritual judgement.
-
-## RICH, BROKE
-Positive current-body assets + cash <=1 + real cash need + valuable non-cash asset/claim.
-
-## BRIDGE BUILDER
-Relationship history creates a route unavailable on equivalent terms otherwise → resulting obligation/favour later honoured.
-
-## PAWN THE COMPASS
-Pledge valid collateral → use liquidity in a separate meaningful transaction → repay/recover or rationally allow seizure.
-
-## BOUGHT SOMEBODY ELSE'S PROBLEM
-Working title.
-Buy Juan claim below face → become holder → later collection/buyback/transfer/impaired recovery.
-
-## LET IT GROW
-Working title.
-Extend Juan claim → productive asset matures → realised recovery beats original liquidation route.
-
-## FIRE SALE
-Forced immature productive-asset liquidation materially below mature value.
-
-## RUN ON YOU
-Multiple counterparties independently withdraw/collect/sell on discoverable confidence signals → combined action forces liquidity damage.
-
-## READ THE FINE PRINT
-Warranty/representation materially changes later settlement after discovery.
-
-## TOO GOOD TO BE TRUE
-Working title.
-Win common-value auction on optimistic/noisy signal → ex-post common value or realised margin disappoints.
-
-## MARKET IN THE MIDDLE
-Working title.
-Two-sided quote produces genuine spread P&L while inventory risk existed.
-
-## BAGHOLDER
-Working title.
-Maker bid fills, ask does not, later inventory loss occurs.
-
-## WALKED AWAY
-Reject terms → later evidence shows a real available alternative dominated them.
-
-## PAID OVER ASK
-Working title.
-Knowingly pay above reference → later realised private/non-market benefit justifies the price.
-
-Late/capstone cases remain unlocked only after relevant systems mature.
+The former “First Through the Gap = Noon resistance” definition conflicted with the temporary-arbitrage case title. Retire that duplicate definition; any resistance case name/mechanic remains Open with the final Sun Moment. Avoid fixing a badge-count target before time/assessment design is settled.
 
 ---
 
@@ -935,7 +310,7 @@ Exact full ending set remains open until late narrative freeze.
 2. One missed auction/contract does not permanently destroy a whole route.
 3. Rare capstones may require multi-life state, but their necessary economic opportunities must recur.
 4. A completed ending can end a life/run without deleting the possibility of pursuing another ending in a later cycle.
-5. Persistent player memory/evidence may remain; local positions reset/change by form.
+5. Memory/evidence persistence and estate versus reset behaviour remain Open under Chapter 31; trajectories must state which model they test.
 6. Endings are factual predicates over world state, not hidden morality-point thresholds.
 7. No ending requires collecting all 16 teaching domains.
 8. No teaching domain is required merely because it exists.
@@ -1081,7 +456,21 @@ Warn, do not automatically tune, when:
 - forced liquidation never destroys future value;
 - Juan confidence event cannot become reflexive through real balance-sheet changes;
 - one liquidity route is chosen >60% in rich states;
-- Sun Moment resistance is a free-action dominant strategy.
+- Sun Moment resistance is a free-action dominant strategy;
+- repeated same-place flips never deplete supply, saturate demand, move price or attract competition;
+- restock appears without production, arrival, harvest, finite resale/supply or transformation;
+- catalogue growth adds dead SKUs rather than bridge goods;
+- race, gambling, speculation or investment makes ordinary economy irrelevant;
+- private tips guarantee profit without reliability, motive, freshness or uncertainty;
+- visible hard floors/caps create riskless trades;
+- business growth ignores buyers, capacity, working capital, labour, supply or competition;
+- wealth removes attention scarcity, illiquidity, capital lock or meaningful allocation choices;
+- large positions have no price/execution/counterparty impact;
+- relationship bars change no information, credit, access, terms or reliability;
+- unrelated minigames are required for character growth;
+- progression relies on skill-tree inflation, inventory bloat or arbitrary unlocks rather than knowledge, assets, relationships, reach and productive capacity.
+
+These guardrails come from the supplied merchant/finance-simulation design lessons, not a new competitor benchmark or runtime test.
 
 ---
 
@@ -1173,503 +562,76 @@ Role/condition, not species.
 
 # 15. UI Architecture — Scene First
 
-Current React already has the beginning of a scene-first shell. Do **not** restart from scratch.
+`ART_DIRECTION.md` §§15–18 owns desktop/mobile composition, portraits, progressive desk clutter, comic rhythm and information hierarchy. `INFORMATION_DISCOVERY_MODEL.md` owns newspaper / phone / local-market timing, provenance and alpha decay. Reuse the existing scene-first shell rather than creating a second UI architecture here.
 
-Long-term screen grammar:
+One current location/person, one active object/paper and contextual choices remain primary. Archive evidence in Notebook/records without displaying duplicate paragraphs. Accumulated claims/invitations/provenance can clutter the desk; total commodification may make it administratively cleaner. No omniscient NPC cash/valuation, visible karma, route-checklist tabs or concept-completion grid. Preserve legibility at ~390px.
 
-1. location / scene;
-2. active character portrait or physical operator;
-3. one active paper/object;
-4. a small rail of persistent desk objects;
-5. bottom dialogue/consequence strip;
-6. contextual actions;
-7. archive drawers rather than permanent walls of text.
+## 16. UI Implementation Boundaries — Consolidated
 
-## 15.1 Main composition
-
-Desktop:
-
-- top 8–10%: day / phase / cash / actions / objective;
-- left ~38%: location + character;
-- center/right ~44%: active paper/object;
-- side/bottom object rail: Notebook / Public Tape / Inventory / IOUs / invitations;
-- bottom ~18%: current dialogue/result + primary contextual choices.
-
-Do not show every subsystem at once.
-
-## 15.2 Mobile ~390px
-
-- top status compact;
-- portrait/location ~25–30vh;
-- active paper below;
-- bottom contextual action sheet;
-- object rail horizontally scrollable;
-- details open as full-width drawer/sheet;
-- no fixed overlay covering content.
-
-## 15.3 State hierarchy
-
-**NOW**
-- current scene;
-- current fact/result;
-- immediate choice.
-
-**ON THE DESK**
-- order slip;
-- IOU;
-- item;
-- invitation;
-- current public tape.
-
-**ARCHIVE**
-- Notebook;
-- old tape;
-- old contracts;
-- realised cases.
-
-A fact should not exist in NOW and ARCHIVE as duplicate paragraphs simultaneously.
-
-## 15.4 Portrait logic
-
-Portraits are keyed by stable NPC ID.
-
-Use three layers later:
-
-- neutral / working pose;
-- small contextual prop/variant;
-- scene lighting/background.
-
-Do not require dozens of emotional sprites.
-
-Character state should come mostly from objects, posture, dialogue and what is on the desk.
-
-## 15.5 Progressive clutter
-
-Early game:
-- sparse desk;
-- inventory;
-- order slip;
-- a few people.
-
-Later:
-- IOUs;
-- provenance papers;
-- invitation;
-- claim;
-- Notebook scars;
-- returned objects;
-- route evidence.
-
-Total Commodification capstone can reverse this:
-
-the interface becomes **cleaner**, more standardised and more asset-like.
-
-People remain visible but increasingly rendered through:
-
-- claims;
-- exposure;
-- expected yield;
-- reliability;
-- access.
-
-The horror/beauty is administrative clarity, not dark visual effects.
-
----
-
-# 16. UI Implementation Boundaries
-
-Do not finalise art until system density is stable.
-
-But building the shell early is correct because it constrains information architecture.
-
-Do not:
-
-- create a dashboard of all variables;
-- show hidden valuation;
-- show NPC cash without justification;
-- show karma/entanglement;
-- expose all routes as tabs;
-- turn Notebook into concept-completion grid.
-
-Do:
-
-- show why the player knows a fact;
-- distinguish public tape from private knowledge;
-- use physical papers for claims/contracts;
-- let form change alter what objects/venues are usable;
-- keep text readable at 390px;
-- reserve room for future portraits/art without changing engine logic.
+Only expose facts the player can legitimately know. Separate general newspaper, private phone and local/Octopus records. Final clock and form decisions must precede dependent UI rules. This documentation pass changes no UI code.
 
 ---
 
 # 17. Next Design Freeze Gates
 
-Before Phase 3 implementation:
+Before Market Depth: interpret actual Living Samsara diagnostics; verify recurring loops, bounded capacity, claim/holder symmetry, incumbent estate accounting and nontrivial Sun Moment opportunity value. Do not tune away an unexplained monopoly.
 
-- Living Samsara Economic Health v2 interpreted;
-- recurring loops genuinely repeat;
-- no catastrophic actor monopoly without an economic reason;
-- current-body vs estate accounting works;
-- Sun Moment contextual resistance has measurable but nontrivial value;
-- Juan claims have real pricing/duration behaviour.
+Before assessment/replay freeze: mark each domain honestly implemented/partial/candidate, establish visible opportunity diversity, legal reachability for every implemented target and cross-context evidence. Resolve Chapter 18's clock/rebirth choices before dependent rules.
 
-Before Phase 4:
-
-- Market Depth mechanics implemented;
-- all 16 domains honestly marked implemented/partial;
-- opportunity-density metrics stable;
-- at least one deterministic reachability trajectory for every implemented major route/capstone;
-- outcome/process/style evidence sufficient for cross-context diagnosis.
-
-Before final art:
-
-- scene information architecture stable;
-- dialogue state selection stable;
-- life/rebirth pacing stable;
-- major location set stable.
+Before final art: stabilise scene information, dialogue-state selection, life pacing and locations. None of these gates authorises implementation in this reconciliation.
 
 ---
 
 # 18. Open / Intentionally Unresolved
 
-Do not accidentally resolve through code:
+Do not resolve these by document phrasing or code:
 
-- exact full ending list;
-- true nature of home;
-- whether Juan planting is liberation, death, another form, or something else;
-- exact final Plant agency;
-- exact final Sun-Moment loss-of-stop threshold;
-- exact ontology of character release;
-- complete transformation causality;
-- whether total commodification is good/bad;
-- final romance/attachment outcomes;
-- final art style details.
+- exact dual-time / Human-Sun clock, clearing cadence and final action budget;
+- borrowed time, hard death/reset versus estate continuity and full rebirth redesign;
+- final Wong species (current presentation Dog), Plant agency and Plant death/continuation;
+- exact home/release/ending mechanics and Juan planting meaning;
+- Auction v2 internals; vessel/pot plus flower remains Strong Candidate;
+- Juan Cliff race, safety, outcome and death/catastrophic consequences;
+- pooled shipment/project implementation (**Deferred/Open**);
+- exact final Sun Moment, resistance and loss-of-stop consequences;
+- productive asset residual values, shop/network-credit terms and financing balance;
+- final player style/scoring/radar, diagnosis weights and confidence calibration;
+- business takeover, public companies, shareholders and IPO systems (**Deferred/Open**);
+- exact character release, transformation mapping and romantic/attachment outcomes.
 
-These are not missing implementation requirements.
-
----
-
-# 19. Current Parallel Work Board
-
-While Codex implements **Living Samsara Core v1**, ChatGPT owns the next-layer design in parallel.
-
-## Codex current ownership
-- canonical runtime IDs;
-- Octopus Clearing;
-- Dima runtime;
-- Sun Moment v1;
-- recurring economy loops;
-- Juan crops / transferable claims;
-- current-body vs estate accounting;
-- Economic Health v2 harness;
-- semantic smoke / system coverage;
-- current functional UI de-dup;
-- local verification / commit / push.
-
-## ChatGPT parallel ownership
-
-### Economic / strategic
-1. Market Depth v1 exact mechanics and first-pass parameters.
-2. Opportunity ecology / route diversity.
-3. Actor-style balance regimes.
-4. Ending / teaching reachability.
-5. Interpretation of Economic Health v2 raw data.
-6. Player assessment mathematics.
-
-### Narrative / visual
-1. event-state → comic storyboard grammar;
-2. location/page composition;
-3. narrative consequence sequencing;
-4. state-aware dialogue selection;
-5. final art prompt system in `ART_DIRECTION.md`.
+These are unresolved design decisions, not missing implementation requirements.
 
 ---
 
-# 20. Market Depth v1 — Implementation Contract
+# 19. Historical Work-Lane Boundary
 
-This is the next major mechanic milestone **after** Living Samsara Core is quantitatively reviewed.
-
-## 20.1 Yasmin Auction v2
-
-First common-value teaching lot: **Bent Silver Fork — Shipwreck Lot**.
-
-- public reference 10🥫;
-- reserve 8🥫;
-- sealed first-price;
-- ordinary resale state 10🥫;
-- documented wreck state 20🥫;
-- prototype P(wreck)=.40.
-
-Weak inspection clue:
-- P(+|wreck)=.70
-- P(+|ordinary)=.30
-- positive EV ≈16.1🥫
-- negative EV ≈12.2🥫
-
-Strong provenance document:
-- P(+|wreck)=.90
-- P(+|ordinary)=.10
-- positive EV ≈18.6🥫
-- negative EV ≈10.7🥫
-
-Player sees material clues, never the formula.
-
-Prototype NPC bid discipline:
-- Aspen: floor(estimate × .85), retain >=10🥫;
-- Wong: floor(estimate - 2), retain >=8🥫;
-- Joel: floor(estimate × .95 + privateUtility 0..1), retain >=12🥫;
-- Dima: floor(estimate - 1), only with known resale route, retain >=8🥫.
-
-Yasmin is auctioneer and does not bid against herself.
-
-Winner's-curse realised case requires commitment-time evidence. A sound bid may lose; a poor bid may profit.
-
-Sunflower may reuse the auction grammar later, but other bids never define the player's Sunflower value.
-
-## 20.2 Negotiation / BATNA
-
-opening offer
-→ Accept / Counter / Invoke real alternative / Walk
-→ at most one final response.
-
-No repeated haggling.
-
-Prototype guardrail:
-counter changes transfer by <=25% of opening value.
-
-- one credible outside option may improve term ~1🥫;
-- two independent alternatives up to ~2🥫;
-- no real alternative = no magical persuasion effect.
-
-First hosts:
-- Wong small bulk/salvage;
-- Dima proxy/brokerage;
-- Yasmin secured-finance fee.
-
-Dima proxy opens at 3🥫 and can drop to 2🥫 only if a genuinely comparable Joel route is visible.
-
-A strong Yasmin BATNA may waive the +1 fee; it does not casually change the 60% collateral haircut.
-
-## 20.3 Quality / inspection / deception
-
-First case:
-**Bad Tangerine** vs explicit Lime requirement.
-
-Store factual statement category:
-- full_disclosure
-- uncertain_description
-- strategic_omission
-- exaggeration
-- direct_falsehood
-
-No `cheater=true`.
-
-Inspection in the first case reliably distinguishes Tangerine from Lime but costs time/opportunity.
-
-One authored warranty:
-`item_is_lime`.
-
-If later false:
-- buyer gains 2🥫 restitution claim;
-- reaction requires discoverable evidence.
-
-Discovery can occur via inspection, attempted use, resale or third-party evidence.
-
-No omniscient reputation hit.
-
-## 20.4 Market making
-
-Initial eligible goods:
-- Fish Bones, ref 3;
-- Empty Green Bottle, ref 2.
-
-Unlock after:
-- >=2 relevant public observations across >=2 days;
-- plus held good OR investigated that market.
-
-One active two-sided quote in v1:
-- BID reserves real cash for one unit;
-- ASK reserves one owned physical unit;
-- BID < ASK;
-- minimum spread 1🥫;
-- legal distance approx reference ±2🥫.
-
-Typical examples:
-- Fish Bones 2 / 4;
-- Green Bottle 1 / 3.
-
-No same-batch recycling.
-
-Measure separately:
-- realised spread P&L;
-- inventory mark;
-- later disposal P&L.
-
-Maker must be able to lose through inventory.
-
-## 20.5 Juan confidence run / reflexive fire sale
-
-Eligible only when:
-- >=2 open claims;
-- >=2 creditors;
-- face >=12🥫;
-- >=1 immature productive asset;
-- current cash covers <60% of face.
-
-No fixed day.
-
-First signal:
-**Glasshouse heat failure**:
-- one crop delayed 2 days;
-- true bad news;
-- not proof of insolvency.
-
-Creditor options:
-hold / sell / collect / extend / buy distressed / liquidate when permitted.
-
-No panic meter.
-
-Reflexivity must be balance-sheet causal:
-claim sale → lower observed claim price → collection pressure → cash loss → forced liquidation → productive capacity loss → lower expected recovery.
-
-Forced liquidation:
-floor(stageReference × .60).
-
-Record destroyed future value.
-
-## 20.6 Formal / informal venues
-
-Octopus:
-public / standardised / tape-visible / batch / traceable / formal restrictions / no fee v1.
-
-Dima:
-private / fee-bearing / bridges some exclusion / less public price discovery / network enforcement.
-
-Joel:
-potentially cheaper relationship route after prior relationship investment.
-
-When otherwise equivalent and all available:
-public direct < trusted Joel < Dima by direct cash cost.
-
-Privacy/access/enforcement can still reverse practical value.
+**History:** Living Samsara runtime and later design authoring were assigned to separate work lanes. Current implementation status must come from that lane's dated evidence, not this old board. This design branch owns documentation reconciliation; it does not merge implementation commits or authorise mechanics.
 
 ---
 
-# 21. Balance Regime Matrix
+# 20. Market Depth Contract — Retired Duplicate
 
-Balance is tested by environment regime, not one default run.
+The former exact implementation contract duplicated Chapter 5 and over-froze auction, negotiation, quality, quote and run parameters. Chapter 5 now owns the candidate mechanics; historical presets remain in Git history. No Auction v2 or other Open mechanic is implementation-ready merely because the old chapter called it a contract.
 
-| Regime | Expected locally strong | Expected pressured |
-|---|---|---|
-| high liquidity, low information | Wong / Aspen | Dima / info-heavy |
-| low liquidity, high collateral | Yasmin / Joel | pure cash dealer |
-| high information asymmetry | Dima / Yasmin | naive public dealer |
-| urgent perishables | Aspen / Wong / Octopus | Juan duration |
-| long-duration productive assets | Juan / Yasmin | impatient turnover |
-| formal exclusion | Dima / Joel | formal-only |
-| confidence shock | Juan specialists / Yasmin / Dima | face-value naive holder |
-| crowded public spread | private/info routes | simple arbitrage |
-| relationship-rich, cash-poor | Joel / Wong | collateral-only |
-| import/outside-demand cycle | Aspen / Octopus | actors without external route |
+---
 
-Diagnostic target:
-- each primary style top-2 in >=2 regimes;
-- each bottom-2 in >=2;
-- no simple style top-2 in >~60% of regimes.
+# 21. Balance Regimes — Consolidated
+
+Chapter 2 owns the single regime table; Chapter 27 owns provisional scoring and falsification. Marine-supply performance must not be credited to Octopus Clearing or its client float.
 
 ---
 
 # 22. Ending / Teaching Reachability Suite
 
-All **implemented** major teaching domains, cases, routes and capstones must be reachable across multiple legal deterministic trajectories.
+Cover implemented domains, cases, routes and capstones across multiple legal trajectories, not one run. Candidate mechanics are future coverage, not failed runtime coverage.
 
-Not in one run.
-
-Each target should contain:
-- targetId;
-- type = domain | case | route | capstone;
-- implemented;
-- factual predicate;
-- player-visible-path requirement.
-
-Trajectory output:
-`{domains, cases, routes, capstones, evidenceIds}`.
-
-A legal trajectory:
-- uses normal engine actions;
-- reads only player-visible state;
-- never sets completion flags directly;
-- never reads hidden NPC truth.
-
-Initial trajectory library:
-
-### T1 Aspen Operator
-Future delivery → source → deliver → create contextual Noon resistance.
-Covers execution / sourcing / forward delivery / settlement / Sold It Before You Had It.
-
-### T2 Joel Relationship Liquidity
-Build relationship → low-cash pressure with alternatives → use Joel route → repay.
-Covers relationship capital / liquidity / obligations / future Bridge Builder.
-
-### T3 Yasmin Capital
-Secured finance → common-value auction → inspect/bid/abstain.
-Covers collateral / liquidity / valuation / auction / winner's curse.
-
-### T4 Juan Claims
-Discover → buy → hold/extend/collect; separate liquidation variant.
-Covers debt-as-asset / duration / distressed claim / fire sale / claim pricing.
-
-### T5 Dima Institution
-Face formal constraint → compare Octopus/Joel/Dima where legitimate → use proxy/brokerage.
-Covers institutions / formal-informal / traceability / venue.
-
-### T6 Information Broker
-Discover meaningful info → compare personal use / normal sale / exclusive / favour.
-Covers private information / brokerage / exclusivity / Exclusive case.
-
-### T7 Wong Dealer
-Future Market Depth:
-negotiate → market make → carry inventory → realise spread and loss variants.
-Covers BATNA / turnover / market making / inventory risk / alpha decay.
-
-### T8 Juan Confidence
-Future Market Depth:
-claim-rich state → true non-conclusive signal → sell/hold/extend/liquidate variants.
-Covers confidence run / reflexivity / updating.
-
-Developer-only greedy set cover:
-1. uncovered = all implemented targets.
-2. choose legal trajectory covering most uncovered.
-3. add to suite.
-4. remove covered.
-5. repeat.
-6. report remaining target as UNREACHABLE.
-
-No player-facing completion grid.
+Target schema: `targetId`, `type = domain | case | route | capstone`, implementation status, factual predicate, visible-path requirement. Output: `{domains, cases, routes, capstones, evidenceIds}`. Chapter 28 owns legal policies; Chapter 9.3 owns set cover. Report unreachable implemented targets explicitly, with no player-facing completion grid.
 
 ---
 
-# 23. Reachability / Balance Metrics
+# 23. Reachability / Balance Metrics — Consolidated
 
-Per teaching domain:
-
-`access_rate = capable trajectories where legitimately reachable / capable trajectories`
-
-`use_rate = trajectories using domain / trajectories where reachable`
-
-Warnings:
-- implemented domain access_rate < .25;
-- only one brittle scripted path;
-- use_rate > .85 because alternatives are dominated;
-- important process dimension gets evidence from only one NPC/context.
-
-For capstones:
-- reachable = at least one legal deterministic trajectory;
-- route recurs or has functional analogue after miss;
-- requiresHiddenTruth must be false;
-- singleLifeRequired only when narratively intentional.
-
-No ending requires all teaching domains.
+Chapter 11 owns access/use metrics and Chapter 12 owns economic concentration. A capstone needs a legal visible path with no hidden-truth requirement; recurrence or a functional analogue should survive a missed opportunity. No ending requires all teaching domains.
 
 ---
 
@@ -1690,71 +652,24 @@ Every independent decision case should preserve:
 
 Do not store inferred motive.
 
-Core process dimensions:
-execution / liquidity / valuation / information / obligation / sourcing / position sizing / negotiation / institution / relationship stewardship / adaptability.
-
-Conceptual weight:
-`w = opportunityRichness × stakeRelevance × informationAdequacy × independence`.
-
-Outcome remains separate.
-Style remains opportunity-conditioned.
+Chapter 6 owns provisional dimensions, weighting and independence. Add return-class tags only as analytic metadata from `GAME_DESIGN.md` §2; do not infer motive or duplicate profit across classes.
 
 ---
 
 # 25. Comic Consequence State Binding
 
-`ART_DIRECTION.md` owns visual style.
-This workbook owns which engine-state transitions deserve which comic sequence.
+`ART_DIRECTION.md` owns visual style and storyboard sequences. Bind panels to observable state transitions, not random decoration: establish material state → commitment → settlement → plausible reaction → receipt/object/absence. Usually 2–5 panels is a provisional production target.
 
-Panels are not random decoration.
-
-General sequence:
-1. Establish location/material state.
-2. Commitment: hand/paper/item/order/claim.
-3. Material settlement/consequence.
-4. Actor reaction only if plausibly observable.
-5. Optional trace: receipt/tape/claim/object/absence.
-
-Most events need 2–5 panels.
-
-### Aspen future delivery
-contract accepted:
-Aspen + provisioning paper → 4🥫 advance/due slip → empty Lime slot.
-fulfilment later:
-Lime + watch → settlement receipt.
-default:
-reserved balance returns → restitution IOU; no moral thunderbolt.
-
-### Joel relationship credit
-bar medium shot → handwritten tab → cash transfer → later repayment/non-repayment recurrence.
-No romance framing by default.
-
-### Yasmin secured finance
-object on table → inspection → cash/paper → collateral physically leaves player.
-Seizure moves object into Yasmin's world; she need not become angry.
-
-### Juan claim
-claim close-up → seller/Dima transfer → holder name changes → Juan remains elsewhere owing same liability.
-Extension: due date crossed out + immature plant.
-Liquidation: plant removed early + small receipt + empty growing space.
-
-### Octopus Clearing
-wide clearing space → crowd of hands/paws/tentacles/slips → transfer inserts → public tape output.
-
-### Sun Moment
-wide ordinary harbour pause → water/wind/melting ice/paper edge continues.
-Resistance uses same composition but player's order slip changes while others remain paused.
-No aura/meditation FX.
-
-### Rebirth / form change
-same composition repeated:
-old form at familiar counter → interrupted/empty frame → new form sees same space at different height/access → old paper/object remains but may be inaccessible.
-
-### Total Commodification
-do not make it darker.
-Make it cleaner:
-less incidental clutter → aligned papers → standard labels → people increasingly represented through claims/access/yield/obligation.
-Discomfort comes from successful abstraction.
+| Event | State-specific material trace |
+|---|---|
+| Aspen delivery | provision paper/advance and missing stock → Lime/watch/receipt; default returns reserved balance and records restitution if owed |
+| Joel credit | tab/cash → later repayment or unpaid recurrence; no romance inference |
+| Yasmin secured finance | inspection/collateral transfer → recovery or seizure; no automatic anger |
+| Juan claim | holder changes while debtor remains; extension edits maturity, early sale removes productive stock |
+| Octopus | order/cash/good transfer → public settlement record |
+| Sun Moment | ordinary pause with environmental motion; only a genuinely available continuation changes the player's paper; exact final mechanic Open |
+| Form change | repeated place at altered access/body scale; incumbent estate paper may remain, reset model Open |
+| Commodification | papers/claims align and compress until people are framed through exposure; no moral ending label |
 
 ---
 
@@ -1838,125 +753,20 @@ Do not parameter-tune a style until the regime where it should be strong is actu
 
 # 28. Legal Reachability Trajectory Skeletons
 
-The T1–T8 library is now specified as legal action skeletons so future Codex work does not invent test behaviour.
+These are developer policies, not player walkthroughs. Use only normal actions and player-visible knowledge; no hidden-state reads, fabricated inventory or direct ending flags. Clock-dependent steps refer to the incumbent model, not a frozen future clock. Candidate mechanics remain future coverage.
 
-These are developer policies, not player walkthroughs.
+| Policy | Legal sequence and distinguishing check |
+|---|---|
+| T1 Aspen Operator | learn provision need → contract without stock → legitimate sourcing → optional contextual Sun Moment comparison → on-time delivery; never fabricate Lime, record whether a late edit actually mattered |
+| T2 Joel Relationship Liquidity | costly relationship history → cash pressure with another visible route → useful legal credit/favour/proxy → repay/reciprocate; compare best non-relationship terms, not a single favour click |
+| T3 Yasmin Capital | legitimately acquire collateral → real liquidity need → compare sale/loan → future auction using legitimate clues → bid/abstain variants; separate collateral/auction P&L, immediate buy-to-pledge proves reachability only |
+| T4 Juan Claims | discover through Joel/Dima → affordable known claim → hold to buyback/due → legal collect/extend/liquidate variants; compare recovery and destroyed future value without hidden Juan cashflow |
+| T5 Dima Institution | real access/form constraint with two comparable channels → record Octopus/Joel/Dima availability, fee, timing and traceability → choose/settle → compare actual cost/delay/visibility |
+| T6 Information Broker | acquire useful lead → enumerate exploit/sale/exclusive/favour/wait → compare at least three available branches; preserve breach truth versus detection and realised information use |
+| T7 Wong Dealer — Candidate | observe bridge-good market → acquire quote stock → negotiate real BATNA → two-sided quote → balanced/one-sided flow variants; separate inventory and spread P&L, exact prerequisites Open |
+| T8 Juan Confidence — Candidate | genuine multiple creditors and immature backing → legitimate non-conclusive adverse signal → hold/sell/collect/extend/liquidate variants → causal propagation; test both a run and a scare resolving without insolvency |
 
-## T1 — Aspen Operator
-
-Goal:
-future delivery + sourcing + on-time settlement + contextual Sun Moment.
-
-Legal skeleton:
-1. legitimately learn Aspen provisioning need;
-2. accept future delivery while underlying is not owned;
-3. use Morning/Noon public or private sourcing without hidden knowledge;
-4. if a valid contextual Noon Sun Moment appears, compare natural pause vs one late edit;
-5. deliver on time;
-6. record whether the late edit changed outcome.
-
-Must never fabricate Lime into inventory.
-
-## T2 — Joel Relationship Liquidity
-
-Goal:
-relationship-created liquidity under a real pressure.
-
-Legal skeleton:
-1. build relationship through ordinary interactions/favours that have opportunity cost;
-2. enter low-cash state where >=1 alternative recovery route is also visible;
-3. use Joel credit/favour/proxy only if legal and useful;
-4. repay/reciprocate when due;
-5. compare to the best visible non-relationship route.
-
-A single favour click does not count as a relationship strategy success.
-
-## T3 — Yasmin Capital
-
-Goal:
-secured finance + future common-value auction.
-
-Legal skeleton:
-1. acquire eligible collateral through ordinary trade/use;
-2. create a real liquidity need;
-3. compare outright sale vs secured borrowing;
-4. later enter Yasmin auction with only legitimate clues;
-5. test bid and abstain variants from the same visible evidence state;
-6. preserve collateral/auction P&L separately.
-
-Buying an asset only to immediately pledge it is a reachability case, not proof that secured finance is a good strategy.
-
-## T4 — Juan Claims
-
-Goal:
-debt-as-asset + maturity choice.
-
-Legal skeleton:
-1. discover claim via Joel or Dima context;
-2. buy only if legally known and affordable;
-3. hold until buyback or due;
-4. branch into collect / extend / liquidate when actually available;
-5. compare realised recovery and destroyed future value;
-6. never read Juan engine-truth cashflow not visible to holder.
-
-## T5 — Dima Institution
-
-Goal:
-formal/informal route comparison.
-
-Legal skeleton:
-1. enter a form/access state where at least two venue routes can be compared;
-2. record public direct / Joel / Dima availability and price;
-3. choose one route based only on visible access, fee, timing, traceability;
-4. complete settlement through the chosen venue;
-5. compare resulting cash cost, delay and visibility.
-
-## T6 — Information Broker
-
-Goal:
-information as own-use asset / cash asset / relationship asset.
-
-Legal skeleton:
-1. obtain a legitimate useful information item;
-2. enumerate visible exploit / normal sale / exclusive / favour / wait routes;
-3. branch trajectories across at least three distinct channels;
-4. in exclusivity branch, preserve breach truth vs detection separately;
-5. compare realised use/value without assuming hidden truth.
-
-## T7 — Wong Dealer
-
-Future Market Depth goal:
-turnover + negotiation + market making.
-
-Legal skeleton:
-1. observe standardised good market over >=2 days;
-2. acquire/hold at least one eligible quote good legitimately;
-3. negotiate one small-margin deal with a real BATNA;
-4. post one two-sided quote;
-5. branch into balanced-flow and one-sided-inventory variants;
-6. realise or mark inventory P&L separately from spread.
-
-## T8 — Juan Confidence
-
-Future Market Depth goal:
-reflexive confidence mechanics.
-
-Legal skeleton:
-1. reach >=2 genuine creditors and immature productive backing;
-2. reveal a true non-conclusive adverse signal through a legitimate path;
-3. branch creditor policies into hold / sell / collect / extend / liquidate;
-4. allow balance-sheet consequences to propagate;
-5. test one self-reinforcing run and one scare that resolves without insolvency.
-
-### Reachability suite acceptance
-
-The suite is healthy when:
-
-- every implemented target is covered by >=1 legal trajectory;
-- every major target with materially different routes has >=2 branch variants;
-- no target is reachable only by direct hidden-state injection;
-- no one trajectory is required to carry >60% of all implemented targets;
-- after set cover minimisation, omitted trajectories remain available as regression diversity rather than being deleted.
+Provisional suite acceptance: every implemented target has a legal trajectory; materially different routes get at least two branches; no trajectory must carry >60% of targets. Chapter 9.3 owns set-cover selection. Keep omitted legal trajectories as regression diversity, not player completion requirements.
 
 ---
 
@@ -2029,378 +839,93 @@ Do not spend quota proving that a healthy baseline is healthy before every batch
 
 ---
 
-# 30. Next ChatGPT Work While Living Samsara Finishes
+# 30. Design Backlog — Consolidated
 
-Until Codex returns the final raw tables, ChatGPT continues on three fronts without touching main:
-
-1. **Market Depth sensitivity design**
-   - auction prior/signal sensitivity;
-   - Dima/Joel/Yasmin route-cost crossovers;
-   - market-maker spread/inventory stress cases;
-   - Juan claim recovery / run thresholds.
-
-2. **Coverage / assessment preparation**
-   - map each T1–T8 branch to process dimensions;
-   - define which outcomes are intentionally non-diagnostic;
-   - prepare ending/teaching set-cover targets for Phase 4.
-
-3. **Comic/UI state binding**
-   - define location-specific panel grammars only for real engine transitions;
-   - preserve `ART_DIRECTION.md` as the single visual prompt/style source;
-   - do not create another art MD.
-
-When Living Samsara raw data arrives, quantitative interpretation takes priority over further feature authoring until structural issues are classified.
+Review actual economic-health evidence through Chapter 26 before further parameter work. Candidate follow-ups are Market Depth sensitivity (Chapter 5), coverage/assessment (6–12, 22–28) and state-bound comic consequences (25 / `ART_DIRECTION.md`). The old “while implementation finishes” schedule is History, not current completion evidence.
 
 ---
 
 # 31. Provisional Core-Loop Redesign — Dual Time, Slow Market, Visible Opportunity
 
-Status: **design hypothesis only**.
+**OPEN design hypotheses.** The incumbent Sunrise / Morning / Noon / Afternoon / Sunset loop and estate/current-form baseline are not replaced here. Daily clearing, separate Morning/Afternoon pools, two actions, order-count caps, 14 days, Human/Sun naming, borrowed time, Plant agency and death/reset are not frozen future rules.
 
-This chapter does not amend canon, replace the current implementation contract, or authorise a Codex implementation batch.
+## 31.1 Direction and competing constraints
 
-The implemented Sunrise / Morning / Noon / Afternoon / Sunset loop, daily clearing, Sun Moment, estate continuity and current form rules remain the baseline until this redesign passes its gates and the relevant source-of-truth documents are deliberately reconciled.
+**Strong candidate:** make opportunities legible, keep truth incomplete, and make intervention consume scarce attention. Market depth should arise from actual needs, finite capacity and commitments rather than repeated discovery clicks. Publicly visible leads must not expose hidden inventories, plans or solvency.
 
-## 31.1 Design conclusion
+Missed opportunities can continue through NPC action. Their observable aftermath returns through newspaper, private phone updates, local scenes and market records according to provenance and publication timing, not a universal tape. Investigation deepens/verifies a lead; private information can reach the player before public disclosure erodes its edge.
 
-The current prototype spends too many clicks on discovering where play exists and too little consequence on deciding which play to pursue.
+## 31.2 Dual time / borrowed time — OPEN
 
-The provisional replacement is:
+The historical hypothesis calls ordinary participation “Human Time” and Animal/Plant participation “Sun Time.” Names, cosmology and mapping are unresolved. They describe participation contexts in one causal world, not automatically inverted transactions or two complete economies.
 
-> **Make the opportunity space legible, keep truth incomplete, and make intervention consume scarce time.**
+A contextual continuation at a stopping boundary might provide the time needed for a real unfinished action while creating equal active-time debt in a counterpart embodiment:
 
-The second governing rule is:
+`borrowed units now = active units owed elsewhere`
 
-> **Continuing past a natural stopping point borrows active time from another embodiment; time never appears for free.**
+Conservation is a guardrail **if borrowing is adopted**, not proof that the mechanic is canon. The earlier Human → Animal → Plant debt cascade is only one hypothesis; exact accounting, repayment, disclosure, labels and final Sun Moment remain Open. No free-action bonus or spiritual “[LET GO] = correct answer.”
 
-Market depth should come from accumulated needs, committed resources and fewer meaningful clearings, not from daily repetition or one high-throughput actor.
+## 31.3 Plant agency — OPEN
 
-Death should provisionally end the run. Replay strength should come from player knowledge, not inherited money, permanent stat bonuses or karma currency.
+One candidate gives Plant near-zero movement/intervention but broader materially observable information: cargo moves, claims change hands, absences and consequences become visible. It grants no automatic hidden engine truth or guaranteed saleable information.
 
-NPC economic styles are examples the player can reproduce, not character-exclusive powers.
+Earlier prohibitions on all trading/travel/investigation and “being eaten ends the run” were hypotheses, not settled form rules. Final agency, death/continuation, germination and Juan planting meaning remain Open. Avoid both a punishment Wait screen and an information-farming exploit; §32.10 preserves the paper test.
 
-## 31.2 What this redesign rejects
+## 31.4 Slower clearing and one time budget — OPEN
 
-- no sacred `2 actions` rule;
-- no arbitrary maximum of three trades;
-- no Morning and Afternoon menus merely because they are convenient implementation phases;
-- no daily clearing merely because one day currently equals one round;
-- no Sun Moment that functions as a free bonus action;
-- no blind loop of opening every character and trying Talk / Investigate;
-- no universal mirror in which every Human transaction is mechanically reversed in Sun Time;
-- no full alternate life for every NPC in the first proof;
-- no Plant state that is only repeated Wait;
-- no inherited cash, estate power or passive upgrade after death;
-- no NPC-only business rule that prevents the player from using the same economic style;
-- no clearing operator, bar or voyage acting as an effectively unlimited liquidity or demand source.
+One candidate accumulates orders/needs for two windows or two in-world days, then locks and clears once. These units are not yet equivalent under a final clock. A shared book can pool liquidity even if participation differs; §32.9 records evidence against fragmenting that stylised market into separate phase books.
 
-## 31.3 Two times and borrowed time
+Real constraints are reserved cash/inventory/collateral, capacity, expiry, delivery risk and time; receipts cannot finance another purchase in the same clearing. A visit may prepare multiple feasible orders without one action per fill. Exact cadence and action pricing are unresolved.
 
-Working terms only:
+Historical calibration examples, **not frozen values**:
 
-- **Human Time** — ordinary Human institutions and Human bodies are active;
-- **Sun Time** — Animal / Plant bodies and their institutions are active.
+| Candidate activity | Illustrative time units |
+|---|---:|
+| notice a public fact/read a book or market record | 0 |
+| ordinary visit/conversation or prepare a feasible order set | 1 |
+| inspection, focused investigation, private negotiation/contract | 1–2 |
+| substantial physical work | 2 |
+| contextual overrun if borrowing adopted | actual overrun, conserved |
 
-These names and their cosmological meaning are not canon.
+A single budget B replaces split pools only in this hypothesis. Compare at least two budgets and life lengths by decision density, abandoned opportunities and clicks. Earlier pacing sketches used 16 days/eight two-day clearings, 10–15 memorable choices, 1–2 crossings and 2–5 valuable leads, including a `2 ordinary / 4 Sun / 4 ordinary / 4 Sun / 2 ordinary` sketch. They remain paper-test inputs, not a final life architecture.
 
-The two times are not two complete markets that mechanically invert every trade. They are two participation contexts in the same causal world. Some obligations, supply chains, goods and relationships cross the boundary; only selected cases create a mirrored consequence.
+## 31.5 Death and replay — OPEN conflict
 
-At a visible stopping boundary, the player chooses:
-
-**Let Go**
-
-- the unfinished opportunity closes, pauses or proceeds without the player;
-- the current embodiment rests;
-- no time debt is created.
-
-**Continue**
-
-- available only when a specific unfinished action or deadline can genuinely be completed;
-- grants the exact additional time required, not a generic extra action;
-- produces the promised practical advantage if the action succeeds;
-- records equal borrowed-time debt;
-- transfers the burden into the player's counterpart embodiment in the other time.
-
-Prototype accounting hypothesis:
-
-`borrowed units now = active units owed in the counterpart embodiment`
-
-The player should see that continuing has a cost, but should not initially receive a complete deterministic explanation of the cross-form consequence. Character knowledge, player knowledge and engine truth remain separate.
-
-If the player also refuses rest while carrying Animal-side debt, further borrowed time cannot create a third fully active body. The current hypothesis routes that excess into Plant time.
-
-## 31.4 Plant as low agency, high information
-
-Plant must not be a punishment screen.
-
-During Plant time, the player provisionally cannot:
-
-- trade;
-- negotiate;
-- travel;
-- investigate;
-- directly alter events.
-
-The player can observe otherwise hidden connective tissue as it becomes materially observable:
-
-- orders accumulating and clearing;
-- claims changing hands;
-- cargo moving;
-- information spreading;
-- counterparties reacting;
-- missed opportunities resolving;
-- earlier actions changing later conditions.
-
-Plant therefore inverts the normal information economy:
-
-| State | Agency | Information |
-|---|---:|---:|
-| Human | high | bounded |
-| Animal | different rather than simply lower | bounded differently |
-| Plant | near zero | unusually broad observation |
-
-This is not omniscient access to private engine truth. It is a widened observational position with no immediate ability to exploit what is seen.
-
-Being eaten during Plant time provisionally ends the run. Germination / planting may be a special continuation or release route, but Juan's exact role and the metaphysical meaning remain unresolved.
-
-## 31.5 Slow public market
-
-First cadence candidate:
-
-> **one public clearing every two in-world days**
-
-Cycle A — accumulation / preparation:
-
-- needs and cargo develop;
-- public facts and leads surface;
-- investigation, inspection, financing and private negotiation occur;
-- orders accumulate in the book.
-
-Cycle B — final preparation / lock / clearing / aftermath:
-
-- last interventions occur;
-- committed orders lock;
-- the public market clears once;
-- ownership, cash and the public tape update;
-- consequences become new opportunities.
-
-There is no transaction-count cap. Real limits are:
-
-- reserved cash;
-- reserved physical inventory;
-- collateral;
-- counterparty capacity;
-- expiry and clearing time;
-- no same-clearing recycling;
-- the player's time spent reaching, inspecting or negotiating where required.
-
-A public-market visit may cost one time unit while allowing the player to prepare a feasible set of orders. Filling those orders does not consume one action per fill.
-
-Private deals, inspection, travel and relationship work consume active time because they require the player's presence.
-
-The first pacing hypothesis is a life with roughly:
-
-- 6–8 consequential public clearings;
-- 10–15 memorable player decisions;
-- 1–2 meaningful time crossings;
-- 2–5 genuinely valuable information items;
-- several visible opportunities deliberately left alone.
-
-A 16-day structure with eight two-day market cycles is a useful first paper test, not a fixed life length. The proposed `2 ordinary / 4 Sun / 4 ordinary / 4 Sun / 2 ordinary` rhythm is also only a test case. Compare it with shorter and longer versions by decision density, not symmetry alone.
-
-## 31.6 One continuous player-time budget
-
-Remove separate Morning and Afternoon action pools from the redesign hypothesis.
-
-Each active day or equivalent play interval has one budget `B`. Exact `B` is not yet frozen.
-
-First calibration language:
-
-- noticing public facts and surfaced leads: 0;
-- reading the public book/tape: 0;
-- one location visit or ordinary conversation: 1;
-- preparing/revising a feasible public order set: 1;
-- inspection or focused investigation: 1–2;
-- private negotiation / contract: 1–2;
-- substantial physical work: 2;
-- continuing beyond the boundary: borrowed units equal to actual overrun.
-
-The budget passes only if a normal interval supports several recognisably different shapes, for example:
-
-- several small interventions;
-- one deep investigation plus one small intervention;
-- one contract plus the sourcing needed to make it credible;
-- deliberate non-action while preserving time for a later deadline.
-
-Do not freeze `B` from intuition. Paper-test at least two values and measure meaningful decisions, abandoned opportunities and click count.
-
-## 31.7 Opportunity automatically surfaces
-
-The player should know where consequential activity exists without opening every NPC menu.
-
-The world view automatically exposes:
-
-- public facts;
-- visible pressures;
-- expiring commitments;
-- public market imbalance;
-- the existence of a lead worth investigating;
-- the time cost of intervention;
-- what remains unknown.
-
-It does not expose:
-
-- hidden inventory without a legitimate signal;
-- private valuation;
-- secret correspondence contents;
-- exact solvency;
-- NPC plans not yet made public or observed;
-- the correct choice.
-
-The distinction is:
-
-> **Opportunity-space visibility, not truth omniscience.**
-
-Investigating should deepen or verify a surfaced lead. It should not be required merely to learn that authored gameplay exists.
-
-Missed opportunities continue without the player. Their observable aftermath should return through later scenes, the public tape, changed goods, claims, absences or relationships.
-
-UI hypothesis:
-
-- current / expiring opportunities first;
-- upcoming pressures second;
-- background public state last;
-- all remain inspectable without character-by-character fishing;
-- the page stops and asks for input only at a real commitment.
-
-## 31.8 Death and replay
-
-Provisional replacement rule:
-
-> **Death ends the current run and restarts the game.**
-
-The next run does not inherit:
-
-- cash;
-- goods;
-- claims;
-- estate access;
-- skills or percentage bonuses;
-- karma points;
-- passive unlock power.
-
-The player retains real-world understanding. The game may make small authored changes based on previously witnessed events or run count, but those changes must recontextualise the world rather than make the next run mechanically richer by default.
-
-This directly conflicts with the current canon/implementation model in which legal death, estate wealth and continuing forms can coexist. Do not resolve that conflict inside this workbook. Before implementation, choose one of:
+Keep three competing models explicit:
 
 1. hard run reset on every death;
-2. transformation can continue within a run, but actual death resets it;
-3. current estate-continuity model remains.
+2. within-run transformation, but actual death resets;
+3. incumbent estate/current-form continuity.
 
-The leading hypothesis is option 2 because it preserves playable Human / Animal / Plant shifts while keeping death sharp and replay clean.
+Earlier notes favoured option 2, with knowledge rather than inherited cash/stats driving replay. That preference does not settle the conflict. Persistent evidence, legal estates, assets, form transitions, run boundaries and authored replay changes require one coherent decision before implementation.
 
-## 31.9 Player-copyable economic styles
+## 31.6 Bounded player participation — STRONG CANDIDATE
 
-Every primary NPC style must satisfy a copyability contract:
+The player is an attention-constrained general participant with cross-domain visibility. They may learn bounded sourcing, repairs, inspection, bartending, ordinary trade, claims or financing through legal prerequisites and the same accounting rules/costs as others.
 
-1. the player can observe enough of the method to understand that it exists;
-2. the player can acquire the same class of prerequisites through legal play;
-3. the player uses the same authoritative market transitions;
-4. the player pays equivalent costs and accepts equivalent risks;
-5. success depends on world state and execution, not an NPC-only income rule.
+**Retired:** the universal copyability promise that every NPC business/institution must become player-operable. Comparable economic actions do not grant Joel's network, Yasmin's capital, Dima's enforcement, Aspen's routes, Wong's throughput, Juan's expertise or Octopus Clearing. Player takeover remains Open/Deferred.
 
-Examples:
+Test whether ordinary player opportunities remain viable under finite NPC capacity, not whether the player can become master of every economic organ. Wealth cannot buy infinite attention or erase inventory, demand, liquidity and market-impact constraints; Chapters 12–13 own the diagnostic guardrails.
 
-- Aspen demonstrates deadline-aware contracting; the player can also provision and write future delivery;
-- Wong demonstrates working-capital turnover; the player can also buy, carry and resell small goods;
-- Yasmin demonstrates collateral and capital allocation; the player can also lend, pledge and bid;
-- Juan demonstrates duration and productive assets; the player can also hold claims and wait for maturity;
-- Dima demonstrates intermediation; the player can also earn fees when they build access and trust;
-- Joel demonstrates relationship liquidity; the player can also build and spend reciprocal access.
+## 31.7 Freeze gates; no implementation batch authorised
 
-NPCs may begin with different knowledge, relationships, property or reputation. Those are world positions, not exclusive mechanics.
+Before choosing a smallest coherent slice:
 
-Copyability does not require equal expected profit. It requires a legitimate route to attempt the same structure.
+1. compare paper timelines, budgets and life lengths using real visible choices and unresolved leads;
+2. if borrowing survives, prove conservation and non-dominance against the best alternative use of attention;
+3. show several actor niches and player participation under finite capacity;
+4. audit every surfaced fact for source, observation/receipt time, credibility and legitimate access;
+5. explicitly decide death/reset versus estate continuity;
+6. decide Plant agency and verify its interest without omniscience or saleable-information farming;
+7. freeze the selected rule, scenario and success/failure evidence separately from this workbook.
 
-## 31.10 Throughput and dominance guardrails
-
-**Octopus Clearing may monopolise settlement infrastructure; Octopus must not monopolise trade.**
-
-Octopus's own buying and selling require finite physical inventory, working capital, storage and recurring cargo capacity. Client settlement float remains separate.
-
-Joel's Bar requires finite customers, service capacity and input consumption. It is not an unlimited demand sink.
-
-Aspen's voyages require working capital, cargo space, timing and external demand. They are not automatic outside-money injections.
-
-The player should not be structurally suppressed by an actor whose throughput exists only because the engine exempts that actor from ordinary constraints.
-
-Required diagnostics before balance tuning:
-
-- actor share of sales count and sales value;
-- net cash creation/destruction by loop;
-- capacity actually used versus declared capacity;
-- number of player-accessible substitute routes;
-- whether the player can reproduce the dominant style under comparable constraints;
-- whether slower clearing thickens competition rather than merely delaying the same dominant actor.
-
-## 31.11 Minimum proof and freeze gates
-
-Do not send the whole redesign to implementation at once.
-
-Before any implementation batch, complete these design checks:
-
-1. **Paper timeline** — run one 16-day candidate by hand with eight clearings, at least two unanswered leads and one borrowed-time event.
-2. **Debt conservation** — every continued unit has an equal, observable repayment path; no free extra action.
-3. **Market viability** — at least three actor styles and the player can pursue the same opportunity without one infinite counterparty deciding the result.
-4. **Information legality** — every surfaced card is derived from a public fact or legitimate lead, never hidden truth.
-5. **Death decision** — explicitly resolve reset versus estate continuity before code changes.
-6. **Plant playability** — observation remains interesting for the full debt interval without fake interaction.
-7. **Pacing comparison** — compare at least two time budgets and two life lengths using decision density and repeated-click count.
-
-Freeze only the smallest coherent vertical slice after these pass.
-
-## 31.12 Suggested future Codex division — do not start yet
-
-### Batch 0 — read-only impact map
-
-Map current clock, market clearing, Sun Moment, estate/form transitions, opportunity sources and UI entry points against this chapter. Return conflicts and reusable transitions. No edits.
-
-### Batch 1 — borrowed-time vertical slice
-
-After the death/canon decision is frozen, implement one Human boundary, one legitimate Continue action, equal Animal-side debt and one Plant observation interval. Reuse current state/evidence ownership. No Market Depth features.
-
-### Batch 2 — slow clearing and finite capacity
-
-Change one public market cycle to accumulate then clear, remove arbitrary trade-count limits, and give Octopus's own trade loop finite inventory/capital capacity. Preserve one authoritative clearing path.
-
-### Batch 3 — opportunity surfacing
-
-Expose public facts and legitimate leads from existing engine state in a scene feed. Do not reveal hidden truth. Only after the engine events and story bindings are stable should the comic/UI layer be upgraded.
-
-### Batch 4 — copyability and diagnostics
-
-Prove a small representative set: one player turnover route, one player intermediation route and one player duration route under the same rules as their NPC exemplars. Extend Economic Health to measure capacity, opportunity visibility and style copyability without auto-rebalancing.
-
-ChatGPT/design ownership before each batch:
-
-- freeze the rule and named scenario;
-- resolve any canon conflict;
-- specify player-visible information;
-- define success/failure evidence;
-- keep narrative and economic consequences aligned.
-
-Codex ownership after freeze:
-
-- trace existing implementation authority;
-- make the smallest coherent change;
-- leave one focused runnable check for non-trivial logic;
-- report raw diagnostics without independently rewriting world design or balance.
+The old proposed implementation batches are retired scheduling notes. Do not start borrowed time, slow clearing, form changes or universal business copyability from those notes.
 
 ---
 
 # 32. Quantitative Harbour Economy & Demand Ecology — Stress-Tested Design Pass
 
-Status: **paper-model evidence + provisional implementation guidance, not canon.**
+Status: **PROVISIONAL quantitative design experiments / toy-model evidence, not runtime evidence or frozen canon.**
 
 This chapter records the September 5 design tests that followed the Living Samsara diagnostics and Joel Bar demand work. It exists so the test-backed conclusions are not lost in chat. Numerical results below are from deliberately simplified Monte Carlo / paper models, **not current-engine Economic Health traces**. They establish structural direction and falsification targets; exact constants remain provisional until the engine reproduces the same effects.
 
@@ -2414,64 +939,19 @@ Demand ecology, the Bar, clearing, background trade and any future dual-time mec
 
 ## 32.1 Economic-organ model
 
-The harbour should be understood as interacting economic organs rather than six NPC minigames:
-
-- **Joel's Bar** — consumption, demand discovery, customer choice, inventory risk, social information, hospitality;
-- **Juan's greenhouse / nursery** — production, maturity, biological capital, waste recovery, crop-linked debt;
-- **Aspen's routes** — import/export, working capital, deadlines, cargo capacity, external demand;
-- **Wong's network** — secondary liquidity, salvage, household/rescue demand, low-margin turnover;
-- **Dima** — access, claims, guarantees, private settlement, enforcement and other friction-dependent intermediation;
-- **Octopus Clearing** — standardised public execution, settlement, public tape and potentially standardised project-claim administration;
-- **Yasmin** — capital allocation, auctions/provenance and lumpy social demand across several organs rather than one shop;
-- **anonymous harbour population** — households, visiting crews, small boats, stalls, background buyers/sellers and other people who make the six named characters inhabitants of an economy rather than its entire population.
-
-Hard accounting principle:
-
-> **No return without a balance-sheet path.**
-
-Every recurring gain must answer who paid, why they paid, what good/service/asset left or was produced, and who supplied capital, labour, inventory, information or risk.
+`NPC_CHARACTER_BIBLE.md` owns the cast/operations; `GAME_DESIGN.md` owns the six return classes and player role. Joel consumes inputs to serve customers; Juan holds biological productive capital; Aspen connects external routes; Wong turns stock/services into household surplus; Yasmin allocates private capital; Dima reduces informal friction. Octopus clears public trades without owning all marine supply. Anonymous populations complete the economy.
 
 ## 32.2 Demand ecology constitution
 
-Replace direct recurring cash burns where possible with market-facing needs:
+`ITEM_ECONOMY.md` owns **Need → local demand → feasible trade → use/sink → outside fallback if needed**. Every gain/cost needs a payer, source/sink and real capital/labour/inventory/information/risk path. Wages enter purchasing power unless explicitly external. Finance serves a final need/project, not an isolated claim economy.
 
-`Need -> local demand -> trade if feasible -> use/sink -> outside fallback only if needed`
-
-Examples:
-
-- Wong household support should first create actual food / household demand rather than only `cash -= burn`;
-- Aspen support/provisioning should create goods/logistics demand;
-- Yasmin social maintenance should sometimes become hosting, gifts, venue or event demand;
-- Joel's operating cost should arise from actual customers, ingredients, breakage, capacity and service;
-- Juan's productive spending should purchase actual biological inputs / containers / capacity.
-
-Finance is downstream of this chain. Credit, claims and pooled capital exist because a real need/project has a timing or capital mismatch; finance must not create a self-contained claim economy with no final user.
-
-### Final-demand sinks
-
-A healthy good eventually has at least one real sink or lock:
-
-- consumption;
-- wear / maintenance;
-- production input;
-- social use / gift / hosting;
-- external export;
-- destruction / spoilage / failed project;
-- long-duration productive or collection lock.
-
-Ordinary high-frequency goods should usually have **2–3 independent demand sources**. A rare story/provenance object may rationally have one buyer or no current buyer.
+Provisional coverage heuristic: ordinary frequent goods usually need 2–3 independent demand sources; rare provenance goods may have one or none. Consumption, wear, production, social use, export, spoilage/destruction or long-duration lock terminate/defer circulation.
 
 ## 32.3 Where new goods can come from
 
-A physical good may enter effective local circulation through only a small number of auditable paths:
+Production/transformation, financed external arrival, finite harvest, salvage/recovery or resale must explain supply. Discovery/brokerage connects an existing seller; it does not create goods. No unexplained overnight restock. Route reach and travel survival can introduce bridge goods gradually; no arbitrary day-unlock catalogue.
 
-1. **production / transformation** — inputs + time/capability -> output;
-2. **import** — local cash/claim finances an external purchase and the good enters the harbour;
-3. **biological / physical harvest** — catch, crop, propagation or other capacity-limited production;
-4. **salvage / recovery** — existing low-liquidity material returns to usable circulation at a haircut;
-5. **discovery / brokerage** — Dima or another intermediary reveals or connects an already-existing seller; brokerage changes access/liquidity, not physical supply.
-
-Never use `day passed -> valuable inventory appeared` as an unexplained income engine.
+---
 
 ## 32.4 Background economy is required
 
@@ -2492,7 +972,7 @@ Conclusion:
 
 Anonymous boats, households, visiting buyers, small vendors and event guests are not filler NPCs. They are the population that prevents every price and story from depending on one named person.
 
-Do not give these background actors full character bibles. They are bounded economic populations with visible aggregate effects.
+Do not give these background actors full character bibles. They are bounded economic populations with visible aggregate effects. Wages paid to crews/workers enter purchasing power unless explicitly an external drain; households may buy food, simple drinks, lodging and ordinary goods.
 
 ## 32.5 Actor-removal stress
 
@@ -2530,71 +1010,23 @@ Interpretation:
 
 Temporary Joel absence during a phase is therefore much less dangerous than deleting Joel from the entire run. Standing public orders can remain while the Bar itself is shut.
 
-## 32.7 Joel Bar vertical-slice constitution
+## 32.7 Joel Bar — retained scope and quantitative assumptions
 
-The Bar is now the preferred first full Demand Ecology component because it naturally connects:
+`ITEM_ECONOMY.md` owns the real-menu source, curated active ingredient pool, serving yields and flavour/production metadata. `NPC_CHARACTER_BIBLE.md` owns Joel's business. This pass adds no Joel system.
 
-`demand information -> procurement -> complementary inputs -> production -> customer choice -> revenue -> leftovers -> markdown -> spoilage -> waste -> recovery`
+Retain the demand loop: information → procurement of complementary bundles → production under capacity → actual customer sales → leftovers/markdown → spoilage/waste → bounded recovery. Profit can coexist with cash locked in bottles, equipment and tabs.
 
-### Cocktail generation
+Information value compares `EV(best action after info) - EV(best action before info)`, net of cost/attention. Ordinary taste gossip may be worth ~0; an event lead changing irreversible procurement can be valuable, then worthless after commitment. Trust can affect influence without deleting Joel's budget, substitutes or BATNA.
 
-Do not make hundreds of fixed recipes the main system.
+Demand shapes: Juan's recurring consumption/tab risk is finite; Aspen attendance/NA preference depends on schedule/recovery; Wong has little discretionary budget but can supply/buy markdown/salvage; Yasmin hosts lumpy groups; Dima meetings occupy space; the player is not guaranteed baseline demand.
 
-Use a master ingredient pool, while one run exposes only a bounded active set. The real-world inspiration is a generative menu grammar:
+**Provisional waste assumptions:** unsold/spoiled perishables become Organic Scrap near zero reference value. Bounded compost recovery was sketched at roughly **10–25% of destroyed input value**, never 1:1. Harmless waste leaves automatically unless deliberately diverted to a real recovery path; awkward/hazardous disposal can occasionally create liability, not a daily garbage minigame.
 
-- style: fruity / spirit-forward / dry / sweet / balanced;
-- extras: sour / smoky / savoury / spicy / surprise me;
-- alcoholic or non-alcoholic base;
-- actual tonight inventory constrains what can be made.
-
-A small number of classics can remain benchmark recipes and story anchors, including Mai Tai where needed by current routes.
-
-Each ingredient can contribute to a flavour vector such as:
-
-`sweet, sour, dry/bitter, fruity, herbal, spicy, savoury, smoky, strength, novelty`
-
-Customer segments have preference vectors, price sensitivity and alcohol/NA constraints. Stable character design should primarily determine **demand shape and constraints**, not one fixed favourite drink.
-
-### Complementary-input rule
-
-Joel must procure complete production bundles, not independently maximise `utility(item)` for every ingredient.
-
-A production business can be profitable on paper while illiquid because money is tied in bottles, perishables, equipment and tabs.
-
-### Demand information value
-
-Information value should approximate:
-
-`EV(best decision after info) - EV(best decision before info)`
-
-Ordinary taste gossip can therefore be worth ~0. A high-confidence event lead that changes an irreversible procurement decision can be worth several tins.
-
-Once the procurement/commitment has happened, the same true fact can become economically worthless.
-
-Relationship trust may increase how much of Joel's working capital the player can influence. It must not delete Joel's BATNA, ingredient substitution or basic budget discipline.
-
-### Character-specific Bar demand
-
-- **Juan** — relatively frequent consumption and tab/credit risk; addiction/horizon mismatch does not mean infinite daily demand;
-- **Aspen** — schedule-sensitive; departure/recovery obligations can reduce attendance or push demand toward NA options;
-- **Wong** — low discretionary budget; more important as markdown buyer, cheap supplier or waste/salvage handler than as a large drink customer;
-- **Yasmin** — lumpy group demand through dinners/screenings/hosting; this **does not replace her auction/capital role**;
-- **Dima** — low personal-drink importance; private meetings/venue use can occupy capacity;
-- **player** — may consume, supply, design, speculate or later operate, but is not included as guaranteed baseline demand.
-
-### Waste
-
-Waste is an outcome, not a cute starting inventory category.
-
-Perishable ingredient -> unsold/spoiled -> `Organic Scrap` with reference value approximately zero.
-
-A bounded Juan/greenhouse compost process may recover a small fraction of material value. The intended order of magnitude is roughly **10–25% recovery of destroyed input value**, not 1:1 recycling.
-
-Ordinary harmless waste should leave the system automatically unless the player deliberately diverts it into a real recovery route. Special hazardous/awkward disposal may create occasional liabilities, not a daily garbage-management minigame.
+---
 
 ## 32.8 Octopus and Dima must remain institutionally separate
 
-Earlier chat discussion added an important Octopus concept not yet present in the MDs: a **finite-capacity pooled shipment / investment project**. This must be recorded together with the clearing distinction.
+The historical **finite-capacity pooled shipment / investment project** remains **Deferred/Open**, separate from current public clearing. The paper test below preserves evidence, not a current implementation target.
 
 ### Public rail vs informal rail stress test
 
@@ -2606,15 +1038,7 @@ Stylised result:
 | no public rail; Dima-like ~3🥫 friction on all trades | 1.43 | 20.5% |
 | public rail but Dima removed | 3.10 | 3.3% |
 
-The interpretation is not that Dima is unimportant. It is that his comparative advantage is **high-value friction cases**, not aggregate volume.
-
-Therefore:
-
-> **Do not merge Octopus Clearing and Dima.**
-
-Octopus Clearing exists to make ordinary, low-surplus trade cheap, standardised, visible and batch-settled. Dima earns because some transactions remain private, excluded, disputed or difficult to enforce. Successful formalisation should be capable of reducing Dima's rents.
-
-If the Octopus character were removed but an equivalent public clearing institution remained, the market can function. If the low-cost public institution itself disappears, low-margin trade collapses.
+This model supports cheap public clearing for low-surplus trade and Dima for costly exclusion/privacy/trust/enforcement cases, not merging them. Institutional replacement may preserve clearing if Octopus is absent; removing the low-cost institution itself damages trade. Successful formalisation should be capable of reducing Dima's rents.
 
 ### Clearing is not merchant inventory
 
@@ -2622,9 +1046,9 @@ If the Octopus character were removed but an equivalent public clearing institut
 
 Marine physical supply should be fragmented among small boats, wharf lots, catches, visiting sellers and occasional Octopus-owned inventory. The clearing operator may process a majority of trades without owning their goods or counting settlement float as wealth.
 
-### Finite pooled shipment candidate
+### Finite pooled shipment — DEFERRED / OPEN
 
-The strongest current Octopus-side investment design is a one-shot project per eligible market cycle, not a permanent stock and not a fixed/random yield button.
+Historical paper candidate: a finite project with locked cash/in-kind contributions, a real external outcome, delayed claims and possible loss. Exact cadence, terms, operator and implementation remain Open; no permanent stock or guaranteed-yield button is selected.
 
 Example structure:
 
@@ -2651,7 +1075,7 @@ An illiquid item with reference 8🥫 but project contribution bid 5🥫 produce
 
 When the finite pool was added to the stylised harbour supply model, fills rose from **3.12 to 3.59/window** and dead windows fell from **3.2% to 1.9%**. In that run the project accounted for about 18% of sale count. Treat that volume as **project throughput**, not Octopus personal wealth.
 
-This pool remains **provisional and should not be in the next implementation slice** until the basic demand economy is live.
+This pool remains **Deferred/Open**. A live demand economy alone does not freeze its implementation; it still requires a separate design decision.
 
 ## 32.9 Slow clearing and dual-time stress tests
 
@@ -2720,65 +1144,29 @@ Therefore Plant may widen observation, but most Plant observations must be:
 
 This keeps Plant as low-agency/high-observation rather than a hidden information mine.
 
-## 32.11 Sunflower-route resilience remains first-class
+## 32.11 Sunflower-route resilience
 
-The economic sandbox does not supersede the authored objective routes. Current anchors remain:
+`GAME_DESIGN.md` §14 owns Sonya/Supper, Yasmin/Auction and Juan/Cliff. The following is a **paper dependency audit of incumbent route concepts**, not current-engine reachability proof:
 
-1. **Sonya / Grandma Supper** — relationship, hospitality, fresh fish, non-market allocation;
-2. **Yasmin Auction** — capital, private market, access, provenance/valuation;
-3. **Juan Cliff** — risk/boundary route, currently linked to drink + Onewheel requirements.
+| Removal for a whole run | Reported dependency consequence |
+|---|---|
+| Joel | Supper and incumbent Cliff drink path fail; Auction remains |
+| Yasmin | Supper + Cliff remain |
+| Juan | Supper + Auction remain |
+| Aspen | incumbent Onewheel-production monopoly can block Cliff |
+| Wong/Dima | need not delete a route if goods/access have substitutes |
 
-Simple dependency audit of the current route concepts:
+Joel was therefore a route-diversity bottleneck, not total-goal failure. Bounded player drink/repair work could remove unrelated production monopolies; it does not require universal business takeover. Sonya remains specifically family-linked, with ordinary household Sunflower allocation and fresh-fish demand, not a seventh economic archetype.
 
-- remove Joel for a whole run: Supper and current Cliff drink path fail; Auction remains;
-- remove Yasmin: Supper + Cliff remain;
-- remove Juan: Supper + Auction remain;
-- remove Aspen under current prototype Onewheel-production monopoly: Cliff can fail;
-- Wong/Dima removal need not directly delete a route if goods/access have substitutes.
+Candidate resilience checks: any single primary-actor absence leaves at least one legal acquisition route; temporary absence does not permanently kill one without a knowingly missed real deadline; avoid multiple unrelated unreplaceable production gates. Acquisition stays unpriced → Go home. Exact Auction v2, Cliff safety/outcome/death and home/release mechanics remain Open.
 
-So Joel is currently a **route-diversity single point of failure**, though not a total goal-reachability failure.
+## 32.12 Yasmin's secondary hosting demand
 
-Player-copyable drink production can restore the Cliff route when Joel is unavailable; player-copyable vehicle/repair production can remove Aspen as an unintended hard monopoly. The Sonya route can remain specifically Joel/family-linked without needing a generic replacement.
-
-Guardrails:
-
-- any single primary NPC unavailable for an entire run should leave **>=1 legal Sunflower acquisition route**;
-- temporary phase absence should not permanently kill a route unless the player knowingly misses a real timed event;
-- no acquisition route should depend on more than one unrelated unreplaceable production monopoly;
-- the living Sunflower remains unpriced and acquisition still transitions the objective to **Go home**.
-
-### Sonya's scope
-
-Do not turn Sonya into a seventh economic archetype to justify her existence.
-
-Her useful roles are already enough:
-
-- recurring fresh-fish/hospitality demand;
-- family continuity that does not map cleanly onto legal identity;
-- a supporting social sink around Joel;
-- one non-market Sunflower-allocation route.
-
-Her exact ontology/continuity meaning can remain unresolved while these material behaviours stay concrete.
-
-## 32.12 Yasmin: hosting does not replace auction/capital allocation
-
-The Bar tests gave Yasmin a useful **secondary** channel: lumpy hosted demand can create a predictable headcount but uncertain taste distribution, making procurement information valuable and creating capacity congestion.
-
-Do not let this flatten her into `rich Bar customer`.
-
-Her major strategic grammar remains:
-
-- auction;
-- provenance;
-- secured finance;
-- ownership/capital allocation;
-- selective social labour that creates or protects access.
-
-Investment in Joel's Bar should appear only if the Bar has a real capital need such as expansion, cold storage, lease restructuring, event capacity or working-capital distress. No capital need -> no investment story.
+The Bar paper model used lumpy group headcount with uncertain tastes, creating procurement information value and capacity pressure. This supplements her private capital/provenance role in the bible. Investment requires a real operating/working-capital need; no need means no investment story.
 
 ## 32.13 Wong species is reopened, not silently changed
 
-Current canon still uses Wong as a Dog. The creator has reopened whether that complexity is actually earned.
+Current presentation still uses Wong as a Dog; final species is Open. The creator has reopened whether that complexity is actually earned.
 
 A small access-sensitivity test changed Wong's formal-access probability from dog-like ~0.55 to human-like ~0.95. Aggregate fills changed only from roughly **3.11 to 3.18/window** (~2%), while Dima-route use fell. That means the current economy does **not yet** mechanically justify the full Human/Animal distinction through Wong alone.
 
@@ -2790,31 +1178,92 @@ Until that gate is tested, **do not migrate Wong to Human and do not add more sp
 
 The same standard applies to all forms: communication can be ordinary world fact, but form must materially change opportunity rather than exist only as surreal decoration.
 
-## 32.14 Implementation decision after this pass
+## 32.14 Scope of earlier implementation proposal
 
-The paper models are strong enough to authorise a **limited Demand Ecology implementation slice**, but **not** the full dual-time/rebirth redesign.
+**History:** the prior paper pass proposed a bounded Demand Ecology slice: Joel demand/capacity/complementary inputs and serving yields, local/external payer accounting, leftovers/markdown/Organic Scrap recovery, anonymous sectors, distinct Octopus ledgers, Juan claim symmetry and route/economic-health diagnostics. It did not establish that those systems were implemented.
 
-Safe to implement next because these rules survive either daily or slower future clocks:
+Keep Joel's existing scope intact in this reconciliation. Chapter 18 lists unresolved/deferred mechanics. This pass implements none of them; old batch language does not authorise a dual-time/rebirth rewrite, shop, crop system, loans/workout, pooled shipment or Auction v2.
 
-1. full runtime/display migration `sterling -> joel`;
-2. Joel Bar revenue from actual customer demand + capacity + complementary inputs + actual sales;
-3. serving/batch-yield semantics so whole bottles/crates are not destroyed into one drink;
-4. local vs external payer accounting;
-5. leftovers, perishability, bounded markdown and Organic Scrap / bounded compost recovery;
-6. anonymous background buyers/sellers as bounded populations rather than new named NPCs;
-7. split Octopus Clearing authority/float from personal merchant inventory and finite marine supply;
-8. preserve Juan claim asset/liability symmetry and all current Sunflower routes;
-9. extend Economic Health with money-source/sink, capacity, waste, customer, route-reachability and actor-removal diagnostics.
+## 32.15 Provisional quantitative design experiments — CHAT-SIDE TOY MODELS
 
-Still **do not implement yet**:
+**Provenance:** approximate results supplied in the reconciliation brief from chat-side toy models. These are **NOT runtime evidence, production balancing values or frozen canon**. No source simulation, random seed, sample size or full distribution was supplied here; reported probabilities cannot be independently reproduced from this brief. Preserve them as design evidence and sensitivity questions, not empirical claims about the current game. “Window” is a model interval, not a frozen action budget/day/dual-time clock. Cans are the toy accounting unit, separate from the existing prototype price rebase.
 
-- full Human/Sun/Plant phase system;
-- death/reset rewrite;
-- Wong species change;
-- Octopus pooled shipment investment project;
-- Yasmin Auction v2 if it would distract from the living demand substrate;
-- final comic/art polish.
+### A. Aspen — information value and attention
 
-UI work may proceed only for the reusable economic shell: Bar stock/menu/customer-result surfaces and opportunity cards derived from real public/lead state. Do not hard-code old Morning/Afternoon or daily-Noon assumptions into the new UI.
+Toy assumptions: baseline real Lime/provision shortage probability ≈35%; acting correctly nets ≈+5 cans, acting incorrectly costs ≈−3 through carry/spoilage/resale. The supplied table varies private-signal reliability:
 
-This chapter supersedes the blanket `do not start yet` language in 31.12 **only for this limited Demand Ecology slice**. The borrowed-time/core-rebirth batches remain gated.
+| Private-signal reliability | Posterior shortage probability | Action EV (cans) |
+|---:|---:|---:|
+| 50% | 35.0% | −0.20 |
+| 55% | 39.7% | +0.18 |
+| 60% | 44.7% | +0.57 |
+| 65% | 50.0% | +1.00 |
+| 70% | 55.7% | +1.45 |
+| 75% | 61.8% | +1.94 |
+| 80% | 68.3% | +2.46 |
+
+**Arithmetic interpretation, not an additional test result:** this table is consistent with a positive signal having symmetric sensitivity/specificity r: `p = .35*r / (.35*r + .65*(1-r))`, then `EV = 5*p - 3*(1-p)`. A differently defined “reliability” would require a different posterior; the symmetric interpretation must not become a world rule.
+
+Low-quality insider information can have negative EV. Even +1 to +2 cans may be unattractive when an attention/action window has comparable alternative value. Include information/verification cost and opportunity cost of attention. A fast/narrow/uncertain phone lead may carry an early advantage; a slower broad newspaper report can erode it by informing competitors. **65–80% is only an initial testing band.**
+
+Strong candidate chain: deadline + weather + private signal + delayed newspaper + real BATNA + public disclosure/alpha decay. Test against outside suppliers and competing sellers, never a player-only shortage solution.
+
+### B. Wong — recurring burn and capital formation
+
+Toy assumptions: starting cash ≈7 cans; average retail margin ≈18%; demand ≈4.2 units/window; horizon 16 windows; first shop/fixed-asset threshold ≈11 cash; fixed asset cost ≈6. Only recurring household burn varied.
+
+| Household burn/window | Probability of shop/fixed-asset stage by 16 windows |
+|---:|---:|
+| 0.8 | ≈90.3% |
+| 0.9 | ≈48.5% |
+| 1.0 | ≈5.5% |
+
+This is **too knife-edge for final balance**, but illustrates how a small recurring burden can prevent labour surplus from ever crossing into productive capital. Test sensitivity before adopting any threshold. This supports household-enterprise capital formation, not an ethnic work-ethic story.
+
+### C. Wong — network credit and access to capital
+
+A toy ≈3-can informal/network credit option changed reported shop-transition probability:
+
+| Household burn/window | No credit | +3 network credit |
+|---:|---:|---:|
+| 0.90 | 48.6% | 78.3% |
+| 0.95 | 22.4% | 65.1% |
+| 1.00 | 5.5% | 50.3% |
+
+The 48.5% versus 48.6% baseline is preserved as supplied approximate model reporting, not harmonised into false precision. Credit expands access to productive capital; it also creates repayment, can reduce short-term net wealth and can default. **Credit should improve the possibility set, not guarantee success.** Loan terms and the mechanism behind these probabilities remain unprovided/Open.
+
+### D. Wong — shop productivity and residual value
+
+The supplied toy test found that a shop offering only **+3 inventory capacity** did not justify rent, staff cost and capital lock at low retail margins. No numerical payoff distribution was supplied for this comparison.
+
+A multi-use shop should create actual retail/parcel/storage revenue, reduced travel/carrying cost, better storage/lower spoilage, inventory staging and network/information value. These are candidate operating effects requiring buyers and costs, not additive guaranteed bonuses.
+
+A productive asset should retain some residual value: spending 6 cash does not automatically destroy 6 wealth. **Cash != wealth.** Exact residual/recovery values, lease versus ownership, staff needs and profitability remain Open. Do not promote the shop to implemented canon.
+
+### E. Juan — maturity mismatch and distress finance
+
+Toy starting state: cash ≈1, debt due now ≈5, biological maturity in ≈4 windows. Future plant value: mean ≈9.56; median ≈10.15; 10th–90th percentile ≈3.58–12.91; bad-tail/crop-failure probability ≈12%.
+
+| Toy strategy | Supplied terms | Approximate reported ending-value outcomes |
+|---|---|---|
+| Distressed sale now | discounted early sale; give up future upside | mean 2.40; 10th percentile 1.76 |
+| Dima future-output claim / risk sharing | current liquidity for ≈58% of harvest; Juan retains ≈42% | mean 4.02; median 4.26; 10th percentile 1.50; outcome <1 ≈4.2% |
+| Yasmin secured loan | borrow ≈4; repay ≈4.8 at maturity | mean 5.01; median 5.35; 90th percentile 8.11; default ≈12.2%; 10th percentile ≈0 |
+| Do nothing / miss debt | endure distress | mean 0.82; ending wealth <1 ≈63.2% |
+
+The brief describes early sale as certain discounted current cash while reporting dispersion in ending value; it does not specify the source of that dispersion, liquidation/recovery rules or whether all net-value conventions match. Preserve the summaries without inventing those missing assumptions. High-level arithmetic checks are not a reproduction of this simulation.
+
+Desired qualitative trade-offs:
+
+- **Early sale:** lower return/lower downside; sacrifice maturity upside.
+- **Dima:** expensive upside sharing but reduced fixed-default exposure; risk borne by real counterparties, no free rescue.
+- **Yasmin:** more capital-efficient/higher expected retained payoff in this toy case, with sharper fixed repayment/default downside.
+- **Do nothing:** poor distress path, without a magical immediate game-over flag.
+
+“No one financing option should strictly dominate” is a **design target**, not a stochastic-dominance proof from these summaries. Compare liquidity, downside, collateral loss, time locked and counterparty willingness as well as mean return. Current debt payment, future maturity and who bears each loss must be explicit in any future model.
+
+### Design consequences and next falsification questions
+
+Aspen's logistics/BATNA and information timing; Wong's household burn → working capital → productive fixed asset; Juan's maturity versus current liability; Yasmin's real collateral finance; and Dima's costly distressed workout are **Strong Candidates** supported by these limited experiments. They are not permissions to implement weather, phone/newspaper, a shop, crop system or loans here.
+
+Test whether attention eliminates the apparent information edge, whether Wong thresholds can be less knife-edge, whether shop services cover real costs, whether credit still permits failure, and whether early sale/output-sharing/secured credit each has a state where it is rational. Keep pooled shipment, public-company/IPO expansion and business takeover Deferred/Open. Case coverage lives in `SCENARIOS_TEACHING.md`, not a new quest list.

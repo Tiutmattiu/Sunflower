@@ -1,6 +1,6 @@
 # Sunflower — Rebirth, Forms & Persistent Karma
 
-> Status: **incumbent source of truth for implemented form change, legal identity, estate continuity, karmic recurrence, cross-form access and replay.** Read with `WORLD_LORE_SUN_MOMENT.md`.
+> Status: **incumbent source of truth for implemented form change, legal identity, estate continuity, karmic recurrence, cross-form access and replay.** Read with `WORLD_CANON.md`.
 >
 > Estate/current-form continuity remains the implemented baseline. Death/reset versus within-run transformation is an open design decision recorded in `DESIGN_WORKBOOK.md` Chapter 31; do not treat this estate model as permanently frozen. Borrowed-time, Human/Sun participation, final Plant agency/death and loss-of-stop mechanics also remain open.
 
@@ -409,4 +409,4 @@ Do not revive from Git history without a new explicit decision:
 - species/forms as RPG spiritual ranks;
 - NPC release as completing a personality-improvement quest.
 
-When older notes conflict with `WORLD_LORE_SUN_MOMENT.md` and this file, current consolidated canon wins.
+When older notes conflict with `WORLD_CANON.md` and this file, current consolidated canon wins.

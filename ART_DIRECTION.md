@@ -214,7 +214,7 @@ Sunflower combines:
 - **Rutu Modan-derived flat narrative drawing** for people, places and comic storytelling;
 - **Death and Taxes-derived desk/theatre interaction grammar** for the playable present;
 - high-saturation retro/postmodern print colour;
-- physical paper, IOUs, ledgers, orders, receipts, invitations, goods and evidence as interface objects;
+- physical newspaper and phone on the desk alongside local papers, IOUs, orders, receipts, invitations, goods and evidence;
 - a world that becomes visually denser through accumulated consequences.
 
 The final game should feel like an **interactive printed graphic novel laid across a desk**, not a card dashboard and not a visual novel portrait box.
@@ -383,6 +383,8 @@ Suggested props: seed packets, cuttings, labelled jars, roots, immature plant, c
 
 ## 8. Dima
 
+**Current identity: Seagull**, as specified in `NPC_CHARACTER_BIBLE.md`. The human-form prompt below is **History / retired for current-form asset generation**; it does not override the Seagull identity. A replacement visual specification remains Open. Do not use the historical face/body instructions for a current cast asset.
+
 ```text
 [MASTER STYLE PREFIX]
 
@@ -449,7 +451,7 @@ Suggested props: fish crates, sea urchin basket, ice, seaweed bundle, scales, cl
 ```text
 [MASTER STYLE PREFIX]
 
-Create one unified Sunflower cast tableau containing Aspen, Joel, Yasmin, Wong, Juan, Dima and the Octopus operator. Preserve each character's exact design from this file. Do not equalise their age, beauty, body or ethnicity. Arrange them as people/animals occupying one harbour economy rather than fashion models lined up for a franchise poster.
+Create one unified Sunflower cast tableau containing Aspen, Joel, Yasmin, Wong, Juan, Dima and the Octopus operator. Preserve each current character design from this file and the bible; exclude retired prompt details. Dima is a Seagull, and his replacement asset specification remains Open. Do not equalise their age, beauty, body or ethnicity. Arrange them as people/animals occupying one harbour economy rather than fashion models lined up for a franchise poster.
 
 Include a few economically meaningful props around each figure. Use a printed-comic ensemble composition with social awkwardness and material specificity. For the current asset pass, Wong is clearly a copper whippet-like dog. Octopus is clearly an octopus. The human faces must stay non-beautified and specific.
 ```
@@ -695,7 +697,7 @@ Approximate composition:
 - top 8–10%: day / phase / cash / actions / objective;
 - left ~35–40%: current place + active person/body;
 - centre/right ~40–48%: active paper/object/transaction;
-- narrow object rail: Notebook / Public Tape / Inventory / IOUs / invitations;
+- narrow object rail: Newspaper / Phone / Notebook / Market Records / Inventory / IOUs / invitations;
 - bottom: one current line/result + contextual actions.
 
 After a consequential action, comic panels append **below** this active tableau and the page scrolls downward.
@@ -716,6 +718,14 @@ The next interactive tableau appears after the consequence sequence.
 
 # 18. Information hierarchy
 
+**Strong candidate, not implemented UI:** `INFORMATION_DISCOVERY_MODEL.md` owns three physical surfaces:
+
+- **Newspaper:** broad, delayed general social/world news (weather, harbour, society/culture, notices/classifieds); social facts invite inference, never a financial ticker's trade instruction.
+- **Phone:** fast narrow private messages, quotes, relationships, leads and urgent updates; source/provenance, credibility, motive and freshness remain legible.
+- **Local / scene / market documents:** immediate people, goods, offers and opportunities; Octopus orders/prices/trades/settlement records stay distinct from news.
+
+Private messages may precede public disclosure and alpha decay. Convey source/age without hidden engine truth or a dashboard.
+
 **NOW**
 
 - one current scene;
@@ -728,12 +738,12 @@ The next interactive tableau appears after the consequence sequence.
 - claim;
 - object;
 - invitation;
-- current public record.
+- newspaper, phone message or local market record, each with distinct source and timing.
 
 **ARCHIVE**
 
 - Notebook;
-- old tape;
+- old news/messages and market records;
 - settled contracts;
 - old claims;
 - realised cases.
@@ -751,7 +761,7 @@ Recommended stable naming:
 - `loc_aspen_berth_wide_v01`
 - `prop_aspen_watch_v01`
 - `panel_sunmoment_harbour_wide_v01`
-- `prop_claim_juan_sterling_v01`
+- `prop_claim_juan_joel_v01`
 
 Do not encode temporary emotional labels like `happy`, `sad`, `angry` into the core asset taxonomy unless a final scene truly requires a unique drawing.
 

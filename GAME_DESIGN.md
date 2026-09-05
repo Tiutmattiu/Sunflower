@@ -4,7 +4,7 @@
 >
 > Core rule: build a small number of economic primitives that create many behaviours. Do not add a mechanic merely because it sounds interesting.
 >
-> **Status boundary:** the current daily phase loop and estate/current-form model are incumbent implementation baselines, not permanently frozen canon. `DESIGN_WORKBOOK.md` Chapters 31–32 record the open redesign questions. Borrowed-time and Human/Sun participation mechanics remain open.
+> **Status boundary:** the current daily phase loop and estate/current-form model are incumbent implementation baselines, not permanently frozen canon. `DESIGN_WORKBOOK.md` Chapters 18 and 31–32 record the open redesign questions. Borrowed-time and Human/Sun participation mechanics remain open.
 
 ---
 
@@ -16,7 +16,9 @@ The surface objective is simple:
 
 > **Get a sunflower.**
 
-The primary pleasure is strategic trading:
+The design goal is a **high-density small economy**, spanning trade, production, operations, financing, investment, speculation and social consequences. It is not an empire simulator, stock terminal, dating sim, finance quiz or item-delivery quest chain.
+
+The primary pleasure is making consequential economic choices:
 
 - valuation;
 - information asymmetry;
@@ -71,6 +73,21 @@ Examples:
 - a gift can convert a good into relationship capital rather than market revenue.
 
 Prefer combinations of these primitives over bespoke minigames.
+
+### Six economic return classes — FROZEN analytic / diagnostic grammar
+
+These classify **how money is earned**, not skills, professions or character classes. They can later support event tags, P&L decomposition, case/tutorial coverage and trading-style diagnosis; that tooling is not claimed implemented.
+
+| Class | Source of return | Accounting / examples |
+|---|---|---|
+| **Trade** | location, time or counterparty valuation spread | proceeds − acquisition − transport/carry/spoilage/fees; ordinary arbitrage |
+| **Operate** | transforming inputs, labour, time and capacity into paid goods/services | Joel Bar, Wong services, Aspen repairs/logistics; real buyers and operating costs |
+| **Invest** | holding productive capital for future output / operating value | Juan maturity, equipment, ownership/profit share; future pooled projects remain Deferred |
+| **Finance** | supplying capital, time, liquidity or risk-bearing | lending, trade finance, claims; return net of default loss, funding cost and time locked |
+| **Intermediate** | reducing search, access, trust, enforcement, settlement or privacy friction | Octopus clearing, Dima brokerage/guarantees, Wong matching |
+| **Speculate** | future price movement rather than productive cashflow or service margin | auction resale, thin speculative assets, wagers/race positions |
+
+Arbitrage is a form of **Trade**. Hedge/insurance changes risk distribution; fraud/manipulation is a behavioural method; neither is a seventh class. Entrepreneurship can combine Operate + Invest + Finance. Consumption/gifts are utility use or sinks, not an investment class. Mixed activities may earn several kinds of return; separate their causes rather than counting the same profit twice.
 
 ---
 
@@ -141,7 +158,7 @@ No reroll of NPC intent.
 No same-batch recycling of newly received cash or goods.
 
 ### Afternoon
-The public transaction tape exists. The player can interpret what happened, talk, investigate and prepare future positioning.
+Octopus’s completed-public-trade records exist as market data. The player can interpret what happened, talk, investigate and prepare future positioning.
 
 ### Sunset
 Food, obligations, perishability and business activity settle. The next day’s economy forms.
@@ -165,7 +182,8 @@ Current UI grammar takes high-level inspiration from tactile desk / dossier game
 - one dossier at a time;
 - public stall / ledger sheets;
 - written order slips;
-- notes and information as notebook / paper objects;
+- a physical general newspaper, a phone, and local documents / market surfaces;
+- the Notebook preserves evidence and learned concepts;
 - primary action clearly indicates when something becomes binding;
 - credit, legal form and obligations appear only when they actually matter.
 
@@ -219,86 +237,42 @@ A player who knows bartending can infer Orgeat earlier and save time.
 
 ## 7. Information Constitution
 
-**Nonrandom does not mean omniscient.**
+**Strong candidate: three information layers**, detailed in `INFORMATION_DISCOVERY_MODEL.md`:
 
-Engine truth and actor belief are separate.
+| Surface | Reach and timing | Content |
+|---|---|---|
+| Newspaper | broad, public, slower and delayed | general world/social news: weather, harbour, shipping, culture, accidents, notices and classifieds |
+| Phone | fast, narrow, private, timely | messages, quotes, relationship changes, uncertain leads, order/project updates and urgent failures |
+| Local / market / scene | immediate and actionable | visible people, goods, offers, opportunity panels and Octopus orders, prices, completed trades and settlement records |
 
-NPCs may know a source through:
+The newspaper reports social facts, not trading instructions: “Thunderstorms expected east of the cape” can mean route delays to Aspen, visitor changes to Joel and spoilage exposure to a cargo holder. Octopus market data is not the world's general news medium.
 
-1. public listed stock;
-2. the public transaction tape;
-3. information bought / received;
-4. bounded active search through plausible contacts;
-5. existing social relationships.
+**Private edge → public disclosure → alpha decay.** News can follow a private message; once others learn the fact, competition can reduce the earlier advantage. Private does not mean true or profitable. Information value includes verification, delay, risk and the opportunity cost of attention.
 
-They do not scan all true inventories.
-
-Information objects carry at least:
-
-- proposition / text;
-- source;
-- precision;
-- confidence;
-- observation day;
-- freshness;
-- exclusivity / resale state where relevant.
-
-`precision` and `confidence` are different.
-
-A claim can be very trustworthy and still vague.
-
-Information ages. A once-correct ownership claim can become stale. A rational NPC may therefore submit an order based on information that is no longer true and fail at settlement.
-
-This is desirable: **NPCs should occasionally fail for understandable reasons.**
-
-See `INFORMATION_DISCOVERY_MODEL.md`.
+**Nonrandom does not mean omniscient.** Engine truth and actor belief remain separate. Actors use their own observations, legitimate public information, acquired leads, plausible contacts and bounded search; they cannot scan true inventories. Claims retain source, provenance, credibility/confidence, motive, precision, observation time and freshness. Precision is specificity, not reliability. A rational order based on once-correct information may fail after ownership changes.
 
 ---
 
 ## 8. Current NPC Economic Identities
 
-NPC behaviour may be uncertain, but should almost never be causeless.
+Six named people operate inside a larger population; they are not six professions for the player to select.
 
-### 🐕 Wong — high-turnover dealer / information node
-- scavenges low-value goods;
-- knows many people shallowly;
-- supports a cat colony, creating recurring food demand;
-- broad animal-network access;
-- turns over stock rather than maximising prestige wealth.
+| Actor | Current identity / economic direction | Constraint |
+|---|---|---|
+| Aspen | Japanese lesbian woman; reliable, strict logistics / contract operator | deadlines, weather, provisions, repair, real fallback options; not primarily speculation |
+| Joel | Bar operator / apprentice; working capital, inventory, customer demand, tabs and menu production | complementary inputs, capacity, cash and relationships; existing Bar scope remains |
+| Yasmin | family capital; **strong candidate** private capital allocator / family-office or merchant-bank-like principal | collateral, provenance, recovery, access and social maintenance; not the public exchange |
+| Wong | frugal household enterprise; low-margin turnover, salvage, resale and small services | recurring household/rescue burn and limited liquidity; Dog presentation, final species **Open** |
+| Juan | botanist / grower / nursery; productive biological capital and future output | asset-rich/cash-poor maturity mismatch, alongside intentional impulsive drinking, wagers and risky commitments |
+| Dima | Seagull informal broker: proxy, guarantees, access, claim transfer, settlement and enforcement | trust/network limits; **strong candidate** costly distressed workout, never a free bailout |
 
-### 🐠 Background marine supply — physical economy
-- small boats, catches, wharf lots, temporary sellers and visitors supply fresh and preserved food, ice and marine goods;
-- individual suppliers have finite inventory, working capital and operating costs;
-- occasional Octopus-owned stock may exist, but Octopus does not own the whole marine economy;
-- these suppliers are economic population, not another primary karmic character.
+Sonya is Joel's Penguin grandmother and a supporting social/household Sunflower route, not a seventh economic archetype. Octopus is public clearing, payment and price discovery; client float, finite personal stock and background marine supply remain separate. Detailed identity, speech and recurring loops belong in `NPC_CHARACTER_BIBLE.md`.
 
-### ⚙️ Aspen — deadline merchant / boundary crosser
-- temporary local presence;
-- public cargo is only a subset of the hold;
-- imports have real sourcing costs;
-- departure creates time pressure;
-- long-term lore direction: `Sailor` may be a liminal form / function, not one eternal biological identity.
+### Player role — strong candidate
 
-### 🎬 Yasmin — sophisticated allocator
-- wealthy, socially powerful, manipulative;
-- understands scarcity, provenance and private markets;
-- unpleasantness does not imply bad settlement reliability;
-- strong relationship / prior-business connection with Aspen.
+The player's distinctive asset is **attention + cross-domain visibility**: see Aspen's deadline, Joel's cash need, Juan's maturity, Wong's clearance, Yasmin's event and Dima's private opportunity, but act on only a few. There is no permanent profession choice or universal mastery.
 
-### 🤡 Juan — high-risk speculator
-- extreme utility for optionality, wagers and unusual upside;
-- not random or universally prophetic;
-- may understand one deep truth about the world;
-- core contradiction: tries to **acquire liberation** as if it were another asset.
-
-### 🍸 Joel — relationship-first novice bartender
-- genuinely weaker trader than Yasmin;
-- professional bartending craft can develop;
-- the Bar is a cross-form social venue;
-- Grandma / food / hospitality route creates non-market allocation possibilities;
-- relationships are a real economic advantage.
-
-See `NPC_CHARACTER_BIBLE.md` for character detail.
+Bounded bartending, sourcing, repair, inspection, ordinary trade, claims and basic financing may be learnable through real prerequisites. This does not grant Joel's customer network, Yasmin's capital, Dima's trust network, Aspen's route expertise, Wong's throughput, Juan's botanical skill or Octopus's institution. The motive stays **get a Sunflower / go home**; business takeover remains Open/Deferred.
 
 ---
 
@@ -363,7 +337,19 @@ Examples:
 - marine suppliers pay sourcing costs, receive finite catch and sell to local or outside customers;
 - Joel's Bar earns only from actual customers, complementary inputs and finite service capacity;
 - Aspen pays import / sourcing costs before departure;
+- wages paid to crews/workers enter background purchasing power unless explicitly accounted as an external drain;
 - named actors still trade with one another when their beliefs and utilities justify it.
+
+### Economic guardrails — current design
+
+- Repeated profitable flips must deplete supply, saturate demand, move prices or attract competition; no infinite same-place spread or exploitable guaranteed price floor/cap.
+- Restock requires production, arrival, harvest, finite resale/supply or transformation. Prefer a few bridge goods over dead SKU volume.
+- Growth requires buyers, capacity, working capital, labour, supply and competition. Wealth still faces attention, liquidity, locked capital, market impact and allocation choices.
+- Race/gambling/speculation/investment must not dominate the core economy. Insider tips are uncertain; relationships must causally change information, credit, access, terms or reliability.
+- Large positions must affect price, execution and counterparties. Do not force unrelated minigames to unlock character growth.
+- Progress comes from knowledge, assets, relationships, reach, productive capacity and new causal opportunities, not skill-tree inflation or arbitrary unlocks.
+
+`DESIGN_WORKBOOK.md` Chapter 13 owns diagnostic warnings; numerical tests are evidence, not automatic rebalancing instructions.
 
 This is deliberately small.
 
@@ -385,7 +371,7 @@ Current clearing rule:
 - exact ties use deterministic daily rotating priority;
 - only resources held at the opening bell can fund orders;
 - newly received cash / goods cannot be reused in the same Noon;
-- actual fills create the public transaction tape.
+- actual fills create public market transaction records.
 
 Player failure explanations should distinguish:
 
@@ -430,7 +416,7 @@ See `REBIRTH_FORM_SYSTEM.md`.
 
 ## 13. Sun Moment and Rebirth
 
-The current metaphysical source of truth is `WORLD_LORE_SUN_MOMENT.md`.
+The current metaphysical source of truth is `WORLD_CANON.md`.
 
 Core principles:
 
@@ -444,9 +430,7 @@ Core principles:
 - karma is better understood as action that has not finished happening;
 - no visible `ENTANGLEMENT 73/100` meter.
 
-The existing Sun Moment ontology remains canon. Sufficiently specified mechanics may be implemented; unresolved resistance or transformation details must not be invented. There is no visible entanglement morality meter.
-
-`WORLD_LORE_SUN_RITUAL.md` is archived/superseded and is not current canon.
+The natural Sun Moment remains canon; its final timing, resistance/loss-of-stop mechanics and transformation consequences remain **Open**. Historical ritual drafts are retired, not current authority.
 
 ---
 
@@ -458,10 +442,10 @@ Routes should remain discoveries, not a visible quest checklist.
 Joel's hospitality, family connection and fresh-fish pattern can lead to an after-closing meal and a sunflower changing hands outside ordinary pricing. Mai Tai / Orgeat remains an authored benchmark, not the whole Bar economy.
 
 ### Yasmin / Auction — Capital / private market
-Capital, provenance and formal access can lead to a private sunflower auction. Exact goods and access chains remain under design testing.
+Capital, provenance and formal access can lead to a private allocation event. **Strong candidate:** an antique vessel / pot with an incidental Sunflower; rivals value the vessel while the player values the flower. Exact Auction v2 internals remain **Open**.
 
 ### Juan / Cliff — Risk / boundary
-Drink, mobility and an actual relationship with Juan can expose a special wager whose exact terms remain under design testing.
+Juan knows or can lead to a Sunflower field. Drink, mobility and a relationship are incumbent route context; exact Cliff race, preparation, safety, catastrophic/death consequences remain **Open**.
 
 Multiple currently real opportunities may coexist. The engine should not hide all but one because of arbitrary route priority.
 
@@ -504,7 +488,7 @@ Knowledge and assessment are core deliverables:
 
 `?` is a timely optional explanation after the relevant consequence, never a pre-emptive answer. A badge records a distinctive realised story or pattern and is not automatically praise. The notebook keeps situations, concepts and evidence across the run. Final diagnosis synthesises that record; it must not be the player's first encounter with the ideas.
 
-Final trader archetypes / badges should diagnose behaviour rather than moralise. The current batch preserves structured evidence but deliberately does not lock the final scoring or archetype model.
+Final trader archetypes / badges should diagnose behaviour rather than moralise. Valuation, liquidity, information discipline, relationship investment, risk appetite, credit discipline, integrity and adaptability are candidate axes, not a frozen player-facing radar. **Outcome != Style:** either high- or low-risk play can succeed or fail, acquire or miss the flower. Describe how choices were made, not merely final wealth.
 
 `SCENARIOS_TEACHING.md` defines implementation and coverage targets. Its exact scenes need not all become rigid quests, but their meaningful economic behaviours must become mechanically representable, observable, diagnosable and capable of timely learning feedback.
 
@@ -528,7 +512,8 @@ The following remain deliberately deferred because their design is unresolved or
 - full black-market venue;
 - authority / inspector system;
 - multiple currencies / FX;
-- business ownership and equity;
+- business ownership / player takeover, public companies and IPOs;
+- pooled shipment / project investment (**Deferred/Open**);
 - Sun Moment resistance gameplay;
 - causal form taxonomy beyond the prototype Animal transition;
 - Plant gameplay;
@@ -543,7 +528,7 @@ These remain strong future directions where supported by the specialised design 
 
 ## 17. Current Implementation Target
 
-The next playable milestone is not “more systems.”
+This is the incumbent playable-loop acceptance target, not authorisation to implement candidates or settle the open clock. The target is not “more systems.”
 
 It is:
 

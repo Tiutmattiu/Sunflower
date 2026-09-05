@@ -2,7 +2,7 @@
 
 > **Status: active editorial audit, September 2026.**
 >
-> Companion to `DIALOGUE_MONTAGE_BANK.md`, `NPC_CHARACTER_BIBLE.md`, `DESIGN_WORKBOOK.md`, `INFORMATION_DISCOVERY_MODEL.md`, `REBIRTH_FORM_SYSTEM.md`, and `WORLD_LORE_SUN_MOMENT.md`.
+> Companion to `DIALOGUE_MONTAGE_BANK.md`, `NPC_CHARACTER_BIBLE.md`, `DESIGN_WORKBOOK.md`, `INFORMATION_DISCOVERY_MODEL.md`, `REBIRTH_FORM_SYSTEM.md`, and `WORLD_CANON.md`.
 >
 > This file does not add a second narrative canon. It records which authored scenelets are already strong, which require state guards, which should be rewritten, and which must wait for unresolved mechanics or cosmology.
 >

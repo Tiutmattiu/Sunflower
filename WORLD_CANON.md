@@ -70,7 +70,7 @@ It is living, reproductive and seed-bearing, and can be commodity, gift, plant, 
 
 ---
 
-## 3. Sun Moment is the world clock
+## 3. Sun Moment is real; final clock remains Open
 
 The Sun Moment is a real biological / metaphysical event.
 
@@ -80,13 +80,13 @@ Societies may build clocks, etiquette, customs, theories or institutions around 
 
 At a Sun Moment, living beings naturally stop separate goal pursuit for a brief interval.
 
-Current day-loop canon:
+Incumbent prototype placement, **not a frozen final clock**:
 
 - **Sunrise** — Sun Moment / day boundary;
 - **Noon** — Sun Moment immediately before public clearing;
 - **Sunset** — Sun Moment / settlement boundary.
 
-The player should encounter the event before receiving a theory of it.
+The player should encounter the event before receiving a theory of it. Exact dual-time/Human-Sun participation, action budget, borrowed time and the final Sun Moment remain **Open**; these placements do not decide them.
 
 ---
 
@@ -210,11 +210,11 @@ Exactly what release means can remain open: transformation, disappearance from t
 
 ### Aspen
 
-Current named Sailor / mechanic.
+Current named Sailor / mechanic; logistics / contract operator.
 
-Female; lesbian; highly scheduled; sensitive to time, weather and bodily change; risk-averse; uncomfortable with uncertainty; does not romanticise sailing; earns through conservative shipping, contracts and finance.
+Japanese woman; lesbian; highly scheduled; sensitive to time, weather and bodily change; risk-averse; uncomfortable with uncertainty; does not romanticise sailing; earns primarily through reliable logistics, contracts and scoped services; conservative finance/cross-port trade may support that work, not heavy speculation.
 
-She supports lovers / dependents and can turn intimacy into a logistics network.
+Social obligation can take the form of lumpy, dated, discretionary gifts or promises. Exact lover/support details remain Open; no Aspen/Yasmin romance is canonized. Actor-specific demand mechanics belong in the character bible.
 
 Her recurring structure is stability through usefulness and being needed.
 
@@ -232,7 +232,7 @@ Relationship is not a romance system. Repeated attention simply costs time that 
 
 ### Yasmin
 
-Capital allocator / family operator.
+Family capital / provenance / formal access; private capital allocator is the strong current economic direction, not public exchange operator.
 
 A previous animal life strongly leans hyena, but exact previous species remains provisional.
 
@@ -246,7 +246,7 @@ Her intimacy difficulty comes from incentive literacy: unpriced care is hard to 
 
 Current presentation uses a Dog body. The creator has reopened whether that species distinction earns its systemic complexity; do not change Wong to Human, but retain Dog only if it materially changes several opportunity dimensions rather than functioning as appearance alone.
 
-High-turnover / low-margin operator, parent/guardian/rescuer.
+Frugal household-enterprise / high-turnover low-margin operator, parent/guardian/rescuer. Productive-shop and credit mechanics remain candidates in the economic docs, not world canon.
 
 Wong bargains, salvages, takes dirty and small jobs, moves many cheap goods, carries large recurring household/rescue costs, and believes rescuing animals can create merit.
 
@@ -262,7 +262,7 @@ Juan manages biological productive assets: seed, propagation, maturity, dormancy
 
 He also understands leverage, claims, distressed debt, refinancing, creditor coordination, and the fact that his liability is somebody else's asset.
 
-He can look intoxicated, broke, chaotic or ridiculous while being technically excellent at plants and certain financial structures.
+He can look intoxicated, broke, chaotic or ridiculous while being technically excellent at plants and certain financial structures. Patient biological capital and impulsive risk-taking are intentionally simultaneous, not a contradiction to remove.
 
 His recurring pattern is:
 
@@ -280,7 +280,7 @@ Informal broker / guarantee / enforcement / claim-transfer operator.
 
 Dima does not own the entire black market. His advantage is trusted informal settlement when formal institutions cannot or will not recognise a transaction.
 
-He earns from introductions, proxy buying, guarantees, informal claims, claim transfer, information, enforcement and access.
+He earns from introductions, proxy buying, guarantees, informal claims, claim transfer, information, enforcement and access. Distressed help must preserve real costs/losses; he is not a free bailout or a required additional Sunflower route.
 
 His recurring structure is indispensability: he genuinely solves exclusion and also earns because exclusion continues.
 
@@ -298,7 +298,7 @@ Fresh fish, preserved seafood, ice, marine goods and harbour salvage may come fr
 
 `🥫` sardine tins remain currency / settlement asset.
 
-**Octopus Clearing** is the low-cost public execution, settlement and public-tape process under the incumbent clock. Its final cadence remains open.
+**Octopus Clearing** is the low-cost public execution, settlement and public market-record process under the incumbent clock. Its final cadence remains open.
 
 Client settlement float is not Octopus's own wealth.
 
@@ -325,7 +325,7 @@ Memory continuity does not imply legal-person continuity.
 
 When a recognised legal person ends through transformation/death, the new form cannot automatically claim the old person's cash accounts, property, equity, receivables, recognised contracts, institutional status or formal reputation.
 
-Former assets and obligations remain in an estate / former-life legal structure.
+Under the incumbent continuity model, former assets and obligations remain in an estate / former-life legal structure. Hard reset versus continued estate/form play remains **Open**; this describes the baseline, not a final rebirth decision.
 
 A desire to regain a Human form can therefore be economically rational without Human being metaphysically or morally higher.
 
@@ -357,7 +357,7 @@ Joel operates the Bar. The Seagull network helped place/hire him there.
 
 It is a cross-form social venue where Sonya/family continuity, Juan's debt, Dima's network and ordinary production/business can intersect.
 
-The Bar Sale remains a future special situation emerging from revenue, costs, ownership, debt, capital, customer network and non-market social value.
+Business sale/player takeover remains **Open/Deferred**. Any later special situation must arise from real revenue, costs, ownership, debt, capital and customer/social value; no takeover system is frozen here.
 
 ---
 
@@ -475,9 +475,9 @@ Repeated objects can include receipts, claims, seeds, fish, toads, timetables, p
 
 Current route anchors remain discoveries within the same world:
 
-- Sonya / Supper;
-- Yasmin / Auction;
-- Juan / Cliff.
+- Sonya / Supper: family/social allocation of an ordinary household Sunflower;
+- Yasmin / Auction: capital/access; vessel/pot with incidental flower is a Strong Candidate, exact mechanics Open;
+- Juan / Cliff: risk/preparation; Juan knows or can lead to a Sunflower field, exact outcome/death consequences Open.
 
 Missed trade does not automatically mean missed route.
 
@@ -496,8 +496,8 @@ Required substrate:
 5. resisting it can create local advantage;
 6. no visible moral/karma/entanglement meter interprets the choice;
 7. recurring business loops recreate future demand;
-8. legal identity can end while memory continues;
-9. estate wealth remains distinct from current-body wealth;
+8. legal identity can end while memory continues; final run/reset treatment remains Open;
+9. under the incumbent estate model, estate wealth remains distinct from current-body wealth;
 10. Animals can participate economically without equal formal recognition;
 11. different forms change body, access, mobility, needs and enforceability;
 12. Dima expresses informal settlement/access;
@@ -564,6 +564,9 @@ Do not revive from Git history:
 
 ### Unresolved
 
+- final time architecture, action budget, borrowed time and death/reset versus estate continuity;
+- final Wong species;
+- exact Auction v2, Juan Cliff outcome/safety/death consequences and final Sun Moment;
 - exact transformation mapping among species/forms;
 - how many forms become playable;
 - what `home` ultimately means;
