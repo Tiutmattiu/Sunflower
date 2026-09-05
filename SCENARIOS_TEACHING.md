@@ -114,7 +114,7 @@ Future possible cases may distinguish difficult on-time performance, multiple pr
 ## Scenario 2 — Temporary Price Gap
 
 ### Situation
-Octopus publicly sells a marine / preserved good at a price that another actor, often Yasmin or another specialised buyer, may value more highly.
+A finite marine supplier lists a marine / preserved good through Octopus Clearing at a price that another actor, often Yasmin or another specialised buyer, may value more highly. The listing does not imply that Octopus owns the good.
 
 The opportunity is useful only while supply, demand and information remain favourable.
 
@@ -221,7 +221,7 @@ A time-sensitive opportunity requires liquidity now.
 
 Possible routes may include:
 
-- Sterling relationship credit;
+- Joel relationship credit;
 - Yasmin secured borrowing;
 - sell a visible owned good;
 - accept an inbound bid;
@@ -246,7 +246,7 @@ Reference wealth and spendable liquidity are different. A claim may be valuable 
 
 ### Current coverage
 
-**Strong partial.** Sterling credit and Yasmin secured borrowing are implemented; Juan transferable claims are the next major extension.
+**Strong partial.** Joel credit and Yasmin secured borrowing are implemented; Juan transferable claims are the next major extension.
 
 Possible future cases:
 
@@ -268,7 +268,7 @@ Possible routes can include:
 
 - public Octopus-cleared transaction;
 - direct bilateral deal;
-- Sterling relationship proxy;
+- Joel relationship proxy;
 - Dima formal-market proxy;
 - Dima informal settlement / guarantee;
 - abstain.
@@ -373,10 +373,10 @@ Breach truth and breach detection are separate.
 
 ---
 
-## Scenario 8 — Pay Sterling or Take the Deal
+## Scenario 8 — Pay Joel or Take the Deal
 
 ### Situation
-A player owes Sterling today but also sees a high-return opportunity requiring the same cash.
+A player owes Joel today but also sees a high-return opportunity requiring the same cash.
 
 Possible actions may include:
 
@@ -456,7 +456,7 @@ Belief about solvency / liquidity must be separate from actual solvency / liquid
 Juan owes money. The same IOU appears as:
 
 - Juan’s liability;
-- Sterling / Dima / Yasmin / player receivable;
+- Joel / Dima / Yasmin / player receivable;
 - a discounted transferable asset;
 - a restructuring problem;
 - a possible claim on future botanical output.
@@ -653,7 +653,7 @@ Secondary:
 - information timing;
 - position sizing.
 
-## Sterling
+## Joel
 Primary:
 
 - relationship capital;
@@ -790,7 +790,7 @@ Do not let this teaching file reintroduce old world hypotheses as canon.
 
 In particular, do not revive:
 
-- old Mechanic / Vale / Dock Dog / Clown / Bar Apprentice / Fishmonger identities as current runtime names;
+- deprecated runtime labels as current narrative identities;
 - Fishmonger as central bank or hidden world-conspiracy figure;
 - the employer acquisition-agent opening;
 - compulsory sun ritual / petrification rules;

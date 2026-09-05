@@ -258,12 +258,12 @@ Each major location needs:
 Primary locations:
 
 - Aspen berth / workshop;
-- Sterling's Bar;
+- Joel's Bar;
 - Yasmin's receiving room / auction table;
 - Wong's dock pile / salvage area;
 - Juan's greenhouse / growing room;
 - Dima's informal office / back room;
-- Octopus seafood stall / clearing desk;
+- Octopus Clearing desk, visually distinct from any finite personal seafood stock;
 - general public harbour / Noon clearing space.
 
 ### 3.3 Object assets
@@ -399,19 +399,19 @@ Suggested props: folded claim paper, keys, document pouch, manifest, small calcu
 ```text
 [MASTER STYLE PREFIX]
 
-WONG — a DOG, not a human. Whippet-like build, copper coat, green eyes. Lean, fast, practical, alert, visibly overworked. He supports many dependents, bargains hard, scavenges/salvages, accepts dirty small jobs and operates high-turnover low-margin commerce. Treat him as a full social/economic actor, not a mascot.
+WONG — current provisional Dog presentation. Whippet-like build, copper coat, green eyes. Lean, fast, practical, alert, visibly overworked. He supports many dependents, bargains hard, scavenges/salvages, accepts dirty small jobs and operates high-turnover low-margin commerce. Treat him as a full social/economic actor, not a mascot. The creator has reopened the species decision; keep this asset direction for current continuity without treating Dog as irreversible final canon.
 
-Keep him unmistakably canine. No human face, no furry-anime body, no Disney dog, no plush-toy cuteness.
+For the current asset pass, keep him unmistakably canine. No human face, no furry-anime body, no Disney dog, no plush-toy cuteness.
 
 Suggested props: salvage bundle, fish bones, small ledger, rope, household food, reused bottle, scrap/tool pouch.
 ```
 
-## 10. Sterling
+## 10. Joel
 
 ```text
 [MASTER STYLE PREFIX]
 
-STERLING — very light-skinned Black young man, tall and slim, younger-looking than earlier drafts, no glasses. Carefully groomed copper/ginger hair, possibly short waves; brown eyes. Slightly nerdy, sensitive, privileged, curious, socially magnetic, highly receptive to sensory experiences and new ideas. His body should be lanky rather than broad. He is not deeply attached to ordinary wealth and can learn frighteningly quickly.
+JOEL — very light-skinned Black young man, tall and slim, younger-looking than earlier drafts, no glasses. Carefully groomed copper/ginger hair, possibly short waves; brown eyes. Slightly nerdy, sensitive, privileged, curious, socially magnetic, highly receptive to sensory experiences and new ideas. His body should be lanky rather than broad. He is not deeply attached to ordinary wealth and can learn frighteningly quickly.
 
 Do not make him middle-aged, businesslike, K-pop/idol pretty or bishounen. No glasses.
 
@@ -435,7 +435,7 @@ Suggested props: watch, weather slip, maintenance list, compact tool, bundled su
 ```text
 [MASTER STYLE PREFIX]
 
-OCTOPUS — a real octopus economic actor, not a humanised mascot. Marine wholesaler and the harbour's public clearing operator. Physically handles seafood, ice, sea vegetables, marine goods and settlement papers/tins with multiple arms. Clever, practical, slightly uncanny and faintly comic only because the world itself accepts the situation as ordinary.
+OCTOPUS — a real octopus economic actor, not a humanised mascot, operating the harbour's public clearing institution. Physically handles order slips, settlement papers/tins and public-tape records with multiple arms; limited personal marine stock may appear separately. Clever, practical, slightly uncanny and faintly comic only because the world itself accepts the situation as ordinary. Octopus Clearing, Octopus personal inventory and background marine supply must remain visually distinct.
 
 Do not give it a cute children's-cartoon face. No kawaii octopus, no Pixar expression, no humanoid body in a costume.
 
@@ -449,9 +449,9 @@ Suggested props: fish crates, sea urchin basket, ice, seaweed bundle, scales, cl
 ```text
 [MASTER STYLE PREFIX]
 
-Create one unified Sunflower cast tableau containing Aspen, Sterling, Yasmin, Wong, Juan, Dima and the Octopus operator. Preserve each character's exact design from this file. Do not equalise their age, beauty, body or ethnicity. Arrange them as people/animals occupying one harbour economy rather than fashion models lined up for a franchise poster.
+Create one unified Sunflower cast tableau containing Aspen, Joel, Yasmin, Wong, Juan, Dima and the Octopus operator. Preserve each character's exact design from this file. Do not equalise their age, beauty, body or ethnicity. Arrange them as people/animals occupying one harbour economy rather than fashion models lined up for a franchise poster.
 
-Include a few economically meaningful props around each figure. Use a printed-comic ensemble composition with social awkwardness and material specificity. Wong is clearly a copper whippet-like dog. Octopus is clearly an octopus. The human faces must stay non-beautified and specific.
+Include a few economically meaningful props around each figure. Use a printed-comic ensemble composition with social awkwardness and material specificity. For the current asset pass, Wong is clearly a copper whippet-like dog. Octopus is clearly an octopus. The human faces must stay non-beautified and specific.
 ```
 
 ---
@@ -465,7 +465,7 @@ Include a few economically meaningful props around each figure. Use a printed-co
 A compact harbour berth/workshop organised obsessively around time and maintenance: weather notices, tools, coiled rope, labelled supplies, a narrow bunk, departure schedule, practical storage, mechanical parts. Aspen belongs naturally in the space. It should feel used, clean but not decorative, and slightly constrained by routine.
 ```
 
-## Sterling's Bar
+## Joel's Bar
 
 ```text
 [MASTER STYLE PREFIX]
@@ -500,11 +500,11 @@ A productive greenhouse/growing room rather than mystical jungle: seed packets, 
 A small informal office/back room near the harbour: ordinary desk, claim papers, keys, envelopes, transport notices, cheap furniture, evidence of people entering and leaving. Functional, cautious, not cinematic gangster décor. Private settlement and access are the real subject.
 ```
 
-## Octopus stall / clearing desk
+## Octopus Clearing desk
 
 ```text
 [MASTER STYLE PREFIX]
-A wet harbour seafood stall fused naturally with a public settlement counter: fish, ice, seaweed, marine goods, sardine tins, public order/clearing slips, scales, stamps and receipts. The absurdity is treated as normal. Client settlement papers and the Octopus's own seafood business must be visually distinguishable.
+A wet harbour public settlement counter: sardine tins, public order/clearing slips, scales, stamps and receipts, with nearby marine lots visibly belonging to small boats, wharf sellers, visitors or limited Octopus-owned stock. The absurdity is treated as normal. Client settlement papers, settlement float, Octopus personal inventory and background supply must be visually distinguishable.
 ```
 
 ---
@@ -649,7 +649,7 @@ Possible sequence:
 
 No casino spectacle.
 
-## 16.6 Relationship / Sterling scenes
+## 16.6 Relationship / Joel scenes
 
 Do not deliberately stage romance.
 

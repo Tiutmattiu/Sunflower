@@ -4,6 +4,8 @@
 >
 > Earlier freestyle / ritual drafts are historical brainstorming only. When old notes conflict with this file, this file wins.
 >
+> **Incumbent-model note:** estate/current-form continuity remains the implemented baseline, while death/reset versus within-run transformation remains open. Borrowed-time, Human/Sun participation and final loss-of-stop mechanics are also open; `DESIGN_WORKBOOK.md` records the competing hypotheses. Do not treat the incumbent estate model as permanently frozen.
+>
 > The Buddhist / psychoanalytic books used during design are **reference pressure, not doctrinal authority inside the world**. Sunflower borrows useful structures of repetition, attachment, self-deception, circulation and release; it does not reproduce a Buddhist cosmology literally.
 
 ---
@@ -184,7 +186,7 @@ Do not implement a doctrinal cosmology, realm score, or spiritual class progress
 The six primary recurring figures are:
 
 - **Aspen**
-- **Sterling**
+- **Joel**
 - **Yasmin**
 - **Wong**
 - **Juan**
@@ -216,7 +218,7 @@ She supports lovers / dependents and can turn intimacy into a logistics network.
 
 Her recurring structure is stability through usefulness and being needed.
 
-### Sterling
+### Joel
 
 Male Bar operator / apprentice.
 
@@ -242,7 +244,7 @@ Her intimacy difficulty comes from incentive literacy: unpriced care is hard to 
 
 ### Wong
 
-Dock Dog.
+Current presentation uses a Dog body. The creator has reopened whether that species distinction earns its systemic complexity; do not change Wong to Human, but retain Dog only if it materially changes several opportunity dimensions rather than functioning as appearance alone.
 
 High-turnover / low-margin operator, parent/guardian/rescuer.
 
@@ -252,7 +254,7 @@ More capacity can create more dependents. Successful care can therefore produce 
 
 ### Juan
 
-Botanist / grower / Onewheel Clown / debtor.
+Botanist / grower / boundary-risk operator / debtor.
 
 Former-dentist direction is superseded.
 
@@ -290,19 +292,19 @@ His recurring structure is indispensability: he genuinely solves exclusion and a
 
 Octopus is not a seventh primary karmic figure.
 
-Octopus carries the recurring physical economy: fresh fish, preserved seafood, ice, marine goods and harbour salvage.
+Octopus is the diegetic public settlement / clearing rail. Octopus Clearing is institutionally distinct from Octopus's finite optional personal inventory and from background marine supply.
 
-Octopus also serves as the diegetic public settlement / clearing rail.
+Fresh fish, preserved seafood, ice, marine goods and harbour salvage may come from small boats, catches, wharf lots, temporary sellers, visitors and limited Octopus-owned stock.
 
 `🥫` sardine tins remain currency / settlement asset.
 
-**Octopus Clearing** is the public Noon batch process.
+**Octopus Clearing** is the low-cost public execution, settlement and public-tape process under the incumbent clock. Its final cadence remains open.
 
 Client settlement float is not Octopus's own wealth.
 
 ### Sonya
 
-Sonya is Sterling's Penguin grandmother.
+Sonya is Joel's Penguin grandmother.
 
 She is a supporting recurrence, not a primary karmic knot.
 
@@ -343,7 +345,7 @@ The black market emerges from legal exclusion, incompatible forms, fragmented tr
 
 Dima is the current central named expression of this layer.
 
-Sterling's Bar is an important tolerated cross-form venue.
+Joel's Bar is an important tolerated cross-form venue.
 
 Wong has overlapping informal networks and can sometimes bypass Dima.
 
@@ -351,7 +353,7 @@ Wong has overlapping informal networks and can sometimes bypass Dima.
 
 ## 13. The Bar
 
-Sterling operates the Bar. The Seagull network helped place/hire him there.
+Joel operates the Bar. The Seagull network helped place/hire him there.
 
 It is a cross-form social venue where Sonya/family continuity, Juan's debt, Dima's network and ordinary production/business can intersect.
 
@@ -499,7 +501,7 @@ Required substrate:
 10. Animals can participate economically without equal formal recognition;
 11. different forms change body, access, mobility, needs and enforceability;
 12. Dima expresses informal settlement/access;
-13. Octopus expresses physical supply/public clearing;
+13. Octopus expresses public clearing; finite personal inventory and background marine supply remain separate;
 14. Juan liabilities can exist as assets held/transferred by others;
 15. primary NPCs have distinct economic styles and constraints;
 16. relationship time competes with economic time;
@@ -518,7 +520,7 @@ Do not revive from Git history:
 - player sent by employer/institute to acquire sunflower;
 - Fishmonger as monetary authority / disguised boundary-crosser / master conspiracy;
 - sunflower pre-decided as cure / virus / capitalist pathogen / government key;
-- giant Grandma / Bar / Clown conspiracy;
+- giant Grandma / Bar / Juan conspiracy;
 - Animals as a simple oppressed-class allegory;
 - Buddhist six realms as literal required world map or diagnosis system;
 - NPC release as character self-improvement quest.
@@ -537,14 +539,15 @@ Do not revive from Git history:
 - no visible karma/entanglement morality meter;
 - karma is unfinished causal continuation;
 - multiple species/forms can transform while causal patterns continue;
-- six primary karmic figures: Aspen, Sterling, Yasmin, Wong, Juan, Dima;
-- Octopus supporting physical economy / clearing;
+- six primary karmic figures: Aspen, Joel, Yasmin, Wong, Juan, Dima;
+- Octopus public clearing, distinct from finite personal inventory and background marine supply;
 - Sonya Penguin grandmother supporting recurrence;
 - Human/Animal legal discontinuity;
 - Animal society and institutional inequality;
 - Dima black-market intermediation;
 - Bar as cross-form venue;
 - Juan botanist / debt-as-asset direction;
+- route anchors exist: Sonya / Grandma Supper, Yasmin / Auction, Juan / Cliff; exact internal triggers remain under design testing;
 - romance is emergent attention, not a system;
 - Outcome != Process != Style;
 - 14 days is prototype pacing, not cosmology.
@@ -556,7 +559,6 @@ Do not revive from Git history:
 - repeated Sun-Moment resistance contributing to future transformation;
 - Juan eventually planting the player;
 - total commodification as one possible ending/state;
-- current route anchors: Sonya / Yasmin / Juan;
 - Plant as playable form;
 - Sailor as both a specific current character and broader liminal form/function.
 

@@ -3,6 +3,8 @@
 > **Source-of-truth overview, September 2026.** Older versions remain in Git history. This file deliberately stops being an archive of every idea ever discussed.
 >
 > Core rule: build a small number of economic primitives that create many behaviours. Do not add a mechanic merely because it sounds interesting.
+>
+> **Status boundary:** the current daily phase loop and estate/current-form model are incumbent implementation baselines, not permanently frozen canon. `DESIGN_WORKBOOK.md` Chapters 31–32 record the open redesign questions. Borrowed-time and Human/Sun participation mechanics remain open.
 
 ---
 
@@ -203,9 +205,9 @@ Investigate should:
 - not automatically make the target like the player;
 - use staged precision rather than immediately naming the answer.
 
-Example — Bar Apprentice / Mai Tai:
+Example — Joel / Mai Tai:
 
-1. “The Apprentice is learning a Mai Tai; one ingredient is missing.”
+1. “Joel is learning a Mai Tai; one ingredient is missing.”
 2. “Rum, lime and orange curaçao are already behind the bar.”
 3. only later: exact Orgeat confirmation.
 
@@ -257,40 +259,40 @@ See `INFORMATION_DISCOVERY_MODEL.md`.
 
 NPC behaviour may be uncertain, but should almost never be causeless.
 
-### 🐕 Dock Dog — high-turnover dealer / information node
+### 🐕 Wong — high-turnover dealer / information node
 - scavenges low-value goods;
 - knows many people shallowly;
 - supports a cat colony, creating recurring food demand;
 - broad animal-network access;
 - turns over stock rather than maximising prestige wealth.
 
-### 🐠 Fishmonger — conservative producer / operator
-- recurring fresh and preserved food business;
-- values working capital and predictable trade;
-- ordinary customers exist outside the named NPC market;
-- occasionally holds strange goods acquired through barter / misdelivery.
+### 🐠 Background marine supply — physical economy
+- small boats, catches, wharf lots, temporary sellers and visitors supply fresh and preserved food, ice and marine goods;
+- individual suppliers have finite inventory, working capital and operating costs;
+- occasional Octopus-owned stock may exist, but Octopus does not own the whole marine economy;
+- these suppliers are economic population, not another primary karmic character.
 
-### ⚙️ Sailor — deadline merchant / boundary crosser
+### ⚙️ Aspen — deadline merchant / boundary crosser
 - temporary local presence;
 - public cargo is only a subset of the hold;
 - imports have real sourcing costs;
 - departure creates time pressure;
 - long-term lore direction: `Sailor` may be a liminal form / function, not one eternal biological identity.
 
-### 🎬 Mirelle Vale — sophisticated allocator
+### 🎬 Yasmin — sophisticated allocator
 - wealthy, socially powerful, manipulative;
 - understands scarcity, provenance and private markets;
 - unpleasantness does not imply bad settlement reliability;
-- strong relationship / prior-business connection with Sailor.
+- strong relationship / prior-business connection with Aspen.
 
-### 🤡 Onewheel Clown — high-risk speculator
+### 🤡 Juan — high-risk speculator
 - extreme utility for optionality, wagers and unusual upside;
 - not random or universally prophetic;
 - may understand one deep truth about the world;
 - core contradiction: tries to **acquire liberation** as if it were another asset.
 
-### 🍸 Bar Apprentice — relationship-first novice bartender
-- genuinely weaker trader than Vale;
+### 🍸 Joel — relationship-first novice bartender
+- genuinely weaker trader than Yasmin;
 - professional bartending craft can develop;
 - the Bar is a cross-form social venue;
 - Grandma / food / hospitality route creates non-market allocation possibilities;
@@ -347,13 +349,21 @@ See `ITEM_ECONOMY.md`.
 
 The market should not finish its quests and then freeze.
 
-Named NPCs sit inside businesses and ordinary background demand:
+Named characters are economic organs inside a larger harbour economy. Anonymous households, crews, small boats, visitors and small sellers/buyers are economically necessary but do not need character bibles.
 
-- Dog scavenges and repeatedly feeds cats;
-- Fishmonger pays sourcing costs, receives catch and sells some food to ordinary customers;
-- the Bar earns service revenue and consumes Ice;
-- Sailor pays import / sourcing costs before departure;
-- named NPCs still trade with one another when their beliefs and utilities justify it.
+Prefer:
+
+> **Need → local demand → trade if feasible → consumption / use / production / social use → sink or transformation → outside fallback only when local supply cannot satisfy it.**
+
+Recurring gain or cost needs a balance-sheet path: who paid, why, what was supplied or used, and where capital, labour, inventory, information or risk came from. Finance should serve real consumption, production or projects rather than become a self-contained claim economy with no final user.
+
+Examples:
+
+- Wong's household and rescue needs create actual food / household demand before an outside fallback;
+- marine suppliers pay sourcing costs, receive finite catch and sell to local or outside customers;
+- Joel's Bar earns only from actual customers, complementary inputs and finite service capacity;
+- Aspen pays import / sourcing costs before departure;
+- named actors still trade with one another when their beliefs and utilities justify it.
 
 This is deliberately small.
 
@@ -397,7 +407,7 @@ Current implemented relationship consequences include:
 - qualitative familiarity;
 - information / style becoming legible;
 - food credit under sufficiently strong relationships;
-- Bar Apprentice acting as a formal-market proxy for an Animal player;
+- Joel acting as a formal-market proxy for an Animal player;
 - route access requiring actual social connection in some cases.
 
 At Sunset a player needs food.
@@ -444,14 +454,14 @@ The existing Sun Moment ontology remains canon. Sufficiently specified mechanics
 
 Routes should remain discoveries, not a visible quest checklist.
 
-### Grandma Supper — People / non-market allocation
-Orgeat enables a proper Mai Tai; relationship with Apprentice plus food / drink can lead to an after-closing meal and a sunflower changing hands outside ordinary pricing.
+### Sonya / Grandma Supper — People / non-market allocation
+Joel's hospitality, family connection and fresh-fish pattern can lead to an after-closing meal and a sunflower changing hands outside ordinary pricing. Mai Tai / Orgeat remains an authored benchmark, not the whole Bar economy.
 
-### Vale Auction — Capital / private market
-Whale Oil, the hidden Blue Glass Marble, capital and formal access can unlock a private sunflower auction.
+### Yasmin / Auction — Capital / private market
+Capital, provenance and formal access can lead to a private sunflower auction. Exact goods and access chains remain under design testing.
 
-### Cliff — Risk / Clown
-Mai Tai + Onewheel + actual relationship with Clown can expose a special wager whose meaning is deeper than sport.
+### Juan / Cliff — Risk / boundary
+Drink, mobility and an actual relationship with Juan can expose a special wager whose exact terms remain under design testing.
 
 Multiple currently real opportunities may coexist. The engine should not hide all but one because of arbitrary route priority.
 
@@ -459,7 +469,7 @@ Routes are resilient chains rather than single missable trades:
 
 > **signal → contest → outcome → aftermath → second-order opportunity**
 
-Missing an arbitrage can close that trade without deleting the surrounding story. If Vale independently buys Whale Oil, the player may lose the oil spread while the public transaction, completed screening, investigation, access, provenance, capital and later auction still provide entry points. Strong NPCs remain capable; onboarding must not require making them artificially stupid.
+Missing an arbitrage can close that trade without deleting the surrounding story. If Yasmin independently buys Whale Oil, the player may lose the oil spread while the public transaction, completed screening, investigation, access, provenance, capital and later auction still provide entry points. Strong NPCs remain capable; onboarding must not require making them artificially stupid.
 
 None of these routes is the final victory anymore. They all feed the same first reveal:
 

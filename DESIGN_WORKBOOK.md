@@ -7,6 +7,8 @@
 > This workbook replaces the old working/audit files `NARRATIVE_KARMA_MATRIX.md`, `PLAYER_ASSESSMENT_AUDIT.md` and `NPC_ENGINE_ROUTE_AUDIT.md`.
 >
 > Dialogue remains separate because it is content, not systems design: `DIALOGUE_MONTAGE_BANK.md` + its temporary state audit until the next narrative consolidation.
+>
+> **Current reconciliation:** Joel is the frozen canonical name; older `sterling` runtime/history references are compatibility only. Chapters 31–32 challenge but do not yet replace the incumbent daily loop or estate model. The fixed two-window/two-day clearing, dual-time, borrowed-time, death/reset, Wong species, Plant gameplay and Octopus pooled shipment remain candidate/open as labelled below.
 
 ---
 
@@ -49,7 +51,7 @@ Status: substantially complete.
 Status: current Codex implementation batch.
 
 - canonical runtime cast;
-- Octopus physical economy + public clearing;
+- Octopus Clearing separated from finite personal inventory and background marine supply;
 - Dima runtime;
 - Sun Moment reintegration;
 - recurring actor loops;
@@ -117,12 +119,12 @@ Each style should be locally strong in some world states and weak in others.
 | Actor | Core style | Strong when | Weak when |
 |---|---|---|---|
 | Aspen | low-variance contracts / execution | deadlines, repeat counterparties, known cashflow | ambiguity, tail risk, open-ended speculation |
-| Sterling | relationship + experiential optionality | soft info, social access, fast learning, bridge liquidity | weak boundaries, bad stories, early credit discipline |
+| Joel | relationship + experiential optionality | soft info, social access, fast learning, bridge liquidity | weak boundaries, bad stories, early credit discipline |
 | Yasmin | capital allocation / provenance | collateral, auction, ownership, private placement | tiny-margin operations, undocumented mess, unpriced motive |
 | Wong | high-turnover low-margin | fragmented demand, salvage, bargaining, working-capital velocity | long lockups, one large loss, expensive provenance |
 | Juan | duration / biological assets / distressed finance | maturity mismatch, discounted claims, future productive value | immediate liquidity, horizon mismatch, self-experimentation |
 | Dima | intermediation / informal enforcement | formal exclusion, fragmented trust, claim transfer | direct trust, disintermediation, successful formalisation |
-| Octopus | physical wholesale / public clearing | repeated physical supply and settlement throughput | not a primary strategic/karmic archetype |
+| Octopus | public clearing + optional finite personal inventory | standard settlement throughput; occasional owned marine lots | not a primary strategic/karmic archetype |
 
 Healthy balance target:
 
@@ -164,7 +166,7 @@ Possible routes:
 - wait for clearing;
 - normal information sale;
 - exclusive information sale;
-- Sterling relationship loan;
+- Joel relationship loan;
 - Yasmin secured advance;
 - sell / collect / accept buyback on a Juan claim;
 - Dima access route;
@@ -229,7 +231,7 @@ Possible routes:
 
 - Octopus public settlement;
 - Dima informal/proxy;
-- Sterling relationship proxy;
+- Joel relationship proxy;
 - wait for formal access;
 - no transaction.
 
@@ -304,7 +306,7 @@ Possible routes depend on body/access:
 
 - formal recognition;
 - Dima proxy;
-- Sterling relationship support;
+- Joel relationship support;
 - current-form work/salvage;
 - current assets;
 - information;
@@ -388,7 +390,7 @@ Prototype bidder rules:
 
 - Aspen: bid cap floor(estimate × .85), retain 10🥫.
 - Wong: bid cap floor(estimate - 2), retain 8🥫.
-- Sterling: cap floor(estimate × .95 + up to 1 private utility), retain 12🥫.
+- Joel: cap floor(estimate × .95 + up to 1 private utility), retain 12🥫.
 - Dima: cap floor(estimate - 1), only with resale route, retain 8🥫.
 - Yasmin is auctioneer and does not bid against herself.
 
@@ -433,7 +435,7 @@ First hosts:
 Dima proxy:
 
 - opening 3🥫;
-- may reduce to 2🥫 when Sterling's cheaper route is genuinely available.
+- may reduce to 2🥫 when Joel's cheaper route is genuinely available.
 
 Yasmin:
 
@@ -596,14 +598,14 @@ Dima:
 - lower public price discovery;
 - network-based enforcement.
 
-Sterling:
+Joel:
 
 - potentially cheaper relationship proxy;
 - requires relationship/time investment.
 
 Target relative ordering:
 
-public direct < trusted Sterling proxy < Dima proxy
+public direct < trusted Joel proxy < Dima proxy
 
 when otherwise equivalent and available.
 
@@ -783,15 +785,15 @@ A stable process judgement should not come from one NPC alone.
 Suggested anchors:
 
 - Execution: Aspen + Octopus + Juan.
-- Liquidity: Sterling + Yasmin + Juan + public selling.
+- Liquidity: Joel + Yasmin + Juan + public selling.
 - Valuation: auction + public gap + claim + collateral + gift/sale.
 - Information: investigations + auction clues + exclusivity + inspection + confidence signals.
-- Obligation: Aspen + Sterling + exclusivity + claims.
-- Sourcing: Aspen + Sterling inputs + Juan crops.
+- Obligation: Aspen + Joel + exclusivity + claims.
+- Sourcing: Aspen + Joel inputs + Juan crops.
 - Position sizing: auction + market making + leverage/claims.
 - Negotiation: Wong + Dima + Yasmin.
 - Institutional navigation: Octopus vs Dima + form change.
-- Relationship stewardship: Sterling + Wong/Sonya support + favours.
+- Relationship stewardship: Joel + Wong/Sonya support + favours.
 - Adaptability: alpha decay + auction learning + confidence event + form change.
 
 If only one narrow repeated context exists, report low confidence.
@@ -1415,7 +1417,7 @@ Player sees material clues, never the formula.
 Prototype NPC bid discipline:
 - Aspen: floor(estimate × .85), retain >=10🥫;
 - Wong: floor(estimate - 2), retain >=8🥫;
-- Sterling: floor(estimate × .95 + privateUtility 0..1), retain >=12🥫;
+- Joel: floor(estimate × .95 + privateUtility 0..1), retain >=12🥫;
 - Dima: floor(estimate - 1), only with known resale route, retain >=8🥫.
 
 Yasmin is auctioneer and does not bid against herself.
@@ -1444,7 +1446,7 @@ First hosts:
 - Dima proxy/brokerage;
 - Yasmin secured-finance fee.
 
-Dima proxy opens at 3🥫 and can drop to 2🥫 only if a genuinely comparable Sterling route is visible.
+Dima proxy opens at 3🥫 and can drop to 2🥫 only if a genuinely comparable Joel route is visible.
 
 A strong Yasmin BATNA may waive the +1 fee; it does not casually change the 60% collateral haircut.
 
@@ -1543,11 +1545,11 @@ public / standardised / tape-visible / batch / traceable / formal restrictions /
 Dima:
 private / fee-bearing / bridges some exclusion / less public price discovery / network enforcement.
 
-Sterling:
+Joel:
 potentially cheaper relationship route after prior relationship investment.
 
 When otherwise equivalent and all available:
-public direct < trusted Sterling < Dima by direct cash cost.
+public direct < trusted Joel < Dima by direct cash cost.
 
 Privacy/access/enforcement can still reverse practical value.
 
@@ -1560,14 +1562,14 @@ Balance is tested by environment regime, not one default run.
 | Regime | Expected locally strong | Expected pressured |
 |---|---|---|
 | high liquidity, low information | Wong / Aspen | Dima / info-heavy |
-| low liquidity, high collateral | Yasmin / Sterling | pure cash dealer |
+| low liquidity, high collateral | Yasmin / Joel | pure cash dealer |
 | high information asymmetry | Dima / Yasmin | naive public dealer |
 | urgent perishables | Aspen / Wong / Octopus | Juan duration |
 | long-duration productive assets | Juan / Yasmin | impatient turnover |
-| formal exclusion | Dima / Sterling | formal-only |
+| formal exclusion | Dima / Joel | formal-only |
 | confidence shock | Juan specialists / Yasmin / Dima | face-value naive holder |
 | crowded public spread | private/info routes | simple arbitrage |
-| relationship-rich, cash-poor | Sterling / Wong | collateral-only |
+| relationship-rich, cash-poor | Joel / Wong | collateral-only |
 | import/outside-demand cycle | Aspen / Octopus | actors without external route |
 
 Diagnostic target:
@@ -1605,8 +1607,8 @@ Initial trajectory library:
 Future delivery → source → deliver → create contextual Noon resistance.
 Covers execution / sourcing / forward delivery / settlement / Sold It Before You Had It.
 
-### T2 Sterling Relationship Liquidity
-Build relationship → low-cash pressure with alternatives → use Sterling route → repay.
+### T2 Joel Relationship Liquidity
+Build relationship → low-cash pressure with alternatives → use Joel route → repay.
 Covers relationship capital / liquidity / obligations / future Bridge Builder.
 
 ### T3 Yasmin Capital
@@ -1618,7 +1620,7 @@ Discover → buy → hold/extend/collect; separate liquidation variant.
 Covers debt-as-asset / duration / distressed claim / fire sale / claim pricing.
 
 ### T5 Dima Institution
-Face formal constraint → compare Octopus/Sterling/Dima where legitimate → use proxy/brokerage.
+Face formal constraint → compare Octopus/Joel/Dima where legitimate → use proxy/brokerage.
 Covers institutions / formal-informal / traceability / venue.
 
 ### T6 Information Broker
@@ -1723,7 +1725,7 @@ Lime + watch → settlement receipt.
 default:
 reserved balance returns → restitution IOU; no moral thunderbolt.
 
-### Sterling relationship credit
+### Joel relationship credit
 bar medium shot → handwritten tab → cash transfer → later repayment/non-repayment recurrence.
 No romance framing by default.
 
@@ -1770,7 +1772,7 @@ When Codex returns raw Living Samsara data, ChatGPT reviews in this order:
    sources/sinks; actor P&L; concentration; outside-income dependence.
 
 4. actor-loop viability:
-   Aspen / Sterling / Yasmin / Wong / Juan / Dima / Octopus.
+   Aspen / Joel / Yasmin / Wong / Juan / Dima / Octopus.
 
 5. player viability:
    no-action; recovery routes; form transitions; policy capability.
@@ -1820,7 +1822,7 @@ A healthy mature market should satisfy all of:
 
 **Aspen** fails if she remains top-ranked during highly ambiguous, unbounded, shock-driven regimes where her conservative scheduling should be costly.
 
-**Sterling** fails if relationship-rich regimes do not improve access/credit/optionality relative to cash-equivalent public routes.
+**Joel** fails if relationship-rich regimes do not improve access/credit/optionality relative to cash-equivalent public routes.
 
 **Yasmin** fails if her capital style dominates tiny-margin high-turnover regimes with no capital scarcity.
 
@@ -1855,7 +1857,7 @@ Legal skeleton:
 
 Must never fabricate Lime into inventory.
 
-## T2 — Sterling Relationship Liquidity
+## T2 — Joel Relationship Liquidity
 
 Goal:
 relationship-created liquidity under a real pressure.
@@ -1863,7 +1865,7 @@ relationship-created liquidity under a real pressure.
 Legal skeleton:
 1. build relationship through ordinary interactions/favours that have opportunity cost;
 2. enter low-cash state where >=1 alternative recovery route is also visible;
-3. use Sterling credit/favour/proxy only if legal and useful;
+3. use Joel credit/favour/proxy only if legal and useful;
 4. repay/reciprocate when due;
 5. compare to the best visible non-relationship route.
 
@@ -1890,7 +1892,7 @@ Goal:
 debt-as-asset + maturity choice.
 
 Legal skeleton:
-1. discover claim via Sterling or Dima context;
+1. discover claim via Joel or Dima context;
 2. buy only if legally known and affordable;
 3. hold until buyback or due;
 4. branch into collect / extend / liquidate when actually available;
@@ -1904,7 +1906,7 @@ formal/informal route comparison.
 
 Legal skeleton:
 1. enter a form/access state where at least two venue routes can be compared;
-2. record public direct / Sterling / Dima availability and price;
+2. record public direct / Joel / Dima availability and price;
 3. choose one route based only on visible access, fee, timing, traceability;
 4. complete settlement through the chosen venue;
 5. compare resulting cash cost, delay and visibility.
@@ -2033,7 +2035,7 @@ Until Codex returns the final raw tables, ChatGPT continues on three fronts with
 
 1. **Market Depth sensitivity design**
    - auction prior/signal sensitivity;
-   - Dima/Sterling/Yasmin route-cost crossovers;
+   - Dima/Joel/Yasmin route-cost crossovers;
    - market-maker spread/inventory stress cases;
    - Juan claim recovery / run thresholds.
 
@@ -2314,7 +2316,7 @@ Examples:
 - Yasmin demonstrates collateral and capital allocation; the player can also lend, pledge and bid;
 - Juan demonstrates duration and productive assets; the player can also hold claims and wait for maturity;
 - Dima demonstrates intermediation; the player can also earn fees when they build access and trust;
-- Sterling demonstrates relationship liquidity; the player can also build and spend reciprocal access.
+- Joel demonstrates relationship liquidity; the player can also build and spend reciprocal access.
 
 NPCs may begin with different knowledge, relationships, property or reputation. Those are world positions, not exclusive mechanics.
 
@@ -2326,7 +2328,7 @@ Copyability does not require equal expected profit. It requires a legitimate rou
 
 Octopus's own buying and selling require finite physical inventory, working capital, storage and recurring cargo capacity. Client settlement float remains separate.
 
-Sterling's Bar requires finite customers, service capacity and input consumption. It is not an unlimited demand sink.
+Joel's Bar requires finite customers, service capacity and input consumption. It is not an unlimited demand sink.
 
 Aspen's voyages require working capital, cargo space, timing and external demand. They are not automatic outside-money injections.
 

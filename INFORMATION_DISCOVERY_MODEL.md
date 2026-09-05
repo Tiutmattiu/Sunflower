@@ -1,6 +1,6 @@
 # Sunflower — Information Discovery & Market Knowledge
 
-> Companion to `GAME_DESIGN.md`, `NPC_ENGINE_ROUTE_AUDIT.md`, `NPC_CHARACTER_BIBLE.md`, and `DAY_LOOP_MARKET_STRUCTURE.md`.
+> Companion to `GAME_DESIGN.md`, `DESIGN_WORKBOOK.md`, `NPC_CHARACTER_BIBLE.md`, and `DAY_LOOP_MARKET_STRUCTURE.md`.
 
 ## Core rule
 
@@ -14,7 +14,7 @@ The purpose is not to make NPCs artificially stupid. The purpose is to create a 
 
 **IN-WORLD HIDDEN INFORMATION IS GOOD. DESIGNER-HIDDEN CAUSAL RULES ARE NOT.**
 
-The player does not need Vale's exact private utility, every inventory or private relationship, or secret numerical scores. Legitimate hidden information includes private valuation, hidden stock, a private relationship, and a rumour not yet received.
+The player does not need Yasmin's exact private utility, every inventory or private relationship, or secret numerical scores. Legitimate hidden information includes private valuation, hidden stock, a private relationship, and a rumour not yet received.
 
 Important outcomes must eventually expose discoverable types of causes. Arbitrary invisible multipliers without a world clue, NPC knowledge caused only by engine omniscience, and diagnosis that asserts player motivation without evidence are illegitimate black boxes.
 
@@ -26,10 +26,10 @@ Decision evidence records information available to the player at commitment time
 
 If every NPC begins Day 1 knowing exactly who owns every item, most private needs are solved immediately:
 
-- Vale instantly finds Whale Oil;
-- Sailor instantly finds Lime;
-- Apprentice instantly finds Orgeat;
-- Fishmonger instantly finds Dead Pigeon.
+- Yasmin instantly finds Whale Oil;
+- Aspen instantly finds Lime;
+- Joel instantly finds Orgeat;
+- a marine supplier instantly finds Dead Pigeon.
 
 That removes both information asymmetry and player agency.
 
@@ -55,7 +55,7 @@ Examples:
 
 ### High-confidence, low-precision
 
-> The Apprentice is trying to learn a Mai Tai and the recipe keeps failing because one ingredient is missing.
+> Joel is trying to learn a Mai Tai and the recipe keeps failing because one ingredient is missing.
 
 This may be directly observed and therefore highly reliable, but it does not name the missing ingredient.
 
@@ -73,7 +73,7 @@ This is actionable but costlier to discover.
 
 ### Low-confidence, exact
 
-> Dock Dog says Fishmonger has an Orgeat Bottle under the counter.
+> Wong says a wharf seller has an Orgeat Bottle under the counter.
 
 The claim is precise but the source may be wrong, stale or deceptive.
 
@@ -94,9 +94,9 @@ The original design was partly a personal menu / game for someone with real cock
 
 A knowledgeable player should occasionally infer the answer **before the game explicitly names it**.
 
-Example — Bar Apprentice:
+Example — Joel:
 
-1. `context`: Apprentice is learning to make a Mai Tai, but one ingredient is missing.
+1. `context`: Joel is learning to make a Mai Tai, but one ingredient is missing.
 2. `specific`: rum, fresh lime and orange curaçao are already present.
 3. `exact`: the missing ingredient is Orgeat.
 
@@ -129,10 +129,10 @@ Some inventory is openly offered because it is part of the trader's ordinary bus
 
 Confirmed direction:
 
-- Fishmonger's ordinary fish is obvious public stock;
-- Dock Dog may openly display some cheap junk;
+- ordinary fish from finite marine suppliers can be obvious public stock;
+- Wong may openly display some cheap junk;
 - the Bar visibly sells ordinary drinks;
-- **Sailor only displays selected cargo. Rare / strange cargo can remain in the hold and must be discovered.**
+- **Aspen only displays selected cargo. Rare / strange cargo can remain in the hold and must be discovered.**
 
 Public stock is knowable without spending an information action.
 
@@ -142,12 +142,12 @@ A completed public-market trade creates market knowledge.
 
 If everyone sees:
 
-> Day 2: Sailor sells Brass Compass to Vale
+> Day 2: Aspen sells Brass Compass to Yasmin
 
 then market participants can reasonably update beliefs:
 
-- Vale recently acquired a Brass Compass;
-- Sailor no longer necessarily has that specific unit;
+- Yasmin recently acquired a Brass Compass;
+- Aspen no longer necessarily has that specific unit;
 - somebody was willing to pay the observed price.
 
 The public tape should therefore train both NPCs and the player.
@@ -162,10 +162,10 @@ A trader starts from hypotheses created by profession, geography, relationships 
 
 Examples:
 
-- Vale may investigate a newly arrived Sailor for rare foreign goods;
-- Sailor may ask the Bar, Fishmonger or Dock Dog about citrus;
-- Fishmonger may eventually ask Dock Dog about bizarre scavenged material;
-- Clown knows the Bar is the sensible place to investigate a Mai Tai.
+- Yasmin may investigate a newly arrived Aspen for rare foreign goods;
+- Aspen may ask the Bar, a marine supplier or Wong about citrus;
+- a marine supplier may eventually ask Wong about bizarre scavenged material;
+- Juan knows the Bar is the sensible place to investigate a Mai Tai.
 
 A search can fail. Failure consumes time and is still information.
 
@@ -177,15 +177,15 @@ Current prototype direction:
 
 Repeated investigation of the same actor progresses through authored information stages before falling through to exact hidden holdings.
 
-For example, investigating Sailor may reveal:
+For example, investigating Aspen may reveal:
 
 1. only selected cargo is displayed and departure is approaching;
-2. an undeclared lot smells oily / medicinal and Vale's people are watching the ship;
+2. an undeclared lot smells oily / medicinal and Yasmin's people are watching the ship;
 3. exact confirmation of Sperm Whale Oil.
 
 This is preferable to:
 
-> click Investigate once → receive `Sailor has Whale Oil`.
+> click Investigate once → receive `Aspen has Whale Oil`.
 
 The exact sequence can differ by character. Some people are transparent about needs but secretive about inventory; others are the reverse.
 
@@ -197,12 +197,12 @@ NPCs should differ in how rapidly they investigate.
 
 Current first-pass model:
 
-- **Dock Dog:** very high information tempo; goes everywhere and hears things quickly.
-- **Vale:** very high deliberate information tempo; actively researches economically important needs.
-- **Sailor:** moderate; practical and deadline-driven.
-- **Clown:** moderate but concentrated on things connected to his obsessions.
-- **Fishmonger:** slower outside the fish business; does not constantly investigate every opportunity.
-- **Bar Apprentice:** initially slow / naive; improves through experience and relationships.
+- **Wong:** very high information tempo; goes everywhere and hears things quickly.
+- **Yasmin:** very high deliberate information tempo; actively researches economically important needs.
+- **Aspen:** moderate; practical and deadline-driven.
+- **Juan:** moderate but concentrated on things connected to his obsessions.
+- **background marine suppliers:** slower outside their physical businesses; they do not constantly investigate every opportunity.
+- **Joel:** initially slow / naive; improves through experience and relationships.
 
 This is not a generic difficulty stat. It is part of each character's stable market style.
 
@@ -210,25 +210,25 @@ This is not a generic difficulty stat. It is part of each character's stable mar
 
 ## Pre-existing network — confirmed pieces
 
-### Vale ↔ Sailor
+### Yasmin ↔ Aspen
 
-Vale and Sailor already know each other and have done business before the run begins.
+Yasmin and Aspen already know each other and have done business before the run begins.
 
-Vale is socially analogous to a queen bee: elite, central, wealthy, unusually capable of accessing privileged channels.
+Yasmin is socially analogous to a queen bee: elite, central, wealthy, unusually capable of accessing privileged channels.
 
-Sailor's exact metaphysical / class status remains open, but the economic relationship is established:
+Aspen's Sailor role remains a broader liminal design question, but the economic relationship is established:
 
-> Sailor repeatedly brings outside cargo; Vale is an experienced buyer of unusual foreign goods.
+> Aspen repeatedly brings outside cargo; Yasmin is an experienced buyer of unusual foreign goods.
 
-Therefore Vale can rationally investigate Sailor unusually early without knowing the exact contents of the hold.
+Therefore Yasmin can rationally investigate Aspen unusually early without knowing the exact contents of the hold.
 
-### Dock Dog — wide but shallow network
+### Wong — wide but shallow network
 
-Dock Dog knows almost everyone a little.
+Wong knows almost everyone a little.
 
-Dog has unusually broad network reach across social strata but does not possess deep trust with everyone and is not automatically told the truth.
+Wong has unusually broad network reach across social strata but does not possess deep trust with everyone and is not automatically told the truth.
 
-Dog also connects to animal-world / informal actors including candidate groups such as:
+Wong also connects to animal-world / informal actors including candidate groups such as:
 
 - Seagulls;
 - Squirrels;
@@ -311,13 +311,13 @@ The engine may know:
 
 > Bar owns Lime Crate.
 
-Sailor's state may be:
+Aspen's state may be:
 
 > "Bar often handles citrus, but I have not confirmed stock."
 
 or:
 
-> "Dock Dog told me Bar had Lime yesterday. Confidence: medium."
+> "Wong told me Bar had Lime yesterday. Confidence: medium."
 
 or:
 
@@ -343,7 +343,7 @@ Information can exist as a real game object with fields such as:
 
 Example:
 
-> `Sailor holds Sperm Whale Oil`
+> `Aspen holds Sperm Whale Oil`
 > Precision: exact
 > Source: personally observed
 > Confidence: high
@@ -353,8 +353,8 @@ Example:
 The player can then choose among economically different actions:
 
 - buy the oil personally;
-- sell the source information to Vale;
-- tell Vale for relationship value rather than cash;
+- sell the source information to Yasmin;
+- tell Yasmin for relationship value rather than cash;
 - tell multiple buyers and create competition;
 - conceal the information;
 - fabricate a false source claim;
@@ -401,7 +401,7 @@ Randomness may affect attention or noisy rumours later, but the primary system s
 
 The player should be able to say:
 
-> "Of course Vale found it before me — she already knew the Sailor, saw the ship arrive, and spent the morning investigating his cargo."
+> "Of course Yasmin found it before me — she already knew Aspen, saw the ship arrive, and spent the morning investigating her cargo."
 
 not:
 

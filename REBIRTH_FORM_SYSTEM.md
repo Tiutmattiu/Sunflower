@@ -1,6 +1,8 @@
 # Sunflower — Rebirth, Forms & Persistent Karma
 
-> Status: **current source of truth for form change, legal identity, estate continuity, karmic recurrence, cross-form access and replay.** Read with `WORLD_LORE_SUN_MOMENT.md`.
+> Status: **incumbent source of truth for implemented form change, legal identity, estate continuity, karmic recurrence, cross-form access and replay.** Read with `WORLD_LORE_SUN_MOMENT.md`.
+>
+> Estate/current-form continuity remains the implemented baseline. Death/reset versus within-run transformation is an open design decision recorded in `DESIGN_WORKBOOK.md` Chapter 31; do not treat this estate model as permanently frozen. Borrowed-time, Human/Sun participation, final Plant agency/death and loss-of-stop mechanics also remain open.
 
 ---
 
@@ -75,7 +77,7 @@ Karma is therefore not:
 The six primary recurring figures are:
 
 - **Aspen**
-- **Sterling**
+- **Joel**
 - **Yasmin**
 - **Wong**
 - **Juan**
@@ -96,7 +98,7 @@ A knot may cease to recur only when the relation no longer reproduces the same c
 
 **Octopus** is supporting physical-economy / public-clearing infrastructure, not a seventh primary karmic knot.
 
-**Sonya** is Sterling’s Penguin grandmother and a supporting continuity figure.
+**Sonya** is Joel’s Penguin grandmother and a supporting continuity figure.
 
 ---
 
@@ -156,7 +158,7 @@ This mismatch creates demand for:
 
 The black market therefore grows from **institutional exclusion + incompatible forms + information / enforcement friction**, not from a generic criminal-shop morality system.
 
-Sterling’s Bar remains a cross-form threshold venue. Dima is a natural informal broker. Wong participates in overlapping Animal and dock networks.
+Joel’s Bar remains a cross-form threshold venue. Dima is a natural informal broker. Wong participates in overlapping Animal and dock networks.
 
 ---
 
@@ -310,7 +312,7 @@ Replay strength comes from the same people occupying different economic relation
 Examples:
 
 - Yasmin may be an accessible formal counterparty to a Human but require proxy / private mediation for an Animal;
-- Sterling may preserve a relationship across a legal discontinuity that formal institutions do not recognise;
+- Joel may preserve a relationship across a legal discontinuity that formal institutions do not recognise;
 - Dima may become more useful when formal access weakens;
 - Aspen’s cross-border function may matter differently to a locally constrained body;
 - Juan may eventually treat a seed-like player as biological material rather than a normal trading counterparty.
@@ -400,7 +402,7 @@ Do not revive from Git history without a new explicit decision:
 - one missed ritual -> petrification -> animal;
 - player as employer/institute acquisition agent;
 - Fishmonger as central bank / disguised boundary-crosser / master conspiracy;
-- giant Grandma / Bar / Clown conspiracy;
+- giant Grandma / Bar / Juan conspiracy;
 - sunflower pre-decided as cure, virus, pathogen or key;
 - Animal society as a one-note oppressed-class allegory;
 - Buddhist six realms as literal required world structure;

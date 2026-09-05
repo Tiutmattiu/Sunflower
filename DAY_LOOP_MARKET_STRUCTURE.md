@@ -1,6 +1,8 @@
 # Sunflower — Solar Day Loop & Market Structure
 
-> This document locks the current time structure for the next implementation milestone. It complements `GAME_DESIGN.md`, `NPC_ENGINE_ROUTE_AUDIT.md`, and `WORLD_LORE_SUN_MOMENT.md`.
+> **Status: incumbent implemented daily-loop baseline, not final canon.** It complements `GAME_DESIGN.md`, `DESIGN_WORKBOOK.md`, and `WORLD_LORE_SUN_MOMENT.md`.
+>
+> `DESIGN_WORKBOOK.md` Chapters 31–32 explicitly challenge daily Noon clearing, separate Morning/Afternoon action pools and the current action counts with a continuous-time and fixed two-window/two-day candidate. Do not deepen implementation dependence on these constants until that redesign is resolved. Human/Sun naming and borrowed-time mechanics remain open.
 
 ## 1. Core Time Rule
 
@@ -83,11 +85,11 @@ Morning is primarily **Observe → Investigate → Position**.
 
 Example actions:
 
-- talk to Dock Dog;
-- investigate why Vale appears interested in an item;
+- talk to Wong;
+- investigate why Yasmin appears interested in an item;
 - verify a rumour;
 - inspect a good;
-- ask the Sailor about departure;
+- ask Aspen about departure;
 - negotiate a private agreement;
 - arrange financing;
 - prepare a noon order;
@@ -143,7 +145,7 @@ Examples:
 - research tomorrow’s supply;
 - arrange a forward contract;
 - invest in the bar;
-- commission the Sailor;
+- commission Aspen for an outside route;
 - enter a black-market venue;
 - repair or produce an object;
 - pursue story / world leads.
@@ -167,7 +169,7 @@ Possible settlement work includes:
 - debts becoming due;
 - contract performance / default;
 - business production;
-- Sailor departure countdown;
+- Aspen departure countdown;
 - relationship and reputation consequences;
 - rumours propagating through social networks;
 - NPC belief updates;
@@ -269,14 +271,12 @@ Success criterion:
 Do **not** block Milestone 1 on:
 
 - exact metaphysical animalisation threshold;
-- final Fishmonger identity / secret;
-- final player employer;
 - full Sun Moment attachment mechanics;
 - full contract / collateral priority system;
 - black-market implementation;
 - multiple currencies / FX;
 - complete bar acquisition model;
-- final Clown liberation story;
+- final Juan liberation story;
 - final Grandma / animal sanctuary lore;
 - final endgame diagnosis taxonomy.
 

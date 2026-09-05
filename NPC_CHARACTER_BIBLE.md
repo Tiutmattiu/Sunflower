@@ -2,9 +2,9 @@
 
 > **Status: active narrative-economic canon, September 2026.**
 >
-> Companion to `GAME_DESIGN.md`, `NARRATIVE_KARMA_MATRIX.md`, `REBIRTH_FORM_SYSTEM.md`, `WORLD_LORE_SUN_MOMENT.md`, `SCENARIOS_TEACHING.md`, and `ITEM_ECONOMY.md`.
+> Companion to `GAME_DESIGN.md`, `DESIGN_WORKBOOK.md`, `REBIRTH_FORM_SYSTEM.md`, `WORLD_LORE_SUN_MOMENT.md`, `SCENARIOS_TEACHING.md`, and `ITEM_ECONOMY.md`.
 >
-> This revision supersedes the earlier generic player-facing identities. Runtime IDs such as `dog`, `mechanic`, `vale`, `clown`, `bar`, and `fishmonger` may remain temporarily for implementation compatibility. Narrative canon uses the names below.
+> This revision supersedes the earlier generic player-facing identities. One compatibility/history map is retained here only: Sterling / Bar Apprentice / runtime `sterling` or `bar` → Joel; Mirelle Vale / runtime `vale` → Yasmin; Onewheel Clown / runtime `clown` → Juan; Dock Dog / runtime `dog` → Wong; Mechanic or Sailor used as a personal name / runtime `mechanic` → Aspen. Runtime `fishmonger` must be split by function rather than treated as a current primary character. Narrative canon uses the names below.
 >
 > **Do not silently turn a provisional detail into canon.** Where the creator has not decided something, this file marks it provisional or leaves it open.
 
@@ -34,13 +34,13 @@ The harbour should support:
 The six main recurring figures are:
 
 1. **Aspen** — current Sailor / mechanic / conservative operator.
-2. **Sterling** — Bar operator / apprentice / fast-learning experiential investor.
+2. **Joel** — Bar operator / apprentice / fast-learning experiential investor.
 3. **Yasmin** — capital owner / family allocator / elite social operator.
-4. **Wong** — Dock Dog / high-turnover low-margin migrant dealer.
-5. **Juan** — botanist / grower / Onewheel Clown / real-asset and distressed-finance operator.
+4. **Wong** — high-turnover low-margin migrant dealer; current presentation uses a Dog body.
+5. **Juan** — botanist / grower / boundary-risk and distressed-finance operator.
 6. **Dima** — Seagull black-market broker / cross-form gatekeeper.
 
-**Sonya** is Sterling's Penguin grandmother and a recurring supporting figure. She is not a seventh primary trader and should not be promoted into the core market graph merely because she matters to a route.
+**Sonya** is Joel's Penguin grandmother and a recurring supporting figure. She is not a seventh primary trader and should not be promoted into the core market graph merely because she matters to a route.
 
 No main character is the game's official:
 
@@ -65,7 +65,6 @@ Preferred texture:
 
 Examples:
 
-- `Sterling` quietly touches stirring, silver, money, and quality without becoming a bartender pun in dialogue.
 - `Aspen` is a normal name with a clean, nervous natural sound; no one should explain tree symbolism.
 - `Yasmin` sounds like a real person rather than a designed aristocrat.
 - `Wong`, `Juan`, and `Dima` keep the cast grounded by being ordinary.
@@ -241,11 +240,11 @@ This gives her a strong Sun-Moment contradiction:
 
 ---
 
-# 4. Sterling — Bar Operator / Apprentice
+# 4. Joel — Bar Operator / Apprentice
 
 ## Identity
 
-Sterling is a young man operating the Bar.
+Joel is a young man operating the Bar.
 
 The Seagull network unexpectedly hired or installed him there.
 
@@ -265,13 +264,11 @@ He likes:
 - invitations;
 - trying something once because he wants to know what it is like.
 
-The name `Sterling` quietly rhymes with `stirring`, but characters should not repeatedly comment on this.
-
 His position can carry traces of Jia Baoyu and Myshkin as reference points without making him a copy of either.
 
 ## Moral position
 
-Sterling is **not** the moral centre.
+Joel is **not** the moral centre.
 
 He does not require a stable good/evil doctrine.
 
@@ -291,7 +288,7 @@ His openness should sometimes be beautiful, sometimes irritating, sometimes expe
 
 ## Money-making method
 
-Early Sterling is a chaotic earner.
+Early Joel is a chaotic earner.
 
 Sources:
 
@@ -334,7 +331,9 @@ The Bar should have real economics:
 - replacements;
 - occasional family money covering what the business itself did not.
 
-Sterling can look profitable while family capital quietly plugs holes.
+Bar revenue is never automatic. Actual customers, complementary inputs, finite service capacity, serving/batch semantics, persistent inventory, perishability, markdown and causal waste determine what Joel can serve and earn. The real-menu grammar and master ingredient pool live in `ITEM_ECONOMY.md`; Mai Tai / Orgeat remains an authored route anchor and benchmark recipe rather than the whole Bar economy.
+
+Joel can look profitable while family capital quietly plugs holes.
 
 The game should be able to reveal that distinction.
 
@@ -344,7 +343,7 @@ This detail was previously unresolved; the following is the current working expl
 
 Dima's network needed a human legal face for a tolerated cross-form venue.
 
-Sterling was useful because:
+Joel was useful because:
 
 - he already wanted to work behind a Bar;
 - he did not object to Animal customers;
@@ -353,13 +352,13 @@ Sterling was useful because:
 - he asked fewer defensive questions than a cautious operator;
 - Dima expected him to be easier to influence than he may actually become.
 
-Do not turn Sterling into a helpless front.
+Do not turn Joel into a helpless front.
 
 He can learn the structure and eventually negotiate with the people who expected to use him.
 
 ## Information edge
 
-Sterling naturally learns soft information:
+Joel naturally learns soft information:
 
 - who keeps coming in;
 - who sits with whom;
@@ -374,7 +373,7 @@ He may fail to recognise the economic importance of what he heard until later.
 
 ## Weaknesses
 
-Early Sterling is weak at:
+Early Joel is weak at:
 
 - boundaries;
 - credit discipline;
@@ -385,7 +384,7 @@ Early Sterling is weak at:
 
 ## Karmic pressure
 
-Sterling's strength is low instrumental reflex.
+Joel's strength is low instrumental reflex.
 
 He does not automatically convert:
 
@@ -411,7 +410,7 @@ Competence must not require cynicism.
 
 ## Romance / intimacy
 
-Sterling is not a romance route.
+Joel is not a romance route.
 
 No heart meter.
 
@@ -451,7 +450,7 @@ The engine records time and events, not `love`.
 
 ## Identity
 
-Yasmin replaces the earlier `Mirelle Vale` identity.
+Yasmin replaces the earlier character identity recorded in the compatibility note.
 
 She is the second child in a wealthy or commercially important family.
 
@@ -569,7 +568,7 @@ This does not make her incapable of affection.
 
 It makes unpriced motive difficult to distinguish from hidden motive.
 
-Sterling can be difficult for her because his own incentives may genuinely be under-specified.
+Joel can be difficult for her because his own incentives may genuinely be under-specified.
 
 ## Information edge
 
@@ -648,11 +647,13 @@ Belief is not settlement.
 
 ---
 
-# 6. Wong — Dock Dog / High-Turnover Dealer
+# 6. Wong — High-Turnover Dealer
 
 ## Identity
 
-Wong is the Dock Dog.
+Wong's current presentation is a Dog body.
+
+That species decision is open rather than irreversible. Do not change Wong to Human now; retain Dog only if formal access, Animal-network information, mobility/handling, household/rescue ecology or other material opportunity dimensions justify the added complexity.
 
 He is a migrant, a parent, a scavenger, a petty dealer, a rescuer, and a person who can make money without ever appearing wealthy.
 
@@ -807,11 +808,11 @@ He should not automatically know elite private-market plans or long-distance shi
 
 ---
 
-# 7. Juan — Botanist / Grower / Onewheel Clown / Debtor
+# 7. Juan — Botanist / Grower / Boundary-Risk Operator / Debtor
 
 ## Identity
 
-Juan is the current design name for the Onewheel Clown.
+Juan is the canonical narrative name; the deprecated label is retained only in the compatibility note.
 
 His primary profession is now **botanist / grower / biological real-asset manager**.
 
@@ -935,7 +936,7 @@ His liabilities may finance different things:
 
 Useful counterparties remain:
 
-- Sterling as soft Bar / relationship creditor;
+- Joel as soft Bar / relationship creditor;
 - Dima as informal claim buyer / enforcer / rollover counterparty;
 - Yasmin as purchaser of discounted or secured claims;
 - Aspen as a conservative lender only when she understands the underlying productive asset and timing.
@@ -1294,7 +1295,7 @@ The physical economy should survive the cast rewrite.
 
 ## Identity
 
-Sonya is Sterling's grandmother.
+Sonya is Joel's grandmother.
 
 She is a Penguin in the current life/form encountered by the player.
 
@@ -1310,7 +1311,7 @@ She supports:
 - fresh fish / hospitality;
 - the non-market Sunflower route;
 - ordinary domestic evidence of rebirth;
-- Sterling's relationship to care and family;
+- Joel's relationship to care and family;
 - the difference between institutional identity and lived relationship.
 
 ## First appearance principle
@@ -1319,7 +1320,7 @@ Do not introduce her with lore exposition.
 
 Use recurrence:
 
-1. Sterling repeatedly buys a particular fresh fish.
+1. Joel repeatedly buys a particular fresh fish.
 2. sometimes the Bar closes early.
 3. he removes the skin.
 4. eventually the player sees a Penguin eating it.
@@ -1395,7 +1396,7 @@ The problem is the next obligation.
 
 She may know exactly what is being lost by stopping.
 
-## Sterling
+## Joel
 The problem may be an unfinished person, sensory curiosity, care, or a choice he has delayed making.
 
 ## Yasmin
@@ -1469,17 +1470,17 @@ Aspen refuses jobs where he only says:
 
 > you'll know when you get there.
 
-## Aspen ↔ Sterling
+## Aspen ↔ Joel
 
-Sterling buys imported Bar tools / ingredients / unusual objects.
+Joel buys imported Bar tools / ingredients / unusual objects.
 
 Aspen can be impatient with vague requests.
 
-Sterling can become genuinely technically knowledgeable, forcing Aspen to revise her initial estimate of him.
+Joel can become genuinely technically knowledgeable, forcing Aspen to revise her initial estimate of him.
 
-## Sterling ↔ Dima
+## Joel ↔ Dima
 
-Dima's network installed Sterling at the Bar.
+Dima's network installed Joel at the Bar.
 
 Early relation contains:
 
@@ -1488,11 +1489,11 @@ Early relation contains:
 - mild underestimation;
 - possible affection;
 - possible exploitation;
-- growing bargaining power as Sterling learns.
+- growing bargaining power as Joel learns.
 
 Do not freeze exact ownership of the Bar until the ownership event is designed.
 
-## Sterling ↔ Wong
+## Joel ↔ Wong
 
 Wong brings:
 
@@ -1502,13 +1503,13 @@ Wong brings:
 - odd ingredients;
 - problems that fit through the back door.
 
-Sterling may let small tabs accumulate.
+Joel may let small tabs accumulate.
 
-Wong may dislike how casually Sterling can absorb a loss.
+Wong may dislike how casually Joel can absorb a loss.
 
-## Sterling ↔ Juan
+## Joel ↔ Juan
 
-Sterling may be one of Juan's softest creditors.
+Joel may be one of Juan's softest creditors.
 
 That can protect Juan or prolong him.
 
@@ -1516,9 +1517,9 @@ They may genuinely like each other.
 
 That does not make the lending good.
 
-## Sterling ↔ Yasmin
+## Joel ↔ Yasmin
 
-Yasmin can initially treat Sterling as:
+Yasmin can initially treat Joel as:
 
 > family money + weak framework + interesting access.
 
@@ -1617,7 +1618,7 @@ Avoid writing her as a robot.
 
 She is capable of affection, impatience, lust, exhaustion, and generosity; she simply tends to express practical facts first.
 
-## Sterling
+## Joel
 
 Pattern:
 
@@ -1719,7 +1720,7 @@ The six primary economic archetypes are intentionally different.
 | Character | Main earning grammar | Main operating constraint |
 |---|---|---|
 | Aspen | shipping / contracts / conservative finance | schedule + obligation collision |
-| Sterling | Bar / experiments / fast learning / later investment | framework + boundaries + subsidy leakage |
+| Joel | Bar / experiments / fast learning / later investment | framework + boundaries + subsidy leakage |
 | Yasmin | owned capital / private market / finance / social allocation | status maintenance + social labour |
 | Wong | high-turnover low-margin / salvage / brokerage | household + rescue burn |
 | Juan | growing / delayed-value biological assets / claims / leverage / distressed finance | maturity + working capital + addiction / horizon mismatch |
@@ -1743,7 +1744,7 @@ Repeated:
 
 > source / contract → voyage / delivery → settlement → maintenance / external need → next voyage.
 
-## Sterling
+## Joel
 
 Repeated:
 
@@ -1833,10 +1834,10 @@ The engine still does not infer the player's feeling.
 ## Locked
 
 - Aspen identity and economic direction;
-- Sterling identity and broad Myshkin/Baoyu position;
-- Yasmin replaces Vale;
+- Joel identity and broad Myshkin/Baoyu position;
+- Yasmin's canonical identity and economic direction;
 - Wong identity and rescue/volume structure;
-- Juan is a botanist / grower / biological real-asset operator as well as the Onewheel Clown / debtor;
+- Juan is a botanist / grower / biological real-asset operator as well as a boundary-risk operator / debtor;
 - Dima replaces the old named Fishmonger as primary Seagull black-market broker;
 - Sonya is Penguin grandmother / supporting figure;
 - Juan/Aspen/Wong toad circle exists before player arrival;
@@ -1856,6 +1857,7 @@ The engine still does not infer the player's feeling.
 
 ## Unresolved
 
+- final Wong species; current presentation remains Dog pending material opportunity tests;
 - exact ultimate karmic resolution for each character;
 - exact final economic numbers;
 - exact transformation causality;

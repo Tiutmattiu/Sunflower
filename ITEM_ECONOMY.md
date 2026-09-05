@@ -2,6 +2,18 @@
 
 > Status: active system design and live-code audit. Keep this document focused on what goods *do economically* and how the market feels. Do not collect objects merely to inflate the catalogue.
 
+## Demand ecology
+
+Named characters are economic organs inside a larger harbour economy. Anonymous households, crews, small boats, visitors and small sellers/buyers are economically necessary but do not need character bibles.
+
+Prefer:
+
+> **Need → local demand → trade if feasible → consumption / use / production / social use → sink or transformation → outside fallback only when local supply cannot satisfy it.**
+
+Every recurring gain or cost needs a balance-sheet path. Finance should serve real consumption, production or projects rather than become a self-contained claim economy with no final user.
+
+Octopus Clearing, Octopus personal inventory and background marine supply are distinct. Marine goods may come from finite catches, small boats, wharf lots, temporary sellers, visitors and limited Octopus-owned stock; settlement float is never Octopus personal wealth.
+
 ## Core rule
 
 **More items are only useful when they create more decisions, more market texture, or more inference.**
@@ -14,7 +26,7 @@ An NPC wanting `X` should normally mean `X`, unless a broader category or substi
 
 Do not silently implement rules such as:
 
-> Sailor says Lime, but Dried Citrus Peel secretly counts as 60% Lime.
+> Aspen says Lime, but Dried Citrus Peel secretly counts as 60% Lime.
 
 That makes the player guess the designer rather than read a market.
 
@@ -66,12 +78,12 @@ A pure definition in `ITEMS` with no path into play is a bug, not content.
 The current pool now has a live path:
 
 - starting inventories seed most goods;
-- Dock Dog cycles scavenged / animal-network goods, including the previously dead `Pocket Match`;
-- Fishmonger cycles fresh catch, ice and sea produce;
-- Sailor cycles imported repair, bicycle, bar-tool and mystery cargo until departure;
+- Wong cycles scavenged / animal-network goods, including the previously dead `Pocket Match`;
+- finite background marine suppliers cycle fresh catch, ice and sea produce;
+- Aspen cycles imported repair, bicycle, bar-tool and mystery cargo until departure;
 - `Mai Tai`, `Built Onewheel`, `Auction Onewheel`, spoilage and the living `Sunflower` are produced by rules/events rather than normal supply.
 
-The living Sunflower is **not** represented by a separate ordinary `Auction Sunflower` asset anymore. Vale's reserve is event-level pricing, not an intrinsic/reference price attached to a flower item.
+The living Sunflower is **not** represented by a separate ordinary `Auction Sunflower` asset anymore. Yasmin's reserve is event-level pricing, not an intrinsic/reference price attached to a flower item.
 
 This should still be rechecked by Codex/runtime smoke because static reachability is not the same as a fun market.
 
@@ -99,7 +111,7 @@ A tin still has literal survival meaning: nightly sustenance can still consume *
 | vehicle / major route asset | 28–30+🥫 |
 | living `Sunflower` | **unpriced** |
 
-Vale's current auction reserve is a **provisional event price**, not the Sunflower's reference value.
+Yasmin's current auction reserve is a **provisional event price**, not the Sunflower's reference value.
 
 These are **reference prices**, not intrinsic value.
 
@@ -108,12 +120,12 @@ These are **reference prices**, not intrinsic value.
 First-pass starting cash was rebased with the goods:
 
 - Player: 18🥫
-- Dock Dog: 18🥫
-- Fishmonger: 30🥫
-- Sailor: 26🥫
-- Mirelle Vale: 52🥫
-- Onewheel Clown: 22🥫
-- Bar Apprentice: 34🥫
+- Wong: 18🥫
+- background marine-supply runtime pool: 30🥫
+- Aspen: 26🥫
+- Yasmin: 52🥫
+- Juan: 22🥫
+- Joel: 34🥫
 
 These numbers are provisional and should be tuned from play, not protected because they look neat.
 
@@ -133,12 +145,12 @@ The NPC engine now has stable category interests in addition to explicit goals.
 
 This is deliberately small and legible:
 
-- **Dock Dog** — scavenged goods, animal-network goods, tiny utilities, containers;
-- **Fishmonger** — food commodities, cold-chain goods, harbour material;
-- **Sailor** — bicycle goods, repair inputs, tools, durable goods;
-- **Vale** — prestige, collectibles, provenance/story, information-bearing goods, curios, mystery assets;
-- **Clown** — speculative junk, vehicles, bicycle goods, mystery assets, strange stories;
-- **Bar Apprentice** — cocktail ingredients, professional bar tools, barware, containers.
+- **Wong** — scavenged goods, animal-network goods, tiny utilities, containers;
+- **background marine suppliers** — food commodities, cold-chain goods, harbour material;
+- **Aspen** — bicycle goods, repair inputs, tools, durable goods;
+- **Yasmin** — prestige, collectibles, provenance/story, information-bearing goods, curios, mystery assets;
+- **Juan** — speculative junk, vehicles, bicycle goods, mystery assets, strange stories;
+- **Joel** — cocktail ingredients, professional bar tools, barware, containers.
 
 A market interest is **not** omniscience.
 
@@ -152,7 +164,7 @@ This lets objects circulate because different actors value categories differentl
 
 # Market texture by trader
 
-## Dock Dog — harbour reality + surreal everyday debris
+## Wong — harbour reality + surreal everyday debris
 
 Typical goods:
 
@@ -165,9 +177,9 @@ Typical goods:
 - Chia Seeds
 - Pocket Match
 
-Dog should make low-value objects feel surprisingly connected to people, animals and information.
+Wong should make low-value objects feel surprisingly connected to people, animals and information.
 
-## Fishmonger — material harbour goods + accidental oddities
+## Background marine suppliers — material harbour goods + accidental oddities
 
 Typical goods:
 
@@ -179,9 +191,9 @@ Typical goods:
 - an inexplicable Orgeat Bottle acquired through barter / debt / misdelivery
 - an equally inexplicable Hawthorne Strainer
 
-Fishmonger's weird objects should feel weird because they do not belong in an otherwise comprehensible operating business.
+Strange objects in a marine lot should feel strange because they do not belong in an otherwise comprehensible physical supply chain.
 
-## Sailor — cross-border material goods + professional equipment + strange cargo
+## Aspen — cross-border material goods + professional equipment + strange cargo
 
 Typical goods:
 
@@ -197,9 +209,9 @@ Typical goods:
 - Three Metres of Stolen Theatre Wire
 - Patch Cut from the Ship Mercy
 
-Sailor stock should carry geography, provenance and mobility.
+Aspen's stock should carry geography, provenance and mobility.
 
-## Mirelle Vale — story fragments + elite / illiquid collectibles
+## Yasmin — story fragments + elite / illiquid collectibles
 
 Typical goods:
 
@@ -210,9 +222,9 @@ Typical goods:
 - Taxidermied Moth
 - Unsent Letter
 
-Vale's inventory should make the player ask whether price comes from use, scarcity, provenance, fashion, status or somebody else's willingness to pay.
+Yasmin's inventory should make the player ask whether price comes from use, scarcity, provenance, fashion, status or somebody else's willingness to pay.
 
-## Bar Apprentice — professional bar equipment + relationship objects
+## Joel — professional bar equipment + relationship objects
 
 Typical goods / needs:
 
@@ -227,7 +239,7 @@ Typical goods / needs:
 
 The Bar should reward actual cocktail knowledge without becoming a recipe quiz. A knowledgeable player may infer more from incomplete observations and therefore spend fewer information actions.
 
-## Onewheel Clown — surreal everyday goods + speculative junk + mobility debris
+## Juan — surreal everyday goods + speculative junk + mobility debris
 
 Typical goods:
 
@@ -238,7 +250,7 @@ Typical goods:
 - Key That Opens Nothing
 - Tool Roll
 
-Clown can assign coherent private utility to things other traders dismiss without turning every weird item into a secret quest key.
+Juan can assign coherent private utility to things other traders dismiss without turning every weird item into a secret quest key.
 
 ---
 
@@ -254,7 +266,7 @@ Ice, Bruised Mint, Lime, Fresh Mackerel and Tentacles produce storage and fire-s
 
 ### Recurring inputs
 
-The Bar consumes ice. Dock Dog consumes fresh fish for the cat colony. Demand should return because businesses and bodies continue doing things, not because a quest flag resets.
+The Bar consumes ice. Wong consumes fresh fish for the cat colony. Demand should return because businesses and bodies continue doing things, not because a quest flag resets.
 
 ### Professional durable tools
 
@@ -270,9 +282,9 @@ Sealed Parcel, Unsent Letter, Old Coupon and story-bearing collectibles should c
 
 Items can communicate information without a tutorial prompt spelling it out.
 
-The Bar example is canonical:
+The Mai Tai example is a canonical authored route anchor and benchmark recipe, not the whole Bar economy:
 
-> The Apprentice is learning a Mai Tai, but one ingredient is missing.
+> Joel is learning a Mai Tai, but one ingredient is missing.
 
 A knowledgeable player may infer likely missing inputs from what is visibly behind the bar. A player without cocktail knowledge can spend additional investigation actions until the clue becomes exact.
 
@@ -306,8 +318,8 @@ Run several real market simulations and record:
 - how often cash constraints block rational bids;
 - spread as a percentage of reference price;
 - time to first cash shortage;
-- whether Vale can dominate simply because she starts liquid;
-- whether Dog can actually act like a dealer;
+- whether Yasmin can dominate simply because she starts liquid;
+- whether Wong can actually act like a dealer;
 - whether Bar can afford operating inputs and upgrades;
 - whether expensive tools ever transact;
 - whether speculative / prestige goods become permanently dead inventory;

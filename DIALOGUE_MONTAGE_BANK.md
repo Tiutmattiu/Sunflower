@@ -2,7 +2,7 @@
 
 > **Status: authored content bank, September 2026.**
 >
-> Companion to `NPC_CHARACTER_BIBLE.md` and `NARRATIVE_KARMA_MATRIX.md`.
+> Companion to `NPC_CHARACTER_BIBLE.md` and `DESIGN_WORKBOOK.md`.
 >
 > These are **state-aware scenelets and line banks**, not random barks and not a linear screenplay.
 >
@@ -68,7 +68,7 @@ You write `afternoon`.
 
 “The wind changes at 14:20.”
 
-Sterling looks outside.
+Joel looks outside.
 
 “It looks fine.”
 
@@ -183,7 +183,7 @@ She gives you three tins.
 
 “Repay Friday, before Noon.”
 
-Sterling: “You could just say yes.”
+Joel: “You could just say yes.”
 
 “I did.”
 
@@ -221,7 +221,7 @@ You saw it three days ago.
 
 Aspen looks at the clock.
 
-Sterling: “You didn't take it?”
+Joel: “You didn't take it?”
 
 “No.”
 
@@ -294,12 +294,12 @@ Aspen looks at the clock.
 
 ---
 
-# 3. Sterling — Sensory Curiosity, Care, Fast Learning
+# 3. Joel — Sensory Curiosity, Care, Fast Learning
 
 ## S01 — The drink
 **Trigger:** first Bar talk.
 
-Sterling puts down a glass.
+Joel puts down a glass.
 
 “What is it?”
 
@@ -322,20 +322,20 @@ He moves the glass toward you.
 
 Dima, from the doorway: “Can he?”
 
-Sterling: “Probably.”
+Joel: “Probably.”
 
 Dima: “Excellent banking.”
 
-Sterling writes the tab anyway.
+Joel writes the tab anyway.
 
 ---
 
 ## S03 — Rich-person risk
-**Trigger:** Sterling loses on small investment.
+**Trigger:** Joel loses on small investment.
 
 Yasmin: “You lost nine.”
 
-Sterling: “Yes.”
+Joel: “Yes.”
 
 “You're smiling.”
 
@@ -347,14 +347,14 @@ Sterling: “Yes.”
 
 Wong: “I said five.”
 
-Sterling: “I know that now.”
+Joel: “I know that now.”
 
 ---
 
 ## S04 — Learning
 **Trigger:** repeated cocktail craft.
 
-Sterling smells the glass.
+Joel smells the glass.
 
 “Too much lime.”
 
@@ -371,13 +371,13 @@ He measures again.
 ---
 
 ## S05 — Liar
-**Trigger:** player/NPC made dubious claim to Sterling.
+**Trigger:** player/NPC made dubious claim to Joel.
 
 “That wasn't true.”
 
 The other person says nothing.
 
-Sterling wipes the counter.
+Joel wipes the counter.
 
 “Do you want another drink?”
 
@@ -394,7 +394,7 @@ Sterling wipes the counter.
 
 Dima: “My people hired him.”
 
-Sterling: “You signed it.”
+Joel: “You signed it.”
 
 Dima: “I was holding the pen.”
 
@@ -409,7 +409,7 @@ The legal owner is neither of them.
 
 `BAR CASHFLOW: -7`
 
-Sterling replaces the broken shaker.
+Joel replaces the broken shaker.
 
 Yasmin: “With what money?”
 
@@ -421,7 +421,7 @@ Yasmin: “With what money?”
 
 “Then the Bar lost seven.”
 
-Sterling looks at the new shaker.
+Joel looks at the new shaker.
 
 “It also has a shaker.”
 
@@ -432,13 +432,13 @@ Sterling looks at the new shaker.
 
 Juan: “One more.”
 
-Sterling looks at the book.
+Joel looks at the book.
 
 “No.”
 
 Juan waits.
 
-Sterling looks at the glass.
+Joel looks at the glass.
 
 “No.”
 
@@ -449,17 +449,17 @@ Juan: “That sounded worse the second time.”
 ---
 
 ## S09 — Refusal failure, alternate
-**Trigger:** Sterling does not hold boundary.
+**Trigger:** Joel does not hold boundary.
 
 Juan: “One more.”
 
-Sterling looks at the overdue tab.
+Joel looks at the overdue tab.
 
 “No.”
 
 Juan says nothing.
 
-Sterling pours half.
+Joel pours half.
 
 “This is not one.”
 
@@ -468,9 +468,9 @@ Dima watches from the door.
 ---
 
 ## S10 — Sensory distraction
-**Trigger:** player comes with profitable information; Sterling notices object.
+**Trigger:** player comes with profitable information; Joel notices object.
 
-You show Sterling a note about tomorrow's shortage.
+You show Joel a note about tomorrow's shortage.
 
 He reads half.
 
@@ -495,7 +495,7 @@ The Afternoon action is already almost gone.
 
 You shake your head.
 
-Sterling keeps polishing the same glass.
+Joel keeps polishing the same glass.
 
 “Okay.”
 
@@ -510,7 +510,7 @@ No transaction is created.
 ## S12 — Sonya fish, first
 **Trigger:** before Sonya reveal.
 
-Sterling points at the fish.
+Joel points at the fish.
 
 “That one.”
 
@@ -529,7 +529,7 @@ Wong looks offended.
 ## S13 — Sonya fish, later
 **Trigger:** player sees preparation.
 
-Sterling removes the skin.
+Joel removes the skin.
 
 You point to it.
 
@@ -548,11 +548,11 @@ The room is warmer than the Bar.
 
 A Penguin is eating fish from a shallow plate.
 
-Sterling: “Sonya, slower.”
+Joel: “Sonya, slower.”
 
 The Penguin ignores him.
 
-You look at Sterling.
+You look at Joel.
 
 “What?”
 
@@ -669,7 +669,7 @@ The offer has.
 ---
 
 ## Y07 — No hidden motive
-**Trigger:** Sterling helps without asking return.
+**Trigger:** Joel helps without asking return.
 
 Yasmin: “What did he ask for?”
 
@@ -755,7 +755,7 @@ Yasmin takes off one shoe.
 
 Only one.
 
-Sterling: “You can take off the other.”
+Joel: “You can take off the other.”
 
 “I have another call.”
 
@@ -1026,7 +1026,7 @@ Juan: “That's why people like it.”
 
 `OPEN CLAIMS`
 
-Sterling: 7
+Joel: 7
 
 Dima: 11
 
@@ -1071,25 +1071,6 @@ Dima: “Five.”
 Dima: “Five.”
 
 Juan: “This is offensive.”
-
----
-
-## J05 — Dentist residue
-**Trigger:** player sees old dental tool.
-
-Sterling: “Why do you still have that?”
-
-Juan turns the instrument in his fingers.
-
-“It is good steel.”
-
-“You were a dentist.”
-
-“It is still good steel.”
-
-He uses it to adjust a small screw on the Onewheel.
-
-Aspen: “Don't.”
 
 ---
 
@@ -1173,12 +1154,12 @@ Juan looks at her instrument.
 
 ---
 
-## J10 — Sterling refusal
-**Trigger:** Sterling refuses tab.
+## J10 — Joel refusal
+**Trigger:** Joel refuses tab.
 
 Juan: “You used to understand me.”
 
-Sterling: “I understand you.”
+Joel: “I understand you.”
 
 “Then—”
 
@@ -1308,14 +1289,14 @@ He folds the claim.
 
 ---
 
-## D05 — Sterling hire
-**Trigger:** player asks why Sterling.
+## D05 — Joel hire
+**Trigger:** player asks why Joel.
 
 “Why him?”
 
-Dima watches Sterling drop a spoon.
+Dima watches Joel drop a spoon.
 
-Sterling catches it before it hits the floor.
+Joel catches it before it hits the floor.
 
 Dima: “Human.”
 
@@ -1329,10 +1310,10 @@ You wait.
 
 ---
 
-## D06 — Sterling learns
-**Trigger:** later Sterling challenges term.
+## D06 — Joel learns
+**Trigger:** later Joel challenges term.
 
-Sterling: “Your cut is too high.”
+Joel: “Your cut is too high.”
 
 Dima: “It was fine last month.”
 
@@ -1462,8 +1443,8 @@ It is a fish wearing a hat.
 
 # 8. Pair Scenes — Friction Between Business Models
 
-## P01 — Aspen / Sterling, imported tool
-Sterling turns the jigger over.
+## P01 — Aspen / Joel, imported tool
+Joel turns the jigger over.
 
 “How much?”
 
@@ -1477,7 +1458,7 @@ Sterling turns the jigger over.
 
 “One replacement-risk.”
 
-Sterling smiles.
+Joel smiles.
 
 Aspen: “It is not funny.”
 
@@ -1536,10 +1517,10 @@ Aspen closes her eyes.
 
 ---
 
-## P05 — Sterling / Yasmin, investment
+## P05 — Joel / Yasmin, investment
 Yasmin: “What is the expected return?”
 
-Sterling: “I don't know.”
+Joel: “I don't know.”
 
 “Then why are you investing?”
 
@@ -1553,10 +1534,10 @@ Yasmin stops taking notes.
 
 ---
 
-## P06 — Sterling / Wong, bargaining lesson
+## P06 — Joel / Wong, bargaining lesson
 Wong: “Nine.”
 
-Sterling: “Eight.”
+Joel: “Eight.”
 
 “Eight and you carry it.”
 
@@ -1564,16 +1545,16 @@ Sterling: “Eight.”
 
 “Then nine.”
 
-Sterling looks at him.
+Joel looks at him.
 
 Wong: “You're learning.”
 
 ---
 
-## P07 — Sterling / Dima, closing time
+## P07 — Joel / Dima, closing time
 Dima: “Close.”
 
-Sterling: “They're still drinking.”
+Joel: “They're still drinking.”
 
 “They are not paying.”
 
@@ -1725,7 +1706,7 @@ Aspen: “No.”
 # 9. Ensemble Bar Montages
 
 ## E01 — Ice bucket
-Dog/Wong has put a toad in an empty ice bucket.
+Wong has put a toad in an empty ice bucket.
 
 Aspen removes it.
 
@@ -1737,7 +1718,7 @@ Juan: “Why?”
 
 Wong takes it back.
 
-Sterling enters.
+Joel enters.
 
 “No.”
 
@@ -1750,7 +1731,7 @@ Nobody had asked a question.
 
 `YASMIN BOUGHT SEALED PARCEL — 18🥫`
 
-Sterling: “What's in it?”
+Joel: “What's in it?”
 
 Yasmin: “I don't know.”
 
@@ -1771,7 +1752,7 @@ Yasmin: “No.”
 ---
 
 ## E03 — A good deal, depending
-Sterling: “Was it a good deal?”
+Joel: “Was it a good deal?”
 
 Aspen: “For whom?”
 
@@ -1798,7 +1779,7 @@ Aspen is waiting for Yasmin.
 
 Yasmin is waiting for a buyer who is not in the room.
 
-Sterling puts six glasses on the counter.
+Joel puts six glasses on the counter.
 
 Juan: “We have invented finance.”
 
@@ -1815,7 +1796,7 @@ Wong: “You are broke.”
 
 Yasmin: “It can be.”
 
-Sterling: “Do you want food?”
+Joel: “Do you want food?”
 
 Juan: “This is why I cannot conduct a serious discussion here.”
 
@@ -1836,7 +1817,7 @@ Dima asks, “For how much?”
 
 Wong asks, “Cash?”
 
-Sterling says, “Sit down.”
+Joel says, “Sit down.”
 
 Juan says, “Nobody has answered you.”
 
@@ -1847,11 +1828,11 @@ An Animal waits outside the formal market.
 
 Dima says, “Two tins.”
 
-Sterling says, “I'll go in.”
+Joel says, “I'll go in.”
 
 Dima says, “You work for me.”
 
-Sterling says, “Not for this.”
+Joel says, “Not for this.”
 
 Yasmin watches.
 
@@ -1878,7 +1859,7 @@ Juan's eyes move toward it.
 
 Aspen's eyes move toward her watch.
 
-Sterling's hand stays on the cloth.
+Joel's hand stays on the cloth.
 
 Afterward Dima says, “One of you is paying for the broken glass.”
 
@@ -1928,10 +1909,10 @@ The next day the object is still on the table.
 
 ---
 
-## I03 — Sterling, after close
+## I03 — Joel, after close
 The Bar is closed.
 
-Sterling is cleaning the same patch of counter.
+Joel is cleaning the same patch of counter.
 
 You point to the door.
 
@@ -2053,10 +2034,10 @@ No explanation follows.
 
 ---
 
-## R04 — Sterling continuation
+## R04 — Joel continuation
 You enter in another form.
 
-Sterling is cutting lime.
+Joel is cutting lime.
 
 He looks up.
 
@@ -2121,7 +2102,7 @@ Yasmin stands beside the pot.
 
 “Who owns it?”
 
-Sterling: “Does that matter?”
+Joel: “Does that matter?”
 
 “Yes.”
 
@@ -2135,8 +2116,8 @@ Dima: “Who is paying for the water?”
 
 ---
 
-## R08 — Plant-player, Sterling
-Sterling turns the pot toward the window.
+## R08 — Plant-player, Joel
+Joel turns the pot toward the window.
 
 You cannot tell him whether you wanted that.
 
@@ -2153,7 +2134,7 @@ He leaves it in the middle.
 # 12. Sonya — Small Supporting Scenes
 
 ## G01 — Fish order
-Sterling: “Mackerel.”
+Joel: “Mackerel.”
 
 Wong: “Six.”
 
@@ -2161,7 +2142,7 @@ Wong: “Six.”
 
 “Six.”
 
-Sterling pays six.
+Joel pays six.
 
 Wong: “Why did you bargain?”
 
@@ -2170,7 +2151,7 @@ Wong: “Why did you bargain?”
 ---
 
 ## G02 — Skin
-Sterling removes the skin.
+Joel removes the skin.
 
 You point at it.
 
@@ -2183,17 +2164,17 @@ That is all.
 ## G03 — First room
 A Penguin is standing beside the table.
 
-Sterling puts down the fish.
+Joel puts down the fish.
 
 “Sonya.”
 
 The Penguin looks at the plate.
 
-Then at Sterling.
+Then at Joel.
 
 Then at the plate.
 
-Sterling: “Yes.”
+Joel: “Yes.”
 
 ---
 
@@ -2206,7 +2187,7 @@ Below it:
 
 `CURRENT ANIMAL: PENGUIN`
 
-Sterling uses the back of it to write a shopping list.
+Joel uses the back of it to write a shopping list.
 
 `FISH`
 
@@ -2221,13 +2202,13 @@ A Sunflower is near the window.
 
 Sonya pecks once at a loose leaf.
 
-Sterling moves the pot six inches away.
+Joel moves the pot six inches away.
 
 “No.”
 
 The Penguin looks at him.
 
-Sterling moves it three inches back.
+Joel moves it three inches back.
 
 ---
 
@@ -2236,7 +2217,7 @@ Sterling moves it three inches back.
 ## M01 — Juan claim after sale
 `PRIVATE CLAIM TRANSFER`
 
-Seller: Sterling
+Seller: Joel
 
 Buyer: Yasmin
 
@@ -2248,7 +2229,7 @@ Juan reads the paper.
 
 “You sold me.”
 
-Sterling: “I sold the debt.”
+Joel: “I sold the debt.”
 
 “That is a very cold distinction.”
 
@@ -2278,7 +2259,7 @@ The lower fee remains.
 
 Aspen pays the penalty before anybody asks.
 
-Sterling: “Seven minutes.”
+Joel: “Seven minutes.”
 
 “Yes.”
 
@@ -2324,7 +2305,7 @@ He puts one into a food bag.
 
 ---
 
-## M06 — Sterling Bar
+## M06 — Joel Bar
 `BAR REVENUE: 14🥫`
 
 `OPERATING COSTS: 11🥫`
@@ -2333,7 +2314,7 @@ He puts one into a food bag.
 
 `FAMILY TRANSFER: 5🥫`
 
-Sterling says:
+Joel says:
 
 “Good day.”
 
@@ -2373,10 +2354,10 @@ Afterward she answers her own phone first.
 
 ---
 
-## U03 — Sterling
+## U03 — Joel
 The room stops.
 
-Sterling is halfway through tasting something.
+Joel is halfway through tasting something.
 
 He does not swallow.
 
@@ -2434,7 +2415,7 @@ It is whether the engine temperature changed.
 
 `REFERENCE PRICE: —`
 
-Sterling: “So?”
+Joel: “So?”
 
 Nothing happens.
 
@@ -2518,8 +2499,8 @@ Aspen closes her eyes.
 
 ---
 
-## F06 — Sterling
-Sterling touches one leaf with one finger.
+## F06 — Joel
+Joel touches one leaf with one finger.
 
 You look at him.
 
@@ -2565,7 +2546,7 @@ Later: Sun Moment experiment.
 
 Later: player's transformation date.
 
-### Sterling
+### Joel
 “Try this.”
 
 First: drink.
@@ -2629,10 +2610,10 @@ Do not generate a scene simply because a character exists.
 Do not let:
 
 - Aspen reveal weather she did not check;
-- Sterling know a debt hidden from the Bar;
+- Joel know a debt hidden from the Bar;
 - Yasmin know Animal-network gossip without a source;
 - Wong know elite family decisions without a path;
-- Juan know metaphysical truth because he is the Clown;
+- Juan know metaphysical truth because of his former character label or eccentricity;
 - Dima know every black-market action globally.
 
 Do not turn every scene into teaching.
@@ -2679,7 +2660,7 @@ Bad:
 
 Bad:
 
-> “Sterling's kindness was both a gift and a wound.”
+> “Joel's kindness was both a gift and a wound.”
 
 These sentences know what they mean before the player does.
 
@@ -2691,7 +2672,7 @@ Prefer:
 
 > Dima says the fee is two.
 
-> Sterling writes the tab.
+> Joel writes the tab.
 
 > Wong counts the tins.
 

@@ -2,7 +2,7 @@
 
 > **Status: active editorial audit, September 2026.**
 >
-> Companion to `DIALOGUE_MONTAGE_BANK.md`, `NPC_CHARACTER_BIBLE.md`, `NARRATIVE_KARMA_MATRIX.md`, `INFORMATION_DISCOVERY_MODEL.md`, `REBIRTH_FORM_SYSTEM.md`, and `WORLD_LORE_SUN_MOMENT.md`.
+> Companion to `DIALOGUE_MONTAGE_BANK.md`, `NPC_CHARACTER_BIBLE.md`, `DESIGN_WORKBOOK.md`, `INFORMATION_DISCOVERY_MODEL.md`, `REBIRTH_FORM_SYSTEM.md`, and `WORLD_LORE_SUN_MOMENT.md`.
 >
 > This file does not add a second narrative canon. It records which authored scenelets are already strong, which require state guards, which should be rewritten, and which must wait for unresolved mechanics or cosmology.
 >
@@ -83,7 +83,7 @@ Examples:
 
 - Yasmin may mention Wong's report about the player's cut only if Wong actually observed it and told her through a plausible social path.
 - Dima may say `I know` about a missed informal payment only if he brokered the arrangement, owns the claim, was told, or observed evidence.
-- Sterling does not know Juan's hidden creditor stack merely because Juan drinks at the Bar.
+- Joel does not know Juan's hidden creditor stack merely because Juan drinks at the Bar.
 - Wong does not know Yasmin family decisions without gossip or a source.
 - Aspen does not produce an exact weather forecast without having checked a forecast source.
 - Juan does not know metaphysical truth because he is Juan.
@@ -157,13 +157,13 @@ Reduce:
 
 Aspen is funny because exactness survives absurd circumstances.
 
-## Sterling
+## Joel
 
 Primary speech engine:
 
 > sensory notice → curiosity → trying something → delayed conclusion.
 
-Sterling should have more unfinished attention than the others.
+Joel should have more unfinished attention than the others.
 
 He can:
 
@@ -291,7 +291,7 @@ Legend:
 | ID | Status | Editorial note |
 |---|---|---|
 | A01 | KEEP | Strong Aspen rhythm. Player response should be gesture/write. |
-| A02 | GUARD | Requires checked weather source and Sterling presence. |
+| A02 | GUARD | Requires checked weather source and Joel presence. |
 | A03 | KEEP | Good body-as-operational-data scene. |
 | A04 | KEEP | Strong montage; no need to explain lover relationship. |
 | A05 | GUARD | Requires a real uncertain opportunity with actual 10-risk / 30-upside scale or generated terms. |
@@ -303,24 +303,24 @@ Legend:
 | A11 | DEFER | Later Sun-Moment resistance state not yet implemented precisely enough. |
 | A12 | KEEP | Good emergent-attention scene; no romance interpretation. |
 
-## Sterling
+## Joel
 
 | ID | Status | Editorial note |
 |---|---|---|
-| S01 | KEEP | Strong first-contact Sterling. |
+| S01 | KEEP | Strong first-contact Joel. |
 | S02 | REWRITE | `Excellent banking` is too sitcom-clean and Dima should not appear automatically. |
-| S03 | GUARD | Requires an actual Sterling loss and Wong claim/idea he chose to test. |
+| S03 | GUARD | Requires an actual Joel loss and Wong claim/idea he chose to test. |
 | S04 | KEEP | Good learning-through-practice. |
 | S05 | KEEP | Strong because truth recognition does not dictate moral response. |
 | S06 | DEFER | Exact Bar legal ownership remains unresolved; do not state `legal owner is neither` yet. |
 | S07 | GUARD | Requires real Bar cashflow + actual family subsidy; Yasmin presence/knowledge cannot be assumed. |
 | S08 | GUARD | Mutually exclusive with S09; requires actual overdue Juan tab. |
-| S09 | GUARD | Same state as S08 but Sterling fails boundary. |
+| S09 | GUARD | Same state as S08 but Joel fails boundary. |
 | S10 | REWRITE | Remove `Afternoon action is almost gone`; engine spends the action. |
 | S11 | REWRITE | Remove `No transaction is created`; absence of trade is state, not narration. |
 | S12 | GUARD | Wong must actually possess/source the fish. |
-| S13 | GUARD | Requires player to observe fish preparation after enough Sterling familiarity. |
-| S14 | GUARD | First Sonya visual reveal; must not happen merely by clicking Sterling. |
+| S13 | GUARD | Requires player to observe fish preparation after enough Joel familiarity. |
+| S14 | GUARD | First Sonya visual reveal; must not happen merely by clicking Joel. |
 
 ## Yasmin
 
@@ -332,7 +332,7 @@ Legend:
 | Y04 | KEEP | Strong second-child pressure without exposition. |
 | Y05 | REWRITE | `buying an object and a missing sentence` is a writer line. Make the missing provenance change the offer directly. |
 | Y06 | KEEP | Strong object-same / evidence-different montage. |
-| Y07 | GUARD | Yasmin needs a plausible path to know Sterling helped. |
+| Y07 | GUARD | Yasmin needs a plausible path to know Joel helped. |
 | Y08 | GUARD | Requires real Juan claim with face value, price, and security state. |
 | Y09 | KEEP | Excellent if breach has actually been detected. |
 | Y10 | GUARD | Requires old signature + demonstrated memory continuity + formal legal discontinuity. |
@@ -364,12 +364,11 @@ Legend:
 | J02 | GUARD | Claims list is not omniscient UI; player needs access to the claims data. |
 | J03 | REWRITE | Too directly explains creditor-asset lesson. Let the tradable claim itself demonstrate it. |
 | J04 | KEEP | Strong distressed-debt scene. |
-| J05 | KEEP | Strong profession residue through object use. |
 | J06 | KEEP | `still modelling` fits Juan if not overused. |
 | J07 | KEEP | Strong spiritual-materialism-through-protocol scene. |
 | J08 | KEEP | Good refusal to certify revelation. |
 | J09 | KEEP | Strong contrast between pseudo-precision and Aspen's measurement. |
-| J10 | KEEP | Good Sterling/Juan boundary scene. |
+| J10 | KEEP | Good Joel/Juan boundary scene. |
 | J11 | GUARD | Requires actual claim consolidation and creditor identities. |
 | J12 | KEEP | Good Sun Moment protocol obsession. |
 
@@ -381,8 +380,8 @@ Legend:
 | D02 | KEEP | Good refusal to turn black market into a place/button. |
 | D03 | KEEP | Strong exclusion-rent line. |
 | D04 | REWRITE | Too much abstract enforcement explanation in one exchange. Use one concrete consequence. |
-| D05 | GUARD | Requires Sterling employment relationship; exact Seagull ownership remains provisional. |
-| D06 | KEEP | Good Sterling learning changes bargaining power. |
+| D05 | GUARD | Requires Joel employment relationship; exact Seagull ownership remains provisional. |
+| D06 | KEEP | Good Joel learning changes bargaining power. |
 | D07 | KEEP | Strong front/back entrance montage if both have reason to be there. |
 | D08 | GUARD | Wong roof route must exist materially; otherwise package is author magic. |
 | D09 | KEEP | Good distressed-claim pricing. |
@@ -398,7 +397,7 @@ Legend:
 | P02 | KEEP | Strong Aspen/Yasmin conflict. |
 | P03 | KEEP | Good information/provenance friction. |
 | P04 | KEEP | Good legal vs actual possession ambiguity. |
-| P05 | REWRITE | `It is to me` states Sterling's design thesis too cleanly. |
+| P05 | REWRITE | `It is to me` states Joel's design thesis too cleanly. |
 | P06 | KEEP | Good bargaining learning. |
 | P07 | GUARD | Requires real unpaid customers / closing pressure. |
 | P08 | REWRITE | `next twenty objects` is an author punchline, not a state-aware scene. |
@@ -419,7 +418,7 @@ Legend:
 | E04 | REWRITE | Payment chain is strong; `we invented finance` is a wink at the player. Remove it. |
 | E05 | KEEP | Strong because `broke` can mean several real things. |
 | E06 | REWRITE | Six characters each delivering their archetype response reads like a sitcom roll call. |
-| E07 | GUARD | Requires formal exclusion + Dima fee + Sterling willingness + Wong route + impending market. |
+| E07 | GUARD | Requires formal exclusion + Dima fee + Joel willingness + Wong route + impending market. |
 | E08 | KEEP | Strong if Juan's broken-glass risk is established enough that Dima's line is ordinary expectation, not prophecy. |
 
 ## Attention / intimacy
@@ -440,7 +439,7 @@ Legend:
 | R01 | GUARD | Yasmin must have evidence for continuity and still distinguish registry identity. |
 | R02 | KEEP | Good because Dima prices enforceability rather than declaring metaphysics. |
 | R03 | REWRITE | Wong must not automatically soul-recognise player. Recognition should follow a repeated bargaining habit, impossible memory, or introduced proof. |
-| R04 | REWRITE | Sterling must not automatically know taste continuity. Let player indicate the same preference first; Sterling notices recurrence second. |
+| R04 | REWRITE | Joel must not automatically know taste continuity. Let player indicate the same preference first; Joel notices recurrence second. |
 | R05 | KEEP | Strong Sailor-player / Aspen mirrored condition. |
 | R06 | GUARD | Juan may treat reincarnation as evidence only after player demonstrates impossible prior-life knowledge. |
 | R07 | DEFER | Plant agency/property interaction is still unresolved. |
@@ -473,7 +472,7 @@ Legend:
 |---|---|---|
 | U01 | KEEP | Strong Wong tension without moral judgement. |
 | U02 | KEEP | Strong Yasmin capacity to stop. |
-| U03 | KEEP | Strong Sterling sensory continuation after pause. |
+| U03 | KEEP | Strong Joel sensory continuation after pause. |
 | U04 | KEEP | Strong Dima institutional habit. |
 | U05 | GUARD | Do not imply Juan actually moved first unless evidence supports it. His uncertainty is the point. |
 | U06 | KEEP | Strong Aspen: time is not the only variable she monitors. |
@@ -487,7 +486,7 @@ Legend:
 | F03 | REWRITE | Remove `That is his entire first reaction.` |
 | F04 | KEEP | Very strong Yasmin reaction. |
 | F05 | KEEP | Strong Aspen reaction. |
-| F06 | KEEP | Strong Sterling reaction. |
+| F06 | KEEP | Strong Joel reaction. |
 | F07 | REWRITE | Remove narrator explanation of Juan's smile. |
 
 ---
@@ -498,11 +497,11 @@ These replace weak lines while preserving already-discussed character/state.
 
 ## S02 — Tab
 
-**Keep trigger:** player lacks immediate payment; Sterling relationship sufficient; Dima appears only if actually present.
+**Keep trigger:** player lacks immediate payment; Joel relationship sufficient; Dima appears only if actually present.
 
 Preferred core:
 
-> Sterling writes the amount in the tab book.
+> Joel writes the amount in the tab book.
 >
 > You point to `tomorrow`.
 >
@@ -512,15 +511,15 @@ Preferred core:
 >
 > “Again?”
 >
-> Sterling closes the book.
+> Joel closes the book.
 
-Do not add a joke explaining that Sterling is a bad banker.
+Do not add a joke explaining that Joel is a bad banker.
 
 ## S10 — Sensory distraction
 
 > You put the shortage note on the counter.
 >
-> Sterling reads the first line.
+> Joel reads the first line.
 >
 > A blue thread is caught on your sleeve.
 >
@@ -538,7 +537,7 @@ The action cost comes from the Talk interaction, not narration.
 >
 > You shake your head.
 >
-> Sterling polishes the glass once more.
+> Joel polishes the glass once more.
 >
 > “Okay.”
 >
@@ -678,7 +677,7 @@ The point is not that Yasmin is a fashion cop. The point is that Dima's access c
 
 Fix the arithmetic and tie price to real cost.
 
-> Sterling turns the jigger over.
+> Joel turns the jigger over.
 >
 > “How much?”
 >
@@ -690,19 +689,19 @@ Fix the arithmetic and tie price to real cost.
 >
 > Aspen taps the freight line, then the replacement date.
 >
-> Sterling pays eight or walks away according to his state.
+> Joel pays eight or walks away according to his state.
 
 Do not invent a flat `replacement-risk +1` constant in dialogue.
 
-## P05 — Sterling / Yasmin investment
+## P05 — Joel / Yasmin investment
 
 > Yasmin: “What does it return?”
 >
-> Sterling: “I don't know.”
+> Joel: “I don't know.”
 >
 > She puts the paper down.
 >
-> Sterling picks it back up.
+> Joel picks it back up.
 >
 > “I still want to try it.”
 
@@ -738,13 +737,13 @@ No abstract `certainty` explanation.
 
 ## E03 — Good deal
 
-> Sterling puts the purchased object on the Bar.
+> Joel puts the purchased object on the Bar.
 >
 > “Was that bad?”
 >
 > Aspen asks, “Do you need it?”
 >
-> Sterling looks at the object.
+> Joel looks at the object.
 >
 > “Not yet.”
 
@@ -762,7 +761,7 @@ Keep the chain:
 >
 > Yasmin is waiting for a buyer who is not in the room.
 >
-> Sterling puts six glasses on the counter.
+> Joel puts six glasses on the counter.
 >
 > Dima looks at Juan.
 >
@@ -786,9 +785,9 @@ Example:
 
 Or:
 
-> A stranger asks Sterling who is safe to borrow from.
+> A stranger asks Joel who is safe to borrow from.
 >
-> Sterling looks around the room.
+> Joel looks around the room.
 >
 > “How soon can you pay it back?”
 
@@ -798,7 +797,7 @@ Different scenes can answer different dimensions of trust over time.
 
 > The Bar is closed.
 >
-> Sterling is cleaning the same patch of counter.
+> Joel is cleaning the same patch of counter.
 >
 > You point to the door.
 >
@@ -842,9 +841,9 @@ Do not begin with automatic recognition.
 
 That is enough for the first recurrence.
 
-## R04 — Sterling continuity
+## R04 — Joel continuity
 
-> Sterling puts two bottles down.
+> Joel puts two bottles down.
 >
 > You point to the sweeter one.
 >
@@ -862,11 +861,11 @@ Do not make him know an old preference before the current player demonstrates it
 
 Use actual seller state.
 
-> Sterling: “Mackerel.”
+> Joel: “Mackerel.”
 >
 > The current seller names a price.
 >
-> Sterling tries one counteroffer.
+> Joel tries one counteroffer.
 >
 > If refused, he still buys when Sonya need is active and liquidity permits.
 
@@ -876,7 +875,7 @@ The seller can be a background fish stall, Wong when he actually has fish, Aspen
 
 > `PRIVATE CLAIM TRANSFER`
 >
-> Seller: Sterling
+> Seller: Joel
 >
 > Buyer: Yasmin
 >
@@ -888,7 +887,7 @@ The seller can be a background fish stall, Wong when he actually has fish, Aspen
 >
 > “You sold it?”
 >
-> Sterling: “Yes.”
+> Joel: “Yes.”
 >
 > Juan reads Yasmin's name again.
 
@@ -906,7 +905,7 @@ Only show fields the player can legitimately see.
 >
 > [show family transfer only if known]
 >
-> Sterling: “Good day.”
+> Joel: “Good day.”
 >
 > If Dima knows the books and is present, he may simply say, “No.”
 
@@ -918,7 +917,7 @@ Stop.
 >
 > `REFERENCE PRICE: —`
 >
-> Sterling: “So?”
+> Joel: “So?”
 >
 > Nothing happens.
 >
@@ -982,8 +981,8 @@ These scenes are worth implementing early because their evidence paths are alrea
 |---|---|---|
 | A04 Lover parcel | Aspen cargo/commission list visible | exact relationship label unless learned |
 | A09 Missed promise | real personal obligation + commercial obligation collision | author's judgement of which mattered more |
-| S07 Bar money | Bar revenue/cost + actual subsidy | Sterling motive |
-| S08/S09 Juan tab | overdue Bar claim + Sterling choice | moral judgement of enabling |
+| S07 Bar money | Bar revenue/cost + actual subsidy | Joel motive |
+| S08/S09 Juan tab | overdue Bar claim + Joel choice | moral judgement of enabling |
 | Y05/Y06 Provenance | object source known/unknown + documentation | Yasmin exact private utility |
 | Y09 Breach | actual agreement + detected breach | undetected breach must not trigger scene |
 | W09 Good week | actual high turnover + new dependent/rescue expense | `merit score` |
@@ -1053,7 +1052,7 @@ Recommended first slice:
 - S01, S04, S05, S08/S09 one branch, S11;
 - Y01, Y05/Y06, Y09;
 - W01, W09, W12;
-- J01, J04, J05, J07/J08;
+- J01, J04, J07/J08;
 - D02, D03, D09, D12;
 - E01, E02;
 - I03 or I05;
