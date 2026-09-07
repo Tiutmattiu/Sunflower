@@ -2,6 +2,8 @@
 
 > Status: **current source of truth for teaching coverage, realised cases, badge logic, and diagnosis evidence requirements.** This file is not world-history canon and should not revive obsolete NPC identities or old lore hypotheses.
 
+`GAME_DESIGN.md` §5 owns the frozen product constraints. Implementation labels below are inherited prototype documentation, not fresh verification or acceptance of the new flow. Form-based proxy and previous-life examples are retired; use actual authorised access/agency constraints. Octopus is an institution, never an ordinary NPC/Talk identity.
+
 Teaching rule:
 
 > **Experience first, terminology second.**
@@ -68,12 +70,29 @@ The final game should provide multiple independent contexts for important diagno
 
 ---
 
-# CURRENT / NEAR-CURRENT AUTHORED CASES
+### Six return classes — coverage mapping and backlog
+
+`GAME_DESIGN.md` §2 owns the **FROZEN** analytic grammar. These classify returns, not professions, skill trees or six new quest chains. The families above remain cross-cutting; one case may cover several classes without counting the same P&L twice.
+
+| Return class | Existing cases / reusable backlog contexts |
+|---|---|
+| **Trade** | temporary arbitrage/alpha decay (2), geographic spread, carry/perishability, Short Shipment (3), urgency and different buyer willingness to pay |
+| **Operate** | Joel profit versus cash, complementary inputs, capacity, menu/SKU complexity; Wong fixed assets/services; outsource versus operate |
+| **Invest** | Juan biological maturity (10), productive equipment, illiquidity, diversification, ownership versus lending; human-capital investment only if later justified |
+| **Finance** | liquidity/solvency, receivables, collateral haircuts, short debt/long asset, distressed claims and leverage (4, 8–10, 14) |
+| **Intermediate** | public versus informal markets, guarantees, provenance, matching/access (5, 7); two-sided market making (12) with inventory exposure |
+| **Speculate** | winner's curse, private utility/market value, bubbles/resale, paper versus liquidation wealth, fake volume/wash-like activity, EV versus variance (11, 14) |
+
+This is a **case mine/backlog**, not 30 implementation tasks. Arbitrage belongs to Trade; hedging/insurance redistributes risk; fraud/manipulation describes behaviour; entrepreneurship can combine Operate + Invest + Finance; consumption/gifts are use/sinks. Novel stock/IPO systems and extra production chains remain Deferred.
+
+# AUTHORED CASES — STATUS PER CASE
+
+“Implemented” below preserves existing documentation claims. The dated `CODEX_VERIFICATION.md` snapshot has a narrower scope and does not verify all listed badges/finance extensions. This design-only reconciliation supplies no new runtime evidence; conflicting coverage claims remain pending implementation-lane verification.
 
 ## Scenario 1 — Aspen’s Lime Promise
 
 ### Situation
-Aspen needs one Lime Crate before departure. The player does not own one but may know a plausible source.
+Aspen needs provisions before departure. The incumbent example uses one Lime Crate; final quantity/timing are not frozen. The player does not own it but may know a plausible source. Aspen can also use classifieds, Octopus, background supply or direct sourcing; early information, existing stock, verification or delivery-risk tolerance can give the player a temporary advantage.
 
 Possible actions can include:
 
@@ -114,7 +133,7 @@ Future possible cases may distinguish difficult on-time performance, multiple pr
 ## Scenario 2 — Temporary Price Gap
 
 ### Situation
-Octopus publicly sells a marine / preserved good at a price that another actor, often Yasmin or another specialised buyer, may value more highly.
+A finite marine supplier lists a marine / preserved good through Octopus Clearing at a price that another actor, often Yasmin or another specialised buyer, may value more highly. The listing does not imply that Octopus owns the good.
 
 The opportunity is useful only while supply, demand and information remain favourable.
 
@@ -160,55 +179,25 @@ Do not implement these from simple one-click profit counters.
 
 ---
 
-## Scenario 3 — The Bad Tangerine
+## Scenario 3 — Short Shipment / Contract Misrepresentation
+
+**STRONG CANDIDATE; not implemented canon.** The old **Bad Tangerine pretending to be Lime** case is **History/Retired as written**. Its teaching value survives through shipment specification, quantity/quality risk and verification.
 
 ### Situation
-Aspen needs Lime. The player has a bad tangerine or another materially different substitute and can choose how to describe it.
 
-Possible actions:
+A crate promises acceptable Limes. Illustratively, it promises 12 but contains only 8, or the normal-looking top conceals filler/paper/stone. Exact crate size, defect probabilities, inspection accuracy/cost and remedies remain Open.
 
-- tell the truth;
-- disclose uncertainty;
-- exaggerate;
-- use technically true ambiguity;
-- lie directly;
-- allow inspection;
-- refuse inspection;
-- compensate later.
+Buyer options: skip inspection, spot-check, fully count, rely on supplier reputation, pay for verification or walk. Seller options include accurate disclosure, uncertainty, omission, exaggeration, false representation, allowing/refusing inspection and later compensation.
 
 ### Required world model
 
-Deception is not one binary `cheat` flag.
+Preserve the specification, seller knowledge, actual statement, buyer-visible evidence, inspection opportunity/cost, agreed warranty if any, later discovery and compensation/denial. Do not equate uncertainty with intentional fraud or apply reputation changes before plausible discovery. No fixed restitution amount or universal `cheat` flag is selected.
 
-Evidence should eventually distinguish:
+Aspen can solve the shortage without the player. A public classified/disclosure may draw competing sellers and reduce the player's private edge.
 
-- what the player knew;
-- what they actually claimed;
-- what the counterparty could reasonably infer;
-- whether inspection was offered / refused;
-- whether a warranty or definition existed;
-- later discovery;
-- later compensation / denial.
+### Concepts and future cases
 
-### Concepts
-
-- adverse selection;
-- misrepresentation;
-- omission;
-- due diligence;
-- inspection rights;
-- warranties;
-- reputation capital.
-
-### Coverage status
-
-**Future target.** Do not pretend the current hard-coded deception counter is sufficient.
-
-Possible future badges:
-
-- Snake Oil
-- Technically True
-- Read the Fine Print
+Adverse selection, specification, due diligence, verification cost, quantity/quality risk, misrepresentation/fraud, trust and reputation. Read the Fine Print / Technically True / Snake Oil remain possible realised-case names only after the relevant causal sequence exists.
 
 ---
 
@@ -221,7 +210,7 @@ A time-sensitive opportunity requires liquidity now.
 
 Possible routes may include:
 
-- Sterling relationship credit;
+- Joel relationship credit;
 - Yasmin secured borrowing;
 - sell a visible owned good;
 - accept an inbound bid;
@@ -246,7 +235,7 @@ Reference wealth and spendable liquidity are different. A claim may be valuable 
 
 ### Current coverage
 
-**Strong partial.** Sterling credit and Yasmin secured borrowing are implemented; Juan transferable claims are the next major extension.
+**Strong partial.** Joel credit and Yasmin secured borrowing are implemented; Juan transferable claims are the next major extension.
 
 Possible future cases:
 
@@ -259,16 +248,16 @@ Only award when the causal sequence is actually observed.
 
 ---
 
-## Scenario 5 — Public Rail or Dima
+## Scenario 5 — Octopus Public Market or Dima
 
 ### Situation
-The player wants the same economic outcome but formal access, traceability, form, privacy or enforcement constraints change which venue is usable.
+The player wants the same economic outcome but formal access, traceability, privacy or enforcement constraints change which venue is usable.
 
 Possible routes can include:
 
 - public Octopus-cleared transaction;
 - direct bilateral deal;
-- Sterling relationship proxy;
+- Joel relationship proxy;
 - Dima formal-market proxy;
 - Dima informal settlement / guarantee;
 - abstain.
@@ -298,7 +287,7 @@ Do not revive the old “Dirty Sardines / magic clean-money transaction” frami
 ## Scenario 6 — Private Event Information
 
 ### Situation
-The player receives a genuinely private, material lead about a restriction, shipment, buyer need, venue closure or other event.
+The player receives a private, potentially material and potentially mistaken lead about a restriction, shipment, buyer need, venue closure or other event.
 
 Possible actions:
 
@@ -313,7 +302,7 @@ Possible actions:
 
 ### World model
 
-Information is not automatically useful. The player must interpret the second-order response of other traders. Actor belief must remain separate from engine truth.
+A fast private phone lead may precede a delayed general newspaper report; the report describes a social/world fact, not a trade instruction. Disclosure can bring competitors and cause alpha decay. Retain source, provenance, credibility, motive and freshness; compare verification, carry and attention costs with the best alternative action. Actor belief remains separate from engine truth and private information never guarantees profit. Octopus market data and immediate local scene facts remain distinct from news.
 
 ### Concepts
 
@@ -373,10 +362,10 @@ Breach truth and breach detection are separate.
 
 ---
 
-## Scenario 8 — Pay Sterling or Take the Deal
+## Scenario 8 — Pay Joel or Take the Deal
 
 ### Situation
-A player owes Sterling today but also sees a high-return opportunity requiring the same cash.
+A player owes Joel today but also sees a high-return opportunity requiring the same cash.
 
 Possible actions may include:
 
@@ -456,7 +445,7 @@ Belief about solvency / liquidity must be separate from actual solvency / liquid
 Juan owes money. The same IOU appears as:
 
 - Juan’s liability;
-- Sterling / Dima / Yasmin / player receivable;
+- Joel / Dima / Yasmin / player receivable;
 - a discounted transferable asset;
 - a restructuring problem;
 - a possible claim on future botanical output.
@@ -476,6 +465,8 @@ Possible actions can include:
 The claim is not a fake inventory trinket. It is one obligation with a debtor and changing holder.
 
 Juan’s botanical productive assets make maturity meaningful: forcing immediate liquidation can destroy future value that might otherwise repay the claim.
+
+**Strong candidate comparison:** wait/current-payment risk; discounted early sale; Dima future-output/risk sharing; Yasmin fixed secured repayment. Each changes upside, downside and liquidity. Dima's workout has real costs/loss allocation and possible refusal; no free bailout or strictly dominant finance path. Juan's patient growing and impulsive tabs/wagers are intentional. The bible owns these roles; `DESIGN_WORKBOOK.md` §32.15 owns all toy numbers.
 
 ### Concepts
 
@@ -500,7 +491,7 @@ Badge title should remain unresolved until the realised story is stable; do not 
 ## Scenario 11 — Yasmin’s Auction
 
 ### Situation
-Yasmin offers an asset whose value may contain both private utility and uncertain common / resale value.
+Yasmin may organise a private consignment/auction as part of her capital-allocation business. **Strong candidate Sunflower lot:** an antique vessel/pot with an incidental flower; rivals want the vessel while the player wants the flower. Exact Auction v2 internals remain **Open**. A separate common-value lot can test uncertain resale value without pricing the flower itself.
 
 Possible actions:
 
@@ -532,7 +523,7 @@ The Sunflower’s value to the player must **not** be reduced to “what other b
 ## Scenario 12 — Wong Makes a Market
 
 ### Situation
-Wong repeatedly quotes small bid / ask spreads on standard goods while carrying inventory and household burn.
+**Candidate:** Wong quotes small bid / ask spreads on existing bridge goods while carrying inventory and household burn. Both sides must actually arrive; a posted spread is not free money.
 
 Possible actions for player interaction:
 
@@ -553,6 +544,8 @@ Market making must expose:
 - adverse selection;
 - quote withdrawal / widening.
 
+Related **Strong Candidate:** Wong's retained surplus → working capital → productive shop. Household burn, network credit/default and residual asset value teach capital access and cash != wealth. The bible owns multi-use shop economics; §32.15 of `DESIGN_WORKBOOK.md` owns toy evidence. No shop is claimed implemented.
+
 ### Coverage status
 
 **Future Market Depth target.**
@@ -562,7 +555,7 @@ Market making must expose:
 ## Scenario 13 — Negotiation Has an Outside Option
 
 ### Situation
-Wong, Dima, Yasmin or another counterparty opens with a strong number or time pressure, but the player may have another route.
+Aspen, Wong, Dima, Yasmin or another counterparty opens with a number or time pressure, but either party may have another route. **BATNA = Best Alternative To a Negotiated Agreement**, the best real fallback, not a negotiation-stat bonus. Aspen compares credible wholesalers, partial supply, delay penalties or disclosed substitutes by quantity, quality, time and risk; merely counting alternatives earns no fixed discount.
 
 Possible actions:
 
@@ -646,14 +639,16 @@ Primary:
 - execution / settlement;
 - future delivery / sourcing;
 - deadline planning;
-- conservative liquidity.
+- conservative liquidity;
+- weather / route reach / real fallback options;
+- Short Shipment verification and public disclosure.
 
 Secondary:
 
 - information timing;
 - position sizing.
 
-## Sterling
+## Joel
 Primary:
 
 - relationship capital;
@@ -687,7 +682,8 @@ Primary:
 - turnover;
 - small-unit economics;
 - working-capital velocity;
-- later market making.
+- household burn / productive capital formation;
+- candidate network credit, multi-use shop and market making.
 
 Secondary:
 
@@ -723,17 +719,17 @@ Primary:
 Secondary:
 
 - exclusivity;
-- traceability.
+- traceability;
+- costly distressed workout / moral-hazard limits.
 
 ## Octopus
 Octopus provides infrastructure / environment for:
 
 - public execution;
 - clearing;
-- settlement receipts;
-- perishability;
-- physical supply;
-- inventory / wholesale pressure.
+- payment, price discovery and settlement receipts.
+
+Perishability, marine supply and wholesale inventory pressure belong to finite goods owners/background suppliers, not Octopus Clearing. Client float is not personal wealth. Pooled shipment/project claims remain Deferred/Open.
 
 Octopus is not a seventh karmic diagnostic archetype.
 
@@ -769,9 +765,11 @@ Badge count is not completion percentage and must never become spiritual / karmi
 
 ---
 
-# 5. Diagnosis confidence
+# 5. Diagnosis confidence — PROVISIONAL
 
-Recommended interpretation of independent evidence:
+The player-facing radar, exact style axes and scoring are **Open**. Valuation, liquidity, information discipline, relationship investment, risk appetite, credit discipline, integrity and adaptability are candidates. Outcome != Style: both high- and low-risk play can succeed/fail or obtain/miss the flower.
+
+Provisional interpretation of independent evidence:
 
 - **1 independent case** — anecdote
 - **2 independent contexts** — emerging pattern
@@ -790,7 +788,7 @@ Do not let this teaching file reintroduce old world hypotheses as canon.
 
 In particular, do not revive:
 
-- old Mechanic / Vale / Dock Dog / Clown / Bar Apprentice / Fishmonger identities as current runtime names;
+- deprecated runtime labels as current narrative identities;
 - Fishmonger as central bank or hidden world-conspiracy figure;
 - the employer acquisition-agent opening;
 - compulsory sun ritual / petrification rules;
