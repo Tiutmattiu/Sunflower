@@ -14,7 +14,7 @@ Prefer:
 
 Every recurring gain or cost needs a balance-sheet path. Finance must ultimately serve consumption, production, logistics, projects, liquidity or risk transfer rather than become a self-contained paperwork economy.
 
-Octopus Clearing, Octopus personal inventory and background marine supply are distinct. Settlement float is never Octopus personal wealth.
+Octopus is the clearing/payment/local-market-data institution, never an ordinary NPC/Talk target. Separate marine merchant stock and background supply are independently owned; settlement float is never merchant wealth.
 
 ---
 
@@ -218,7 +218,7 @@ These labels are **design rebuild decisions, not permission to delete runtime ob
 
 ## Bicycle / Onewheel family
 
-Protect the bicycle-repair family because it has already become a useful cross-system mechanic:
+Protect the Onewheel assembly/repair challenge. Exact recipe and repair/workshop provider are OPEN; Aspen is not frozen as its provider. The following item family supports that challenge, not an immutable recipe:
 
 - Steel Rim
 - Presta Inner Tube
@@ -246,7 +246,7 @@ It is a model for Sunflower's preferred weirdness: the object itself is real; th
 
 ## Limes / Short Shipment
 
-Keep Limes as a high-density bridge good connecting Bar, provisioning, routes, perishability, cultivation and contract quantity/quality risk.
+Keep Limes as a bridge good connecting Bar and provisioning with inspection, short shipment, quantity, quality, misrepresentation and consequence. Do not force a scurvy rationale to bind Aspen to Limes. Bad Tangerine is retired as a good.
 
 Prefer a concrete unit such as `Limes, 24-count crate` once exact units are frozen.
 
@@ -516,7 +516,7 @@ Candidate language families:
 
 ### Decorative art / silver
 
-- Sterling Silver Serving Fork
+- 925 Silver Serving Fork
 - Art Deco Silver Cigarette Case
 - Cut-Crystal Decanter
 - Hand-Painted Porcelain Bowl
@@ -621,7 +621,7 @@ An item supported only by one authored joke or one buyer is a candidate for dele
 - Relationships must affect economically real variables such as credit, information, access, verification cost, priority, collateral or terms.
 - Large positions must encounter finite liquidity and/or price impact.
 - Ordinary recurring goods should normally have more than one effective source and more than one independent sink over the world model.
-- Octopus clearing throughput is not Octopus personal market share.
+- Octopus clearing throughput is not a separate marine merchant's market share.
 
 ---
 
@@ -639,7 +639,7 @@ The following remain open and should be settled by simulation or later authored 
 - exact Yasmin collectible lots and Auction v2 rules;
 - pooled shipment implementation;
 - exact forms of information, reputation and relationship quantification;
-- Plant agency / final Sunflower route details;
+- Onewheel exact recipe and repair/workshop provider;
 - whether any current prototype object survives for a later authored reason.
 
 The next quantitative comparison should test **old prototype catalogue versus rebuild Market Core v0** on source/sink density, effective redundancy, dead inventory, player attention load, actor dominance and exploitability before runtime deletion or migration.

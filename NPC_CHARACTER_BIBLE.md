@@ -1,8 +1,8 @@
 # Sunflower — NPC Character & Economy Bible v5
 
-> **Status: active narrative-economic canon, September 2026.**
+> **Status: active narrative-economic canon, reconciled 2026-09-07.** `GAME_DESIGN.md` §5 owns the frozen gameplay constitution. Reincarnation, automatic embodiment transitions, former-life/estate gameplay and alternate-form disappearance are RETIRED, not Open. Current character presentation does not reinstate them.
 >
-> Companion to `GAME_DESIGN.md`, `DESIGN_WORKBOOK.md`, `REBIRTH_FORM_SYSTEM.md`, `WORLD_CANON.md`, `SCENARIOS_TEACHING.md`, and `ITEM_ECONOMY.md`.
+> Companion to `GAME_DESIGN.md`, `DESIGN_WORKBOOK.md`, `WORLD_CANON.md`, `SCENARIOS_TEACHING.md`, and `ITEM_ECONOMY.md`.
 >
 > This revision supersedes the earlier generic player-facing identities. One compatibility/history map is retained here only: Sterling / Bar Apprentice / runtime `sterling` or `bar` → Joel; Mirelle Vale / runtime `vale` → Yasmin; Onewheel Clown / runtime `clown` → Juan; Dock Dog / runtime `dog` → Wong; Mechanic or Sailor used as a personal name / runtime `mechanic` → Aspen. Runtime `fishmonger` must be split by function rather than treated as a current primary character. Narrative canon uses the names below.
 >
@@ -25,7 +25,7 @@ They are recurring karmic knots with:
 - incomplete beliefs rather than engine omniscience;
 - a recognisable work rhythm;
 - a recognisable speech rhythm;
-- a pattern that can keep returning across lives.
+- a pattern recreated by ongoing needs and consequences, without assuming previous lives.
 
 The harbour should support:
 
@@ -33,12 +33,12 @@ The harbour should support:
 
 The six main recurring figures are:
 
-1. **Aspen** — current Sailor / mechanic; logistics / contract operator.
+1. **Aspen** — logistics / contract operator; provisioning, route reach, cargo, time and weather.
 2. **Joel** — Bar operator / apprentice / fast-learning experiential investor.
 3. **Yasmin** — family capital; strong candidate private capital allocator / elite social operator.
 4. **Wong** — household enterprise / high-turnover low-margin migrant dealer; Dog presentation, final species Open.
 5. **Juan** — botanist / grower / boundary-risk and distressed-finance operator.
-6. **Dima** — Seagull black-market broker / cross-form gatekeeper.
+6. **Dima** — Seagull informal broker / trust and settlement intermediary.
 
 **Sonya** is Joel's Penguin grandmother and a recurring supporting figure. She is not a seventh primary trader and should not be promoted into the core market graph merely because she matters to a route.
 
@@ -81,7 +81,7 @@ Avoid turning the cast into a coordinated fantasy naming set.
 
 Aspen is a Japanese lesbian woman and the current Sailor encountered in the opening harbour cycle.
 
-She is mechanically skilled, exact, punctual, and unusually sensitive to:
+Her frozen core is logistics, contracts, provisioning, route reach, time, weather, cargo, BATNA, working capital and dated obligations. She is not frozen as a mechanic/repair NPC; the Onewheel repair/workshop provider remains OPEN. She is exact, punctual and sensitive to:
 
 - clocks;
 - tide;
@@ -101,7 +101,7 @@ Aspen does **not** like the unknown.
 
 Aspen does **not** especially like sailing.
 
-This matters because `Sailor` is a liminal form/function in the larger cosmology. Occupying a boundary-crossing form does not mean enjoying freedom, wandering, or uncertainty.
+Sailor is her occupation. Crossing geographical boundaries does not mean enjoying risk, wandering or uncertainty; no metaphysical form is implied.
 
 ## Money-making method
 
@@ -113,7 +113,7 @@ Strong earning methods:
 - delivery contracts;
 - sourcing commissions;
 - repeat cross-port commerce whose sourcing and logistics costs are understood;
-- repairs she can scope before accepting;
+- cargo and provisioning commitments she can scope before accepting;
 - future delivery;
 - conservative private lending where she understands the underlying business;
 - repeat counterparties with observable settlement history.
@@ -239,7 +239,7 @@ This gives her a strong Sun-Moment contradiction:
 
 Joel is a young man operating the Bar.
 
-The Seagull network unexpectedly hired or installed him there.
+His hiring history and the Bar ownership arrangement remain Open.
 
 He comes from money.
 
@@ -320,7 +320,7 @@ The Bar should have real economics:
 - breakage;
 - labour / operating cost abstraction;
 - tabs;
-- rent / lease / Seagull claim;
+- rent / lease / documented business claim, if present; exact ownership remains Open;
 - replacements;
 - occasional family money covering what the business itself did not.
 
@@ -330,24 +330,9 @@ Joel can look profitable while family capital quietly plugs holes.
 
 The game should be able to reveal that distinction.
 
-## Why Dima hired him — current strong direction
+## Hiring and ownership — OPEN
 
-This detail was previously unresolved; the following is the current working explanation and may be revised if later story needs contradict it.
-
-Dima's network needed a human legal face for a tolerated cross-form venue.
-
-Joel was useful because:
-
-- he already wanted to work behind a Bar;
-- he did not object to Animal customers;
-- his family background made small operating losses survivable;
-- he was legally recognised;
-- he asked fewer defensive questions than a cautious operator;
-- Dima expected him to be easier to influence than he may actually become.
-
-Do not turn Joel into a helpless front.
-
-He can learn the structure and eventually negotiate with the people who expected to use him.
+Joel's operation of the Bar and his relationship with Dima do not establish who hired him or owns the business. Do not use a Seagull organisation, species exclusion or a required human legal front to fill that gap. His wish to work behind the Bar, family resources, weak early boundaries and capacity to learn remain independent character facts.
 
 ## Information edge
 
@@ -433,7 +418,7 @@ The engine records time and events, not `love`.
 - unpaid tab;
 - broken glass;
 - a drink made twice differently;
-- Seagull paperwork;
+- Bar business paperwork;
 - a family card or expensive object treated casually;
 - keys he may or may not legally own.
 
@@ -469,24 +454,9 @@ Her strategic performance becomes most visible around people whose:
 
 matter to her.
 
-## Previous form
+## Biography boundary
 
-Yasmin lived a previous life as an Animal.
-
-A hyena remains the creator's strongest candidate, but is **not yet locked**.
-
-The useful structure is not `hyena = cruel`.
-
-It is:
-
-- clan hierarchy;
-- social ranking;
-- reading access;
-- resource timing;
-- knowing who can approach what;
-- socially organised competition.
-
-Her current upper-class life may repeat a former social ecology in another form.
+No previous animal life or previous species is established for Yasmin. Her social ranking, access literacy and resource discipline stand on her current family/social position. Do not insert the retired hyena hypothesis into secret author truth, dialogue, memories or NPC knowledge.
 
 ## Money-making method
 
@@ -604,11 +574,7 @@ That protects her from fraud.
 
 It also means she has difficulty with continuity that cannot be documented.
 
-A reborn player can become the most personally irritating possible object:
-
-> behavioural continuity without clean title continuity.
-
-She may privately believe the animal is `the same you` and still refuse to transfer the old estate.
+A persuasive personal claim still needs evidence of title or authority before she settles it. This tension does not require a reborn player or an estate/form rule.
 
 Belief is not settlement.
 
@@ -1018,44 +984,9 @@ Sometimes optimisation works.
 
 That does not prove every existential problem is an optimisation problem.
 
-## Player-seed recognition — strong provisional direction
+## Retired player-Plant material
 
-Juan is a strong candidate to become the first recurring character who notices the player's deeper seed condition through **botanical observation rather than metaphysical authority**.
-
-Do not let him simply announce:
-
-> `You are a sunflower seed.`
-
-A better progression is material:
-
-- he notices a surface / scar / dormancy pattern;
-- asks to examine rather than interpret;
-- compares the player with ordinary seed stock;
-- changes humidity / soil / light / water conditions;
-- observes an actual biological response;
-- only later forms a hypothesis.
-
-He can be wrong about what the response means while being correct about the biology.
-
-### Possible Juan ending / release route
-
-A future ending may allow Juan to **plant the player**.
-
-This can function as his version of `helping / releasing / sending on` the player because the player's deeper form is a seed.
-
-Important guardrails:
-
-- Juan is not declared enlightened;
-- planting is not labelled automatically as liberation;
-- the game does not explain that Juan `saved your soul`;
-- germination can be transformation, continuation, release, another form, or something the player cannot yet classify;
-- exact Plant agency remains unresolved until separately designed.
-
-The scene should be materially ordinary.
-
-A pot, soil, water, timing, temperature, perhaps a label.
-
-No sermon is needed.
+The old player-seed recognition/planting sequence and playable Plant ending are retired, not a future character task. Juan's botanical skill, growing assets and Onewheel preparation/risk route remain.
 
 ## Information edge
 
@@ -1118,9 +1049,9 @@ He does not automatically know elite social information, shipping schedules or h
 
 ## Identity
 
-Dima replaces the earlier named Fishmonger slot in narrative canon.
+Dima is one of the six primary economic characters; he does not inherit the prototype marine supplier inventory or Octopus Clearing role.
 
-He is a male Seagull and the most visible operator of the harbour's dominant cross-form black-market brokerage network.
+He is a male Seagull and a visible informal broker whose advantage is a bounded network of contacts, trust and settlement/enforcement capability.
 
 `Dima` is an ordinary Russian diminutive chosen to fit the creator's preference for simple names and the character's tracksuit-gangster visual reference.
 
@@ -1139,14 +1070,15 @@ The tracksuit/gangster reference is visual-social shorthand, not his entire pers
 
 Dima does not own every illicit object in a catalogue.
 
-The black market exists because:
+Informal intermediation can earn because:
 
-- Animals lack equal formal recognition;
-- some venues exclude them;
-- some goods cannot use formal settlement;
-- people need proxies;
+- counterparties cannot easily find or trust one another;
+- privacy or timing makes public channels unsuitable;
+- some parties need a representative or guarantor;
 - information and credit are fragmented;
-- counterparties need enforcement where law will not help them.
+- claims need costly settlement or enforcement.
+
+No species-wide exclusion or Seagull-mafia premise is required. Exact legal institutions remain Open.
 
 Dima makes money by reducing those frictions.
 
@@ -1162,7 +1094,7 @@ Dima's network earns from:
 - discounting informal IOUs;
 - buying claims other people do not want to enforce;
 - information brokerage;
-- cross-form price differences;
+- private-channel valuation and access differences;
 - discreet delivery;
 - enforcement through access, boycott, social exclusion, or network consequence rather than universal physical violence.
 
@@ -1208,7 +1140,7 @@ He can be bypassed when:
 - a formal route becomes cheaper;
 - a competing broker appears;
 - his enforcement network loses legitimacy;
-- Animals gain better formal access;
+- counterparties gain better access to competing services;
 - a counterparty is outside his network.
 
 ## Information edge
@@ -1239,7 +1171,7 @@ He does not automatically know:
 - situations where formalisation destroys his rent;
 - counterparties with strong direct bilateral trust;
 - public goods with little enforcement need;
-- admitting that reduced exclusion can be good even when it makes him poorer.
+- admitting that reduced dependence on his network can help others even when it makes him poorer.
 
 ## Karmic pressure
 
@@ -1287,7 +1219,7 @@ It is:
 
 **History:** the old named Fishmonger combined physical supply and functions now assigned elsewhere. Do not cosmetically rename all that stock to Dima; compatibility labels are recorded at the top of this file.
 
-Keep three ledgers/roles distinct: **Octopus Clearing** (public payment, settlement and price discovery, with client float), **Octopus personal inventory** (finite owned goods), and **background marine supply** (boats, catches, wharf sellers and visitors). Processing a trade does not mean owning its goods or money.
+Keep three ledgers/roles distinct: **Octopus Clearing** (public payment, settlement and price discovery, with client float), **separate marine merchant inventory** (finite owned goods; not an Octopus NPC), and **background marine supply** (boats, catches, wharf sellers and visitors). Processing a trade does not mean owning its goods or money. Octopus is exclusively the clearing/payment/local-market-data institution, with no ordinary character, contact, relationship or Talk identity.
 
 Households, crews, workers, visitors and outside buyers/sellers are aggregate populations with finite income, stock, food/drink/lodging needs and operating costs. Payroll becomes purchasing power unless explicitly external. They need no additional named personalities.
 
@@ -1301,7 +1233,7 @@ Pooled shipment/project investment is **Deferred/Open**: contributed cash/in-kin
 
 Sonya is Joel's grandmother.
 
-She is a Penguin in the current life/form encountered by the player.
+She is the Penguin encountered by the player; no prior Human identity is established.
 
 The name follows the creator's rule based on *Death and the Penguin*: the penguin there is male, so the supporting Penguin grandmother uses the little girl's name, `Sonya`.
 
@@ -1311,12 +1243,12 @@ Sonya is not a main trader.
 
 She supports:
 
-- family continuity across legal/form discontinuity;
+- present family recognition and care;
 - fresh fish / hospitality;
 - the non-market Sunflower route;
-- ordinary domestic evidence of rebirth;
+- ordinary domestic life without a reincarnation explanation;
 - Joel's relationship to care and family;
-- the difference between institutional identity and lived relationship.
+- lived relationships that do not require a legal-history explanation.
 
 ## First appearance principle
 
@@ -1329,7 +1261,7 @@ Use recurrence:
 3. he removes the skin.
 4. eventually the player sees a Penguin eating it.
 5. somebody calls her Sonya or Grandma.
-6. legal descriptions appear later and do not match the family's relational language.
+6. no legal-death or former-Human document is required to explain her.
 
 Do not force the player to decide immediately whether `same person` is legally, biologically, psychologically, or metaphysically true.
 
@@ -1391,7 +1323,7 @@ Juan is the one most likely to turn the experience into a theory.
 
 ---
 
-# 12. Sun Moment Character Embodiment
+# 12. Character Behaviour at Sun Moment
 
 Use each character to show a different attachment without turning the Sun Moment into a personality quiz.
 
@@ -1453,7 +1385,7 @@ Wong sometimes charges her for the questions.
 
 ## Aspen ↔ Juan
 
-Aspen has repaired / inspected his equipment.
+Aspen and Juan have logistical/timing dealings. Historical equipment-repair dialogue does not assign Aspen the Onewheel workshop role; that provider is OPEN.
 
 Juan uses her measurements in his own models.
 
@@ -1484,11 +1416,11 @@ Joel can become genuinely technically knowledgeable, forcing Aspen to revise her
 
 ## Joel ↔ Dima
 
-Dima's network installed Joel at the Bar.
+Joel and Dima have an existing relationship; hiring and ownership are unresolved.
 
 Early relation contains:
 
-- legal-face utility;
+- introductions and customer/supplier access;
 - operational dependence;
 - mild underestimation;
 - possible affection;
@@ -1600,7 +1532,7 @@ Juan can understand this perfectly and still be annoyed.
 
 ## Dima ↔ Bar
 
-The Bar is a tolerated cross-form venue his network benefits from keeping alive.
+The Bar is a working social venue where his contacts may meet, trade and incur obligations.
 
 That does not mean Dima owns every glass, every debt, or every decision.
 
@@ -1733,7 +1665,7 @@ The six actors are not the **Trade / Operate / Invest / Finance / Intermediate /
 
 ## 17. Recurring Business Loops — Consolidated
 
-The table above replaces the repeated per-character loop list. Detailed operations remain in each character section; Economic Health should test their causal repetition, not invisible biography or one-time quest needs.
+Under `GAME_DESIGN.md` §5, repeat demand and reproducible, bounded-information choices are frozen requirements; location/availability follows actual activity. The table above replaces the repeated per-character loop list. Detailed operations remain in each character section; Economic Health should test their causal repetition, not invisible biography or one-time quest needs.
 
 ---
 
@@ -1770,7 +1702,7 @@ No romance checklist.
 
 The real mechanic is scarce attention.
 
-If the player repeatedly spends Morning / Afternoon actions with one person rather than:
+If the player repeatedly spends scarce attention with one person rather than:
 
 - investigate;
 - source;
@@ -1795,7 +1727,7 @@ The engine still does not infer the player's feeling.
 - Yasmin's identity, family capital and provenance/access direction; private allocator mechanics remain Strong Candidate;
 - Wong identity and rescue/volume structure;
 - Juan is a botanist / grower / biological real-asset operator as well as a boundary-risk operator / debtor;
-- Dima replaces the old named Fishmonger as primary Seagull black-market broker;
+- Dima is a primary Seagull informal broker, separate from marine supply and public clearing;
 - Sonya is Penguin grandmother / supporting figure;
 - Juan/Aspen/Wong toad circle exists before player arrival;
 - no romance system;
@@ -1808,21 +1740,15 @@ The engine still does not infer the player's feeling.
 - Wong multi-use shop, capital formation, network credit and two-sided quotes;
 - Yasmin private capital allocation and Juan maturity-finance choices;
 - Dima costly distressed workout;
-- Yasmin was specifically a hyena;
-- exact Seagull ownership/control of Bar;
+- Bar hiring and ownership, without a presumed Seagull organisation;
 - exact family structure / number of Aspen's lovers;
 - exact creditor balances;
 - exact Dima network hierarchy;
-- Juan is the first recurring character to recognise the player's seed condition through botanical evidence;
-- Juan can plant the player in one possible ending.
 
 ## Unresolved
 
 - final Wong species; current presentation remains Dog pending material opportunity tests;
 - exact ultimate karmic resolution for each character;
 - exact final economic numbers;
-- exact transformation causality;
-- Plant agency;
-- exact end-state of Sailor as a form;
 - full legal system;
 - final liberation.

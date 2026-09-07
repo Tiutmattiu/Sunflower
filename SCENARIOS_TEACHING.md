@@ -2,6 +2,8 @@
 
 > Status: **current source of truth for teaching coverage, realised cases, badge logic, and diagnosis evidence requirements.** This file is not world-history canon and should not revive obsolete NPC identities or old lore hypotheses.
 
+`GAME_DESIGN.md` §5 owns the frozen product constraints. Implementation labels below are inherited prototype documentation, not fresh verification or acceptance of the new flow. Form-based proxy and previous-life examples are retired; use actual authorised access/agency constraints. Octopus is an institution, never an ordinary NPC/Talk identity.
+
 Teaching rule:
 
 > **Experience first, terminology second.**
@@ -249,7 +251,7 @@ Only award when the causal sequence is actually observed.
 ## Scenario 5 — Octopus Public Market or Dima
 
 ### Situation
-The player wants the same economic outcome but formal access, traceability, form, privacy or enforcement constraints change which venue is usable.
+The player wants the same economic outcome but formal access, traceability, privacy or enforcement constraints change which venue is usable.
 
 Possible routes can include:
 
@@ -727,7 +729,7 @@ Octopus provides infrastructure / environment for:
 - clearing;
 - payment, price discovery and settlement receipts.
 
-Perishability, marine supply and wholesale inventory pressure belong to finite goods owners/background suppliers, not automatically Octopus. Client float is not personal wealth. Pooled shipment/project claims remain Deferred/Open.
+Perishability, marine supply and wholesale inventory pressure belong to finite goods owners/background suppliers, not Octopus Clearing. Client float is not personal wealth. Pooled shipment/project claims remain Deferred/Open.
 
 Octopus is not a seventh karmic diagnostic archetype.
 

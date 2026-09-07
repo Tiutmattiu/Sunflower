@@ -1,8 +1,8 @@
 # Sunflower — Dialogue / State Audit v1
 
-> **Status: active editorial audit, September 2026.**
+> **Status: active editorial audit, reconciled 2026-09-07.** Current constitution/world canon takes priority over historical editorial praise. DEFER and retired-premise scene IDs are not implementation-ready; a legitimate knowledge guard alone cannot make retired lore true.
 >
-> Companion to `DIALOGUE_MONTAGE_BANK.md`, `NPC_CHARACTER_BIBLE.md`, `DESIGN_WORKBOOK.md`, `INFORMATION_DISCOVERY_MODEL.md`, `REBIRTH_FORM_SYSTEM.md`, and `WORLD_CANON.md`.
+> Companion to `DIALOGUE_MONTAGE_BANK.md`, `NPC_CHARACTER_BIBLE.md`, `DESIGN_WORKBOOK.md`, `INFORMATION_DISCOVERY_MODEL.md`, and `WORLD_CANON.md`.
 >
 > This file does not add a second narrative canon. It records which authored scenelets are already strong, which require state guards, which should be rewritten, and which must wait for unresolved mechanics or cosmology.
 >
@@ -12,13 +12,13 @@
 
 # 1. Audit verdict
 
-`DIALOGUE_MONTAGE_BANK.md` currently contains 134 authored scenelets across:
+The historical bank contained 134 authored scenelets. Retired scripts are now short ID markers, not active content. The remaining bank spans:
 
 - six main characters;
 - pair scenes;
 - Bar ensembles;
 - attention / intimacy scenes;
-- cross-life scenes;
+- retired cross-life ID markers (historical scripts removed);
 - Sonya supporting scenes;
 - market/document montages;
 - Sun Moment variants;
@@ -284,7 +284,8 @@ Legend:
 - **KEEP** — prose direction strong; only normal runtime guard needed.
 - **GUARD** — prose usable, but current trigger is insufficient; actor knowledge/presence/state must be explicit.
 - **REWRITE** — concept useful, current prose too neat/meta/incorrect.
-- **DEFER** — do not render until unresolved mechanic/cosmology is actually specified.
+- **DEFER** — unresolved ordinary content, not permission to revive retired systems.
+- **RETIRED** — do not implement; old scripts remain in Git history, not future candidates.
 
 ## Aspen
 
@@ -335,7 +336,7 @@ Legend:
 | Y07 | GUARD | Yasmin needs a plausible path to know Joel helped. |
 | Y08 | GUARD | Requires real Juan claim with face value, price, and security state. |
 | Y09 | KEEP | Excellent if breach has actually been detected. |
-| Y10 | GUARD | Requires old signature + demonstrated memory continuity + formal legal discontinuity. |
+| Y10 | RETIRED | Obsolete form/prior-life/species-exclusion premise; do not implement. |
 | Y11 | KEEP | Good social-maintenance body cost. |
 | Y12 | GUARD | Requires real high-return socially costly deal; Dima presence optional, not automatic. |
 
@@ -347,13 +348,13 @@ Legend:
 | W02 | GUARD | Player must actually know turnover from tape/observation. |
 | W03 | REWRITE | `That makes the number nine` is too writerly. Preserve action, flatten dialogue. |
 | W04 | KEEP | Good merit + practical care coexistence. |
-| W05 | GUARD | Requires Dima-brokered cross-form deal. |
+| W05 | GUARD | Requires an actual Dima-brokered deal and fee; no species-exclusion premise. |
 | W06 | REWRITE | Concept is right but line explains volume economics too neatly. Let repeated one-tin disputes establish it over time. |
 | W07 | KEEP | Good private-use distinction if Juan really values the junk. |
 | W08 | KEEP | Strong toad-market scene. |
 | W09 | KEEP | Excellent money-in / dependents-expand montage. |
 | W10 | REWRITE | `I know many things / it is the price` is generic cleverness. |
-| W11 | GUARD | Animal form + earned Wong access; no automatic recognition of old identity required. |
+| W11 | RETIRED | Obsolete form/prior-life/species-exclusion premise; do not implement. |
 | W12 | KEEP | Strong work rhythm. |
 
 ## Juan
@@ -378,14 +379,14 @@ Legend:
 |---|---|---|
 | D01 | REWRITE | `Now we are talking` is generic gangster dialogue. |
 | D02 | KEEP | Good refusal to turn black market into a place/button. |
-| D03 | KEEP | Strong exclusion-rent line. |
+| D03 | RETIRED | Obsolete form/prior-life/species-exclusion premise; do not implement. |
 | D04 | REWRITE | Too much abstract enforcement explanation in one exchange. Use one concrete consequence. |
-| D05 | GUARD | Requires Joel employment relationship; exact Seagull ownership remains provisional. |
+| D05 | RETIRED | Obsolete form/prior-life/species-exclusion premise; do not implement. |
 | D06 | KEEP | Good Joel learning changes bargaining power. |
 | D07 | KEEP | Strong front/back entrance montage if both have reason to be there. |
 | D08 | GUARD | Wong roof route must exist materially; otherwise package is author magic. |
 | D09 | KEEP | Good distressed-claim pricing. |
-| D10 | DEFER | Formal Animal liberalisation not yet a specified world event. |
+| D10 | RETIRED | Obsolete form/prior-life/species-exclusion premise; do not implement. |
 | D11 | REWRITE | Currently reads like a sitcom fashion joke and generic Russian-gangster coding. |
 | D12 | KEEP | Strong informal-institution object. |
 
@@ -406,7 +407,7 @@ Legend:
 | P11 | KEEP | Good Wong/Dima bargaining texture. |
 | P12 | GUARD | Toad barter requires actual toad availability/value. |
 | P13 | REWRITE | `Tomorrow gives me certainty` is a finance textbook line. Dima can simply insist on the maturity he prefers. |
-| P14 | KEEP | Strong because Aspen's refusal is mechanical, not moral. |
+| P14 | DEFER | Onewheel challenge protected; repair/workshop provider OPEN, not automatically Aspen. |
 
 ## Ensemble scenes
 
@@ -418,7 +419,7 @@ Legend:
 | E04 | REWRITE | Payment chain is strong; `we invented finance` is a wink at the player. Remove it. |
 | E05 | KEEP | Strong because `broke` can mean several real things. |
 | E06 | REWRITE | Six characters each delivering their archetype response reads like a sitcom roll call. |
-| E07 | GUARD | Requires formal exclusion + Dima fee + Joel willingness + Wong route + impending market. |
+| E07 | RETIRED | Obsolete form/prior-life/species-exclusion premise; do not implement. |
 | E08 | KEEP | Strong if Juan's broken-glass risk is established enough that Dima's line is ordinary expectation, not prophecy. |
 
 ## Attention / intimacy
@@ -436,14 +437,14 @@ Legend:
 
 | ID | Status | Editorial note |
 |---|---|---|
-| R01 | GUARD | Yasmin must have evidence for continuity and still distinguish registry identity. |
-| R02 | KEEP | Good because Dima prices enforceability rather than declaring metaphysics. |
-| R03 | REWRITE | Wong must not automatically soul-recognise player. Recognition should follow a repeated bargaining habit, impossible memory, or introduced proof. |
-| R04 | REWRITE | Joel must not automatically know taste continuity. Let player indicate the same preference first; Joel notices recurrence second. |
-| R05 | KEEP | Strong Sailor-player / Aspen mirrored condition. |
-| R06 | GUARD | Juan may treat reincarnation as evidence only after player demonstrates impossible prior-life knowledge. |
-| R07 | DEFER | Plant agency/property interaction is still unresolved. |
-| R08 | DEFER | Same reason; do not canonise inability to signal before Plant mechanics exist. |
+| R01 | RETIRED | Obsolete form/prior-life/species-exclusion premise; do not implement. |
+| R02 | RETIRED | Obsolete form/prior-life/species-exclusion premise; do not implement. |
+| R03 | RETIRED | Obsolete form/prior-life/species-exclusion premise; do not implement. |
+| R04 | RETIRED | Obsolete form/prior-life/species-exclusion premise; do not implement. |
+| R05 | GUARD | Ordinary shipping work with a real manifest; Sailor is an occupation, not a form. |
+| R06 | RETIRED | Obsolete form/prior-life/species-exclusion premise; do not implement. |
+| R07 | RETIRED | Obsolete form/prior-life/species-exclusion premise; do not implement. |
+| R08 | RETIRED | Obsolete form/prior-life/species-exclusion premise; do not implement. |
 
 ## Sonya
 
@@ -452,7 +453,7 @@ Legend:
 | G01 | REWRITE | Do not make Wong the default fish retailer. Use whoever actually holds the fish that day / background fish stall. |
 | G02 | KEEP | Strong. |
 | G03 | KEEP | Strong first visual encounter. |
-| G04 | GUARD | Exact legal form wording is provisional until institutional language is canonised. |
+| G04 | RETIRED | Obsolete form/prior-life/species-exclusion premise; do not implement. |
 | G05 | GUARD | Requires Sunflower actually present in household state; route should not spawn it as decoration merely for scene. |
 
 ## Market / document montage
@@ -825,37 +826,13 @@ End.
 >
 > He has already turned back to the stall.
 
-## R03 — Wong recognition
+## R03 — Wong recognition — DEFERRED historical rewrite
 
-Do not begin with automatic recognition.
+**RETIRED — DO NOT IMPLEMENT.** Historical rewrite removed with its former-life premise.
 
-> Wong names a price.
->
-> You write the same counteroffer you used repeatedly in the previous life.
->
-> He looks at the number.
->
-> Then at you.
->
-> “Again?”
+## R04 — Joel continuity — DEFERRED historical rewrite
 
-That is enough for the first recurrence.
-
-## R04 — Joel continuity
-
-> Joel puts two bottles down.
->
-> You point to the sweeter one.
->
-> He stops.
->
-> “Again?”
->
-> You point to it once more.
->
-> He pours from that bottle.
-
-Do not make him know an old preference before the current player demonstrates it.
+**RETIRED — DO NOT IMPLEMENT.** Historical rewrite removed with its former-life premise.
 
 ## G01 — Fish order
 
@@ -975,7 +952,7 @@ End there.
 
 # 6. Knowledge and evidence map for high-value scenes
 
-These scenes are worth implementing early because their evidence paths are already close to existing engine primitives.
+These are evidence dependencies, not implementation instructions. Only non-deferred scenes consistent with the frozen constitution may be selected by a later authorised task; proximity to old engine primitives does not clear a canon gate.
 
 | Scene | Required evidence/state | What must remain hidden |
 |---|---|---|
@@ -989,14 +966,14 @@ These scenes are worth implementing early because their evidence paths are alrea
 | J02 Claims | claims data genuinely obtained | undiscovered creditors |
 | J04 Buyback | Juan claim actually tradeable + market price | creditor private reservation price |
 | J11 Restructure | real claim transfers | claims not held by visible parties |
-| D03 Proxy fee | Animal legal exclusion + Dima access | Dima universal knowledge |
+| D03 Proxy fee — RETIRED | Retired Animal-exclusion trigger; a real agency/privacy/settlement service needs new wording | Dima universal knowledge |
 | D04 Enforcement | Dima owns/brokered claim + missed payment | off-network consequences he cannot cause |
 | D09 Claim value | claim face/due/risk known to Dima | true repayment probability |
 | E02 Noon tape | public fill exists | hidden reason for Yasmin's valuation |
 | M03 Aspen penalty | contractual due time + actual lateness | no personality score |
 | M05 Wong volume | traceable gross inflow/outflow | private expenses not observed |
-| R01 Old signature | legal-life ID discontinuity + old record | metaphysical truth of identity |
-| R02 Old debt | old claim + current form + Dima willing to consider informal enforcement | soul-level liability |
+
+
 | F01–F07 | player actually owns living Sunflower + objective switched to Go home | what the player feels / what the flower `means` |
 
 ---
@@ -1024,7 +1001,7 @@ Use more:
 - a family transfer appearing in a Bar ledger;
 - a toad box that changes hands;
 - the same item with different provenance papers;
-- the same player habit recognised after rebirth;
+- the same player habit recognised in a later encounter; cross-life versions are retired;
 - public tape beside private consequences.
 
 The craft references are most useful when **material recurrence carries what dialogue would otherwise explain**.
@@ -1041,10 +1018,10 @@ The craft references are most useful when **material recurrence carries what dia
 6. Do not let a scene reveal engine truth unavailable to participants.
 7. Do not give every NPC equal knowledge of public and private events.
 8. Do not use scenelets to compensate for economic state that does not exist.
-9. Do not hard-code unresolved Bar ownership, Plant agency, Animal legal reform, or final karmic resolution merely because a draft scene mentions them.
+9. Do not hard-code unresolved Bar ownership or restore retired Plant agency / Animal legal reform / reincarnation merely because a draft scene mentions them.
 10. Do not preserve a line merely because it is funny if it flattens the character into a trope.
 
-First runtime narrative slice should be approximately 18–24 scenelets tied to mechanics that are already real or one implementation batch away.
+Historical slice-size guidance only: 18–24 scenelets was a provisional production estimate, not an implementation instruction. A later authorised slice must use actual state and the current constitution.
 
 Recommended first slice:
 
@@ -1053,7 +1030,7 @@ Recommended first slice:
 - Y01, Y05/Y06, Y09;
 - W01, W09, W12;
 - J01, J04, J07/J08;
-- D02, D03, D09, D12;
+- D02, D09, D12; D03 is retired and excluded;
 - E01, E02;
 - I03 or I05;
 - M03, M05;
@@ -1077,4 +1054,4 @@ When adding or revising a scene, ask in order:
 
 The target is not literary prestige.
 
-The target is a harbour in which economic action, social memory, material recurrence, and rebirth keep generating scenes that remain legible without exposition.
+The target is a harbour in which economic action, social memory and material recurrence generate legible scenes. Automatic embodiment scenes are retired, not awaiting a design gate.

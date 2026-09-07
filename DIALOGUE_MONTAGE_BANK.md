@@ -1,6 +1,6 @@
 # Sunflower — Dialogue & Montage Bank v1
 
-> **Status: authored content bank, September 2026.**
+> **Status: authored content bank, reconciled 2026-09-07.** `GAME_DESIGN.md` §5 and current world/character canon override old scene premises. DEFERRED and retired-premise entries retain IDs for editorial history only and must not be selected for gameplay.
 >
 > Companion to `NPC_CHARACTER_BIBLE.md` and `DESIGN_WORKBOOK.md`.
 >
@@ -388,6 +388,9 @@ Joel wipes the counter.
 ---
 
 ## S06 — Dima's employee
+
+**DEFERRED / historical premise, 2026-09-05:** Hiring/ownership is Open. The following historical employee/lease account is not current canon.
+
 **Trigger:** player asks who owns Bar.
 
 “Dima hired me.”
@@ -484,7 +487,7 @@ He pulls it free.
 
 “You were saying?”
 
-The Afternoon action is already almost gone.
+The current appointment leaves little time before the next commitment.
 
 ---
 
@@ -728,23 +731,8 @@ Nothing else is discussed until you do.
 ---
 
 ## Y10 — Animal continuity
-**Trigger:** transformed player presents old signature.
 
-Yasmin studies the signature.
-
-Then your current hand/paw/mark.
-
-“I believe you remember writing this.”
-
-You wait.
-
-“That is not the same as owning what the signer owned.”
-
-You push the document back.
-
-She does not.
-
----
+**HISTORY / RETIRED — DO NOT IMPLEMENT.** The obsolete form, prior-life or species-exclusion premise is removed; full historical prose remains in Git history.
 
 ## Y11 — Party fatigue
 **Trigger:** late event after social maintenance.
@@ -857,7 +845,10 @@ He opens one.
 ---
 
 ## W05 — Dima fee
-**Trigger:** cross-form deal.
+
+**Editorial status, 2026-09-05:** Candidate only: requires an actual brokered deal and fee, not species exclusion.
+
+**Trigger:** an actual Dima-brokered deal with an earned fee.
 
 Dima: “Two tins.”
 
@@ -967,21 +958,8 @@ Wong: “Today.”
 ---
 
 ## W11 — Animal player
-**Trigger:** player transformed Animal.
 
-Wong looks at you once.
-
-“You eat the same?”
-
-You indicate yes.
-
-“Good.”
-
-He changes nothing on the price board.
-
-Later he shows you a door you could not use before.
-
----
+**HISTORY / RETIRED — DO NOT IMPLEMENT.** The obsolete form, prior-life or species-exclusion premise is removed; full historical prose remains in Git history.
 
 ## W12 — No time
 **Trigger:** player wants long personal talk during busy day.
@@ -1252,21 +1230,8 @@ Then at the paper in your hand.
 ---
 
 ## D03 — Fee
-**Trigger:** Animal player needs formal purchase.
 
-“Two tins.”
-
-You point to the public price.
-
-“That is the public price.”
-
-You point to yourself.
-
-“That is why it is two tins.”
-
-He does not smile.
-
----
+**HISTORY / RETIRED — DO NOT IMPLEMENT.** The obsolete form, prior-life or species-exclusion premise is removed; full historical prose remains in Git history.
 
 ## D04 — Enforcement
 **Trigger:** informal counterparty misses payment.
@@ -1290,25 +1255,8 @@ He folds the claim.
 ---
 
 ## D05 — Joel hire
-**Trigger:** player asks why Joel.
 
-“Why him?”
-
-Dima watches Joel drop a spoon.
-
-Joel catches it before it hits the floor.
-
-Dima: “Human.”
-
-You wait.
-
-“Rich.”
-
-You wait.
-
-“Likes the job.”
-
----
+**HISTORY / RETIRED — DO NOT IMPLEMENT.** The obsolete form, prior-life or species-exclusion premise is removed; full historical prose remains in Git history.
 
 ## D06 — Joel learns
 **Trigger:** later Joel challenges term.
@@ -1383,25 +1331,8 @@ Dima: “That improves nothing.”
 ---
 
 ## D10 — Formal liberalisation
-**Trigger:** Animals gain a new formal access path.
 
-The notice is pinned crooked.
-
-`ANIMAL APPLICANTS MAY NOW—`
-
-Wong reads the first paragraph.
-
-“Good.”
-
-Dima reads the fee schedule.
-
-“Temporary.”
-
-“You hope.”
-
-Dima folds the notice once.
-
----
+**HISTORY / RETIRED — DO NOT IMPLEMENT.** The obsolete form, prior-life or species-exclusion premise is removed; full historical prose remains in Git history.
 
 ## D11 — Tracksuit
 **Trigger:** formal event where Dima is out of place.
@@ -1824,25 +1755,8 @@ Juan says, “Nobody has answered you.”
 ---
 
 ## E07 — Formal and informal
-An Animal waits outside the formal market.
 
-Dima says, “Two tins.”
-
-Joel says, “I'll go in.”
-
-Dima says, “You work for me.”
-
-Joel says, “Not for this.”
-
-Yasmin watches.
-
-Wong says, “One tin if I use the back.”
-
-Aspen: “The market opens in four minutes.”
-
-Everybody moves.
-
----
+**HISTORY / RETIRED — DO NOT IMPLEMENT.** The obsolete form, prior-life or species-exclusion premise is removed; full historical prose remains in Git history.
 
 ## E08 — Sun Moment at Bar
 The glasses stop.
@@ -1977,85 +1891,29 @@ You nod.
 
 ---
 
-# 11. Cross-Life / Form Montages
+# 11. Retired Cross-Life / Form Scene IDs
+
+These IDs are retired, not awaiting a new mechanism. R05 concerns an ordinary shipping manifest and carries no form implication.
 
 ## R01 — Old signature, Yasmin
-You put the old contract down.
 
-Yasmin reads the signature.
-
-Then she looks at you.
-
-“I know.”
-
-You wait.
-
-“That is not what the registry knows.”
-
-She turns the paper around.
-
-“Those are different problems.”
-
----
+**HISTORY / RETIRED — DO NOT IMPLEMENT.** The obsolete form, prior-life or species-exclusion premise is removed; full historical prose remains in Git history.
 
 ## R02 — Old debt, Dima
-Dima looks at your current form.
 
-Then the old claim.
-
-“Legally?”
-
-He shrugs.
-
-“Informally?”
-
-He looks at you again.
-
-“Maybe.”
-
-He folds the paper.
-
-“That costs more.”
-
----
+**HISTORY / RETIRED — DO NOT IMPLEMENT.** The obsolete form, prior-life or species-exclusion premise is removed; full historical prose remains in Git history.
 
 ## R03 — Wong recognition
-Wong looks at you.
 
-“You used to bargain worse.”
-
-You point at yourself.
-
-“Yes, yes.”
-
-He lowers the price by one.
-
-No explanation follows.
-
----
+**HISTORY / RETIRED — DO NOT IMPLEMENT.** The obsolete form, prior-life or species-exclusion premise is removed; full historical prose remains in Git history.
 
 ## R04 — Joel continuation
-You enter in another form.
 
-Joel is cutting lime.
+**HISTORY / RETIRED — DO NOT IMPLEMENT.** The obsolete form, prior-life or species-exclusion premise is removed; full historical prose remains in Git history.
 
-He looks up.
+## R05 — Aspen and a player shipping manifest
 
-The knife stops.
-
-Then:
-
-“Do you still hate the bitter one?”
-
-You point to the sweet bottle.
-
-“Okay.”
-
-He reaches for it.
-
----
-
-## R05 — Aspen as Sailor-player
+**Candidate:** ordinary logistical work with an actual manifest. Sailor is an occupation, not an embodiment. The section placement is historical; this scene establishes no past life.
 Aspen reads your manifest.
 
 “You scheduled both ports.”
@@ -2077,59 +1935,16 @@ She looks at it.
 ---
 
 ## R06 — Juan, reincarnation as evidence
-“You remember the cliff?”
 
-You indicate yes.
-
-Juan sits up.
-
-“The angle?”
-
-You indicate yes.
-
-“The Sun Moment?”
-
-You indicate yes.
-
-Aspen, across the room: “Do not encourage him.”
-
-Juan: “This is the first useful death we've had.”
-
----
+**HISTORY / RETIRED — DO NOT IMPLEMENT.** The obsolete form, prior-life or species-exclusion premise is removed; full historical prose remains in Git history.
 
 ## R07 — Plant-player, Yasmin
-Yasmin stands beside the pot.
 
-“Who owns it?”
-
-Joel: “Does that matter?”
-
-“Yes.”
-
-Wong: “It needs water.”
-
-“That also matters.”
-
-Juan: “Can it hear us?”
-
-Dima: “Who is paying for the water?”
-
----
+**HISTORY / RETIRED — DO NOT IMPLEMENT.** The obsolete form, prior-life or species-exclusion premise is removed; full historical prose remains in Git history.
 
 ## R08 — Plant-player, Joel
-Joel turns the pot toward the window.
 
-You cannot tell him whether you wanted that.
-
-He moves it back.
-
-Then forward again.
-
-“Sorry.”
-
-He leaves it in the middle.
-
----
+**HISTORY / RETIRED — DO NOT IMPLEMENT.** The obsolete form, prior-life or species-exclusion premise is removed; full historical prose remains in Git history.
 
 # 12. Sonya — Small Supporting Scenes
 
@@ -2179,23 +1994,8 @@ Joel: “Yes.”
 ---
 
 ## G04 — Legal form
-A form on the table reads:
 
-`FORMER HUMAN: DECEASED`
-
-Below it:
-
-`CURRENT ANIMAL: PENGUIN`
-
-Joel uses the back of it to write a shopping list.
-
-`FISH`
-
-`ICE`
-
-`SOAP`
-
----
+**HISTORY / RETIRED — DO NOT IMPLEMENT.** The obsolete form, prior-life or species-exclusion premise is removed; full historical prose remains in Git history.
 
 ## G05 — Sunflower
 A Sunflower is near the window.
@@ -2544,7 +2344,7 @@ Later: lover arrival.
 
 Later: Sun Moment experiment.
 
-Later: player's transformation date.
+Later: another actual cargo deadline.
 
 ### Joel
 “Try this.”
@@ -2584,7 +2384,7 @@ First: race.
 
 Later: toad experiment.
 
-Later: rebirth evidence.
+Retired variant: rebirth evidence; do not implement.
 
 The line should become more uncomfortable through repetition.
 

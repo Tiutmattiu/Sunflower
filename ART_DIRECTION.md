@@ -263,7 +263,7 @@ Primary locations:
 - Wong's dock pile / salvage area;
 - Juan's greenhouse / growing room;
 - Dima's informal office / back room;
-- Octopus Clearing desk, visually distinct from any finite personal seafood stock;
+- Octopus Clearing desk, visually distinct from separately owned marine stock;
 - general public harbour / Noon clearing space.
 
 ### 3.3 Object assets
@@ -425,7 +425,7 @@ Suggested props: drink, tab book, odd experimental ingredient, note, small senso
 ```text
 [MASTER STYLE PREFIX]
 
-ASPEN — Japanese adult woman, disciplined sailor/mechanic/operator. Black bob or pixie cut. Pale natural skin, but NOT geisha-white and not porcelain. NO lipstick. Mature rather than youthful. Compact, durable, weather-aware, time-aware, physically competent, reserved and hard-working without looking rustic. Her life is organised around schedules, maintenance, provisioning and dependable low-variance work.
+ASPEN — Japanese adult woman, disciplined logistics/contract operator. Black bob or pixie cut. Pale natural skin, but NOT geisha-white and not porcelain. NO lipstick. Mature rather than youthful. Compact, durable, weather-aware, time-aware, physically competent, reserved and hard-working without looking rustic. Her life is organised around schedules, maintenance, provisioning and dependable low-variance work.
 
 Do not make her cute, doll-like, girlish, glamorous, geisha-coded, extremely white or softly fragile. Keep adult facial weight and subtle labour/tension in posture.
 
@@ -437,7 +437,7 @@ Suggested props: watch, weather slip, maintenance list, compact tool, bundled su
 ```text
 [MASTER STYLE PREFIX]
 
-OCTOPUS — a real octopus economic actor, not a humanised mascot, operating the harbour's public clearing institution. Physically handles order slips, settlement papers/tins and public-tape records with multiple arms; limited personal marine stock may appear separately. Clever, practical, slightly uncanny and faintly comic only because the world itself accepts the situation as ordinary. Octopus Clearing, Octopus personal inventory and background marine supply must remain visually distinct.
+OCTOPUS CLEARING — depict the clearing/payment/local-market-data institution through a harbour settlement counter, order slips, tins and receipts. No ordinary NPC portrait, Talk/contact card or personal relationship identity. Marine merchant businesses and their goods are separate from client settlement float.
 
 Do not give it a cute children's-cartoon face. No kawaii octopus, no Pixar expression, no humanoid body in a costume.
 
@@ -451,7 +451,7 @@ Suggested props: fish crates, sea urchin basket, ice, seaweed bundle, scales, cl
 ```text
 [MASTER STYLE PREFIX]
 
-Create one unified Sunflower cast tableau containing Aspen, Joel, Yasmin, Wong, Juan, Dima and the Octopus operator. Preserve each current character design from this file and the bible; exclude retired prompt details. Dima is a Seagull, and his replacement asset specification remains Open. Do not equalise their age, beauty, body or ethnicity. Arrange them as people/animals occupying one harbour economy rather than fashion models lined up for a franchise poster.
+Create one unified Sunflower cast tableau containing Aspen, Joel, Yasmin, Wong, Juan, Dima with the Octopus Clearing counter as infrastructure. Preserve each current character design from this file and the bible; exclude retired prompt details. Dima is a Seagull, and his replacement asset specification remains Open. Do not equalise their age, beauty, body or ethnicity. Arrange them as people/animals occupying one harbour economy rather than fashion models lined up for a franchise poster.
 
 Include a few economically meaningful props around each figure. Use a printed-comic ensemble composition with social awkwardness and material specificity. For the current asset pass, Wong is clearly a copper whippet-like dog. Octopus is clearly an octopus. The human faces must stay non-beautified and specific.
 ```
@@ -464,14 +464,14 @@ Include a few economically meaningful props around each figure. Use a printed-co
 
 ```text
 [MASTER STYLE PREFIX]
-A compact harbour berth/workshop organised obsessively around time and maintenance: weather notices, tools, coiled rope, labelled supplies, a narrow bunk, departure schedule, practical storage, mechanical parts. Aspen belongs naturally in the space. It should feel used, clean but not decorative, and slightly constrained by routine.
+A compact harbour berth/cargo office organised around route reach, deadlines and provisioning: weather notices, cargo papers, coiled rope, labelled supplies, a narrow bunk, departure schedule and practical storage. This is not a frozen Onewheel workshop; repair provider remains OPEN. Aspen belongs naturally in the space. It should feel used, clean but not decorative, and slightly constrained by routine.
 ```
 
 ## Joel's Bar
 
 ```text
 [MASTER STYLE PREFIX]
-A cross-form harbour bar: ordinary worn furniture, glasses, ice box, bottles, tabs/IOUs, one or two strange objects customers left behind, room for humans and animals without turning it into fantasy tavern décor. Warm saturated printed colours. Socially porous, slightly messy, sensorial and alive.
+A working harbour bar with Human and Animal customers, without implying exclusion elsewhere: ordinary worn furniture, glasses, ice box, bottles, tabs/IOUs, one or two strange objects customers left behind, room for humans and animals without turning it into fantasy tavern décor. Warm saturated printed colours. Socially porous, slightly messy, sensorial and alive.
 ```
 
 ## Yasmin receiving room / auction table
@@ -506,7 +506,7 @@ A small informal office/back room near the harbour: ordinary desk, claim papers,
 
 ```text
 [MASTER STYLE PREFIX]
-A wet harbour public settlement counter: sardine tins, public order/clearing slips, scales, stamps and receipts, with nearby marine lots visibly belonging to small boats, wharf sellers, visitors or limited Octopus-owned stock. The absurdity is treated as normal. Client settlement papers, settlement float, Octopus personal inventory and background supply must be visually distinguishable.
+A wet harbour public settlement counter: sardine tins, public order/clearing slips, scales, stamps and receipts, with nearby marine lots visibly belonging to small boats, wharf sellers, visitors or separately owned merchant stock. The absurdity is treated as normal. Client settlement papers, settlement float, separate merchant inventory and background supply must be visually distinguishable.
 ```
 
 ---
@@ -586,7 +586,7 @@ Avoid:
 
 # 16. Storyboard rules by game event
 
-## 16.1 Public Noon clearing
+## 16.1 Historical prototype public Noon clearing
 
 Default small sequence:
 
@@ -615,19 +615,9 @@ If contextual resistance becomes available:
 - no enlightenment iconography;
 - if the player keeps working, show the late edit materially, not as spiritual special effect.
 
-## 16.3 Rebirth / form change
+## 16.3 Retired form-change storyboard
 
-Use repeated composition rather than fantasy transformation spectacle.
-
-Example grammar:
-
-1. familiar location composition from prior life;
-2. cut to same composition with player absent;
-3. object/estate paper remains;
-4. new-body POV/scale enters later;
-5. formerly ordinary object is now inaccessible / enormous / unusable / newly useful.
-
-The point is changed economic position, not magical fireworks.
+**HISTORY / RETIRED — DO NOT IMPLEMENT.** Automatic embodiment, prior-life and estate storyboards are removed. Sun Moment remains; no future transformation sequence is implied.
 
 ## 16.4 Juan claim / fire sale
 
@@ -694,7 +684,7 @@ Do not label it “bad ending.”
 
 Approximate composition:
 
-- top 8–10%: day / phase / cash / actions / objective;
+- top 8–10%: current time context / cash / remaining attention / objective; exact clock remains Open, with no required phase checklist;
 - left ~35–40%: current place + active person/body;
 - centre/right ~40–48%: active paper/object/transaction;
 - narrow object rail: Newspaper / Phone / Notebook / Market Records / Inventory / IOUs / invitations;
@@ -718,7 +708,7 @@ The next interactive tableau appears after the consequence sequence.
 
 # 18. Information hierarchy
 
-**Strong candidate, not implemented UI:** `INFORMATION_DISCOVERY_MODEL.md` owns three physical surfaces:
+**FROZEN surface direction, not implemented-UI evidence:** `GAME_DESIGN.md` §5 owns the workbench constitution; `INFORMATION_DISCOVERY_MODEL.md` details these three sources:
 
 - **Newspaper:** broad, delayed general social/world news (weather, harbour, society/culture, notices/classifieds); social facts invite inference, never a financial ticker's trade instruction.
 - **Phone:** fast narrow private messages, quotes, relationships, leads and urgent updates; source/provenance, credibility, motive and freshness remain legible.
@@ -731,6 +721,8 @@ Private messages may precede public disclosure and alpha decay. Convey source/ag
 - one current scene;
 - one current fact/result;
 - immediate choices.
+
+Workbench access must always include Newspaper, Phone, Ledger/Notebook, Inventory/Assets, Finance and Reputation/Relationships. Read/review without spending attention or advancing time; use context to focus one surface at a time. Locations and known events lead to actual scene interactions, not a global NPC-card pool.
 
 **ON THE DESK**
 

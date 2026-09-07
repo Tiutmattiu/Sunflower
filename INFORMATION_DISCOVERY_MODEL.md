@@ -22,9 +22,9 @@ Decision evidence records information available to the player at commitment time
 
 ---
 
-## Three information layers — STRONG CANDIDATE
+## Three information layers — FROZEN surface direction
 
-This is the current information architecture, not a claim that newspaper/phone runtime exists.
+`GAME_DESIGN.md` §5 owns the frozen workbench, free-reading, first-meeting contact and bounded-knowledge requirements. These surfaces are required product direction, not a claim that newspaper/phone runtime exists; exact timing and action costs remain Open. Opening an existing message is free; asking for new information is a substantive intervention. Public availability is not automatic NPC attention or comprehension.
 
 | Layer | Timing / reach | Material content |
 |---|---|---|
@@ -242,7 +242,7 @@ Yasmin and Aspen already know each other and have done business before the run b
 
 Yasmin is socially analogous to a queen bee: elite, central, wealthy, unusually capable of accessing privileged channels.
 
-Aspen's Sailor role remains a broader liminal design question, but the economic relationship is established:
+Aspen's Sailor role is an occupation, not a metaphysical form. The economic relationship is established:
 
 > Aspen repeatedly brings outside cargo; Yasmin is an experienced buyer of unusual foreign goods.
 
@@ -260,13 +260,9 @@ Wong also connects to animal-world / informal actors including candidate groups 
 - Squirrels;
 - Mosquitoes.
 
-### Bar as boundary venue
+### Bar as a working social venue
 
-The Bar is currently the only confirmed human venue that openly permits animals to enter.
-
-Other human venues may ban or restrict animal people.
-
-This makes the Bar economically and narratively important as a boundary space between human and animal markets, not merely a cocktail shop.
+Joel's Bar brings customers, suppliers, family and contacts into the same place. What an actor can learn depends on actual presence, conversation or another legitimate source. Human and Animal customers do not establish a ban elsewhere or a species-wide formal-access hierarchy.
 
 ---
 
@@ -421,7 +417,7 @@ This is the desired source of participation.
 
 Do not solve information asymmetry with hidden dice that simply say an NPC succeeds or fails to know something.
 
-Randomness may affect attention or noisy rumours later, but the primary system should remain reconstructable:
+World events and the incoming evidence environment may vary. NPC attention allocation, search and action choice must be reproducible for the same conditions and beliefs under `GAME_DESIGN.md` §5; do not add random action or knowledge-success rolls. Decisions remain reconstructable from:
 
 > public knowledge + relationships + limited search time + expertise + precision + source quality + remembered evidence.
 

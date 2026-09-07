@@ -1,6 +1,6 @@
-# Sunflower — Current Verification
+# Sunflower — Dated Prototype Verification
 
-> Current executable contracts and observed checks only. Git history carries superseded implementation archaeology.
+> **Historical prototype evidence: 2026-09-04.** The executable contracts and observed checks below retain that scope. They do not verify the 2026-09-07 frozen gameplay constitution in `GAME_DESIGN.md` §5. No runtime checks were repeated by the canon/documentation pass. Git history carries superseded implementation archaeology.
 >
 > Keep verification small: production build, the two direct smoke scripts, and focused browser checks. Do not add a test framework or CI without a demonstrated need.
 
