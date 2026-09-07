@@ -296,7 +296,7 @@ function consumeBackgroundGoods(world) {
 
 function runToadCircle(world) {
   if (world.day !== world.toadCircle.nextGatheringDay) return;
-  const attending = world.toadCircle.members.filter((id) => world.actors[id].location !== "away");
+  const attending = world.toadCircle.members.filter((id) => !world.actors[id].removed && world.actors[id].capacity > 0 && world.actors[id].location !== "away");
   world.toadCircle.occurrences.push({ day: world.day, attending, location: world.toadCircle.location });
   world.toadCircle.nextGatheringDay += 18;
   for (const id of attending) world.actors[id].location = world.toadCircle.location;
