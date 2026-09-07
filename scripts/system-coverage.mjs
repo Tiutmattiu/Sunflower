@@ -10,7 +10,7 @@ const exercised = new Set();
 
 let game = morning();
 game.information.push(
-  { id: "lime-source", claimType: "holding", subjectId: "sterling", item: "Lime Crate", text: "Sterling has Lime.", source: "investigation", precision: "exact", confidence: "high", freshness: "current", observedDay: 1, knownBy: ["player"] },
+  { id: "lime-source", claimType: "holding", subjectId: "joel", item: "Lime Crate", text: "Joel has Lime.", source: "investigation", precision: "exact", confidence: "high", freshness: "current", observedDay: 1, knownBy: ["player"] },
   { id: "lime-need", claimType: "need", subjectId: "aspen", item: "Lime Crate", text: "Aspen needs Lime.", source: "conversation", precision: "exact", confidence: "high", freshness: "current", observedDay: 1, knownBy: ["player"] },
 );
 game = acceptFutureDelivery(game);
@@ -35,10 +35,10 @@ assert(game.decisionEvidence.some((entry) => entry.type === "proxy-access" && en
 exercised.add("dima-proxy");
 
 game = morning();
-game.claims.find((claim) => claim.id === "juan-sterling-tab").knownByPlayer = true;
-game = buyJuanClaim(game, "juan-sterling-tab");
+game.claims.find((claim) => claim.id === "juan-joel-tab").knownByPlayer = true;
+game = buyJuanClaim(game, "juan-joel-tab");
 assert(game.decisionEvidence.some((entry) => entry.type === "claim-transferred" && entry.fee === 1));
-const bought = game.claims.find((claim) => claim.id === "juan-sterling-tab");
+const bought = game.claims.find((claim) => claim.id === "juan-joel-tab");
 game.day = bought.dueDay; game.phase = "sunset"; game.traders.juan.sardines = bought.faceAmount;
 game = resolveDuePrivateMatter(game, bought.id, "collect");
 assert(game.decisionEvidence.some((entry) => entry.type === "claim-collected"));

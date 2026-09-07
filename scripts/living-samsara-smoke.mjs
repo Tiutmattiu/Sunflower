@@ -8,7 +8,7 @@ import {
 import { INITIAL_TRADERS, ITEMS } from "../src/gameData.js";
 import { sellerAsk } from "../src/npcAI.js";
 
-const ACTORS = ["wong", "aspen", "yasmin", "juan", "sterling", "dima", "octopus", "player"];
+const ACTORS = ["wong", "aspen", "yasmin", "juan", "joel", "dima", "octopus", "player"];
 const OLD_IDS = ["dog", "mechanic", "vale", "clown", "bar", "fishmonger"];
 const morning = (game = createGame()) => advancePhase(game);
 
@@ -53,11 +53,11 @@ assert.deepEqual(resolveNoonMarket(game), game, "Noon settles exactly once");
 
 game = createGame();
 game.phase = "sunset";
-game.traders.sterling.inventory.push("Ice Block");
-game.perishTimer["sterling:Ice Block"] = [0];
+game.traders.joel.inventory.push("Ice Block");
+game.perishTimer["joel:Ice Block"] = [0];
 game = advancePhase(game);
-assert(game.recurringLedger.some((entry) => entry.actorId === "sterling" && entry.category === "outside-service-revenue" && entry.inputUsed === "Ice Block" && entry.amount === 5));
-assert(!game.decisionEvidence.some((entry) => entry.traderId === "sterling" && entry.item === "Ice Block" && entry.consequence === "perished"));
+assert(game.bar.serviceWindows.at(-1).arrivals === 1 && game.bar.serviceWindows.at(-1).served === 1);
+assert(game.bar.serviceWindows.at(-1).localRevenue > 0, "service revenue needs a funded local customer");
 
 game = createGame();
 game.maxDays = 42;
@@ -65,7 +65,8 @@ while (!game.ended) game = closeDay(game);
 const recurring = (actor, category) => game.recurringLedger.filter((entry) => entry.actorId === actor && entry.category === category);
 assert(recurring("aspen", "voyage-departure").length >= 2 && recurring("aspen", "voyage-return").length >= 2);
 assert(recurring("wong", "household-support-burn").length === 42 && recurring("wong", "labour-produced-salvage").length >= 20 && recurring("wong", "odd-job-income").length >= 20);
-assert(recurring("sterling", "outside-service-revenue").length === 42 && recurring("sterling", "business-input").length > 0);
+assert(game.bar.serviceWindows.length === 42 && game.bar.serviceWindows.some((entry) => entry.unserved > 0), "finite stock must create unserved demand");
+assert(!recurring("joel", "outside-service-revenue").length, "there is no automatic service faucet");
 assert(recurring("yasmin", "social-position-maintenance").length >= 10 && recurring("yasmin", "outside-capital-family-yield").length > 0);
 assert(recurring("juan", "planting").length >= 2 && recurring("juan", "crop-maturity").length >= 2 && game.traders.juan.inventory.every((item) => item !== "Nursery Seed Packet" || ITEMS[item].foodUnits !== 1));
 assert(recurring("octopus", "physical-arrival").length > 0 && recurring("octopus", "outside-sale").length > 0);
@@ -73,13 +74,13 @@ assert(game.clearingBatches.every((batch) => batch.settledBy === "octopus" && ba
 assert(game.claims.every((claim) => !claim.knownByPlayer), "Yasmin and other NPCs must not gain omniscient claim knowledge");
 
 game = createGame();
-game.systemMarkers.sterlingServiceCycles = 2;
-game.traders.sterling.inventory = game.traders.sterling.inventory.filter((item) => item !== "Rum Bottle");
-game.traders.sterling.sardines = 0;
+game.systemMarkers.joelServiceCycles = 2;
+game.traders.joel.inventory = game.traders.joel.inventory.filter((item) => item !== "Rum Bottle");
+game.traders.joel.sardines = 0;
 game.phase = "sunset";
 game = advancePhase(game);
-assert(game.recurringDemands.some((entry) => entry.actorId === "sterling" && entry.item === "Rum Bottle"));
-assert(game.recurringLedger.some((entry) => entry.actorId === "sterling" && entry.category === "family-subsidy" && entry.amount === 6));
+assert(game.bar.serviceWindows.at(-1).served <= game.bar.capacity, "service remains capacity bounded");
+assert(!game.recurringLedger.some((entry) => entry.actorId === "joel" && entry.category === "family-subsidy"), "the Bar has no automatic subsidy faucet");
 
 game = morning();
 game.playerState.form = "animal";
@@ -98,11 +99,11 @@ assert.equal(game.decisionEvidence.find((entry) => entry.type === "claim-transfe
 assert(!game.recurringLedger.some((entry) => entry.actorId === "dima" && entry.category === "brokerage-fee"));
 
 game = morning();
-game.claims.find((claim) => claim.id === "juan-sterling-tab").knownByPlayer = true;
+game.claims.find((claim) => claim.id === "juan-joel-tab").knownByPlayer = true;
 const brokerStart = game.traders.dima.sardines;
-game = buyJuanClaim(game, "juan-sterling-tab");
+game = buyJuanClaim(game, "juan-joel-tab");
 assert.equal(game.traders.dima.sardines, brokerStart + 1);
-const claim = game.claims.find((entry) => entry.id === "juan-sterling-tab");
+const claim = game.claims.find((entry) => entry.id === "juan-joel-tab");
 assert.deepEqual(Object.keys(claim).filter((key) => ["id", "debtorId", "currentHolderId", "creditorId", "faceAmount", "dueDay", "status", "tag", "linkedProductiveAsset", "transferHistory", "evidenceIds", "extensionCount"].includes(key)).sort(), ["creditorId", "currentHolderId", "debtorId", "dueDay", "evidenceIds", "extensionCount", "faceAmount", "id", "linkedProductiveAsset", "status", "tag", "transferHistory"]);
 
 game.day = claim.dueDay;
@@ -156,7 +157,7 @@ assert.equal(estate.legallyAccessibleWealth, estate.currentBodyWealth);
 
 game = morning();
 game.information.push(
-  { id: "lime-source", claimType: "holding", subjectId: "sterling", item: "Lime Crate", text: "Sterling has Lime.", source: "personal investigation", precision: "exact", confidence: "high", freshness: "current", observedDay: 1, knownBy: ["player"], sellable: false },
+  { id: "lime-source", claimType: "holding", subjectId: "joel", item: "Lime Crate", text: "Joel has Lime.", source: "personal investigation", precision: "exact", confidence: "high", freshness: "current", observedDay: 1, knownBy: ["player"], sellable: false },
   { id: "lime-need", claimType: "need", subjectId: "aspen", item: "Lime Crate", text: "Aspen needs Lime.", source: "conversation", precision: "exact", confidence: "high", freshness: "current", observedDay: 1, knownBy: ["player"], sellable: false },
 );
 game = acceptFutureDelivery(game);

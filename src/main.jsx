@@ -12,10 +12,10 @@ function StartScreen({ onStart }) {
         <p>You do not know why.</p>
         <p className="muted">You only know that it feels like a way home.</p>
         <div className="start-rules">
-          <div><strong>Sunrise → Morning → Noon → Afternoon → Sunset</strong></div>
-          <div><strong>Morning / Afternoon:</strong> scarce time actions. Talk spends time on a person; Investigate spends it on market facts.</div>
-          <div><strong>Trade:</strong> visible stalls and written commitments. Morning orders are not yet trades.</div>
-          <div><strong>Noon:</strong> settles once. Afterward, the Public Tape shows what actually happened.</div>
+          <div><strong>Look around.</strong> Places, people and public stories change as the harbour moves.</div>
+          <div><strong>Attention is scarce.</strong> Travel, inspection, negotiation and consequential work take attention; reading what you already know does not.</div>
+          <div><strong>Commitments are real.</strong> Cash can be reserved, people can be elsewhere, cargo can arrive late, and invitations can be missed.</div>
+          <div><strong>End the day when you choose.</strong> The harbour continues without waiting for you.</div>
         </div>
         <p className="muted small">That is enough to begin. The rest will appear when it matters.</p>
         <button className="btn gold start-button" onClick={onStart}>Enter the harbour →</button>
@@ -25,7 +25,7 @@ function StartScreen({ onStart }) {
 }
 
 function GameGate() {
-  const [started, setStarted] = useState(false);
+  const [started, setStarted] = useState(() => new URLSearchParams(window.location.search).has("play"));
   return started ? <App /> : <StartScreen onStart={() => setStarted(true)} />;
 }
 

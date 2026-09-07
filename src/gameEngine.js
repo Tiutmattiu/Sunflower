@@ -17,6 +17,7 @@ import {
   VENUES,
 } from "./gameData.js";
 import { buyerMax, planNPCMarket, privateUtility, sellerAsk } from "./npcAI.js";
+import { createBarState, produceDrink, settleBarService, syncBarInventory } from "./barEconomy.js";
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
 export const valueOf = (item) => (item && Number.isFinite(ITEMS[item]?.value) ? ITEMS[item].value : 0);
@@ -190,10 +191,19 @@ export function createGame() {
     },
     estates: [],
     claims: [
-      { id: "juan-sterling-tab", debtorId: "juan", currentHolderId: "sterling", creditorId: "sterling", faceAmount: 7, dueDay: 4, status: "open", tag: "unsecured", secured: false, transferAsk: 5, linkedProductiveAsset: null, transferHistory: [], evidenceIds: [], extensionCount: 0, knownByPlayer: false },
+      { id: "juan-joel-tab", debtorId: "juan", currentHolderId: "joel", creditorId: "joel", faceAmount: 7, dueDay: 4, status: "open", tag: "unsecured", secured: false, transferAsk: 5, linkedProductiveAsset: null, transferHistory: [], evidenceIds: [], extensionCount: 0, knownByPlayer: false },
       { id: "juan-dima-roll", debtorId: "juan", currentHolderId: "dima", creditorId: "dima", faceAmount: 9, dueDay: 5, status: "open", tag: "informal", secured: false, transferAsk: 7, linkedProductiveAsset: "juan-crop-cycle", transferHistory: [], evidenceIds: [], extensionCount: 0, knownByPlayer: false },
     ],
     crops: [],
+    seed: 1,
+    backgroundEconomy: {
+      localHouseholdsCash: 80, harbourWorkersCash: 60, externalInjections: 0, externalDrains: 0, localTransfers: 0,
+      barSupplyLots: [
+        { id: "visiting-bar-lot-1", source: "visiting_seller", items: ["Rum Bottle", "Pineapple", "Lime Crate"], sold: false },
+        { id: "wharf-na-lot-1", source: "wharf_arrival", items: ["Soda", "Cucumber", "Lime Crate"], sold: false },
+      ],
+    },
+    bar: createBarState(1),
     recurringDemands: [],
     recurringLedger: [],
     clearingBatches: [],
@@ -216,7 +226,7 @@ export function createGame() {
     learningNotes: [],
     giftHistory: [],
     decisionEvidence: [],
-    systemMarkers: { aspenNextDepartureDay: RECURRING_ECONOMY.aspen.firstDepartureDay, sterlingServiceCycles: 0 },
+    systemMarkers: { aspenNextDepartureDay: RECURRING_ECONOMY.aspen.firstDepartureDay },
     worldThreads: {
       barRecipe: { stage: "signal", keyItem: "Orgeat Bottle" },
       valeScreening: { stage: "signal", keyItem: "Sperm Whale Oil" },
@@ -264,6 +274,7 @@ export function createGame() {
       "Morning and afternoon are for information, relationships and positioning.",
     ],
   };
+  syncBarInventory(game);
   replanNPCMarket(game);
   return game;
 }
@@ -316,7 +327,7 @@ export function knownItemsForTrader(game, traderId) {
   (NPC_PROFILES[traderId]?.publicStock || []).forEach((item) => {
     if (trader.inventory.includes(item)) known.push(item);
   });
-  if (traderId === "sterling" && trader.inventory.includes("Mai Tai")) known.push("Mai Tai");
+  if (traderId === "joel" && trader.inventory.includes("Mai Tai")) known.push("Mai Tai");
   if (traderId === "aspen" && trader.inventory.includes("Built Onewheel")) known.push("Built Onewheel");
 
   const publicOwners = latestPublicOwners(game);
@@ -545,7 +556,7 @@ function replanNPCMarket(game) {
   const committedBuyers = new Set(accepted.map((plan) => plan.from));
   game.marketPlan = [...planNPCMarket(game).filter((plan) => !committedBuyers.has(plan.from)), ...accepted];
   game.marketPlan.forEach((plan) => {
-    if (plan.from === "sterling" && plan.wantItem === "Orgeat Bottle" && game.worldThreads.barRecipe.stage === "signal") game.worldThreads.barRecipe.stage = "contest";
+    if (plan.from === "joel" && plan.wantItem === "Orgeat Bottle" && game.worldThreads.barRecipe.stage === "signal") game.worldThreads.barRecipe.stage = "contest";
     if (plan.from === "yasmin" && plan.wantItem === "Sperm Whale Oil" && game.worldThreads.valeScreening.stage === "signal") game.worldThreads.valeScreening.stage = "contest";
     if (plan.from === "aspen" && PRODUCTION_RECIPES.onewheel.inputs.includes(plan.wantItem) && game.worldThreads.onewheel.stage === "signal") game.worldThreads.onewheel.stage = "contest";
     if (!plan.knowledgeBasis || plan.knowledgeBasis === "public stock") return;
@@ -679,20 +690,20 @@ export function fulfillFutureDelivery(current, obligationId) {
 
 export function requestRelationshipLoan(current) {
   const game = clone(current);
-  const relationship = game.relationships.sterling || 0;
+  const relationship = game.relationships.joel || 0;
   const amount = relationship >= 3 ? 6 : 4;
-  if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || relationship < 2 || activeObligation(game, "relationship-loan", "sterling") || game.traders.sterling.sardines - amount < 18) return game;
+  if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || relationship < 2 || activeObligation(game, "relationship-loan", "joel") || game.traders.joel.sardines - amount < 18) return game;
   const openingCash = game.traders.player.sardines;
   const actionsBefore = game.actionsRemaining;
   const nearTermObligations = currentObligations(game).filter((entry) => entry.dueDay <= game.day + 2).map((entry) => entry.id);
-  game.traders.sterling.sardines -= amount;
+  game.traders.joel.sardines -= amount;
   game.traders.player.sardines += amount;
   game.actionsRemaining -= 1;
-  const evidence = recordEvidence(game, "relationship-loan-opened", { counterpartyId: "sterling", amount, dueDay: game.day + 2, openingCash, nearTermObligations, actionsBefore, actionsAfter: game.actionsRemaining });
-  const obligation = createObligation(game, { kind: "relationship-loan", creditorId: "sterling", amount, dueDay: game.day + 2, openingEvidenceId: evidence.id, note: "A few tins for a few days." });
-  teachCredit(game, obligation, evidence, `Sterling advanced ${amount}🥫 without interest, due Day ${obligation.dueDay}.`);
+  const evidence = recordEvidence(game, "relationship-loan-opened", { counterpartyId: "joel", amount, dueDay: game.day + 2, openingCash, nearTermObligations, actionsBefore, actionsAfter: game.actionsRemaining });
+  const obligation = createObligation(game, { kind: "relationship-loan", creditorId: "joel", amount, dueDay: game.day + 2, openingEvidenceId: evidence.id, note: "A few tins for a few days." });
+  teachCredit(game, obligation, evidence, `Joel advanced ${amount}🥫 without interest, due Day ${obligation.dueDay}.`);
   game.stats.creditUsed += 1;
-  game.lastInteraction = { action: "relationship-loan", targetId: "sterling", text: `Sterling lends you ${amount}🥫 until Day ${obligation.dueDay}.` };
+  game.lastInteraction = { action: "relationship-loan", targetId: "joel", text: `Joel lends you ${amount}🥫 until Day ${obligation.dueDay}.` };
   return game;
 }
 
@@ -857,14 +868,14 @@ export function declineInboundOffer(current, offerId) {
   return game;
 }
 
-export function requestMarketProxy(current, targetId = "sterling") {
+export function requestMarketProxy(current, targetId = "joel") {
   const game = clone(current);
   if (!["morning", "afternoon"].includes(game.phase) || game.actionsRemaining <= 0 || game.ended) return game;
   if (game.playerState.form !== "animal" || canAccessVenue(game, "formalMarket")) return game;
 
   const target = game.traders[targetId];
   const relationship = game.relationships[targetId] || 0;
-  if (!target || !["sterling", "dima"].includes(targetId) || (targetId === "sterling" && relationship < 2)) return game;
+  if (!target || !["joel", "dima"].includes(targetId) || (targetId === "joel" && relationship < 2)) return game;
 
   const player = game.traders.player;
   const fee = targetId === "dima" ? DIMA_PROXY_FEE : PROXY_FEE;
@@ -874,7 +885,7 @@ export function requestMarketProxy(current, targetId = "sterling") {
     target.sardines += fee;
     if (targetId === "dima") recordRecurring(game, "dima", "proxy-fee", fee, { venueId: "formalMarket" });
     game.lastInteraction = { action: "proxy", targetId, text: `${target.name} agrees to settle today's formal-market orders for ${fee}🥫.` };
-  } else if (targetId === "sterling" && relationship >= 3) {
+  } else if (targetId === "joel" && relationship >= 3) {
     const obligation = createObligation(game, {
       kind: "proxy-fee",
       creditorId: targetId,
@@ -958,9 +969,12 @@ function recordTrade(game, trade, source) {
 function produceIfReady(game, recipeId) {
   const recipe = PRODUCTION_RECIPES[recipeId];
   const producer = game.traders[recipe.producerId];
-  if (producer.inventory.includes(recipe.output) || !recipe.inputs.every((item) => producer.inventory.includes(item)) ||
+  if (!producer || producer.inventory.includes(recipe.output) || !recipe.inputs.every((item) => producer.inventory.includes(item)) ||
       !recipe.durableTools.every((item) => recipeId !== "onewheel" || producer.inventory.includes(item))) return false;
-  recipe.inputs.forEach((item) => {
+  if (recipeId === "maiTai") {
+    syncBarInventory(game);
+    if (!produceDrink(game, "Mai Tai")) return false;
+  } else recipe.inputs.forEach((item) => {
     takePerishableAge(game, producer, item);
     producer.inventory = removeOne(producer.inventory, item);
   });
@@ -968,7 +982,7 @@ function produceIfReady(game, recipeId) {
   recordEvidence(game, "world-consequence", { thread: recipeId === "maiTai" ? "barRecipe" : "onewheel", consequence: "production", producerId: recipe.producerId, inputs: [...recipe.inputs], output: recipe.output });
   if (recipeId === "maiTai") {
     game.worldThreads.barRecipe.stage = "aftermath";
-    game.log.unshift("Sterling has the complete recipe and makes a proper Mai Tai for the Bar's stock.");
+    game.log.unshift("Joel uses one serving from each complete input unit and makes a proper Mai Tai for the Bar.");
   } else {
     game.worldThreads.onewheel.stage = "aftermath";
     game.log.unshift("Aspen consumes the four bicycle parts and uses the torque wrench to assemble a working onewheel.");
@@ -978,7 +992,7 @@ function produceIfReady(game, recipeId) {
 
 function applyWorldReceivedItem(game, receiverId, item) {
   if (!item || !game.traders[receiverId]) return;
-  if (receiverId === "sterling" && item === "Orgeat Bottle") game.worldThreads.barRecipe.stage = "outcome";
+  if (receiverId === "joel" && item === "Orgeat Bottle") game.worldThreads.barRecipe.stage = "outcome";
   if (receiverId === "yasmin" && item === "Sperm Whale Oil") game.worldThreads.valeScreening.stage = "outcome";
 }
 
@@ -1073,7 +1087,7 @@ export function resolveDuePrivateMatter(current, obligationId, action) {
 }
 
 function publicPostedAsk(game, sellerId, item) {
-  const produced = (sellerId === "sterling" && item === "Mai Tai") || (sellerId === "aspen" && item === "Built Onewheel");
+  const produced = (sellerId === "joel" && item === "Mai Tai") || (sellerId === "aspen" && item === "Built Onewheel");
   const isPublic = ((NPC_PROFILES[sellerId]?.publicStock || []).includes(item) || produced) && game.traders[sellerId]?.inventory.includes(item);
   return isPublic ? sellerAsk(game, sellerId, item) : null;
 }
@@ -1445,33 +1459,9 @@ function settleRecurringActivity(game) {
     } else addDemand(game, "wong", "Fresh Mackerel", "Food is needed for Wong's household and rescue work.");
   }
 
-  const sterling = game.traders.sterling;
-  const sterlingConfig = RECURRING_ECONOMY.sterling;
-  const hadIce = sterling.inventory.includes("Ice Block");
-  const serviceRevenue = hadIce ? sterlingConfig.serviceRevenueWithIce : sterlingConfig.serviceRevenueBase;
-  if (hadIce) {
-    takePerishableAge(game, sterling, "Ice Block");
-    sterling.inventory = removeOne(sterling.inventory, "Ice Block");
-    recordRecurring(game, "sterling", "business-input", -valueOf("Ice Block"), { item: "Ice Block" });
-  }
-  sterling.sardines += serviceRevenue;
-  game.systemMarkers.sterlingServiceCycles += 1;
-  recordRecurring(game, "sterling", "outside-service-revenue", serviceRevenue, { inputUsed: hadIce ? "Ice Block" : null, cycle: game.systemMarkers.sterlingServiceCycles });
-  if (game.systemMarkers.sterlingServiceCycles % sterlingConfig.serviceInputEveryCycles === 0) {
-    const inputIndex = game.systemMarkers.sterlingServiceCycles / sterlingConfig.serviceInputEveryCycles - 1;
-    const item = sterlingConfig.serviceInputRotation[inputIndex % sterlingConfig.serviceInputRotation.length];
-    if (sterling.inventory.includes(item)) {
-      takePerishableAge(game, sterling, item);
-      sterling.inventory = removeOne(sterling.inventory, item);
-      recordRecurring(game, "sterling", "business-input", -valueOf(item), { item });
-    } else addDemand(game, "sterling", item, `Sterling needs ${item} for the next Bar service cycle.`);
-  }
-  const lastSubsidy = Number(game.systemMarkers.sterlingLastSubsidyDay || -Infinity);
-  if (sterling.sardines < sterlingConfig.familySubsidyThreshold && game.day - lastSubsidy >= sterlingConfig.familySubsidyCooldownDays) {
-    sterling.sardines += sterlingConfig.familySubsidy;
-    game.systemMarkers.sterlingLastSubsidyDay = game.day;
-    recordRecurring(game, "sterling", "family-subsidy", sterlingConfig.familySubsidy);
-  }
+  const barResult = settleBarService(game);
+  recordEvidence(game, "bar-service-window", { ...barResult, operatorId: game.bar.open ? "joel" : null });
+  if (barResult.localRevenue) game.backgroundEconomy.localTransfers += barResult.localRevenue;
 
   const aspen = game.traders.aspen;
   const aspenConfig = RECURRING_ECONOMY.aspen;
@@ -1598,16 +1588,16 @@ function settleRecurringArrivals(game) {
 
 function applyBarToolRevenue(game, settledDay) {
   if (game.systemMarkers.barToolBonusDay === settledDay) return;
-  const tools = PRODUCTION_RECIPES.maiTai.productivityTools.filter((item) => game.traders.sterling.inventory.includes(item)).length;
+  const tools = PRODUCTION_RECIPES.maiTai.productivityTools.filter((item) => game.traders.joel.inventory.includes(item)).length;
   if (!tools) return;
-  game.traders.sterling.sardines += tools;
+  game.traders.joel.sardines += tools;
   game.systemMarkers.barToolBonusDay = settledDay;
-  recordRecurring(game, "sterling", "tool-service-revenue", tools);
+  recordRecurring(game, "joel", "tool-service-revenue", tools);
   game.log.unshift(`The Bar's upgraded professional tools add ${tools}🥫 of service value tonight.`);
 }
 
 function chooseMealCreditSource(game) {
-  return ["sterling", "wong"]
+  return ["joel", "wong"]
     .filter((id) => (game.relationships[id] || 0) >= 2 && (game.traders[id]?.sardines || 0) >= SUSTENANCE_PER_DAY)
     .sort((a, b) => (game.relationships[b] || 0) - (game.relationships[a] || 0) || a.localeCompare(b))[0] || null;
 }
@@ -2056,12 +2046,12 @@ export function buildEvents(game) {
   if (
     !alreadyHasFlower && canAccessVenue(game, "bar") && !game.flags.cheated &&
     game.worldThreads.barRecipe.stage === "aftermath" && player.inventory.includes("Mai Tai") &&
-    player.inventory.some((item) => soupFish.includes(item)) && (game.relationships.sterling || 0) >= 2
+    player.inventory.some((item) => soupFish.includes(item)) && (game.relationships.joel || 0) >= 2
   ) {
     events.push({
       id: "grandma",
       title: "After closing",
-      text: "Sterling asks if you want to bring the fish and Mai Tai downstairs after the bar closes. This feels like an invitation, not a transaction.",
+      text: "Joel asks if you want to bring the fish and Mai Tai downstairs after the bar closes. This feels like an invitation, not a transaction.",
       actions: ["Go", "Not tonight"],
     });
   }

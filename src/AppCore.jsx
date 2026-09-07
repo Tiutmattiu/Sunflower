@@ -1,4 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { LOCATIONS, performPlayerAction, visibleActions, visitLocation } from "./playerGame.js";
+import { ECONOMIC_GOODS as GOODS } from "./economicContent.js";
+import { diagnosePlayer } from "./playerDiagnosis.js";
 import "./index.css";
 import { FORMS, ITEMS, PHASE_COPY, SARDINE } from "./gameData";
 import {
@@ -35,6 +38,8 @@ import {
   shareInformationAsFavor,
 } from "./gameEngine";
 import { visibleMarketBoard, visibleSellListings } from "./npcAI";
+import { ACTIVE_REAL_MENU, ACTIVE_SUPPORT, buildDrinkPropositions, usableServings } from "./barEconomy";
+import { advanceHarbourWindow, availableCash, createHarbourWorld, meetContact, phoneContact, placePublicOrder } from "./harbourSpine";
 
 const SAVE_KEY = "sunflower-living-market-v8";
 const SAVE_VERSION = 8;
@@ -52,6 +57,25 @@ function loadGame() {
 
 function label(item) {
   return item ? `${ITEMS[item]?.icon || "□"} ${item}` : "nothing";
+}
+
+function BarPanel({ game }) {
+  const bar = game.bar;
+  if (!bar) return null;
+  const last = bar.serviceWindows.at(-1);
+  const propositions = buildDrinkPropositions(game);
+  return <details className="card bar-board" open>
+    <summary className="section-title">WHAT WE HAVE TONIGHT · Joel's Bar</summary>
+    <p><strong>{bar.open ? "OPEN" : "CLOSED — Joel is absent; no drinks are produced."}</strong></p>
+    <div className="bar-columns">
+      <div><strong>Real-menu active</strong><div className="chips">{ACTIVE_REAL_MENU.map((name) => <span className="chip" key={name}>{name} · {usableServings(game, name)}</span>)}</div></div>
+      <div><strong>Sunflower support</strong><div className="chips">{ACTIVE_SUPPORT.map((name) => <span className="chip" key={name}>{name} · {usableServings(game, name)}</span>)}</div></div>
+    </div>
+    <p className="small muted">Directions: fruity · spirit-forward · dry · sweet · balanced; optionally sour · smoky · savoury · spicy · surprise me. Stock numbers are servings, not hidden customer truth.</p>
+    <div className="stack">{propositions.map((drink) => <div className="mini-card" key={drink.name}><strong>{drink.name}</strong> · {drink.style} · {drink.base.replace("_", "-")}<br/><span className="small muted">{drink.ingredients.join(" + ")}</span></div>)}</div>
+    <p><strong>Public lead:</strong> {bar.publicSignal}</p>
+    {last && <p className="small">Last service: {last.served}/{last.arrivals} served · {last.unserved} unserved · local {last.localRevenue}🥫 · visitors {last.externalRevenue}🥫 · tabs {last.tabs}🥫.</p>}
+  </details>;
 }
 
 function publicListings(game) {
@@ -89,7 +113,7 @@ function InboundOffers({ game, onAccept, onDecline }) {
 }
 
 function LearnPanel({ game, selectedId, setSelectedId, onTalk, onInvestigate, onGift, onSellInfo, onSellExclusive, onShareInfo, onRepay, onProxy, onFuture, onFulfillFuture, onRelationshipLoan, onSecuredLoan, onBuyClaim, onBuyback }) {
-  const people = ["aspen", "sterling", "yasmin", "wong", "juan", "dima", "octopus"].map((id) => game.traders[id]).filter(Boolean);
+  const people = ["aspen", "joel", "yasmin", "wong", "juan", "dima", "octopus"].map((id) => game.traders[id]).filter(Boolean);
   const target = game.traders[selectedId] || people[0];
   const active = ["morning", "afternoon"].includes(game.phase) && game.actionsRemaining > 0;
   const info = [...(game.information || [])].reverse();
@@ -121,9 +145,9 @@ function LearnPanel({ game, selectedId, setSelectedId, onTalk, onInvestigate, on
         <details className="advanced-details">
           <summary>More actions</summary>
           <div className="stack">
-            {game.playerState.form === "animal" && ((target.id === "sterling" && (game.relationships.sterling || 0) >= 2) || target.id === "dima") && <button className="btn" disabled={!active} onClick={() => onProxy(target.id)}>Use {target.name} as formal-market proxy</button>}
+            {game.playerState.form === "animal" && ((target.id === "joel" && (game.relationships.joel || 0) >= 2) || target.id === "dima") && <button className="btn" disabled={!active} onClick={() => onProxy(target.id)}>Use {target.name} as formal-market proxy</button>}
             {target.id === "aspen" && futureDeliveryAvailable(game) && <button className="btn gold" onClick={onFuture}>Promise one Lime Crate</button>}
-            {target.id === "sterling" && (game.relationships.sterling || 0) >= 2 && <button className="btn" disabled={!active || obligations.some((entry) => entry.kind === "relationship-loan")} onClick={onRelationshipLoan}>Ask for a short loan</button>}
+            {target.id === "joel" && (game.relationships.joel || 0) >= 2 && <button className="btn" disabled={!active || obligations.some((entry) => entry.kind === "relationship-loan")} onClick={onRelationshipLoan}>Ask for a short loan</button>}
             {collateral.map((item) => <button className="btn" disabled={!active} key={item} onClick={() => onSecuredLoan(item)}>Pledge {label(item)}</button>)}
             {claimsForSale.map((claim) => <button className="btn" disabled={!active || game.traders.player.sardines < claim.transferAsk + (target.id === "dima" ? 0 : 1)} key={claim.id} onClick={() => onBuyClaim(claim.id)}>Buy Juan claim · face {claim.faceAmount}🥫 · pay {claim.transferAsk + (target.id === "dima" ? 0 : 1)}🥫</button>)}
             {target.id === "juan" && playerClaims.filter((claim) => claim.dueDay > game.day).map((claim) => <button className="btn" disabled={!active || game.traders.juan.sardines < Math.ceil(claim.faceAmount * .7)} key={claim.id} onClick={() => onBuyback(claim.id)}>Accept Juan buyback · {Math.ceil(claim.faceAmount * .7)}🥫</button>)}
@@ -293,7 +317,7 @@ function EventPanel({ game, setGame }) {
   );
 }
 
-export default function AppCore() {
+function LegacyAppCore() {
   const [game, setGame] = useState(loadGame);
   const [mode, setMode] = useState("learn");
   const [selectedId, setSelectedId] = useState("wong");
@@ -339,6 +363,7 @@ export default function AppCore() {
         <details className="notebook-drawer"><summary>HOW THIS WORKS</summary><div className="notebook-stack">Sunrise → Morning → Noon → Afternoon → Sunset. Morning and Afternoon give scarce time actions. Talk spends time on a person; Investigate spends it on facts. Written Morning orders are not trades until Noon settles once. After Noon, the Public Tape shows what actually happened.</div></details>
 
         <section className="player-bar"><div className="player-balance"><strong>{player.sardines}🥫</strong><span>cash</span></div><div className="chips">{player.inventory.map((item, index) => <span className="chip" key={`${item}-${index}`}>{label(item)}</span>)}</div></section>
+        <BarPanel game={game} />
 
         {game.flags.sunflowerAcquired && <section className="card flower-reveal"><div className="section-title">🌻 You got it.</div><p><strong>Nothing happens.</strong></p><p>The sunflower remains on your side of the desk. The market and your life continue.</p><p className="muted">Objective: {game.objective}</p></section>}
 
@@ -386,4 +411,27 @@ export default function AppCore() {
       </div>
     </main>
   );
+}
+
+function WorkbenchPanel({ title, children, open = false }) { return <details className="card workbench-card" open={open}><summary className="section-title">{title}</summary>{children}</details>; }
+const pretty=x=>x.replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase());
+function Diagnosis({world}){const d=diagnosePlayer(world);return <main className="app-shell diagnosis"><div className="container"><header className="hero"><div><div className="eyebrow">SUNFLOWER</div><h1>YOU WENT HOME</h1><p>Day {d.outcome.dayHome} · {d.outcome.route} route</p></div></header><section className="card"><h2>{d.archetype}</h2><p>{d.evidenceCount} pieces of run evidence support this reading. It is not a moral or total score.</p></section><div className="diagnosis-grid"><section className="card"><h2>Process</h2>{d.radar.map(x=><div className="meter" key={x.key}><span>{x.label}</span><strong>{x.score??'—'}</strong><small>{x.confidence}</small>{x.score!==null&&<i style={{width:`${x.score}%`}}/>}</div>)}</section><section className="card"><h2>Style</h2>{d.style.map(x=><div className="style-row" key={x.key}><span>{x.labels[0]}</span><b>{x.value===null?'not enough evidence':`${x.value>0?'+':''}${x.value}`}</b><span>{x.labels[1]}</span></div>)}<h3>Return footprint</h3>{Object.entries(d.returnFootprint).map(([k,v])=><p key={k}>{k}: {v}</p>)}</section></div><section className="card"><h2>Market Scars</h2>{d.scars.length?d.scars.map(s=><article key={s.name}><strong>{s.name}</strong><p>{s.explanation}</p><small>{s.evidenceIds.join(', ')}</small></article>):<p>No evidence-backed Scar dominated this run.</p>}</section><section className="card"><h2>Defining cases</h2>{d.definingCases.map(e=><article className="news-item" key={e.id}><strong>Day {e.day} · {pretty(e.situation||e.type)}</strong><p>{e.summary}</p><small>{e.location} · evidence {e.id}</small></article>)}</section><section className="card"><h2>Outcome</h2><p>Cash: {d.outcome.startingCash}🥫 → {d.outcome.endingCash}🥫 · low {d.outcome.lowestCash}🥫 · maximum locked {d.outcome.maxLocked}🥫</p><p>Commitments fulfilled {d.outcome.fulfilled} · breached {d.outcome.breached}</p></section></div></main>}
+export default function AppCore(){
+ const [world,setWorld]=useState(()=>createHarbourWorld()); const [tab,setTab]=useState('places'); const [tradeItem,setTradeItem]=useState('Fresh Mackerel');
+ if(world.playerGame.home)return <Diagnosis world={world}/>;
+ const pg=world.playerGame,p=world.actors.player,actions=visibleActions(world),reserved=world.market.reservations.filter(r=>r.actorId==='player'),lockedCommitments=pg.commitments.filter(x=>x.status==='open').reduce((n,x)=>n+(x.lockedCash||0),0),reservedOrders=reserved.filter(r=>r.kind==='cash').reduce((n,r)=>n+r.amount,0);
+ const act=a=>setWorld(w=>performPlayerAction(w,a.id,a.payload));
+ return <main className="app-shell spine-shell"><div className="container spine-container">
+ <header className="hero"><div><div className="eyebrow">Sunflower · {LOCATIONS[pg.location].name}</div><h1>Day {world.day+1}</h1><p>Get a Sunflower. Then decide when to go home.</p></div><button className="btn ghost" onClick={()=>setWorld(createHarbourWorld())}>New game</button></header>
+ <div className="sticky-status"><span>🥫 {p.cash} total</span><span>{availableCash(world,'player')} available</span><span>{world.attention.budget-world.attention.used} attention</span><span>{pg.commitments.filter(x=>x.status==='open').length} commitments</span></div>
+ <nav className="game-tabs">{['places','newspaper','phone','notebook','ledger','inventory','clearing'].map(x=><button className={tab===x?'active':''} onClick={()=>setTab(x)} key={x}>{pretty(x)}</button>)}</nav>
+ {tab==='places'&&<><section className="card"><h2>{LOCATIONS[pg.location].name}</h2><p>{LOCATIONS[pg.location].description}</p><div className="people-line">Present: {Object.values(world.actors).filter(a=>!a.background&&a.id!=='player'&&a.location===pg.location).map(a=>pretty(a.id)).join(', ')||'No named person just now'}</div><div className="action-grid">{actions.map((a,i)=><button key={a.id+i} className="btn" disabled={a.disabled} title={a.reason||''} onClick={()=>act(a)}>{a.label}{a.reason&&<small>{a.reason}</small>}</button>)}</div>{pg.lastBlock&&<p className="blocked">{pg.lastBlock}</p>}</section><section className="place-grid">{Object.entries(LOCATIONS).filter(([id])=>id!==pg.location).map(([id,x])=><button className="place-card" onClick={()=>setWorld(w=>visitLocation(w,id))} key={id}><strong>{x.name}</strong><span>{x.description}</span></button>)}</section></>}
+ {tab==='newspaper'&&<WorkbenchPanel title="The Harbour Gazette" open>{world.newspaper.slice().reverse().map(n=><article className="news-item" key={n.id}><strong>{n.headline}</strong><p>{n.report}</p><small>Public report · day {n.day} · may be delayed or incomplete</small></article>)}</WorkbenchPanel>}
+ {tab==='phone'&&<WorkbenchPanel title="Contacts" open>{['aspen','joel','wong','juan','yasmin','dima','sonya'].map(id=><div className="contact-row" key={id}><span>{pretty(id)}</span>{p.contacts.includes(id)?<button className="btn ghost" onClick={()=>setWorld(w=>phoneContact(w,id,'Following up on our last conversation.'))}>Send narrow follow-up</button>:<small>Meet in person first</small>}</div>)}<p className="muted">Calls can coordinate and ask. They cannot inspect, deliver, attend or transfer possession.</p></WorkbenchPanel>}
+ {tab==='notebook'&&<WorkbenchPanel title={`Notebook · ${pg.notebook.length} useful records`} open>{world.evidence.filter(e=>pg.notebook.includes(e.id)).slice().reverse().map(e=><details className="news-item" key={e.id}><summary><strong>{e.summary||pretty(e.type)}</strong></summary><p>Day {e.day} · {pretty(e.location||'harbour')} · source {pretty(e.source||'system')}</p><p>{e.situation?`May matter to ${pretty(e.situation)}.`:'A contemporaneous record; no route conclusion is implied.'}</p><small>Confidence {e.confidence??'recorded'} · freshness {e.freshness||'recorded'} · {e.id}</small></details>)}</WorkbenchPanel>}
+ {tab==='ledger'&&<WorkbenchPanel title="Ledger / commitments" open><div className="ledger-summary"><p><strong>Total cash</strong> {p.cash}🥫</p><p><strong>Available now</strong> {availableCash(world,'player')}🥫</p><p><strong>Reserved for public orders</strong> {reservedOrders}🥫</p><p><strong>Locked by commitments</strong> {lockedCommitments}🥫</p></div><p className="muted">Available cash is total cash minus public-order reservations and live commitments.</p>{pg.commitments.map(c=><article className="mini-card" key={c.id}><strong>{c.title}</strong><p>{c.status} · deadline day {c.dueDay} · {pretty(c.location)}</p></article>)}<h3>Claims</h3>{world.claims.filter(c=>c.holderId==='player'||c.issuerId==='player').map(c=><p key={c.id}>{c.type} · face {c.face} · {c.status}</p>)}</WorkbenchPanel>}
+ {tab==='inventory'&&<WorkbenchPanel title="Inventory / assets" open>{p.inventory.map(u=><article className="mini-card" key={u.unitId}><strong>{u.kind}</strong><p>{GOODS[u.kind]?.mode||'PHYSICAL'} · owned by you · custody with you</p><small>{u.pledgedTo?`Pledged to ${pretty(u.pledgedTo)} · not freely transferable`:u.opened?`Opened · ${u.remaining} servings remain`:'Physical unit'} · cost basis {u.costBasis}🥫</small></article>)}{!p.inventory.length&&<p>Nothing in hand.</p>}<h3>Held for somebody else</h3>{world.parcelJobs?.filter(j=>j.custodianId==='player'&&j.status==='in_custody').map(j=><article className="mini-card custody" key={j.id}><strong>{j.itemKind||'Sealed parcel'}</strong><p>You hold this; you do not own it.</p><small>Recipient {j.recipientId} · deadline day {j.deadline}</small></article>)}{!world.parcelJobs?.some(j=>j.custodianId==='player'&&j.status==='in_custody')&&<p className="muted">No third-party property in your custody.</p>}</WorkbenchPanel>}
+ {tab==='clearing'&&<WorkbenchPanel title="Octopus Public Clearing" open><div className="trade-controls"><select value={tradeItem} onChange={e=>setTradeItem(e.target.value)}>{['Fresh Mackerel','Lime','Rum','Soda','Packing Paper','Presta Inner Tube'].map(x=><option key={x}>{x}</option>)}</select><button className="btn" onClick={()=>setWorld(w=>placePublicOrder(w,'player','buy',tradeItem,6))}>Bid 6🥫</button><button className="btn" disabled={!p.inventory.some(x=>x.kind===tradeItem)} onClick={()=>setWorld(w=>placePublicOrder(w,'player','sell',tradeItem,5))}>Ask 5🥫</button></div><p>Resources are reserved until fill or expiry. Clearing settles; it does not own client goods or float.</p>{world.market.orders.filter(o=>o.status==='open').map(o=><p key={o.id}>{o.side} {o.quantity} {o.item} @ {o.price} · {o.actorId}</p>)}{world.market.tape.slice(-8).reverse().map(t=><p key={t.id}>{t.item} · {t.price}🥫 · {t.sellerId} → {t.buyerId}</p>)}</WorkbenchPanel>}
+ <div className="bottom-action"><button className="btn gold primary-action" onClick={()=>setWorld(w=>advanceHarbourWindow(w))}>End day — let the harbour move</button></div>
+ </div></main>;
 }

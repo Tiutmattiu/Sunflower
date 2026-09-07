@@ -1,0 +1,177 @@
+// Authoritative economic ontology used by the Harbour Spine.  Economic mode is
+// deliberately distinct from existence: most culinary content is wholesale,
+// living plants are stateful assets, and services/claims never enter inventory.
+const good = (family, mode, value, sources, sinks, extra = {}) => ({ category: "physical_good", family, mode, value, sources, sinks, ...extra });
+
+export const ECONOMIC_GOODS = {
+  "Fresh Mackerel": good("marine_food", "PUBLIC_MARKET", 6, ["small_boats"], ["households", "joel_bar"], { shelfLife: 2 }),
+  "Smoked Eel": good("marine_food", "PUBLIC_MARKET", 8, ["small_boats", "wharf_suppliers"], ["households", "crews"], { shelfLife: 7 }),
+  "Sea Lettuce": good("marine_food", "PUBLIC_MARKET", 5, ["small_boats"], ["households", "joel_bar"], { shelfLife: 2 }),
+  "Sea Urchin Basket": good("marine_food", "PRIVATE_TRADE", 10, ["small_boats"], ["yasmin_events", "visitors"], { shelfLife: 2 }),
+  "Salted Cod": good("provisions", "PUBLIC_MARKET", 8, ["wharf_suppliers", "aspen_import"], ["crews", "households"], { shelfLife: 12 }),
+  "Hardtack Tin": good("provisions", "PUBLIC_MARKET", 4, ["wharf_suppliers"], ["crews", "aspen_route"]),
+  "Lime": good("fruit", "PUBLIC_MARKET", 7, ["juan_yield", "aspen_import", "wharf_suppliers"], ["joel_bar", "crews", "households"], { shelfLife: 4, servings: 6 }),
+  "Pineapple": good("fruit", "PUBLIC_MARKET", 6, ["aspen_import", "wharf_suppliers"], ["joel_bar", "households"], { shelfLife: 3, servings: 5 }),
+  "Orange": good("fruit", "BACKEND_WHOLESALE", 5, ["wholesale", "aspen_import"], ["joel_bar", "households"], { shelfLife: 4, servings: 5 }),
+  "Grapefruit": good("fruit", "BACKEND_WHOLESALE", 6, ["wholesale"], ["joel_bar", "households"], { shelfLife: 4, servings: 5 }),
+  "Raspberry": good("fruit", "BACKEND_WHOLESALE", 5, ["wholesale"], ["joel_bar", "events"], { shelfLife: 2, servings: 4 }),
+  "Cucumber": good("produce", "PUBLIC_MARKET", 4, ["juan_yield", "household_growers"], ["joel_bar", "households"], { shelfLife: 3, servings: 6 }),
+  "Tomato": good("produce", "PUBLIC_MARKET", 4, ["juan_yield", "household_growers"], ["joel_bar", "households"], { shelfLife: 3, servings: 5 }),
+  "Mint": good("herb", "PUBLIC_MARKET", 3, ["juan_yield", "household_growers"], ["joel_bar", "households"], { shelfLife: 2, servings: 8 }),
+  "Basil": good("herb", "PUBLIC_MARKET", 3, ["juan_yield", "household_growers"], ["joel_bar", "households"], { shelfLife: 2, servings: 7 }),
+  "Ginger": good("aromatic", "BACKEND_WHOLESALE", 4, ["wholesale", "aspen_import"], ["joel_bar", "households"], { shelfLife: 5, servings: 8 }),
+  "Lemongrass": good("herb", "BACKEND_WHOLESALE", 4, ["juan_yield", "wholesale"], ["joel_bar", "households"], { shelfLife: 3, servings: 7 }),
+  "Hibiscus": good("botanical", "BACKEND_WHOLESALE", 5, ["wholesale"], ["joel_bar", "events"], { servings: 10 }),
+  "Green Tea": good("tea", "BACKEND_WHOLESALE", 5, ["aspen_import", "wholesale"], ["joel_bar", "households"], { servings: 12 }),
+  "Cardamom": good("spice", "BACKEND_WHOLESALE", 5, ["aspen_import", "wholesale"], ["joel_bar", "events"], { servings: 12 }),
+  "Cinnamon": good("spice", "BACKEND_WHOLESALE", 4, ["wholesale"], ["joel_bar", "households"], { servings: 12 }),
+  "Sichuan Pepper": good("spice", "BACKEND_WHOLESALE", 6, ["aspen_import"], ["joel_bar", "events"], { servings: 12 }),
+  "Rum": good("spirit", "PUBLIC_MARKET", 10, ["aspen_import", "wholesale"], ["joel_bar"], { servings: 8 }),
+  "Gin": good("spirit", "BACKEND_WHOLESALE", 11, ["wholesale"], ["joel_bar"], { servings: 8 }),
+  "Vodka": good("spirit", "BACKEND_WHOLESALE", 10, ["wholesale"], ["joel_bar"], { servings: 8 }),
+  "Whisky": good("spirit", "PRIVATE_TRADE", 14, ["aspen_import"], ["joel_bar", "yasmin_events"], { servings: 8 }),
+  "Tequila": good("spirit", "BACKEND_WHOLESALE", 12, ["wholesale"], ["joel_bar"], { servings: 8 }),
+  "Mezcal": good("spirit", "ROUTE_IMPORT", 15, ["aspen_import"], ["joel_bar", "yasmin_events"], { servings: 8 }),
+  "Wine": good("wine", "PRIVATE_TRADE", 12, ["aspen_import", "wholesale"], ["joel_bar", "yasmin_events"], { servings: 6 }),
+  "Soda": good("mixer", "PUBLIC_MARKET", 5, ["wharf_suppliers", "wholesale"], ["joel_bar", "households"], { servings: 8 }),
+  "Ice": good("service_input", "PUBLIC_MARKET", 4, ["wharf_suppliers"], ["joel_bar", "crews"], { shelfLife: 1, servings: 10 }),
+  "Demerara Syrup": good("syrup", "BACKEND_WHOLESALE", 5, ["wholesale"], ["joel_bar"], { servings: 10 }),
+  "Orgeat": good("syrup", "BACKEND_WHOLESALE", 9, ["wholesale", "aspen_import"], ["joel_bar"], { servings: 10 }),
+  "Orange Curaçao": good("modifier", "ROUTE_IMPORT", 12, ["aspen_import"], ["joel_bar"], { servings: 10 }),
+  "Built Onewheel": good("mobility_asset", "DURABLE_TOOL", 30, ["workshop_assembly"], ["cliff_access"]),
+  "Steel Rim": good("bicycle_part", "ROUTE_IMPORT", 12, ["aspen_import", "salvage"], ["onewheel_assembly", "repair"]),
+  "Presta Inner Tube": good("bicycle_part", "PUBLIC_MARKET", 8, ["aspen_import", "wharf_suppliers"], ["repair"]),
+  "Chain Quick-Link": good("bicycle_part", "PUBLIC_MARKET", 6, ["aspen_import", "wharf_suppliers"], ["onewheel_assembly", "repair"]),
+  "Brake Cable": good("bicycle_part", "PUBLIC_MARKET", 7, ["aspen_import", "wharf_suppliers"], ["onewheel_assembly", "repair"]),
+  "Handlebar Tape": good("bicycle_part", "PUBLIC_MARKET", 5, ["aspen_import", "wong_salvage"], ["onewheel_assembly", "repair"]),
+  "Tiny Torque Wrench": good("tool", "DURABLE_TOOL", 18, ["aspen_import"], ["repair", "collateral"]),
+  "Packing Paper": good("packing", "PUBLIC_MARKET", 2, ["wharf_suppliers", "wong_recovery"], ["wong_custody", "households"]),
+  "Reusable Crate": good("container", "PUBLIC_MARKET", 4, ["wharf_suppliers", "wong_recovery"], ["aspen_route", "wong_custody"]),
+  "Glass Bottle": good("container", "PUBLIC_MARKET", 2, ["joel_bar", "wong_salvage"], ["joel_bar", "households"]),
+  "Rope Offcut": good("repair", "PUBLIC_MARKET", 3, ["small_boats", "wong_salvage"], ["crews", "wong_custody"]),
+  "Brass Compass": good("durable", "PRIVATE_TRADE", 16, ["aspen_import", "distress_sale"], ["crews", "collateral"]),
+  "Sperm Whale Oil": good("provenance_asset", "PRIVATE_TRADE", 18, ["route_import"], ["yasmin_private", "restoration"]),
+  "Gelatin Silver Print, 20 × 25 cm": good("collectible", "COLLECTIBLE", 18, ["consignment", "distress_sale"], ["yasmin_private", "auction"]),
+  "35 mm Film Reel, 400 ft": good("collectible", "COLLECTIBLE", 14, ["consignment", "aspen_import"], ["yasmin_private", "screening"]),
+  "Signed Contact Sheet, 12 Frames": good("collectible", "COLLECTIBLE", 20, ["consignment", "estate"], ["yasmin_private", "auction"]),
+  "Vintage Cinema Lobby Card": good("collectible", "COLLECTIBLE", 16, ["consignment", "estate"], ["yasmin_private", "auction"]),
+  "925 Silver Serving Fork": good("collateral", "PRIVATE_TRADE", 10, ["distress_sale", "estate"], ["yasmin_private", "collateral"]),
+  "Art Deco Silver Cigarette Case": good("collateral", "PRIVATE_TRADE", 18, ["consignment", "estate"], ["yasmin_private", "collateral"]),
+  "Cut-Crystal Decanter": good("decorative_art", "COLLECTIBLE", 16, ["consignment"], ["yasmin_private", "joel_bar"]),
+  "Hand-Painted Porcelain Bowl": good("decorative_art", "COLLECTIBLE", 15, ["consignment"], ["yasmin_private", "auction"]),
+  "White Kid-Leather Evening Gloves, Pair": good("fashion", "COLLECTIBLE", 13, ["consignment"], ["yasmin_private", "events"]),
+  "Silk Twill Scarf, Hand-Rolled Hem": good("fashion", "COLLECTIBLE", 17, ["consignment", "aspen_import"], ["yasmin_private", "events"]),
+  "Beaded Evening Bag": good("fashion", "COLLECTIBLE", 18, ["consignment"], ["yasmin_private", "auction"]),
+  "Wool-Cashmere Overcoat": good("fashion", "PRIVATE_TRADE", 22, ["aspen_import", "distress_sale"], ["yasmin_private", "households"]),
+  "Atlas Moth, Taxidermy Specimen": good("natural_history", "COLLECTIBLE", 22, ["consignment", "estate"], ["yasmin_private", "auction"]),
+  "Nautilus Shell Specimen": good("natural_history", "COLLECTIBLE", 19, ["small_boats", "consignment"], ["yasmin_private", "auction"]),
+  "Pressed Botanical Specimen Sheet": good("natural_history", "COLLECTIBLE", 14, ["juan_archive", "consignment"], ["yasmin_private", "auction"]),
+  "Green Apple": good("fruit", "BACKEND_WHOLESALE", 5, ["wholesale"], ["joel_bar", "households"], { shelfLife: 4, servings: 5 }),
+  "Red Apple": good("fruit", "BACKEND_WHOLESALE", 5, ["wholesale", "household_growers"], ["joel_bar", "households"], { shelfLife: 4, servings: 5 }),
+  "Blackberry": good("fruit", "BACKEND_WHOLESALE", 5, ["wholesale"], ["joel_bar", "events"], { shelfLife: 2, servings: 4 }),
+  "Strawberry": good("fruit", "BACKEND_WHOLESALE", 5, ["wholesale", "household_growers"], ["joel_bar", "households"], { shelfLife: 2, servings: 4 }),
+  "Watermelon": good("fruit", "BACKEND_WHOLESALE", 7, ["wholesale"], ["joel_bar", "events"], { shelfLife: 3, servings: 8 }),
+  "Cherry": good("fruit", "BACKEND_WHOLESALE", 6, ["wholesale"], ["joel_bar", "events"], { shelfLife: 3, servings: 5 }),
+  "Grape": good("fruit", "BACKEND_WHOLESALE", 5, ["wholesale"], ["joel_bar", "households"], { shelfLife: 3, servings: 5 }),
+  "Peach": good("fruit", "BACKEND_WHOLESALE", 6, ["wholesale"], ["joel_bar", "households"], { shelfLife: 3, servings: 5 }),
+  "Avocado": good("fruit", "BACKEND_WHOLESALE", 6, ["wholesale"], ["joel_bar", "households"], { shelfLife: 2, servings: 4 }),
+  "Cacao": good("fruit", "ROUTE_IMPORT", 8, ["aspen_import"], ["joel_bar", "events"], { servings: 10 }),
+  "Mango": good("fruit", "BACKEND_WHOLESALE", 7, ["wholesale"], ["joel_bar", "households"], { shelfLife: 3, servings: 5 }),
+  "Pear": good("fruit", "BACKEND_WHOLESALE", 5, ["wholesale"], ["joel_bar", "households"], { shelfLife: 4, servings: 5 }),
+  "Fennel": good("produce", "BACKEND_WHOLESALE", 4, ["household_growers", "wholesale"], ["joel_bar", "households"], { shelfLife: 3, servings: 6 }),
+  "Eggplant": good("produce", "BACKEND_WHOLESALE", 4, ["household_growers"], ["joel_bar", "households"], { shelfLife: 3, servings: 5 }),
+  "Dill": good("herb", "BACKEND_WHOLESALE", 3, ["household_growers"], ["joel_bar", "households"], { shelfLife: 2, servings: 7 }),
+  "Rosemary": good("herb", "BACKEND_WHOLESALE", 3, ["household_growers"], ["joel_bar", "households"], { shelfLife: 3, servings: 8 }),
+  "Thyme": good("herb", "BACKEND_WHOLESALE", 3, ["household_growers"], ["joel_bar", "households"], { shelfLife: 3, servings: 8 }),
+  "Cumin": good("spice", "BACKEND_WHOLESALE", 4, ["wholesale"], ["joel_bar", "households"], { servings: 12 }),
+  "Sesame": good("seed", "BACKEND_WHOLESALE", 4, ["wholesale"], ["joel_bar", "households"], { servings: 12 }),
+  "Mustard Seed": good("seed", "BACKEND_WHOLESALE", 4, ["wholesale"], ["joel_bar", "households"], { servings: 12 }),
+  "Sunflower": good("goal", "SPECIAL_STORY", null, ["sonya_route", "yasmin_route", "juan_route"], ["player_goal"]),
+};
+
+export const LIVING_ASSET_FAMILIES = {
+  lime_tree: { outputs: ["Lime"], stages: ["seed", "seedling", "mature"], maturityDays: 8, inputCost: 2 },
+  mint: { outputs: ["Mint"], stages: ["cutting", "rooted", "mature"], maturityDays: 4, inputCost: 1 },
+  basil: { outputs: ["Basil"], stages: ["seed", "seedling", "mature"], maturityDays: 5, inputCost: 1 },
+  tomato: { outputs: ["Tomato"], stages: ["seed", "seedling", "fruiting"], maturityDays: 6, inputCost: 2 },
+  lemongrass: { outputs: ["Lemongrass"], stages: ["division", "rooted", "mature"], maturityDays: 6, inputCost: 1 },
+};
+
+export const CLAIM_TYPES = {
+  trade_receivable: { issuer: true, holder: true, maturity: true, collateral: false },
+  future_output_claim: { issuer: true, holder: true, maturity: true, collateral: true },
+  secured_loan: { issuer: true, holder: true, maturity: true, collateral: true },
+  delivery_contract: { issuer: true, holder: true, maturity: true, collateral: false },
+  bar_tab: { issuer: true, holder: true, maturity: true, collateral: false },
+  custody_obligation: { issuer: true, holder: true, maturity: true, collateral: false },
+  guarantee_right: { issuer: true, holder: true, maturity: true, collateral: false, guarantor: true },
+  information_exclusivity: { issuer: true, holder: true, maturity: true, collateral: false },
+};
+
+export const SERVICE_TYPES = {
+  bar_service: { capacity: true, provider: "joel" },
+  voyage: { capacity: true, provider: "aspen" },
+  parcel_custody: { capacity: true, provider: "wong" },
+  short_storage: { capacity: true, provider: "wong" },
+  guarantee: { capacity: true, provider: "dima" },
+  private_settlement: { capacity: true, provider: "dima" },
+  secured_finance: { capacity: true, provider: "yasmin" },
+  public_clearing: { capacity: true, provider: "octopus_clearing" },
+};
+
+// Creator-menu ontology. Entries that differ only by colour/cultivar retain one
+// family and explicit variants; aliases never create a second stock identity.
+// This is intentionally broader than ECONOMIC_GOODS: a culinary family can be
+// available to finite wholesale procurement without owning a public order book.
+const menu = (family, group, variants = [], aliases = []) => ({
+  family,
+  group,
+  variants,
+  aliases,
+  mode: ECONOMIC_GOODS[family]?.mode || "BACKEND_WHOLESALE",
+  sourceTransition: "bar_wholesale_lot",
+  sinkTransition: "bar_service_consumption",
+});
+
+export const NIGHT_MENU_MASTER = [
+  menu("Apple", "fruit", ["green", "red"]), menu("Pineapple", "fruit"),
+  menu("Raspberry", "fruit"), menu("Blackberry", "fruit"), menu("Strawberry", "fruit"),
+  menu("Watermelon", "fruit"), menu("Cherry", "fruit"), menu("Grape", "fruit", ["green", "red"]),
+  menu("Peach", "fruit"), menu("Avocado", "fruit"), menu("Grapefruit", "fruit"),
+  menu("Cacao", "fruit"), menu("Mango", "fruit"), menu("Orange", "fruit", ["navel", "blood"]),
+  menu("Pear", "fruit"), menu("Lemon", "fruit"), menu("Lime", "fruit"),
+  menu("Lime Leaf", "herb"), menu("Cucumber", "produce"), menu("Fennel", "produce", ["bulb", "seed"]),
+  menu("Eggplant", "produce", [], ["Aubergine"]), menu("Tomato", "produce", ["standard", "cherry"]),
+  menu("Bell Pepper", "produce", ["red", "green", "yellow"]), menu("Onion", "produce", ["white", "red"]),
+  menu("Courgette", "produce", ["green", "yellow"], ["Zucchini"]),
+  menu("Scallion", "produce", [], ["Spring Onion"]), menu("Baby Red Radish", "produce"),
+  menu("Broccoli", "produce"), menu("Cauliflower", "produce"), menu("Arugula", "leaf", [], ["Rocket"]),
+  menu("Little Gem", "leaf"), menu("Romaine Lettuce", "leaf"), menu("Butter Lettuce", "leaf"),
+  menu("Frisée", "leaf"), menu("Vene Cress", "leaf"), menu("Basil Cress", "leaf"),
+  menu("Affila Cress", "leaf"), menu("Dill", "herb"), menu("Lemongrass", "herb"),
+  menu("Mint", "herb"), menu("Rosemary", "herb"), menu("Basil", "herb", ["sweet", "Thai"]),
+  menu("Thyme", "herb"), menu("Italian Parsley", "herb"), menu("Tarragon", "herb"),
+  menu("Ginger", "aromatic"), menu("Cumin", "spice"), menu("Cardamom", "spice"),
+  menu("Cinnamon", "spice"), menu("Szechuan Pepper", "spice", [], ["Sichuan Pepper"]),
+  menu("Chilli", "spice", ["red", "bird", "green"]), menu("Poppy Seed", "seed"),
+  menu("Sesame", "seed", ["white", "black"]), menu("Mustard Seed", "seed"),
+  menu("Button Mushroom", "mushroom"), menu("Shimeji Mushroom", "mushroom"),
+  menu("Portobello", "mushroom"), menu("Hibiscus", "botanical"), menu("Green Tea", "tea"),
+  menu("Rum", "alcoholic_base"), menu("Gin", "alcoholic_base"), menu("Vodka", "alcoholic_base"),
+  menu("Whisky", "alcoholic_base"), menu("Tequila", "alcoholic_base"), menu("Mezcal", "alcoholic_base"),
+  menu("Wine", "alcoholic_base"), menu("Brandy", "alcoholic_base"),
+  menu("Soda", "non_alcoholic_base"), menu("Orange Curaçao", "modifier"),
+  menu("Orgeat", "modifier"), menu("Demerara Syrup", "modifier"), menu("Ice", "service_input"),
+  menu("Chicken", "food"), menu("Pork", "food"), menu("Lamb", "food"), menu("Beef", "food"),
+  menu("Jamón Ibérico", "food"), menu("Fish", "food"),
+];
+
+export const MENU_ALIAS_TO_FAMILY = Object.fromEntries(
+  NIGHT_MENU_MASTER.flatMap((entry) => [entry.family, ...entry.aliases].map((name) => [name, entry.family])),
+);
+
+export const LEGACY_REJECTED = ["Blue Glass Marble", "Dead Pigeon", "Chewed Rope Toy", "Bad Tangerine", "Old Coupon", "Key That Opens Nothing", "Glitter Tape", "Lucky Sticker", "Salvage Bundle", "Mature Nursery Plant", "Nursery Seed Packet"];
+
+export function contentGraph() {
+  return Object.entries(ECONOMIC_GOODS).map(([id, g]) => ({ id, ...g, flags: [!g.sources.length && "NO_SOURCE", !g.sinks.length && "NO_SINK", g.sources.length === 1 && "SINGLE_POINT_MONOPOLY", g.mode === "BACKEND_WHOLESALE" && "BACKEND_ONLY", ["ROUTE_IMPORT", "SPECIAL_STORY"].includes(g.mode) && "ROUTE_ONLY"].filter(Boolean) }));
+}
