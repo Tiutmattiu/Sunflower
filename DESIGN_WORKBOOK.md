@@ -1105,3 +1105,57 @@ Reincarnation, automatic embodiment transitions, former-life/estate gameplay and
 Review all existing design Markdown for contradictions, stale names, source ownership and scene/section references. Retired terminology may remain only in explicit history, compatibility maps or blocked candidate scenes. Preserve dated verification as historical evidence; this pass does not run a build, browser playtest, economic simulation or deployment.
 
 The next authorised playable slice must satisfy the relevant `GAME_DESIGN.md` §5 product checks through actual player-visible interactions. An economic test harness, paper result or green simulation alone is insufficient. Gameplay code, balance and memory edits remain outside this task. The final correction explicitly authorises committing and pushing these Markdown changes on `narrative-karmic-motifs-v1`; it does not authorise gameplay deployment.
+
+
+# 34. Creator clarifications and newly reopened proposal — 2026-09-08
+
+**Provenance and scope:** read against remote main `ac5a841` (Remove retired rebirth system from main) and the creator's latest messages in “分支 · 分支 · 分支 · 游戏设计点评”. These are documentation changes only. Older assistant summaries, toy-model results and Batch 3 claims do not prove current implementation. Accepted direction below supersedes conflicting general descriptions, not dated evidence. No runtime, balance or catalogue rebuild is authorised.
+
+## 34.1 Accepted direction and owners
+
+| Subject | Current design requirement | Owner / limits |
+|---|---|---|
+| Aspen gift | Buy a real luxury object through Yasmin/private sellers; distinguish purchase from Wong custody and Dima discreet intermediation | Character bible Aspen; item-economy collectible candidates already include scarf/bag/silver objects, not verified live inventory |
+| Supper | Mai Tai ingredient supply/sale → meaningful Joel patronage or help plus near-full trust → Joel invitation requiring exceptional fresh fish → physical supper → Sonya's household gift | GAME_DESIGN §14; exact values, fish species/source/timing Open; no direct Sonya trading or relationship grind |
+| Dima / sanctions | Black-market access under public exclusion, costly bounded intermediation, possible reputation recovery, risky fictional laundering/bribery and escalating discovered misconduct including jail | GAME_DESIGN §18; no universal reputation number, no guaranteed access or automatic forgiveness; legal parameters Open |
+| Octopus | Public commitment, locks, exchange, records and release/return of unused resources; institution does not own client float | DAY_LOOP_MARKET_STRUCTURE; §32.8 pooled shipment remains separate Deferred/Open; old matching details are dated prototype evidence |
+| Economic priority | Named NPC↔player loops and NPC interdependence before background demand/supply supplementation | GAME_DESIGN §5; anonymous actors remain bounded, not removed or used to conceal missing loops |
+| Toads | Optional hard-to-notice scene collectibles; finding/collecting costs no attention; sell to the circle or invite them to share | Character bible §11; finite custody, real attendance; emoji chat, exact effect/trust/price/respawn and post-use disposition Open |
+| Pressure / ending | No mandatory survival burn or compulsory job/rescue story; opportunities and obligations make time consequential | Ordinary death can end a run, but conditions are not selected. Current acquisition → Go home remains; no forced restart |
+
+## 34.2 Specialisation viability is a design target, not a completion claim
+
+Permit an income strategy concentrated in one return class without requiring unrelated businesses. Supporting procurement, travel, relationships and eventual Sunflower acquisition are not forbidden diversification. Realise returns net of costs, defaults and locked capital; borrowing principal, unrealised marks and asset liquidation alone are not recurring income. A specialist can lose. No promise that every item, counterparty, tactic or starting position supports unlimited wealth.
+
+| Income focus | Candidate path using existing primitives | What must sustain it / what could fail |
+|---|---|---|
+| Trade | Source and resell existing bridge goods across real valuation/location/time differences | Repeat buyers, transport and working capital; demand saturation, spoilage and competition can erase spreads |
+| Operate | Paid sourcing, delivery, inspection, repair or bounded production | Accessible service prerequisites, actual customers and capacity; no forced Joel ownership/takeover or survival job |
+| Invest | Fund/hold productive living assets or documented output interests | Reachable entry capital, maturity and actual output buyer; care costs, delay and loss; passive waiting is not guaranteed yield |
+| Finance | Supply working capital, lend or acquire enforceable claims | Actual borrower need, funding and collection; default, recovery cost and lock-up; loan principal is not profit |
+| Intermediate | Sell a useful lead, arrange a match, delivery, access or guarantee | Legally acquired knowledge, counterparties and payable service; diffusion erodes information value and trust limits scale |
+| Speculate | Take a position in existing scarce goods/auction lots and later exit | Affordable entry and a plausible independent buyer; adverse price moves and illiquidity; no guaranteed resale or new stock exchange |
+
+Acceptance for each class: demonstrate a reachable entry path from a stated start; repeated real paying counterparties and net realised returns over a stated horizon; a meaningful adverse case and costed response; and at least one compatible Sunflower route. Label unsupported classes Partial/Open instead of crediting simulated NPC wealth as player viability. Report class-specific returns and necessary supporting actions separately. Compare default and opportunity-stressed conditions; do not promise equal wealth or force unrelated income to rescue a failing specialist.
+
+The existing case backlog in SCENARIOS_TEACHING remains a backlog. No new percentage of completed cases or six-class runtime acceptance is asserted here. Further finance/business modes should reuse claims, services and existing goods only after these loops work; pooled projects, takeover and a new stock/IPO system retain their existing deferrals.
+
+## 34.3 Toad social/worldview scenes
+
+The hidden-object layer rewards observation, not attention-point expenditure. It must remain optional and need no toad to finish a Sunflower route. A collected object has one owner and cannot be repeatedly sold from the same scene. Existing friends can meet without the player; player invitations depend on availability rather than a mandatory periodic event. Juan can argue for repeatable understanding, Aspen for obligations and finite time, Wong for care and its burdens; Joel occasionally interrupts or questions them. These are character positions, not the game's correct answer. Exact dialogue, nonfinancial altered-state effect and small earned-trust consequences require later selection. Do not turn the scene into profitable infinite farming or a philosophy-completion checklist.
+
+## 34.4 Plant-only Sun Moment — NEW PROPOSAL, NOT ACCEPTED CANON
+
+The creator explicitly reopened this alternative: repeated refusal to pause gradually makes the player a plant/Sunflower; that flower might enter Joel's household, Juan's growing stock or Yasmin's gift/allocation channel. Most NPCs stop unless something genuinely urgent competes. The proposal also floated planting seeds and awakening as a human to continue until acquiring a Sunflower.
+
+**Compatible part:** a natural pause, a real local advantage from continuation, increasing difficulty disengaging and different attachments fit WORLD_CANON §§3–6. Ordinary NPC pausing fits this independently of transformation. A voluntary Go home closure can reflect the difference between acquiring an object and resolving desire, using factual consequences and unresolved relationships rather than a moral score or explanatory lecture. Exact final scene and run/Sun Moment duration remain Open.
+
+**Conflict:** automatic player→plant transformation contradicts current §5; seed→human awakening is reincarnation even without animals. Making every route's reward a transformed person would establish new hidden world truth and change the ordinary household/unpriced flower premise. It also needs decisions about player agency, ownership/custody, persistence and endings. Do not quietly import those systems or a “miss N pauses” punishment. The current acquisition still triggers no supernatural event.
+
+**Recommendation for a later decision:** if testing plant-only transformation is explicitly accepted, first consider it as an alternate terminal outcome with the harbour continuing around the flower, rather than automatically restoring human replay. This is an editorial option, not an accepted rule or a conclusion that it is already consistent. Keep ordinary route flowers' origin unestablished. Decide the trigger, whether change is terminal/reversible, relation to Go home, and whether any human awakening is separately authorised before implementation. No timing/threshold is selected.
+
+Animal-form progression, former-life biographies, estates and reincarnation remain RETIRED. The newly recorded plant-only proposal does not reclassify that architecture as Open. Rejecting the proposal leaves the existing ending and Sun Moment intact.
+
+## 34.5 Documentation handoff acceptance
+
+This pass should contain Markdown changes only, preserve CODEX_VERIFICATION's dated claims, keep retired architecture explicitly retired and avoid freezing Open prices, legal thresholds, clocks or fish identity. Check local references and scene guards, including G01's ordinary Mackerel purchase versus the exceptional supper fish. A later implementation task must separately establish current runtime gaps and prove the specific accepted flows; this chapter is not evidence that all cases, all specialisations or these new scenes execute.

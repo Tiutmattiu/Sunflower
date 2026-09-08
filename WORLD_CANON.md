@@ -201,7 +201,7 @@ Logistics / contract operator: provisioning, route reach, time, weather, cargo, 
 
 Japanese woman; lesbian; highly scheduled; sensitive to time, weather and bodily change; risk-averse; uncomfortable with uncertainty; does not romanticise sailing; earns primarily through reliable logistics, contracts and scoped services; conservative finance/cross-port trade may support that work, not heavy speculation.
 
-Social obligation can take the form of lumpy, dated, discretionary gifts or promises. Exact lover/support details remain Open; no Aspen/Yasmin romance is canonized. Actor-specific demand mechanics belong in the character bible.
+Social obligation can take the form of lumpy, dated, discretionary gifts or promises. Luxury gifts are sourced through Yasmin/private sellers; Wong's custody and Dima's discreet brokerage are separate services. Exact lover/support details remain Open; no Aspen/Yasmin romance is canonized. Actor-specific demand mechanics belong in the character bible.
 
 Her recurring structure is stability through usefulness and being needed.
 
@@ -287,6 +287,8 @@ Finite marine supply comes from separate goods owners, boats, wharf lots and ano
 
 Sonya is Joel's Penguin grandmother and a supporting figure. Family language and the present Penguin are current facts; neither establishes a former Human identity, legal death or reincarnation history.
 
+The invitation is earned through Joel, with the Mai Tai ingredient, meaningful patronage/help and near-full trust; he requests a rare fresh fish unavailable through ordinary purchase. Sonya waits, cooks and gives the household Sunflower, without independent trading or relationship-grinding interaction. `GAME_DESIGN.md` §14 owns the trigger and Open parameters.
+
 Discover the fresh-fish/supper route materially: recurring fish purchase, skin removed, Bar closes early, Penguin eating. Do not add a legal-history reveal to explain her.
 
 ---
@@ -299,7 +301,7 @@ Former-life/estate gameplay, automatic embodiment transitions and alternate-form
 
 Animal characters have work, households, relationships and economic agency. Their presence does not establish a separate excluded caste, a Seagull mafia or a universal proxy requirement.
 
-Dima earns from fragmented information, search, trust, privacy, guarantees and settlement/enforcement friction. Wong has overlapping contacts and may bypass him. These functions stand without an animal-exclusion premise; exact legal institutions remain Open.
+Dima is the black-market route when public trading is barred, as well as earning from fragmented information, search, trust, privacy, guarantees and settlement/enforcement friction. Public sanctions, recovery, risky circumvention and possible jail follow discovered conduct, not species; `GAME_DESIGN.md` §18 owns the direction and unresolved rules. Wong has overlapping contacts and may bypass him. These functions stand without an animal-exclusion premise; exact legal institutions remain Open.
 
 ---
 
@@ -357,7 +359,7 @@ Refusing commodification is also not automatically liberation.
 
 ## 18. Altered states / toad
 
-Juan, Wong and Aspen can share recurring altered-state/toad scenes.
+Juan, Wong and Aspen can share recurring altered-state/toad scenes, with Joel sometimes joining. Optional hidden scene-toad discovery and collection cost no attention; travel and social participation retain their real costs. Sale or shared use follows actual custody. The character bible owns the optional social extension; it is not required to obtain a Sunflower.
 
 These scenes are not a drug crafting system, proof of enlightenment, or a moral anti-drug lesson.
 
@@ -476,3 +478,7 @@ Do not revive from Git history:
 **OPEN:** specific time budget, clearing cadence, run length, Onewheel exact recipe, repair/workshop provider, future borrowed-time mechanics, final item counts, prices and balance. Aspen's logistics role does not settle who provides repairs. Other previously undecided narrative details are not new implementation contracts.
 
 **RETIRED, not OPEN:** reincarnation/rebirth, automatic embodiment transitions, former-life/estate gameplay, alternate-form disappearance, Yasmin secretly-a-hyena, Seagull-mafia metaphysics and Joel as human legal face. Do not revive these from historical code or prose.
+
+## 25. Newly reopened proposal boundary — 2026-09-08
+
+The creator has explicitly asked to reconsider a plant-only consequence for repeated Sun Moment resistance. `DESIGN_WORKBOOK.md` Chapter 34 records that new proposal and its conflicts. Recording it does not accept automatic transformation, revive animal-form progression or restore reincarnation. Current canon and the acquisition → no supernatural event → Go home sequence above remain authoritative until a separate explicit decision.

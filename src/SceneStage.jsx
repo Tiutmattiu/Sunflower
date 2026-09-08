@@ -1,0 +1,5 @@
+import React from 'react';
+import manifest from '../public/art/manifest.json';
+const pretty=x=>x.replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase());
+export function SceneStage({scene,selected,onSelect}){const spec=manifest.scenes[scene.location]||manifest.scenes.workbench;const entries=[...scene.people.map((id,i)=>({id,type:'person',anchor:spec.anchors[i%spec.anchors.length]})),...scene.objects.map((id,i)=>({id,type:'object',anchor:spec.anchors[(i+scene.people.length)%spec.anchors.length]}))];return <div className={`scene-stage manifest-scene tone-${spec.tone}`} aria-label={`${pretty(scene.location)} scene`}>{entries.map(({id,type,anchor})=><button style={{'--anchor-x':`${anchor[0]}%`,'--anchor-y':`${anchor[1]}%`}} className={`hotspot ${type} ${id==='hidden toad'?'hidden-toad':''} ${selected===id?'selected':''}`} onClick={()=>onSelect(id)} key={id} aria-label={`${pretty(id)} hotspot`}><span className={type==='person'?'figure':'object-mark'} aria-hidden="true">{id==='hidden toad'?'·':type==='person'?'●':'◇'}</span><strong>{id==='hidden toad'?'Something in the leaves':pretty(id)}</strong></button>)}</div>}
+export {manifest as ART_MANIFEST};

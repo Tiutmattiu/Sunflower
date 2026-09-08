@@ -534,7 +534,9 @@ Candidate language families:
 - Nautilus Shell Specimen
 - Pressed Botanical Specimen Sheet
 
-These are naming and asset-class references, not a frozen shopping list.
+These are naming and asset-class references, not a frozen shopping list. They already include plausible Aspen luxury gifts such as the Silk Twill Scarf, Hand-Rolled Hem, Beaded Evening Bag and Art Deco Silver Cigarette Case; this is documented candidate coverage, not proof of runtime stock. Aspen buys through Yasmin/private sellers; provenance, seller ownership, payment and delivery remain real. Wong custody and Dima discreet brokerage are services, not alternative object identities.
+
+The Sonya supper's particular rare fresh fish is an authored sourcing requirement (`GAME_DESIGN.md` §14), not an ordinary fish SKU substitution. Its species and exceptional sources remain Open. Toads belong to the existing living-object ontology: scene discovery, finite custody, optional sale or social use; exact price, availability and post-gathering disposition remain Open. No catalogue-wide rebuild or new item count is authorised by these clarifications.
 
 Collectible value should differ structurally from commodity value. Useful variables include authenticity, provenance, condition, scarcity, current fashion, buyer-specific utility, number and wealth of competing buyers, and liquidity/time to sale.
 

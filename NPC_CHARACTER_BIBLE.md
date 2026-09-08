@@ -150,6 +150,8 @@ Her cash flow can be healthy while her free time is almost nonexistent.
 
 Aspen's lesbian identity is current canon; exact lover/support-network details remain Open. Do not create lover NPCs or a “remember which girlfriend arrives tonight” memory minigame, and do not canonize Aspen/Yasmin romance.
 
+Aspen sources luxury gifts through Yasmin's catalogue/access or identifiable private sellers. The purchase must transfer an owned object for actual payment, with provenance, affordability and delivery constraints. Wong may provide custody, packaging or handoff; that service does not make his salvage counter the default luxury source. Dima may broker discreet acquisition/payment/delivery when needed, rather than automatically supplying or already owning the gift. This commercial relationship establishes no Aspen/Yasmin romance. Existing candidate luxury objects are listed in `ITEM_ECONOMY.md`; no new compulsory gift SKU is selected.
+
 Economically relevant social commitments should be lumpy, deadline-sensitive, discretionary and quality/provenance-sensitive: a birthday gift, dinner, imported object or dated promise. She may enjoy a clearly useful patron role, yet usefulness can become compulsion. This differs from Wong's frequent, necessary, price-sensitive household/rescue burn.
 
 ## Routes, weather and outside options — STRONG CANDIDATE
@@ -1068,6 +1070,8 @@ The tracksuit/gangster reference is visual-social shorthand, not his entire pers
 
 ## The black market is not an evil shop
 
+Dima is the black-market route, not merely a privacy concierge. Public-market bans can make his network necessary for trading; resources, contacts and trust still constrain access. Reputation recovery and costly, risky circumvention are possible; discovered misconduct can escalate to jail. `GAME_DESIGN.md` §18 owns this accepted direction and its Open legal parameters.
+
 Dima does not own every illicit object in a catalogue.
 
 Informal intermediation can earn because:
@@ -1237,7 +1241,7 @@ She is the Penguin encountered by the player; no prior Human identity is establi
 
 The name follows the creator's rule based on *Death and the Penguin*: the penguin there is male, so the supporting Penguin grandmother uses the little girl's name, `Sonya`.
 
-Sonya is not a main trader.
+Sonya is not a main trader or an independent player interaction/relationship target. `GAME_DESIGN.md` §14 owns the exact Joel-led invitation and rare-fresh-fish supper requirement. She waits for the fish, prepares the meal and gives the household Sunflower; generic help/food and direct Sonya conversations do not unlock this route.
 
 ## Narrative function
 
@@ -1274,6 +1278,10 @@ Current creator canon:
 > Juan, Aspen, and Wong sometimes use a toad for hallucinatory / psychedelic effects.
 
 This already happened in their world before the player arrived.
+
+**Accepted optional extension, 2026-09-08:** hard-to-notice toads are hidden in actual scenes. Spotting and collecting an available toad costs no attention; this narrow exception does not make travel, fresh investigation or attending a gathering free. The player can sell a found toad to Wong, Juan or Aspen, or keep it and invite the circle to an optional shared scene. Joel sometimes joins. Invitations respect location, schedules, genuine urgent obligations and capacity; no automatic compulsory gathering or teleporting cast.
+
+Aim for a modest but worthwhile price, neither a fortune nor meaningless change; exact price and supply/respawn rules remain Open. A finite collected object must not pay repeatedly. A playful emoji Phone group is a candidate presentation, not required infrastructure. The shared experience may offer a temporary nonfinancial effect and a little earned trust, with exact effects Open. Debate about the meaning of life reveals conflicting viewpoints, not authoritative metaphysical truth, a wisdom score or a required main-route unlock. Chapter 34 of `DESIGN_WORKBOOK.md` owns outstanding decisions.
 
 Do not make the player unlock the existence of this friendship circle.
 
@@ -1325,7 +1333,7 @@ Juan is the one most likely to turn the experience into a theory.
 
 # 12. Character Behaviour at Sun Moment
 
-Use each character to show a different attachment without turning the Sun Moment into a personality quiz.
+Most NPCs naturally stop at Sun Moment; continuing requires a genuinely urgent situational pressure, not a permanent personality exemption. Use each character to show a different attachment without turning the Sun Moment into a personality quiz.
 
 ## Aspen
 The problem is the next obligation.

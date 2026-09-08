@@ -4,6 +4,7 @@
 const good = (family, mode, value, sources, sinks, extra = {}) => ({ category: "physical_good", family, mode, value, sources, sinks, ...extra });
 
 export const ECONOMIC_GOODS = {
+  "Exceptional Invitation Fish": good("marine_food", "SPECIAL_STORY", 10, ["small_boats"], ["sonya_household"], { shelfLife: 1 }),
   "Fresh Mackerel": good("marine_food", "PUBLIC_MARKET", 6, ["small_boats"], ["households", "joel_bar"], { shelfLife: 2 }),
   "Smoked Eel": good("marine_food", "PUBLIC_MARKET", 8, ["small_boats", "wharf_suppliers"], ["households", "crews"], { shelfLife: 7 }),
   "Sea Lettuce": good("marine_food", "PUBLIC_MARKET", 5, ["small_boats"], ["households", "joel_bar"], { shelfLife: 2 }),

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "assets": [
+    {"id":"location-fallback","file":null,"kind":"location","aspect":"16:9","anchor":[0,0],"z":0,"variant":"default","hotspot":null,"fallback":"painted-room","mobile":"crop-center"},
+    {"id":"character-fallback","file":null,"kind":"character","aspect":"2:5","anchor":[50,92],"z":20,"variant":"present","hotspot":{"x":30,"y":12,"w":40,"h":82},"fallback":"silhouette","mobile":"scale-80"},
+    {"id":"prop-fallback","file":null,"kind":"prop","aspect":"1:1","anchor":[50,78],"z":30,"variant":"available","hotspot":{"x":20,"y":20,"w":60,"h":60},"fallback":"labelled-object","mobile":"scale-85"}
+  ],
+  "scenes": {
+    "joels_bar":{"background":"location-fallback","tone":"bar","anchors":[[16,88],[37,88],[60,88],[82,88]]},
+    "harbour_berth":{"background":"location-fallback","tone":"berth","anchors":[[20,88],[48,88],[76,88]]},
+    "parcel_counter":{"background":"location-fallback","tone":"counter","anchors":[[24,88],[52,88],[78,88]]},
+    "nursery":{"background":"location-fallback","tone":"nursery","anchors":[[18,88],[45,88],[73,88]]},
+    "viewing_room":{"background":"location-fallback","tone":"gallery","anchors":[[20,88],[50,88],[80,88]]},
+    "back_room":{"background":"location-fallback","tone":"private","anchors":[[30,88],[70,88]]},
+    "workbench":{"background":"location-fallback","tone":"desk","anchors":[[20,82],[44,82],[68,82],[86,82]]},
+    "sonyas_kitchen":{"background":"location-fallback","tone":"kitchen","anchors":[[25,88],[55,88],[80,88]]},
+    "cliff_path":{"background":"location-fallback","tone":"cliff","anchors":[[35,88],[70,88]]}
+  }
+}

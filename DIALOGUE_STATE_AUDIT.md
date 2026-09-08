@@ -450,7 +450,7 @@ Legend:
 
 | ID | Status | Editorial note |
 |---|---|---|
-| G01 | REWRITE | Do not make Wong the default fish retailer. Use whoever actually holds the fish that day / background fish stall. |
+| G01 | REWRITE | Routine household fish clue only: use an actual holder, not default Wong stock. This ordinary Mackerel purchase is not the rare invitation fish; GAME_DESIGN.md §14 owns supper requirements. |
 | G02 | KEEP | Strong. |
 | G03 | KEEP | Strong first visual encounter. |
 | G04 | RETIRED | Obsolete form/prior-life/species-exclusion premise; do not implement. |
