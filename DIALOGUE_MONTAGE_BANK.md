@@ -1949,6 +1949,7 @@ She looks at it.
 # 12. Sonya — Small Supporting Scenes
 
 ## G01 — Fish order
+**Historical draft / REWRITE:** ordinary household purchase clue only, not the rare supper fish or a fixed Wong supply path; see `DIALOGUE_STATE_AUDIT.md` G01 and `GAME_DESIGN.md` §14.
 Joel: “Mackerel.”
 
 Wong: “Six.”
