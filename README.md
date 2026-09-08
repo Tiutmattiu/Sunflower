@@ -2,7 +2,9 @@
 
 A browser-based single-player trading game prototype about information asymmetry, private value, relationships, liquidity, obligations and a sunflower that is supposed to take you home.
 
-## Current prototype
+## Historical prototype / migration source
+
+**Design status, 2026-09-07:** `GAME_DESIGN.md` §5 owns the frozen gameplay constitution. The existing runtime is an economic test harness and migration source, not acceptance of the workbench/location/event game. The list below records the dated prototype, not new runtime verification. `DESIGN_WORKBOOK.md` Chapter 33 owns migration debt and Open decisions.
 
 - React 18 + Vite 5
 - Browser-only; no backend or accounts
@@ -57,18 +59,18 @@ node scripts/living-smoke.mjs
 
 ## Important design docs
 
-- `GAME_DESIGN.md` — overall design direction
-- `DAY_LOOP_MARKET_STRUCTURE.md` — solar day and noon market structure
+- `GAME_DESIGN.md` — frozen gameplay constitution (§5) and supporting design
+- `DAY_LOOP_MARKET_STRUCTURE.md` — historical phase/Noon model, not future player-flow authority
 - `INFORMATION_DISCOVERY_MODEL.md` — information asymmetry and staged discovery
 - `ITEM_ECONOMY.md` — item roles and price philosophy
 - `NPC_CHARACTER_BIBLE.md` — NPC identity / behavior direction
-- `REBIRTH_FORM_SYSTEM.md` — form, legal identity and rebirth hypotheses
-- `WORLD_LORE_SUN_MOMENT.md` — current Sun Moment metaphysics
-- `CODEX_VERIFICATION.md` — verified results, clearing rules, and remaining checks
+- `WORLD_CANON.md` — current world canon and Sun Moment ontology
+- `CODEX_VERIFICATION.md` — dated prototype results, not constitution acceptance
+- `DESIGN_WORKBOOK.md` — Open research and current migration/dependency register (Chapter 33)
 
 ## Verification status
 
-On 2026-09-04 the production build, both engine smoke scripts, a Day 1 browser order/settlement/notebook flow, and a 390 × 844 responsive check passed locally. See `CODEX_VERIFICATION.md` for the exact current contracts and unverified boundaries. Public deployment is not verified.
+On 2026-09-04 the production build, both engine smoke scripts, a Day 1 browser order/settlement/notebook flow, and a 390 × 844 responsive check passed locally. See `CODEX_VERIFICATION.md` for that snapshot's contracts and unverified boundaries. Public deployment is not verified.
 
 ## Scope
 

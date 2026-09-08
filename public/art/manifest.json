@@ -1,0 +1,594 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "id": "location-fallback",
+      "file": null,
+      "kind": "location",
+      "aspect": "16:9",
+      "anchor": [
+        0,
+        0
+      ],
+      "z": 0,
+      "variant": "default",
+      "hotspot": null,
+      "fallback": "painted-room",
+      "mobile": "crop-center"
+    },
+    {
+      "id": "character-fallback",
+      "file": null,
+      "kind": "character",
+      "aspect": "2:5",
+      "anchor": [
+        50,
+        92
+      ],
+      "z": 20,
+      "variant": "present",
+      "hotspot": {
+        "x": 30,
+        "y": 12,
+        "w": 40,
+        "h": 82
+      },
+      "fallback": "silhouette",
+      "mobile": "scale-80"
+    },
+    {
+      "id": "prop-fallback",
+      "file": null,
+      "kind": "prop",
+      "aspect": "1:1",
+      "anchor": [
+        50,
+        78
+      ],
+      "z": 30,
+      "variant": "available",
+      "hotspot": {
+        "x": 20,
+        "y": 20,
+        "w": 60,
+        "h": 60
+      },
+      "fallback": "labelled-object",
+      "mobile": "scale-85"
+    }
+  ],
+  "scenes": {
+    "joels_bar": {
+      "background": "location-fallback",
+      "tone": "bar",
+      "views": [
+        "WIDE",
+        "WORK"
+      ],
+      "anchors": [
+        {
+          "name": "joels_bar-left",
+          "x": 18,
+          "y": 88,
+          "scale": 1,
+          "z": 20,
+          "mirror": false,
+          "mobileOrder": 1
+        },
+        {
+          "name": "joels_bar-centre",
+          "x": 50,
+          "y": 88,
+          "scale": 1,
+          "z": 22,
+          "mirror": false,
+          "mobileOrder": 2
+        },
+        {
+          "name": "joels_bar-right",
+          "x": 80,
+          "y": 88,
+          "scale": 1,
+          "z": 21,
+          "mirror": true,
+          "mobileOrder": 3
+        }
+      ],
+      "ordinaryLife": [
+        "shisha-pipe",
+        "low-cushions",
+        "used-glass",
+        "chalk-smudge",
+        "half-read-book"
+      ],
+      "colourRhymes": [
+        "amber-orgeat",
+        "amber-lamp",
+        "amber-tab"
+      ],
+      "safeArea": {
+        "x": 4,
+        "y": 5,
+        "w": 92,
+        "h": 88
+      },
+      "hotspotShape": "rect"
+    },
+    "harbour_berth": {
+      "background": "location-fallback",
+      "tone": "berth",
+      "views": [
+        "WIDE",
+        "WORK"
+      ],
+      "anchors": [
+        {
+          "name": "harbour_berth-left",
+          "x": 18,
+          "y": 88,
+          "scale": 1,
+          "z": 20,
+          "mirror": false,
+          "mobileOrder": 1
+        },
+        {
+          "name": "harbour_berth-centre",
+          "x": 50,
+          "y": 88,
+          "scale": 1,
+          "z": 22,
+          "mirror": false,
+          "mobileOrder": 2
+        },
+        {
+          "name": "harbour_berth-right",
+          "x": 80,
+          "y": 88,
+          "scale": 1,
+          "z": 21,
+          "mirror": true,
+          "mobileOrder": 3
+        }
+      ],
+      "ordinaryLife": [
+        "gull",
+        "wet-rope",
+        "distant-crane"
+      ],
+      "colourRhymes": [
+        "blue-crate",
+        "blue-raincoat"
+      ],
+      "safeArea": {
+        "x": 4,
+        "y": 5,
+        "w": 92,
+        "h": 88
+      },
+      "hotspotShape": "rect"
+    },
+    "parcel_counter": {
+      "background": "location-fallback",
+      "tone": "counter",
+      "views": [
+        "WIDE",
+        "WORK"
+      ],
+      "anchors": [
+        {
+          "name": "parcel_counter-left",
+          "x": 18,
+          "y": 88,
+          "scale": 1,
+          "z": 20,
+          "mirror": false,
+          "mobileOrder": 1
+        },
+        {
+          "name": "parcel_counter-centre",
+          "x": 50,
+          "y": 88,
+          "scale": 1,
+          "z": 22,
+          "mirror": false,
+          "mobileOrder": 2
+        },
+        {
+          "name": "parcel_counter-right",
+          "x": 80,
+          "y": 88,
+          "scale": 1,
+          "z": 21,
+          "mirror": true,
+          "mobileOrder": 3
+        }
+      ],
+      "ordinaryLife": [
+        "string-roll",
+        "worn-stool",
+        "delivery-bell"
+      ],
+      "colourRhymes": [
+        "red-twine",
+        "red-stamp"
+      ],
+      "safeArea": {
+        "x": 4,
+        "y": 5,
+        "w": 92,
+        "h": 88
+      },
+      "hotspotShape": "rect"
+    },
+    "nursery": {
+      "background": "location-fallback",
+      "tone": "nursery",
+      "views": [
+        "WIDE",
+        "WORK"
+      ],
+      "anchors": [
+        {
+          "name": "nursery-left",
+          "x": 18,
+          "y": 88,
+          "scale": 1,
+          "z": 20,
+          "mirror": false,
+          "mobileOrder": 1
+        },
+        {
+          "name": "nursery-centre",
+          "x": 50,
+          "y": 88,
+          "scale": 1,
+          "z": 22,
+          "mirror": false,
+          "mobileOrder": 2
+        },
+        {
+          "name": "nursery-right",
+          "x": 80,
+          "y": 88,
+          "scale": 1,
+          "z": 21,
+          "mirror": true,
+          "mobileOrder": 3
+        }
+      ],
+      "ordinaryLife": [
+        "watering-can",
+        "soil-tray",
+        "bent-label"
+      ],
+      "colourRhymes": [
+        "green-glove",
+        "green-cutting"
+      ],
+      "safeArea": {
+        "x": 4,
+        "y": 5,
+        "w": 92,
+        "h": 88
+      },
+      "hotspotShape": "rect"
+    },
+    "viewing_room": {
+      "background": "location-fallback",
+      "tone": "gallery",
+      "views": [
+        "WIDE",
+        "WORK"
+      ],
+      "anchors": [
+        {
+          "name": "viewing_room-left",
+          "x": 18,
+          "y": 88,
+          "scale": 1,
+          "z": 20,
+          "mirror": false,
+          "mobileOrder": 1
+        },
+        {
+          "name": "viewing_room-centre",
+          "x": 50,
+          "y": 88,
+          "scale": 1,
+          "z": 22,
+          "mirror": false,
+          "mobileOrder": 2
+        },
+        {
+          "name": "viewing_room-right",
+          "x": 80,
+          "y": 88,
+          "scale": 1,
+          "z": 21,
+          "mirror": true,
+          "mobileOrder": 3
+        }
+      ],
+      "ordinaryLife": [
+        "empty-plinth",
+        "coat-hook",
+        "dust-cloth"
+      ],
+      "colourRhymes": [
+        "cobalt-bowl",
+        "cobalt-pencil"
+      ],
+      "safeArea": {
+        "x": 4,
+        "y": 5,
+        "w": 92,
+        "h": 88
+      },
+      "hotspotShape": "rect"
+    },
+    "back_room": {
+      "background": "location-fallback",
+      "tone": "private",
+      "views": [
+        "WIDE",
+        "WORK"
+      ],
+      "anchors": [
+        {
+          "name": "back_room-left",
+          "x": 18,
+          "y": 88,
+          "scale": 1,
+          "z": 20,
+          "mirror": false,
+          "mobileOrder": 1
+        },
+        {
+          "name": "back_room-centre",
+          "x": 50,
+          "y": 88,
+          "scale": 1,
+          "z": 22,
+          "mirror": false,
+          "mobileOrder": 2
+        },
+        {
+          "name": "back_room-right",
+          "x": 80,
+          "y": 88,
+          "scale": 1,
+          "z": 21,
+          "mirror": true,
+          "mobileOrder": 3
+        }
+      ],
+      "ordinaryLife": [
+        "closed-blind",
+        "cold-tea",
+        "spare-chair"
+      ],
+      "colourRhymes": [
+        "violet-envelope",
+        "violet-carbon"
+      ],
+      "safeArea": {
+        "x": 4,
+        "y": 5,
+        "w": 92,
+        "h": 88
+      },
+      "hotspotShape": "rect"
+    },
+    "workbench": {
+      "background": "location-fallback",
+      "tone": "desk",
+      "views": [
+        "WIDE",
+        "WORK"
+      ],
+      "anchors": [
+        {
+          "name": "workbench-left",
+          "x": 18,
+          "y": 88,
+          "scale": 1,
+          "z": 20,
+          "mirror": false,
+          "mobileOrder": 1
+        },
+        {
+          "name": "workbench-centre",
+          "x": 50,
+          "y": 88,
+          "scale": 1,
+          "z": 22,
+          "mirror": false,
+          "mobileOrder": 2
+        },
+        {
+          "name": "workbench-right",
+          "x": 80,
+          "y": 88,
+          "scale": 1,
+          "z": 21,
+          "mirror": true,
+          "mobileOrder": 3
+        }
+      ],
+      "ordinaryLife": [
+        "window-shadow",
+        "tea-ring"
+      ],
+      "colourRhymes": [
+        "yellow-pencil",
+        "yellow-clipping"
+      ],
+      "safeArea": {
+        "x": 4,
+        "y": 5,
+        "w": 92,
+        "h": 88
+      },
+      "hotspotShape": "rect"
+    },
+    "sonyas_kitchen": {
+      "background": "location-fallback",
+      "tone": "kitchen",
+      "views": [
+        "WIDE",
+        "WORK"
+      ],
+      "anchors": [
+        {
+          "name": "sonyas_kitchen-left",
+          "x": 18,
+          "y": 88,
+          "scale": 1,
+          "z": 20,
+          "mirror": false,
+          "mobileOrder": 1
+        },
+        {
+          "name": "sonyas_kitchen-centre",
+          "x": 50,
+          "y": 88,
+          "scale": 1,
+          "z": 22,
+          "mirror": false,
+          "mobileOrder": 2
+        },
+        {
+          "name": "sonyas_kitchen-right",
+          "x": 80,
+          "y": 88,
+          "scale": 1,
+          "z": 21,
+          "mirror": true,
+          "mobileOrder": 3
+        }
+      ],
+      "ordinaryLife": [
+        "steam-pot",
+        "folded-towel",
+        "extra-plate"
+      ],
+      "colourRhymes": [
+        "sunflower-cloth",
+        "sunflower-fish-ribbon"
+      ],
+      "safeArea": {
+        "x": 4,
+        "y": 5,
+        "w": 92,
+        "h": 88
+      },
+      "hotspotShape": "rect"
+    },
+    "cliff_path": {
+      "background": "location-fallback",
+      "tone": "cliff",
+      "views": [
+        "WIDE",
+        "WORK"
+      ],
+      "anchors": [
+        {
+          "name": "cliff_path-left",
+          "x": 18,
+          "y": 88,
+          "scale": 1,
+          "z": 20,
+          "mirror": false,
+          "mobileOrder": 1
+        },
+        {
+          "name": "cliff_path-centre",
+          "x": 50,
+          "y": 88,
+          "scale": 1,
+          "z": 22,
+          "mirror": false,
+          "mobileOrder": 2
+        },
+        {
+          "name": "cliff_path-right",
+          "x": 80,
+          "y": 88,
+          "scale": 1,
+          "z": 21,
+          "mirror": true,
+          "mobileOrder": 3
+        }
+      ],
+      "ordinaryLife": [
+        "wind-bent-grass",
+        "old-marker",
+        "distant-boat"
+      ],
+      "colourRhymes": [
+        "white-stone",
+        "white-wheel-tape"
+      ],
+      "safeArea": {
+        "x": 4,
+        "y": 5,
+        "w": 92,
+        "h": 88
+      },
+      "hotspotShape": "rect"
+    },
+    "public_clearing": {
+      "background": "location-fallback",
+      "tone": "clearing",
+      "views": [
+        "WIDE",
+        "WORK"
+      ],
+      "anchors": [
+        {
+          "name": "public_clearing-left",
+          "x": 18,
+          "y": 88,
+          "scale": 1,
+          "z": 20,
+          "mirror": false,
+          "mobileOrder": 1
+        },
+        {
+          "name": "public_clearing-centre",
+          "x": 50,
+          "y": 88,
+          "scale": 1,
+          "z": 22,
+          "mirror": false,
+          "mobileOrder": 2
+        },
+        {
+          "name": "public_clearing-right",
+          "x": 80,
+          "y": 88,
+          "scale": 1,
+          "z": 21,
+          "mirror": true,
+          "mobileOrder": 3
+        }
+      ],
+      "ordinaryLife": [
+        "queue-token",
+        "ink-pad",
+        "coat-stand"
+      ],
+      "colourRhymes": [
+        "orange-ticket",
+        "orange-ledger-tab"
+      ],
+      "safeArea": {
+        "x": 4,
+        "y": 5,
+        "w": 92,
+        "h": 88
+      },
+      "hotspotShape": "rect"
+    }
+  }
+}

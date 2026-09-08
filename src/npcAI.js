@@ -8,7 +8,7 @@ function goalFor(npcId, item) {
 
 function completedWorldGoal(game, npcId, item) {
   if (npcId === "yasmin" && item === "Sperm Whale Oil") return game.worldThreads?.valeScreening?.stage === "aftermath";
-  if (npcId === "sterling" && item === "Orgeat Bottle") return game.worldThreads?.barRecipe?.stage === "aftermath";
+  if (npcId === "joel" && item === "Orgeat Bottle") return game.worldThreads?.barRecipe?.stage === "aftermath";
   if (npcId === "aspen" && ["Steel Rim", "Handlebar Tape"].includes(item)) return game.worldThreads?.onewheel?.stage === "aftermath";
   return false;
 }
@@ -233,7 +233,7 @@ export function visibleSellListings(game) {
     const seller = game.traders[sellerId];
     if (!seller) return;
     const produced = [
-      ...(sellerId === "sterling" && seller.inventory.includes("Mai Tai") ? ["Mai Tai"] : []),
+      ...(sellerId === "joel" && seller.inventory.includes("Mai Tai") ? ["Mai Tai"] : []),
       ...(sellerId === "aspen" && seller.inventory.includes("Built Onewheel") ? ["Built Onewheel"] : []),
     ];
     [...new Set([...(profile.publicStock || []), ...produced])].forEach((item) => {

@@ -1,317 +1,647 @@
 # Sunflower — Item Economy
 
-> Status: active system design and live-code audit. Keep this document focused on what goods *do economically* and how the market feels. Do not collect objects merely to inflate the catalogue.
+> Status: active item-economy source of truth. The old 67-item runtime catalogue is prototype scaffolding, not protected content. Preserve mechanics, recurring needs and useful cross-system links; rebuild or remove objects that exist only because an early prototype needed texture.
 
 ## Core rule
 
-**More items are only useful when they create more decisions, more market texture, or more inference.**
+**More items are useful only when they create more decisions, more market texture, or more inference.** Sunflower is a small living-market trading game, not a key-and-lock adventure and not a giant catalogue simulator.
 
-Sunflower is a trading game, not a key-and-lock adventure.
+Named characters are economic organs inside a larger harbour economy. Anonymous households, crews, visitors, small sellers/buyers and background suppliers are economically necessary, but they do not need character-bible depth.
 
-An NPC wanting `X` should normally mean `X`, unless a broader category or substitute relationship has been made legible to the player through ordinary world knowledge, professional expertise, explicit dialogue, public listings, or acquired information.
+Prefer:
 
-### No invisible substitute puzzles
+> **Need → source → trade / service / production → use or transformation → sink → renewed need.**
 
-Do not silently implement rules such as:
+Every recurring gain or cost needs a balance-sheet path. Finance must ultimately serve consumption, production, logistics, projects, liquidity or risk transfer rather than become a self-contained paperwork economy.
 
-> Sailor says Lime, but Dried Citrus Peel secretly counts as 60% Lime.
-
-That makes the player guess the designer rather than read a market.
-
-A substitute is valid only when at least one of these is true:
-
-- the need was stated as a category;
-- the NPC explicitly says alternatives are acceptable;
-- the relationship is ordinary enough to infer from real knowledge;
-- the player can discover the substitution rule as information before committing the trade.
-
-The engine should not award hidden partial credit for designer-only associations.
+Octopus is the clearing/payment/local-market-data institution, never an ordinary NPC/Talk target. Separate marine merchant stock and background supply are independently owned; settlement float is never merchant wealth.
 
 ---
 
-## Current catalogue size
+## Naming rule — ordinary things first
 
-As of the September 4 live audit, `ITEMS` contains **67 item definitions** after deleting the obsolete `Auction Sunflower` pseudo-item.
+Sunflower does **not** need invented whimsy in ordinary object names.
 
-That is enough for the current design phase.
+A normal good should sound like something that could appear on a supermarket label, wholesale invoice, bicycle catalogue, chandlery shelf, nursery tag, auction catalogue or museum label.
 
-Target range for the eventual game:
+Prefer names such as:
 
-- roughly **60–80 total goods** across all forms / routes;
-- only roughly **20–30 should be economically legible in an early Human run**;
-- another **10–15 can enter through later arrivals, relationships, events and hidden stock**;
-- form-specific / black-market / Sailor goods can make the same world feel new on replay without putting the whole catalogue on one screen.
+- `700C Steel Bicycle Rim`
+- `Presta Inner Tube, 700×25–32C`
+- `9-Speed Chain Quick-Link`
+- `Stainless Steel Brake Cable`
+- `2–14 N·m Torque Wrench`
+- `Self-Adhesive Sail Repair Patch`
+- `Tinned Copper Marine Cable, 3 m`
+- `White Kid-Leather Evening Gloves, Pair`
+- `Gelatin Silver Print, 20 × 25 cm`
+- `Atlas Moth, Taxidermy Specimen`
 
-Do not add another large batch until this pool has been played, cut and aesthetically refined.
+Avoid author-winking names such as `Key That Opens Nothing`, `Lucky Sticker`, `Three Metres of Stolen Theatre Wire` or `Patch Cut from the Ship Mercy` unless a story has already made that exact provenance economically relevant.
 
----
-
-# Live-item rule
-
-A kept item should satisfy at least one of these in live code:
-
-1. exists in a starting inventory;
-2. arrives through a deterministic business cycle;
-3. is produced / transformed by an implemented rule;
-4. can be consumed or used by a business/body;
-5. is an explicit NPC need;
-6. matches at least one stable NPC market interest;
-7. is a route / event output;
-8. carries information, access, collateral, sentimental or form-specific meaning that is intended for a near-term mechanic.
-
-A pure definition in `ITEMS` with no path into play is a bug, not content.
-
-### Reachability audit result
-
-The current pool now has a live path:
-
-- starting inventories seed most goods;
-- Dock Dog cycles scavenged / animal-network goods, including the previously dead `Pocket Match`;
-- Fishmonger cycles fresh catch, ice and sea produce;
-- Sailor cycles imported repair, bicycle, bar-tool and mystery cargo until departure;
-- `Mai Tai`, `Built Onewheel`, `Auction Onewheel`, spoilage and the living `Sunflower` are produced by rules/events rather than normal supply.
-
-The living Sunflower is **not** represented by a separate ordinary `Auction Sunflower` asset anymore. Vale's reserve is event-level pricing, not an intrinsic/reference price attached to a flower item.
-
-This should still be rechecked by Codex/runtime smoke because static reachability is not the same as a fun market.
+**The world should feel strange because accurately named ordinary things acquire strange prices, histories, uses and obligations.**
 
 ---
 
-# First coordinated price rebase — 2026-09-03
+## Item architecture
 
-The original 1–16🥫 ordinary price band was too compressed. A one-tin change often meant a 20–50% move, making spread, urgency, market heat, relationship effects and distressed pricing impossible to distinguish cleanly.
+Do not flatten every economically meaningful thing into one ordinary-inventory SKU table.
 
-The first rebase widens the asset scale **without redefining what a sardine tin is**.
+### A. Physical goods
 
-A tin still has literal survival meaning: nightly sustenance can still consume **1🥫**. The point is that a professional tool should cost many tins, not that dinner should suddenly cost four abstract currency points.
+Normal transferable objects and consumables.
 
-### Current reference-price bands
+Examples: Limes, Rum, Brake Cable, Green Tea, Empty Glass Bottle, Silver Serving Fork.
 
-| Broad class | Current rough band |
-|---|---:|
-| waste / tiny junk | 1–3🥫 |
-| small everyday / scavenged object | 2–6🥫 |
-| common food / commodity | 4–9🥫 |
-| cocktail ingredient / ordinary part | 5–14🥫 |
-| useful durable / professional tool | 7–18🥫 |
-| scarce input / collateral-like durable | 12–20🥫 |
-| prestige / collectible / special situation | 9–22+🥫 |
-| vehicle / major route asset | 28–30+🥫 |
-| living `Sunflower` | **unpriced** |
+### B. Living assets
 
-Vale's current auction reserve is a **provisional event price**, not the Sunflower's reference value.
+A species identity plus mutable state such as stage, health, maturity, yield and remaining productive life.
 
-These are **reference prices**, not intrinsic value.
+Do **not** create separate SKU identities for every plant stage when one living asset plus state is enough.
 
-### Current liquidity pools
+Example:
 
-First-pass starting cash was rebased with the goods:
+`Lime Plant { stage: seedling, health: 0.82, maturity: 0.25 }`
 
-- Player: 18🥫
-- Dock Dog: 18🥫
-- Fishmonger: 30🥫
-- Sailor: 26🥫
-- Mirelle Vale: 52🥫
-- Onewheel Clown: 22🥫
-- Bar Apprentice: 34🥫
+rather than separate `Lime Seedling`, `Young Lime Tree`, `Mature Lime Tree` market goods.
 
-These numbers are provisional and should be tuned from play, not protected because they look neat.
+### C. Claims / contracts
 
-### Still intentionally small
+Issuer, holder, maturity, face/recovery value, collateral, seniority and state.
 
-- nightly sustenance: 1 food unit or 1🥫;
-- information sale base: 2🥫 (code migration still needs runtime verification);
-- formal-market proxy fee: 2🥫.
+These are financial positions, not ordinary goods.
 
-Keeping survival small relative to assets is deliberate: hunger matters as a liquidity floor without turning the whole game into food survival accounting.
+### D. Services / capacity
+
+Shipping, storage, custody, inspection, guarantee, settlement, workshop time and similar services are capacities or contracts, not physical goods.
 
 ---
 
-# Market interests: make objects tradeable without making them quest keys
+## State is not a new SKU
 
-The NPC engine now has stable category interests in addition to explicit goals.
+Several prototype items should become state changes on ordinary goods rather than separate catalogue entries.
 
-This is deliberately small and legible:
+Examples:
 
-- **Dock Dog** — scavenged goods, animal-network goods, tiny utilities, containers;
-- **Fishmonger** — food commodities, cold-chain goods, harbour material;
-- **Sailor** — bicycle goods, repair inputs, tools, durable goods;
-- **Vale** — prestige, collectibles, provenance/story, information-bearing goods, curios, mystery assets;
-- **Clown** — speculative junk, vehicles, bicycle goods, mystery assets, strange stories;
-- **Bar Apprentice** — cocktail ingredients, professional bar tools, barware, containers.
+- `Bruised Mint` → `Mint` with lower condition/freshness;
+- `Spoiled Fish` → `Fresh Mackerel` or other fish with spoiled condition;
+- `Bad Tangerine` → retire as a good; Short Shipment / contract misrepresentation concerns quantity, count, quality and inspection of the promised `Limes` delivery;
+- plant maturity → living-asset state, not a new good identity.
 
-A market interest is **not** omniscience.
+A shortage or fraud should normally be represented by facts about the same promised good:
 
-NPCs may act on interests only when the item is public, appears on the public tape, or has become known through acquired information. Broad interests do not scan hidden inventories.
+`Limes, 24-count crate` promised versus 17 acceptable limes delivered.
 
-Explicit needs can still motivate targeted investigation through plausible contacts.
-
-This lets objects circulate because different actors value categories differently while preserving information asymmetry.
+This creates inspection, reputation, timing and contract risk without inventing a fake substitute SKU.
 
 ---
 
-# Market texture by trader
+## Market exposure levels
 
-## Dock Dog — harbour reality + surreal everyday debris
+The full content library may be much larger than the set a player actively trades. Use exposure deliberately.
 
-Typical goods:
+### M0 — Backend-only
 
-- Dead Pigeon
-- Chewed Rope Toy
-- Red Ribbon
-- Empty Green Bottle
-- Glasses Wipe
-- Bicycle Bell
-- Chia Seeds
-- Pocket Match
+Exists in the world and can support recipes, menu richness or anonymous procurement, but normally does not demand independent player attention.
 
-Dog should make low-value objects feel surprisingly connected to people, animals and information.
+Typical examples: many ordinary herbs, lettuces, mushrooms, pantry staples, common meats and secondary bar bases.
 
-## Fishmonger — material harbour goods + accidental oddities
+### M1 — Ordinary recurring market
 
-Typical goods:
+Repeated real source and repeated real sink; understandable public or bilateral trade.
 
-- Fresh Mackerel
-- Smoked Eel
-- Two Octopus Tentacles
-- Ice Block
-- Rusty Harpoon
-- an inexplicable Orgeat Bottle acquired through barter / debt / misdelivery
-- an equally inexplicable Hawthorne Strainer
+Examples should usually have ongoing consumption, replacement, spoilage or production use.
 
-Fishmonger's weird objects should feel weird because they do not belong in an otherwise comprehensible operating business.
+### M2 — Thin / specialised market
 
-## Sailor — cross-border material goods + professional equipment + strange cargo
+Fewer sources or fewer buyers; appears when a route, profession or event makes it relevant.
 
-Typical goods:
+Typical examples: bicycle parts, speciality spices, professional tools, imported delicacies.
 
-- Brass Compass
+### M3 — Private / event assets
+
+Provenance-heavy collectibles, auction lots, private consignments and similar assets that should not sit in a normal public commodity queue every day.
+
+### M4 — Unique / special objects
+
+Goal objects, singular living assets, unusual custody objects or authored one-offs that should not develop a normal market series.
+
+---
+
+# Prototype catalogue disposition
+
+The September 4 runtime audit found 67 item definitions. That count is implementation history, not a target and not a reason to preserve early generated objects.
+
+A kept item should have at least one live reason to exist: recurring source/sink, production use, consumption, real professional utility, route function, collateral/provenance role, or a specific authored event that justifies event-only treatment.
+
+## Protect concept / review exact implementation
+
 - Sperm Whale Oil
-- Sealed Parcel
+- Fresh Mackerel
+- Ice
+- Rum
+- Orange Curaçao
+- Orgeat
+- Demerara Syrup
+- Steel Rim
 - Presta Inner Tube
 - Chain Quick-Link
 - Brake Cable
+- Handlebar Tape
 - Tiny Torque Wrench
-- 30/45 Jigger
+- Bicycle Bell
+- Hawthorne Strainer
+- Jigger
 - Fine Mesh Strainer
-- Three Metres of Stolen Theatre Wire
-- Patch Cut from the Ship Mercy
-
-Sailor stock should carry geography, provenance and mobility.
-
-## Mirelle Vale — story fragments + elite / illiquid collectibles
-
-Typical goods:
-
-- Valentino Still
-- Film Canister
-- One White Glove
-- Numbered Funeral Ticket
-- Taxidermied Moth
-- Unsent Letter
-
-Vale's inventory should make the player ask whether price comes from use, scarcity, provenance, fashion, status or somebody else's willingness to pay.
-
-## Bar Apprentice — professional bar equipment + relationship objects
-
-Typical goods / needs:
-
-- Rum Bottle
-- Orange Curaçao
-- Demerara Syrup
 - Long Bar Spoon
 - Hand Citrus Press
 - Lewis Bag
-- Chipped Nick & Nora Glass
-- missing / desired professional tools such as Hawthorne Strainer, Jigger and Fine Mesh Strainer
+- Limes
+- Sunflower
+- Built Onewheel
 
-The Bar should reward actual cocktail knowledge without becoming a recipe quiz. A knowledgeable player may infer more from incomplete observations and therefore spend fewer information actions.
+## Keep function, rename / reclassify / convert to state
 
-## Onewheel Clown — surreal everyday goods + speculative junk + mobility debris
-
-Typical goods:
-
-- Lollipop
-- Lucky Sticker
-- Glitter Tape
-- Handlebar Tape
-- Key That Opens Nothing
+- Brass Compass
+- Sealed Parcel
+- Theatre Wire
+- Ship Mercy Patch
+- Film Canister
+- Hand Mirror
+- Bent Silver Fork
+- White Glove
+- Taxidermied Moth
 - Tool Roll
+- Nursery Seed Packet
+- Mature Nursery Plant
+- Bruised Mint
+- Cracked Shaker
+- Chipped Nick & Nora Glass
+- Spoiled Fish
 
-Clown can assign coherent private utility to things other traders dismiss without turning every weird item into a secret quest key.
+## Likely delete / replace unless a current mechanic proves otherwise
 
----
+- Blue Glass Marble
+- Dead Pigeon
+- Collar Tag
+- Chewed Rope Toy
+- Red Ribbon
+- Glasses Wipe
+- Hotel Sugar Cubes, 23 Count
+- Rusty Harpoon
+- Valentino Still
+- Velvet Sleeve
+- Numbered Funeral Ticket
+- Unsent Letter
+- Lollipop
+- Glitter Tape
+- Lucky Sticker
+- Wax Candle Stub
+- Key That Opens Nothing
+- Bad Tangerine
+- Old Coupon
+- Pocket Match
 
-# Important item families
+## Review for backend-only treatment
 
-### Food / sustenance
+- Smoked Eel
+- Sea Lettuce
+- Sea Urchin
+- Salted Cod
+- Hardtack
+- Chia Seeds
+- ordinary menu pantry goods
 
-Fresh Mackerel, Smoked Eel, Two Octopus Tentacles, Sea Lettuce, Salted Cod, Hardtack and Chia Seeds can all compete with the decision to preserve inventory for resale.
-
-### Perishables / timing
-
-Ice, Bruised Mint, Lime, Fresh Mackerel and Tentacles produce storage and fire-sale pressure.
-
-### Recurring inputs
-
-The Bar consumes ice. Dock Dog consumes fresh fish for the cat colony. Demand should return because businesses and bodies continue doing things, not because a quest flag resets.
-
-### Professional durable tools
-
-Bar and bicycle tools should increasingly affect capability, production quality, verification, or access. In the current milestone they already have counterparty utility and trade value, but several still need deeper non-resale functions.
-
-### Mystery / information-bearing goods
-
-Sealed Parcel, Unsent Letter, Old Coupon and story-bearing collectibles should create belief / provenance problems, not guaranteed treasure-chest rewards.
-
----
-
-# Expertise and incomplete information
-
-Items can communicate information without a tutorial prompt spelling it out.
-
-The Bar example is canonical:
-
-> The Apprentice is learning a Mai Tai, but one ingredient is missing.
-
-A knowledgeable player may infer likely missing inputs from what is visibly behind the bar. A player without cocktail knowledge can spend additional investigation actions until the clue becomes exact.
-
-**Expertise buys time; it does not gate progress.**
-
-The same structure can later apply to bicycle repair, film equipment, fish quality, shipping cargo and other domains.
-
----
-
-# Three-question item test
-
-Before keeping or refining a good, ask:
-
-1. **Who might want it, and for what different reasons?**
-2. **Why could its value / liquidity differ tomorrow?**
-3. **What can the player do with it besides immediately sell it?**
-
-Possible answers include eat, hold, inspect, use, pledge, gift, repair with, infer information from, move across markets, sell under time pressure, or preserve because another actor may value it privately.
-
-An item that survives only because its name is cute should be cut or redesigned after playtesting.
+These labels are **design rebuild decisions, not permission to delete runtime objects before dependency testing**.
 
 ---
 
-# Next balance audit
+## Bicycle / Onewheel family
 
-Do not add a second arbitrary multiplier.
+Protect the Onewheel assembly/repair challenge. Exact recipe and repair/workshop provider are OPEN; Aspen is not frozen as its provider. The following item family supports that challenge, not an immutable recipe:
 
-Run several real market simulations and record:
+- Steel Rim
+- Presta Inner Tube
+- Chain Quick-Link
+- Brake Cable
+- Handlebar Tape
+- Tiny Torque Wrench
+- Bicycle Bell
 
-- how many trades clear per day;
-- how often cash constraints block rational bids;
-- spread as a percentage of reference price;
-- time to first cash shortage;
-- whether Vale can dominate simply because she starts liquid;
-- whether Dog can actually act like a dealer;
-- whether Bar can afford operating inputs and upgrades;
-- whether expensive tools ever transact;
-- whether speculative / prestige goods become permanently dead inventory;
-- whether player starting 18🥫 permits meaningful positioning without trivialising food;
-- whether auction thresholds remain reachable after the rebase.
+Current runtime discrepancy to preserve for audit, **not** silently fix in Markdown:
 
-Then change the smallest set of numbers that explains the observed problem.
+> Runtime Built Onewheel inputs are `Steel Rim + Chain Quick-Link + Brake Cable + Handlebar Tape`, with `Tiny Torque Wrench` retained as a durable tool. `Presta Inner Tube` currently exists but is not consumed by that recipe.
+
+The design may later decide that Inner Tube belongs in the recipe and Handlebar Tape is optional/finish quality, but this remains **Open until runtime/design reconciliation**.
+
+---
+
+## Sperm Whale Oil
+
+Keep `Sperm Whale Oil` as a concrete historical material. Its strangeness comes from real-world history, scarcity, obsolete use, provenance and ethical context rather than invented naming.
+
+It is a model for Sunflower's preferred weirdness: the object itself is real; the surrounding market and human behaviour make it strange.
+
+---
+
+## Limes / Short Shipment
+
+Keep Limes as a bridge good connecting Bar and provisioning with inspection, short shipment, quantity, quality, misrepresentation and consequence. Do not force a scurvy rationale to bind Aspen to Limes. Bad Tangerine is retired as a good.
+
+Prefer a concrete unit such as `Limes, 24-count crate` once exact units are frozen.
+
+`Bad Tangerine` is retired as the teaching object. The candidate teaching case is Short Shipment / contract misrepresentation: promised acceptable quantity versus delivered count/condition, possibly concealed under a normal top layer. Inspection, counting, supplier reputation and paid verification all have costs.
+
+---
+
+## Joel Bar — real-menu source
+
+The real Night Menu supplied by the creator is a **reference pool**, not a command to create one market SKU per printed ingredient.
+
+Raw reference count:
+
+- **132 ingredient/base entries**;
+- plus 5 style choices;
+- plus 5 extra-direction choices.
+
+After obvious aliases, repeated entries and colour/cultivar variants are grouped, the current first-pass estimate is about **114 canonical culinary families**. This number is provisional and exists only to describe menu breadth; it is **not** a target market size.
+
+### Menu grammar
+
+Style:
+
+- fruity
+- spirit-forward
+- dry (no sweet)
+- sweet
+- balanced
+
+Extras:
+
+- sour
+- smoky
+- savoury
+- spicy
+- surprise me
+
+Base:
+
+- alcoholic
+- non-alcoholic
+
+Actual production remains constrained by **what is physically available tonight**.
+
+A small number of classic cocktails can remain benchmark recipes or authored route anchors. The long-term Bar system is generative, not a fixed catalogue of hundreds of named cocktails.
+
+### Important canonicalisation examples
+
+These should normally share one market family with variants/forms rather than create separate public-price series:
+
+- Green Apple / Red Apple → `Apple` + cultivar/colour;
+- Grape / Red Grape → `Grape` + variant;
+- Orange / Blood Orange → `Orange` + variant;
+- Bell Peppers red/green/yellow → `Bell Pepper` + colour;
+- Onion / Red Onion → `Onion` + variant;
+- Tomato / Cherry Tomato → `Tomato` + cultivar/form;
+- Basil / Thai Basil → `Basil` + cultivar;
+- Red / Bird / Green Chilli → `Chilli` + variety;
+- Eggplant / Aubergine → alias;
+- Courgette / Zucchini → alias/family + colour variant;
+- Scallion / Spring Onion → one market family unless a later culinary rule genuinely needs a distinction;
+- Ginger appearing under more than one menu heading → one physical family;
+- Fennel appearing as spice and vegetable → one botanical family with part/form where necessary.
+
+Do **not** over-merge things that are economically different forms. `Lime` and `Lime Leaf`, for example, are related botanically but not the same tradable unit.
+
+### Mai Tai benchmark
+
+Protect the real inputs and durable tools around the existing benchmark route:
+
+- Rum
+- Orange Curaçao
+- Orgeat
+- Lime
+- Hawthorne Strainer
+- Jigger
+- Fine Mesh Strainer
+- Long Bar Spoon
+- Hand Citrus Press
+- Lewis Bag
+
+`Mai Tai` itself should not be treated as an ordinary circulating market commodity. It is a Bar output/service product or authored event object. The same rule should apply to future cocktails so hundreds of drinks do not become public SKUs.
+
+---
+
+## Bar ingredients: what should face the player?
+
+The Bar can feel rich without turning the harbour into a grocery terminal.
+
+### Strong bridge-good candidates
+
+First-pass candidates worth testing because they connect more than one economic organ:
+
+- Lime
+- Lemon
+- Orange
+- Apple
+- Grape
+- Pineapple
+- Mango
+- Cucumber
+- Tomato
+- Ginger
+- Fennel
+- Mint
+- Basil
+- Lemongrass
+- Cardamom
+- Cinnamon
+- Cumin
+- Szechuan Pepper
+- Hibiscus
+- Green Tea
+- Rum
+- Wine
+
+This is a **simulation candidate set**, not frozen canon.
+
+### Likely backend examples
+
+Many menu ingredients can remain real without becoming independent public goods, for example:
+
+- Arugula
+- Baby Red Radish
+- Broccoli
+- Cauliflower
+- Dill
+- Italian Parsley
+- Tarragon
+- Thyme
+- Little Gem
+- Romaine Lettuce
+- Butter Lettuce
+- Frisée
+- Vene Cress
+- Basil Cress
+- Affila Cress
+- Poppy Seeds
+- White Sesame
+- Black Sesame
+- Mustard Seeds
+- Button Mushroom
+- Shimeji Mushroom
+- Portobello
+- most common meat/fish menu ingredients
+- most ordinary spirit bases
+
+Their normal supply can be bounded anonymous wholesale procurement. A specific one can be promoted to M1/M2 later when a real route, shortage, buyer or authored event makes it economically interesting.
+
+### Alcohol rule
+
+Do not make every spirit an independent market just because the Bar uses it.
+
+`Rum` has unusually strong cross-system value because of the Mai Tai benchmark, Joel's operation, Aspen cargo and Juan Cliff context, so it is a strong market candidate.
+
+`Wine` is a thin-market candidate.
+
+Brandy, Gin, Vodka, Whisky, Tequila and Mezcal can remain backend by default until another system gives one of them a second economic role.
+
+### Meat / fish rule
+
+Do not create ten ordinary meat price series solely because the menu prints ten meats.
+
+Common Pork, Lamb, Beef and Chicken can remain background food procurement. A speciality such as `Jamón Ibérico` may later become a thin imported/provenance-sensitive good because it can connect Aspen import, Joel special service and Yasmin hosting.
+
+---
+
+## Aspen — cargo and route reveal
+
+Aspen is a logistics/contract operator, not a random-curio generator.
+
+Her cargo should increasingly use normal professional names and connect to route reach, delivery timing, weather, sourcing and repair.
+
+Prototype names should be normalised where the mechanic survives:
+
+- `Brass Compass` → candidate `Brass Marine Compass`;
+- `Three Metres of Stolen Theatre Wire` → candidate `Tinned Copper Marine Cable, 3 m`;
+- `Patch Cut from the Ship Mercy` → candidate `Self-Adhesive Sail Repair Patch`;
+- `Sealed Parcel` should be considered a custody/delivery object or contract context rather than an ordinary commodity.
+
+Aspen routes should generally change **source availability**, not teach the player that a familiar real-world ingredient suddenly exists.
+
+Useful availability language:
+
+`UNKNOWN → KNOWN → SOURCE_LOCATED → LOCALLY_AVAILABLE → ESTABLISHED`
+
+If the Bar menu already shows Cardamom, the player already knows Cardamom exists. Aspen may locate a reliable supplier, bring a finite shipment, improve lead time or create a new local source path.
+
+Candidate route-profile research pools may include agricultural/botanical, spice/tea, industrial/repair and metropolitan/cultural. Exact ports, shipment sizes, unlock counts and route timing remain Open.
+
+---
+
+## Wong — rebuild from household enterprise needs
+
+The old Wong prototype catalogue should not be protected because it is cute or surreal.
+
+Early texture such as `Dead Pigeon`, `Chewed Rope Toy`, `Red Ribbon`, `Glasses Wipe`, `Pocket Match`, `Fish Bones` and similar junk is **purge/replacement material** unless a later mechanic gives a specific object a real source, sink and consequence.
+
+`Bicycle Bell` has a clear bridge into the bicycle/repair economy and is worth retaining.
+
+Future Wong low-value circulation should favour ordinary material that a small household enterprise could genuinely aggregate, store, reuse or move, for example:
+
+- Returnable Glass Bottle
+- Plastic Produce Crate
+- Cardboard Shipping Carton
+- Packing Tape
+- Cotton Rope
+- Used Bicycle Parts
+- Reusable Shopping Bag
+- Small Padlock
+- Luggage Tag
+- Parcel Envelope
+- Packing Paper / Bubble Wrap
+- Second-hand Phone Charger
+- Folding Hand Trolley
+
+These are **design directions**, not a command to instantiate every line as a SKU.
+
+The point is that Wong makes money from turnover, aggregation, custody, salvage, clearance and small services—not from an endless random-junk generator.
+
+The candidate multi-use parcel / short-storage / salvage counter remains stronger than pharmacy or laundry. Regulated-pharmacy and Juan-remedy manufacturing are not current design commitments.
+
+---
+
+## Juan — biological productive capital, not junk or alchemy
+
+The old Juan prototype objects `Lollipop`, `Glitter Tape`, `Lucky Sticker`, `Wax Candle Stub`, `Key That Opens Nothing` and similar speculative junk are **history/purge candidates**.
+
+Keep `Tool Roll` and `Handlebar Tape` only where bicycle/repair mechanics justify them.
+
+Replace generic botanical placeholders such as `Nursery Seed Packet` / `Mature Nursery Plant` over time with real species identities and mutable living state.
+
+First-pass species candidates for simulation:
+
+- Mint
+- Basil
+- Tomato
+- Lemongrass
+- Lime
+- Fennel **or** Hibiscus
+- one slower specimen/ornamental not yet named
+
+This is deliberately a small crop set. Juan is not a farming game inside the trading game.
+
+The intended economic contrast is enough to teach maturity, working capital, future-output finance, forced sale and biological risk: fast herbs, medium produce and slower citrus/specimen capital.
+
+Do not add a pharmacy, remedy factory, alchemy system or grape-to-wine production chain merely to create more products.
+
+---
+
+## Yasmin — real collectibles, provenance and private capital
+
+Yasmin should not be a source of vaguely poetic curios. Her assets should read like real auction, gallery, museum or high-end resale catalogue entries.
+
+Prototype objects such as `One White Glove`, `Numbered Funeral Ticket`, `Unsent Letter`, `Valentino Still` and `Velvet Sleeve` are **rename/rebuild or purge candidates** unless a current authored scene depends on the exact object.
+
+A real object may remain unusual without a literary name. `Taxidermied Moth`, for example, can become a specific catalogue object such as `Atlas Moth, Taxidermy Specimen`.
+
+Candidate language families:
+
+### Photography / film
+
+- Gelatin Silver Print, 20 × 25 cm
+- 35 mm Film Reel, 400 ft
+- Signed Contact Sheet, 12 Frames
+- Vintage Cinema Lobby Card
+
+### Decorative art / silver
+
+- 925 Silver Serving Fork
+- Art Deco Silver Cigarette Case
+- Cut-Crystal Decanter
+- Hand-Painted Porcelain Bowl
+
+### Fashion / textile
+
+- White Kid-Leather Evening Gloves, Pair
+- Silk Twill Scarf, Hand-Rolled Hem
+- Beaded Evening Bag
+- Wool-Cashmere Overcoat
+
+### Natural history / specimen
+
+- Atlas Moth, Taxidermy Specimen
+- Nautilus Shell Specimen
+- Pressed Botanical Specimen Sheet
+
+These are naming and asset-class references, not a frozen shopping list. They already include plausible Aspen luxury gifts such as the Silk Twill Scarf, Hand-Rolled Hem, Beaded Evening Bag and Art Deco Silver Cigarette Case; this is documented candidate coverage, not proof of runtime stock. Aspen buys through Yasmin/private sellers; provenance, seller ownership, payment and delivery remain real. Wong custody and Dima discreet brokerage are services, not alternative object identities.
+
+The Sonya supper's particular rare fresh fish is an authored sourcing requirement (`GAME_DESIGN.md` §14), not an ordinary fish SKU substitution. Its species and exceptional sources remain Open. Toads belong to the existing living-object ontology: scene discovery, finite custody, optional sale or social use; exact price, availability and post-gathering disposition remain Open. No catalogue-wide rebuild or new item count is authorised by these clarifications.
+
+Collectible value should differ structurally from commodity value. Useful variables include authenticity, provenance, condition, scarcity, current fashion, buyer-specific utility, number and wealth of competing buyers, and liquidity/time to sale.
+
+A collectible can therefore be worth little without evidence and much more after provenance is verified, without changing the underlying physical object.
+
+---
+
+## First-pass Market Core v0 — simulation input only
+
+Use a compact heterogeneous set for source/sink and attention testing before rebuilding the whole library.
+
+### Food / botanical bridge
+
+1. Lime
+2. Lemon
+3. Orange
+4. Apple
+5. Cucumber
+6. Tomato
+7. Ginger
+8. Mint
+9. Basil
+10. Fennel
+11. Lemongrass
+12. Hibiscus
+13. Green Tea
+14. Cardamom
+15. Cinnamon
+16. Szechuan Pepper
+
+### Bar / logistics
+
+17. Rum
+18. Ice
+19. Orgeat
+20. Orange Curaçao
+21. Demerara Syrup
+
+### Marine / ordinary material economy
+
+22. Fresh Mackerel
+23. Smoked Eel
+24. Organic Scrap
+25. Empty Glass Bottle
+
+### Mobility / repair
+
+26. Steel Rim
+27. Presta Inner Tube
+28. Chain Quick-Link
+29. Brake Cable
+30. Tiny Torque Wrench
+
+This **30-item Market Core v0 is not the final catalogue and must not be copied wholesale into runtime before quantitative testing.** Its purpose is to compare source/sink density, redundancy, dead-good rate, attention burden and actor concentration against the old prototype catalogue.
+
+A healthy active market should remain heterogeneous. As a rough research composition, food/Bar/provisioning should not automatically occupy most visible slots; repair, packaging/logistics, household/salvage, collectibles, living assets and special/event objects need room too.
+
+---
+
+## Economic density test
+
+Before a physical good is promoted into the player-facing market, ask:
+
+1. Who can source it, and is the source actually reachable?
+2. Who consumes, transforms, holds or values it?
+3. Does its price/liquidity have a reason to change?
+4. What can the player do besides immediately resell it?
+5. Does it bridge more than one system or teach a unique mechanic?
+6. Is it creating a real choice, or merely another label to remember?
+
+Useful actions include consuming, transforming, repairing with, cultivating, holding, inspecting, pledging, consigning, gifting, moving between markets, using under deadline, using as collateral, or learning information from it.
+
+An item supported only by one authored joke or one buyer is a candidate for deletion, reclassification or event-only treatment.
+
+---
+
+## Anti-bloat / anti-exploit guardrails
+
+- No same-place infinite low-risk flipping.
+- No magical next-day inventory refill solely to keep trade available.
+- No side activity whose expected return permanently dominates the real economy.
+- No guaranteed profitable inside information.
+- No unlimited exponential business growth without capacity, competition, demand and financing constraints.
+- Relationships must affect economically real variables such as credit, information, access, verification cost, priority, collateral or terms.
+- Large positions must encounter finite liquidity and/or price impact.
+- Ordinary recurring goods should normally have more than one effective source and more than one independent sink over the world model.
+- Octopus clearing throughput is not a separate marine merchant's market share.
+
+---
+
+## Open / not frozen
+
+The following remain open and should be settled by simulation or later authored design rather than inferred from this document:
+
+- final total content-library size;
+- final count of true market-facing goods;
+- exact early-run active-good count;
+- exact Aspen route pools, ports, shipment sizes and first-route reveal count;
+- exact Juan species list and growth parameters;
+- exact Onewheel recipe correction, if any;
+- exact Wong counter inventory and equipment;
+- exact Yasmin collectible lots and Auction v2 rules;
+- pooled shipment implementation;
+- exact forms of information, reputation and relationship quantification;
+- Onewheel exact recipe and repair/workshop provider;
+- whether any current prototype object survives for a later authored reason.
+
+The next quantitative comparison should test **old prototype catalogue versus rebuild Market Core v0** on source/sink density, effective redundancy, dead inventory, player attention load, actor dominance and exploitability before runtime deletion or migration.

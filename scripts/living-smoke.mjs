@@ -40,7 +40,7 @@ const beforeCash = game.traders.player.sardines;
 game = acceptInboundOffer(game, dogOffer.id);
 assert.equal(game.inboundOffers.find((offer) => offer.id === dogOffer.id).status, "accepted");
 assert(game.marketPlan.some((order) => order.from === "wong" && order.to === "player" && order.wantItem === "Fish Bones"));
-game = giveItem(game, "sterling", "Chia Seeds");
+game = giveItem(game, "joel", "Chia Seeds");
 assert(game.marketPlan.some((order) => order.inboundOfferId === dogOffer.id), "later Morning replanning must preserve an accepted inbound commitment");
 game = advancePhase(game);
 game = resolveNoonMarket(game);
@@ -71,7 +71,7 @@ game.information.push({
 });
 const lead = game.information.find((info) => info.id === "manual-lead");
 const exclusivePrice = informationPrice(game, lead, "yasmin");
-lead.knownBy.push("wong", "sterling");
+lead.knownBy.push("wong", "joel");
 lead.diffusionCount = 2;
 lead.exclusive = false;
 const spreadPrice = informationPrice(game, lead, "yasmin");
@@ -116,14 +116,16 @@ assert(buildInboundOffers(game, "morning").length <= 2);
 game = enterMorning();
 game = advancePhase(game);
 game.marketPlan = [
-  { from: "sterling", to: "octopus", wantItem: "Orgeat Bottle", sardines: sellerAsk(game, "octopus", "Orgeat Bottle") },
+  { from: "joel", to: "octopus", wantItem: "Orgeat Bottle", sardines: sellerAsk(game, "octopus", "Orgeat Bottle") },
   { from: "yasmin", to: "aspen", wantItem: "Sperm Whale Oil", sardines: sellerAsk(game, "aspen", "Sperm Whale Oil") },
   { from: "aspen", to: "octopus", wantItem: "Steel Rim", sardines: sellerAsk(game, "octopus", "Steel Rim") },
 ];
 game.traders.aspen.inventory.push("Handlebar Tape");
 game = resolveNoonMarket(game);
-assert(game.traders.sterling.inventory.includes("Mai Tai"), "NPC-delivered Orgeat should complete the real Bar recipe");
-assert(!["Rum Bottle", "Lime Crate", "Orange Curaçao", "Orgeat Bottle"].some((item) => game.traders.sterling.inventory.includes(item)), "Mai Tai production must consume its ingredient copies");
+assert(game.traders.joel.inventory.includes("Mai Tai"), "NPC-delivered Orgeat should complete the real Bar recipe");
+assert(["Rum Bottle", "Orange Curaçao", "Orgeat Bottle"].every((item) => !game.traders.joel.inventory.includes(item)), "opened procurement units must leave public inventory");
+assert.equal(game.traders.joel.inventory.filter((item) => item === "Lime Crate").length, 1, "only the unopened second Lime crate remains publicly transferable");
+assert(["Rum Bottle", "Lime Crate", "Orange Curaçao", "Orgeat Bottle"].every((item) => game.bar.servings[item] > 0), "one drink must leave servings in every unit");
 assert(game.traders.aspen.inventory.includes("Built Onewheel"), "NPC-delivered parts should complete the mechanical recipe");
 assert.equal(game.worldThreads.valeScreening.stage, "outcome");
 assert.equal(game.stats.tradeCount, 0, "NPC world consequences must not become player statistics");
@@ -142,7 +144,7 @@ assert(buildEvents(game).some((event) => event.id === "auction"), "missing the o
 game = createGame();
 game.phase = "sunset";
 game.information.push({
-  id: "resale-lead", claimType: "holding", subjectId: "sterling", item: "Lime Crate", text: "Bar has fresh limes.",
+  id: "resale-lead", claimType: "holding", subjectId: "joel", item: "Lime Crate", text: "Bar has fresh limes.",
   source: "private trade", precision: "exact", confidence: "high", observedDay: 1, freshness: "current", exclusive: false,
   sellable: true, soldTo: ["yasmin"], sharedWith: [], knownBy: ["player", "yasmin"], diffusionCount: 1, personallyVerified: false,
 });
@@ -155,7 +157,7 @@ assert(!game.information[0].knownBy.includes("wong"), "private resale must not g
 // Credit preserves a form, repayment repairs trust, and default damages it.
 game = createGame();
 game.phase = "sunset";
-game.relationships.sterling = 2;
+game.relationships.joel = 2;
 game.traders.player.sardines = 0;
 game.traders.player.inventory = [];
 game = advancePhase(game);
@@ -163,15 +165,15 @@ const mealDebt = game.obligations.find((obligation) => obligation.kind === "meal
 assert(mealDebt && game.playerState.form === "human");
 game = advancePhase(game);
 game.traders.player.sardines = 1;
-const beforeRepayRelationship = game.relationships.sterling;
+const beforeRepayRelationship = game.relationships.joel;
 game = repayObligation(game, mealDebt.id);
 assert.equal(game.obligations.find((obligation) => obligation.id === mealDebt.id).status, "settled");
-assert.equal(game.relationships.sterling, beforeRepayRelationship + 1);
+assert.equal(game.relationships.joel, beforeRepayRelationship + 1);
 assert.equal(game.learningNotes.find((note) => note.id === "credit").occurrences.length, 2, "credit creation and repayment should share one concept card");
 
 game = createGame();
 game.phase = "sunset";
-game.relationships.sterling = 2;
+game.relationships.joel = 2;
 game.traders.player.sardines = 0;
 game.traders.player.inventory = [];
 game = advancePhase(game);
@@ -179,16 +181,16 @@ const defaultDebt = game.obligations.find((obligation) => obligation.kind === "m
 game.day = defaultDebt.dueDay;
 game.phase = "sunset";
 game.traders.player.inventory = ["Chia Seeds"];
-const beforeDefaultRelationship = game.relationships.sterling;
+const beforeDefaultRelationship = game.relationships.joel;
 game = advancePhase(game);
 assert.equal(game.obligations.find((obligation) => obligation.id === defaultDebt.id).status, "overdue");
-assert.equal(game.relationships.sterling, beforeDefaultRelationship - 1);
+assert.equal(game.relationships.joel, beforeDefaultRelationship - 1);
 
 game = enterMorning();
 game.playerState.form = "animal";
 game.playerState.legalIdentity.status = "unrecognized";
-game.relationships.sterling = 2;
-game = requestMarketProxy(game, "sterling");
+game.relationships.joel = 2;
+game = requestMarketProxy(game, "joel");
 assert(game.playerState.proxyAccess.some((access) => access.venueId === "formalMarket"));
 
 // Same-name perishables age once per day per physical copy.
@@ -203,8 +205,8 @@ assert.equal(game.traders.yasmin.inventory.filter((item) => item === "Bruised Mi
 
 // A perishable copy keeps its age when ownership changes.
 game = enterMorning();
-game.perishTimer["sterling:Bruised Mint"] = [1];
-game.playerOrders[0] = { to: "sterling", wantItem: "Bruised Mint", offerItem: "", sardines: sellerAsk(game, "sterling", "Bruised Mint") };
+game.perishTimer["joel:Bruised Mint"] = [1];
+game.playerOrders[0] = { to: "joel", wantItem: "Bruised Mint", offerItem: "", sardines: sellerAsk(game, "joel", "Bruised Mint") };
 game = advancePhase(game);
 const commitment = game.decisionEvidence.find((entry) => entry.type === "market-order-committed");
 assert.equal(commitment.channel, "public");
@@ -261,7 +263,7 @@ game = acceptFutureDelivery(game);
 const future = game.obligations.find((entry) => entry.kind === "future-delivery");
 assert(future && !future.ownedAtCommitment);
 game = advancePhase(game); game = advancePhase(game); game = advancePhase(game);
-game.playerOrders[0] = { to: "sterling", wantItem: "Lime Crate", offerItem: "", sardines: sellerAsk(game, "sterling", "Lime Crate") };
+game.playerOrders[0] = { to: "joel", wantItem: "Lime Crate", offerItem: "", sardines: sellerAsk(game, "joel", "Lime Crate") };
 game = advancePhase(game); game = resolveNoonMarket(game); game = advancePhase(game);
 assert(game.traders.player.inventory.includes("Lime Crate"));
 game = fulfillFutureDelivery(game, future.id);
@@ -271,7 +273,7 @@ assert.equal(game.badges.filter((badge) => badge.id === "sold-before-owned").len
 // Future default returns the reserve and creates restitution without ending the game.
 game = enterMorning();
 game.information.push(
-  { id: "lime-source", claimType: "holding", subjectId: "sterling", item: "Lime Crate", precision: "exact", confidence: "high", freshness: "current", observedDay: 1, knownBy: ["player"] },
+  { id: "lime-source", claimType: "holding", subjectId: "joel", item: "Lime Crate", precision: "exact", confidence: "high", freshness: "current", observedDay: 1, knownBy: ["player"] },
   { id: "lime-need", claimType: "need", subjectId: "aspen", item: "Lime Crate", precision: "exact", confidence: "high", freshness: "current", observedDay: 1, knownBy: ["player"] },
 );
 game = acceptFutureDelivery(game);
@@ -283,7 +285,7 @@ assert(game.obligations.some((entry) => entry.kind === "restitution" && entry.am
 assert.equal(game.ended, false);
 
 // Bar allows one relationship-backed exposure at a time.
-game = enterMorning(); game.relationships.sterling = 2;
+game = enterMorning(); game.relationships.joel = 2;
 game = requestRelationshipLoan(game);
 assert.equal(game.traders.player.sardines, 22);
 const once = game.obligations.length;

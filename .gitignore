@@ -4,3 +4,7 @@ dist
 .vscode
 .DS_Store
 *.log
+
+# Local browser verification captures (the UTF-8 proof JSON remains tracked).
+artifacts/*-bar.png
+artifacts/scene-lab.png

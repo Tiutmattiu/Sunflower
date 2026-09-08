@@ -17,15 +17,6 @@ export const RECURRING_ECONOMY = {
     rescueFoodDemandEveryDays: 2,
     salvageRotation: ["Fish Bones", "Glasses Wipe", "Bicycle Bell", "Empty Green Bottle", "Red Ribbon", "Pocket Match", "Old Coupon"],
   },
-  sterling: {
-    serviceRevenueBase: 2,
-    serviceRevenueWithIce: 5,
-    serviceInputEveryCycles: 3,
-    serviceInputRotation: ["Rum Bottle", "Demerara Syrup", "Bruised Mint"],
-    familySubsidyThreshold: 8,
-    familySubsidy: 6,
-    familySubsidyCooldownDays: 7,
-  },
   aspen: {
     firstDepartureDay: 8,
     routeDurationDays: 3,
@@ -62,7 +53,7 @@ export const RECURRING_ECONOMY = {
 
 export const PRODUCTION_RECIPES = {
   maiTai: {
-    producerId: "sterling",
+    producerId: "joel",
     output: "Mai Tai",
     inputs: ["Rum Bottle", "Lime Crate", "Orange Curaçao", "Orgeat Bottle"],
     durableTools: ["Hawthorne Strainer", "30/45 Jigger", "Fine Mesh Strainer", "Long Bar Spoon", "Hand Citrus Press", "Lewis Bag"],
@@ -132,6 +123,19 @@ export const ITEMS = {
   "Nursery Seed Packet": { value: 4, icon: "🌰", type: "Seed / Biological Input / Productive" },
   "Mature Nursery Plant": { value: 12, icon: "🪴", type: "Living Asset / Botanical / Productive", foodUnits: 0 },
 
+  "Pineapple": { value: 6, icon: "🍍", type: "Fruit / Bar / Household / Perishable", shelfLife: 3 },
+  "Raspberry": { value: 5, icon: "🫐", type: "Fruit / Bar / Hosting / Perishable", shelfLife: 2 },
+  "Grapefruit": { value: 6, icon: "🍊", type: "Fruit / Bar / Household / Perishable", shelfLife: 3 },
+  "Cucumber": { value: 4, icon: "🥒", type: "Produce / Bar / Household / Perishable", shelfLife: 3 },
+  "Tomato": { value: 4, icon: "🍅", type: "Produce / Bar / Household / Perishable", shelfLife: 3 },
+  "Mint": { value: 3, icon: "🌿", type: "Herb / Bar / Botanical / Perishable", shelfLife: 2 },
+  "Basil": { value: 3, icon: "🌿", type: "Herb / Bar / Botanical / Perishable", shelfLife: 2 },
+  "Cardamom": { value: 5, icon: "🫙", type: "Spice / Bar / Hosting / Durable" },
+  "Cinnamon": { value: 4, icon: "🫙", type: "Spice / Bar / Food / Durable" },
+  "Sichuan Pepper": { value: 6, icon: "🌶️", type: "Spice / Bar / Hosting / Durable" },
+  "Soda": { value: 5, icon: "🫧", type: "Non-alcoholic Base / Bar / Household" },
+  "Organic Scrap": { value: 0, icon: "♻️", type: "Waste / Compost Input" },
+
   "Rum Bottle": { value: 10, icon: "🥃", type: "Drink / Cocktail Ingredient" },
   "Bruised Mint": { value: 3, icon: "🌿", type: "Cocktail Ingredient", shelfLife: 2 },
   "Cracked Shaker": { value: 5, icon: "🥤", type: "Bar Tool / Damaged" },
@@ -175,9 +179,9 @@ export const INITIAL_TRADERS = {
     id: "juan", name: "Juan", icon: "🤡", role: "Botanist / grower / Onewheel Clown / debtor", form: "human", sardines: 8,
     inventory: ["Lollipop", "Glitter Tape", "Tool Roll", "Lucky Sticker", "Wax Candle Stub", "Handlebar Tape", "Key That Opens Nothing", "Nursery Seed Packet", "Nursery Seed Packet"],
   },
-  sterling: {
-    id: "sterling", name: "Sterling", icon: "🍸", role: "Bar operator / apprentice · relationship trader", form: "human", sardines: 34,
-    inventory: ["Rum Bottle", "Bruised Mint", "Cracked Shaker", "Lime Crate", "Orange Curaçao", "Demerara Syrup", "Hotel Sugar Cubes, 23 Count", "Empty Green Bottle", "Long Bar Spoon", "Hand Citrus Press", "Lewis Bag", "Chipped Nick & Nora Glass"],
+  joel: {
+    id: "joel", name: "Joel", icon: "🍸", role: "Bar operator / apprentice · relationship trader", form: "human", sardines: 34,
+    inventory: ["Pineapple", "Raspberry", "Grapefruit", "Cucumber", "Tomato", "Mint", "Basil", "Cardamom", "Cinnamon", "Sichuan Pepper", "Soda", "Rum Bottle", "Bruised Mint", "Cracked Shaker", "Lime Crate", "Lime Crate", "Orange Curaçao", "Demerara Syrup", "Hotel Sugar Cubes, 23 Count", "Empty Green Bottle", "Long Bar Spoon", "Hand Citrus Press", "Lewis Bag", "Chipped Nick & Nora Glass"],
   },
   dima: {
     id: "dima", name: "Dima", icon: "🐦", role: "Seagull · informal broker / guarantee / claim transfer", form: "animal", sardines: 18,
@@ -201,7 +205,7 @@ const TALK = {
     { text: "Octopus talks while working, which seems to be his version of hospitality." },
   ],
   aspen: [
-    { text: "Aspen talks in fragments about provisioning. Fresh citrus is the pressure point, and the Bar is the plausible local lead.", info: { claimType: "holding", subjectId: "sterling", item: "Lime Crate", precision: "specific", confidence: "medium", text: "The Bar is a plausible current source for a Lime Crate." } },
+    { text: "Aspen talks in fragments about provisioning. Fresh citrus is the pressure point, and the Bar is the plausible local lead.", info: { claimType: "holding", subjectId: "joel", item: "Lime Crate", precision: "specific", confidence: "medium", text: "The Bar is a plausible current source for a Lime Crate." } },
     { text: "Aspen now speaks plainly: one Lime Crate must be aboard before departure.", info: { claimType: "need", item: "Lime Crate", precision: "exact", confidence: "high", text: "Aspen needs exactly one Lime Crate before departure." } },
     { text: "Aspen gives you the kind of answer reserved for somebody expected to still be here tomorrow." },
   ],
@@ -215,10 +219,10 @@ const TALK = {
     { text: "Juan talks about the cliff as though it were not merely a place to race. When you ask what he means, he laughs at a different joke.", info: { claimType: "lead", precision: "context", confidence: "low", text: "Juan believes the cliff matters for reasons beyond the wager itself." } },
     { text: "Juan trusts you enough to be inconsistent in front of you without trying to make it look intentional." },
   ],
-  sterling: [
-    { text: "Sterling talks while wiping the same glass for too long. The conversation is slightly awkward and noticeably genuine." },
-    { text: "Sterling mentions closing early sometimes to visit Grandma. Apparently she still cares far more about real food than the price of it.", info: { claimType: "lead", precision: "context", confidence: "high", text: "Sterling visits Grandma after closing; fresh food matters there more than its market price." } },
-    { text: "Sterling asks you a question back. You are becoming a regular rather than a transaction." },
+  joel: [
+    { text: "Joel talks while wiping the same glass for too long. The conversation is slightly awkward and noticeably genuine." },
+    { text: "Joel mentions closing early sometimes to visit Grandma. Apparently she still cares far more about real food than the price of it.", info: { claimType: "lead", precision: "context", confidence: "high", text: "Joel visits Grandma after closing; fresh food matters there more than its market price." } },
+    { text: "Joel asks you a question back. You are becoming a regular rather than a transaction." },
   ],
   dima: [
     { text: "Dima watches who can cross the formal threshold and who needs somebody recognised to stand in front." },
@@ -236,7 +240,7 @@ export const NPC_PROFILES = {
       { typeIncludes: "Tiny Utility", utility: 2 }, { typeIncludes: "Container", utility: 2 },
     ],
     goals: [
-      { item: "Fresh Mackerel", utility: 9, likelySources: ["octopus", "sterling"], reason: "Fresh fish disappears quickly around the cats." },
+      { item: "Fresh Mackerel", utility: 9, likelySources: ["octopus", "joel"], reason: "Fresh fish disappears quickly around the cats." },
       { item: "Fish Bones", utility: 6, likelySources: ["octopus", "aspen"], reason: "Even scraps have a use at the dock." },
     ],
     talkStages: TALK.wong,
@@ -269,7 +273,7 @@ export const NPC_PROFILES = {
       { typeIncludes: "Tool", utility: 4 }, { typeIncludes: "Durable", utility: 3 },
     ],
     goals: [
-      { item: "Lime Crate", utility: 16, urgencyPerDay: 2, likelySources: ["sterling", "octopus", "wong"], reason: "The ship must provision fresh citrus before departure." },
+      { item: "Lime Crate", utility: 16, urgencyPerDay: 2, likelySources: ["joel", "octopus", "wong"], reason: "The ship must provision fresh citrus before departure." },
       { item: "Steel Rim", utility: 12, startsDay: 2, likelySources: ["octopus", "wong", "juan"], reason: "A working wheel needs a sound rim before the ship leaves." },
       { item: "Handlebar Tape", utility: 8, startsDay: 2, likelySources: ["juan", "wong"], reason: "The current repair job still needs a safe finished grip." },
     ],
@@ -311,18 +315,18 @@ export const NPC_PROFILES = {
       { typeIncludes: "Bicycle", utility: 5 }, { typeIncludes: "Mystery", utility: 7 }, { typeIncludes: "Story", utility: 4 },
     ],
     goals: [
-      { item: "Mai Tai", utility: 20, likelySources: ["sterling"], reason: "Juan will pay irrational-looking prices for the right drink and the right night." },
+      { item: "Mai Tai", utility: 20, likelySources: ["joel"], reason: "Juan will pay irrational-looking prices for the right drink and the right night." },
       { item: "Built Onewheel", utility: 20, likelySources: ["aspen", "yasmin"], reason: "A working onewheel creates wagers other people cannot take." },
       { item: "Sealed Parcel", utility: 14, likelySources: ["aspen", "wong"], reason: "An opaque payoff distribution is exactly the sort of thing Juan cannot leave alone." },
     ],
     talkStages: TALK.juan,
     investigationStages: [
-      { claimType: "activity", precision: "context", text: "Juan keeps asking whether Sterling has finally learned the old rum drink properly, then changes the subject to wheels.", confidence: "high" },
+      { claimType: "activity", precision: "context", text: "Juan keeps asking whether Joel has finally learned the old rum drink properly, then changes the subject to wheels.", confidence: "high" },
       { claimType: "need", precision: "exact", item: "Mai Tai", text: "Juan is specifically waiting for a proper Mai Tai.", confidence: "high" },
     ],
     clue: "Juan is not random. He simply values upside and extreme outcomes more than most people do.",
   },
-  sterling: {
+  joel: {
     style: "Relationship-first novice", markup: 1, cashPreference: 0.25, informationTempo: 3,
     publicStock: ["Rum Bottle", "Bruised Mint", "Orange Curaçao", "Demerara Syrup", "Hotel Sugar Cubes, 23 Count"],
     interests: [
@@ -330,20 +334,20 @@ export const NPC_PROFILES = {
       { typeIncludes: "Barware", utility: 5 }, { typeIncludes: "Container", utility: 2 },
     ],
     goals: [
-      { item: "Orgeat Bottle", utility: 20, likelySources: ["octopus", "aspen", "wong"], reason: "Sterling is trying to learn a proper Mai Tai but one ingredient is missing." },
+      { item: "Orgeat Bottle", utility: 20, likelySources: ["octopus", "aspen", "wong"], reason: "Joel is trying to learn a proper Mai Tai but one ingredient is missing." },
       { item: "Ice Block", utility: 8, likelySources: ["octopus", "aspen"], reason: "Cold drinks are a recurring operating input, not a one-time quest." },
-      { item: "Hawthorne Strainer", utility: 8, likelySources: ["octopus", "aspen"], reason: "Sterling is replacing damaged service tools while learning professional technique." },
-      { item: "30/45 Jigger", utility: 7, likelySources: ["aspen", "octopus"], reason: "Accurate measures matter when Sterling stops free-pouring everything." },
+      { item: "Hawthorne Strainer", utility: 8, likelySources: ["octopus", "aspen"], reason: "Joel is replacing damaged service tools while learning professional technique." },
+      { item: "30/45 Jigger", utility: 7, likelySources: ["aspen", "octopus"], reason: "Accurate measures matter when Joel stops free-pouring everything." },
       { item: "Fine Mesh Strainer", utility: 6, likelySources: ["aspen", "octopus"], reason: "A finer strain is a technique upgrade, not a route requirement." },
     ],
-    talkStages: TALK.sterling,
+    talkStages: TALK.joel,
     investigationStages: [
-      { claimType: "activity", precision: "context", text: "Sterling is learning to make a Mai Tai. The recipe keeps stalling because one ingredient is missing.", confidence: "high" },
+      { claimType: "activity", precision: "context", text: "Joel is learning to make a Mai Tai. The recipe keeps stalling because one ingredient is missing.", confidence: "high" },
       { claimType: "need-hint", precision: "specific", text: "Rum, fresh lime and orange curaçao are already behind the bar. Whatever is missing is not one of those.", confidence: "high" },
       { claimType: "need", precision: "exact", item: "Orgeat Bottle", text: "If you press further, the missing Mai Tai ingredient is orgeat.", confidence: "high" },
-      { claimType: "claim", claimId: "juan-sterling-tab", precision: "exact", text: "Sterling holds Juan's 7🥫 unsecured tab and asks 5🥫 to transfer it.", confidence: "high" },
+      { claimType: "claim", claimId: "juan-joel-tab", precision: "exact", text: "Joel holds Juan's 7🥫 unsecured tab and asks 5🥫 to transfer it.", confidence: "high" },
     ],
-    clue: "Sterling is not a strong trader yet. People still like dealing with them, which is an economic advantage of its own.",
+    clue: "Joel is not a strong trader yet. People still like dealing with them, which is an economic advantage of its own.",
   },
   dima: {
     style: "Informal intermediary", markup: 1, cashPreference: .6, informationTempo: 2,
@@ -361,16 +365,16 @@ export const NPC_PROFILES = {
 export const SOCIAL_GRAPH = {
   wong: {
     octopus: { familiarity: 1, trust: 0, channel: "harbour" }, aspen: { familiarity: 1, trust: 0, channel: "dock" },
-    yasmin: { familiarity: 1, trust: -1, channel: "street-to-elite" }, juan: { familiarity: 1, trust: 0, channel: "sterling" },
-    sterling: { familiarity: 2, trust: 1, channel: "animal-friendly bar" }, seagulls: { familiarity: 2, trust: 0, channel: "animal informal network" },
+    yasmin: { familiarity: 1, trust: -1, channel: "street-to-elite" }, juan: { familiarity: 1, trust: 0, channel: "joel" },
+    joel: { familiarity: 2, trust: 1, channel: "animal-friendly bar" }, seagulls: { familiarity: 2, trust: 0, channel: "animal informal network" },
     squirrels: { familiarity: 2, trust: 0, channel: "animal informal network" }, mosquitoes: { familiarity: 1, trust: 0, channel: "animal informal network" },
   },
   yasmin: { aspen: { familiarity: 3, trust: 2, channel: "repeat private trade" }, wong: { familiarity: 1, trust: -1, channel: "informal information" } },
   aspen: { yasmin: { familiarity: 3, trust: 2, channel: "repeat private trade" }, wong: { familiarity: 1, trust: 1, channel: "dock" } },
-  juan: { sterling: { familiarity: 3, trust: 2, channel: "regular customer" }, dima: { familiarity: 2, trust: 0, channel: "informal finance" } },
-  sterling: { juan: { familiarity: 3, trust: 1, channel: "regular customer" }, wong: { familiarity: 2, trust: 2, channel: "animal-friendly bar" } },
+  juan: { joel: { familiarity: 3, trust: 2, channel: "regular customer" }, dima: { familiarity: 2, trust: 0, channel: "informal finance" } },
+  joel: { juan: { familiarity: 3, trust: 1, channel: "regular customer" }, wong: { familiarity: 2, trust: 2, channel: "animal-friendly bar" } },
   octopus: { wong: { familiarity: 1, trust: 0, channel: "ordinary market" } },
-  dima: { juan: { familiarity: 2, trust: 0, channel: "claim brokerage" }, sterling: { familiarity: 2, trust: 1, channel: "cross-form access" } },
+  dima: { juan: { familiarity: 2, trust: 0, channel: "claim brokerage" }, joel: { familiarity: 2, trust: 1, channel: "cross-form access" } },
 };
 
 export const FORMS = {

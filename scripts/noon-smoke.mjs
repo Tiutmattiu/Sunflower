@@ -63,7 +63,7 @@ let game = createGame();
 const dayOnePlans = planNPCMarket(game);
 assert(dayOnePlans.length <= 2, `Day 1 should be quiet enough to read; got ${dayOnePlans.length} NPC orders`);
 assert(dayOnePlans.some((plan) => plan.from === "wong" && plan.wantItem === "Fresh Mackerel"));
-assert(dayOnePlans.some((plan) => plan.from === "sterling" && plan.wantItem === "Ice Block"));
+assert(dayOnePlans.some((plan) => plan.from === "joel" && plan.wantItem === "Ice Block"));
 assert(!dayOnePlans.some((plan) => plan.wantItem === "Sperm Whale Oil"), "Vale must not magically locate hidden whale oil on Day 1");
 assert(!dayOnePlans.some((plan) => plan.wantItem === "Orgeat Bottle"), "Bar must not magically locate hidden Orgeat on Day 1");
 assert(!knownItemsForTrader(game, "aspen").includes("Sperm Whale Oil"));
@@ -72,13 +72,13 @@ assert(visibleMarketBoard(game).every((bid) => !["to", "reason", "score", "knowl
 
 // Talk and investigation are genuinely different verbs.
 game = morning();
-let talked = performFreeAction(game, "talk", "sterling");
-assert.equal(talked.relationships.sterling, 1);
+let talked = performFreeAction(game, "talk", "joel");
+assert.equal(talked.relationships.joel, 1);
 assert.equal(talked.lastInteraction.action, "talk");
 assert(talked.lastInteraction.text && !talked.lastInteraction.text.includes("+1"));
 assert(!talked.log[0].includes("relationship contact +1"));
-let investigated = performFreeAction(game, "investigate", "sterling");
-assert.equal(investigated.relationships.sterling, 0, "investigation must not silently build friendship");
+let investigated = performFreeAction(game, "investigate", "joel");
+assert.equal(investigated.relationships.joel, 0, "investigation must not silently build friendship");
 assert.equal(investigated.lastInteraction.action, "investigate");
 assert(investigated.lastInteraction.text.includes("Mai Tai"));
 assert(!investigated.lastInteraction.text.toLowerCase().includes("orgeat"), "first bartending clue must preserve expertise advantage");
@@ -98,7 +98,7 @@ assert.equal(result.marketOutcome.find((trade) => trade.from === "player")?.sard
 // Better bid / tie / duplicate inventory / funding conservation.
 for (const day of [1, 2, 3]) {
   game = compete(10, 10, day);
-  game.marketPlan.push(order("sterling", "octopus", "Fresh Mackerel", 10));
+  game.marketPlan.push(order("joel", "octopus", "Fresh Mackerel", 10));
   const reversed = structuredClone(game);
   reversed.marketPlan.reverse();
   assert.deepEqual(clear(game).marketOutcome, clear(reversed).marketOutcome);
@@ -113,13 +113,13 @@ assert.equal(clear(game).marketOutcome.length, 2, "two physical units can fill t
 
 game = manualNoon();
 game.traders.player.inventory.push("Orgeat Bottle");
-game.playerOrders = [order("player", "sterling", "Demerara Syrup", 0, "Orgeat Bottle")];
-game.marketPlan = [order("yasmin", "sterling", "Demerara Syrup", 20)];
+game.playerOrders = [order("player", "joel", "Demerara Syrup", 0, "Orgeat Bottle")];
+game.marketPlan = [order("yasmin", "joel", "Demerara Syrup", 20)];
 result = clear(game);
 assert.equal(result.marketOutcome[0].from, "player");
 assert.equal(result.worldThreads.barRecipe.stage, "aftermath");
-assert(result.traders.sterling.inventory.includes("Mai Tai"));
-assert(knownItemsForTrader(result, "sterling").includes("Orgeat Bottle"), "barter ownership belongs on the public tape");
+assert(result.traders.joel.inventory.includes("Mai Tai"));
+assert(knownItemsForTrader(result, "joel").includes("Orgeat Bottle"), "barter ownership belongs on the public tape");
 
 for (const [item, cash, fills] of [["Hardtack Tin", 0, 1], ["Tiny Torque Wrench", 0, 0], ["Tiny Torque Wrench", 7, 1]]) {
   game = manualNoon();
@@ -168,7 +168,7 @@ for (const proxy of [false, true]) {
   game = compete(12, 10);
   game.playerState.form = "animal";
   game.playerState.legalIdentity.status = "unrecognized";
-  if (proxy) game.playerState.proxyAccess.push({ venueId: "formalMarket", via: "sterling", expiresDay: game.day });
+  if (proxy) game.playerState.proxyAccess.push({ venueId: "formalMarket", via: "joel", expiresDay: game.day });
   assert.equal(winner(game), proxy ? "player" : "wong");
 }
 
@@ -194,7 +194,7 @@ assert.equal(game.worldThreads.onewheel.stage, "aftermath", "Sailor should be ab
 assert(game.history.some((trade) => trade.day > 8), "recurring needs should keep some trade alive after the first goals resolve");
 assert(!game.history.some((trade) => [9, 10, 11].includes(trade.day) && (trade.from === "aspen" || trade.to === "aspen")), "Aspen must not trade while the route is away");
 assert(game.decisionEvidence.some((entry) => entry.actorId === "aspen" && entry.category === "voyage-return"), "Aspen must return from the first route");
-assert(game.traders.sterling.sardines > 0 && game.traders.yasmin.sardines > 0, "Bar and Vale must not structurally bleed to zero");
+assert(game.traders.joel.sardines > 0 && game.traders.yasmin.sardines > 0, "Bar and Vale must not structurally bleed to zero");
 assert(game.traders.octopus.sardines < 150, "named sourcing costs should prevent runaway free-production wealth");
 
 console.log(`Living-day smoke passed. Day 1 NPC orders: ${dayOnePlans.length}. No-action public trades/day: ${dailyTrades.join(", ")}.`);

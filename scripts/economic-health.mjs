@@ -5,11 +5,12 @@ import {
   resolveEvent, resolveNoonMarket, securedCollateralItems, sellInformation, sellInformationExclusive, shareInformationAsFavor, valueOf,
 } from "../src/gameEngine.js";
 import { visibleSellListings } from "../src/npcAI.js";
+import { ACTIVE_REAL_MENU, ACTIVE_SUPPORT, BAR_INGREDIENTS, INACTIVE_REAL_MENU, barDiagnostics } from "../src/barEconomy.js";
 
 const POLICIES = ["NO_ACTION", "PUBLIC_DEALER", "VALUE_CONSERVATIVE", "HIGH_TURNOVER", "INFORMATION_BROKER", "RELATIONSHIP_OPERATOR", "SECURED_LIQUIDITY", "CLAIMS_DISTRESSED", "LOW_VARIANCE_CONTRACT", "HIGH_RISK_SPECIAL", "MIXED_ADAPTIVE"];
 const HORIZONS = [14, 42, 100];
 const PAUSE_POLICIES = ["NATURAL_PAUSE", "RESIST_WHEN_USEFUL"];
-const ACTORS = ["player", "wong", "aspen", "yasmin", "juan", "sterling", "dima", "octopus"];
+const ACTORS = ["player", "wong", "aspen", "yasmin", "juan", "joel", "dima", "octopus"];
 const sum = (values) => values.reduce((total, value) => total + Number(value || 0), 0);
 const hhi = (values) => { const total = sum(values); return total ? sum(values.map((value) => (value / total) ** 2)) : 0; };
 const wealth = (trader) => trader.sardines + sum(trader.inventory.map(valueOf));
@@ -42,18 +43,18 @@ function act(game, policy, phase) {
   if (!game.actionsRemaining) return game;
   if (policy === "INFORMATION_BROKER") {
     const sold = sellLead(game, game.day % 3 === 0);
-    return sold.actionsRemaining < game.actionsRemaining ? sold : performFreeAction(game, "investigate", ["octopus", "aspen", "sterling", "yasmin"][game.day % 4]);
+    return sold.actionsRemaining < game.actionsRemaining ? sold : performFreeAction(game, "investigate", ["octopus", "aspen", "joel", "yasmin"][game.day % 4]);
   }
   if (policy === "RELATIONSHIP_OPERATOR") {
     for (const info of game.information) {
       const buyer = informationBuyers(game, info)[0];
       if (buyer) return shareInformationAsFavor(game, info.id, buyer);
     }
-    if ((game.relationships.sterling || 0) >= 2 && !game.obligations.some((entry) => entry.kind === "relationship-loan" && entry.status === "open")) {
+    if ((game.relationships.joel || 0) >= 2 && !game.obligations.some((entry) => entry.kind === "relationship-loan" && entry.status === "open")) {
       const financed = requestRelationshipLoan(game);
       if (financed.actionsRemaining < game.actionsRemaining) return financed;
     }
-    return performFreeAction(game, game.day % 2 ? "investigate" : "talk", game.day % 2 ? "octopus" : "sterling");
+    return performFreeAction(game, game.day % 2 ? "investigate" : "talk", game.day % 2 ? "octopus" : "joel");
   }
   if (policy === "SECURED_LIQUIDITY") {
     const collateral = securedCollateralItems(game)[0];
@@ -86,14 +87,14 @@ function act(game, policy, phase) {
     const sold = sellLead(game);
     if (sold.actionsRemaining < game.actionsRemaining) return sold;
   }
-  return performFreeAction(game, policy === "VALUE_CONSERVATIVE" ? "investigate" : "talk", ["wong", "octopus", "sterling", "aspen"][game.day % 4]);
+  return performFreeAction(game, policy === "VALUE_CONSERVATIVE" ? "investigate" : "talk", ["wong", "octopus", "joel", "aspen"][game.day % 4]);
 }
 
 function recoveryChannels(game) {
   const channels = new Set();
   if (game.inboundOffers.some((entry) => entry.status === "pending" && entry.kind === "buy-item")) channels.add("public-exit");
   if (game.information.some((info) => informationBuyers(game, info).length)) channels.add("information-sale");
-  if ((game.relationships.sterling || 0) >= 2) channels.add("relationship-credit");
+  if ((game.relationships.joel || 0) >= 2) channels.add("relationship-credit");
   if ((game.relationships.yasmin || 0) >= 1 && securedCollateralItems(game).length) channels.add("secured-liquidity");
   if (game.claims.some((claim) => claim.currentHolderId === "player" && claim.status === "open" && game.traders.juan.sardines >= Math.ceil(claim.faceAmount * .7))) channels.add("claim-buyback");
   if (game.playerState.form === "animal" && game.traders.player.sardines >= 3) channels.add("dima-proxy");
@@ -174,7 +175,7 @@ function run(policy, horizon, pausePolicy) {
       businessInputs: -sum(ledger.filter((entry) => /business-input|planting|physical-arrival|seed-sourcing/.test(entry.category) && entry.amount < 0).map((entry) => entry.amount)),
       privateCashflows: privateFlows[id], financePrincipalFees: financeFlows[id], claimsBrokerage: claimFlows[id],
       liquidationSeizure: sum(ledger.filter((entry) => /liquidation/.test(entry.category)).map((entry) => entry.amount)),
-      sterlingFamilySubsidy: id === "sterling" ? sum(ledger.filter((entry) => entry.category === "family-subsidy").map((entry) => entry.amount)) : 0,
+      joelFamilySubsidy: id === "joel" ? sum(ledger.filter((entry) => entry.category === "family-subsidy").map((entry) => entry.amount)) : 0,
     };
   });
   const salesCounts = actorRows.filter((row) => row.actor !== "player").map((row) => row.publicSales);
@@ -196,7 +197,7 @@ function run(policy, horizon, pausePolicy) {
   if (horizon >= 42 && largestSalesCount / Math.max(1, sum(salesCounts)) > .5 && largestSalesValue / Math.max(1, sum(salesValues)) > .35) warnings.push("one actor >50% sales count AND >35% sales value long-run");
   const lowCashDays = daily.filter((row) => row.lowCashRoutes !== null);
   if (lowCashDays.length && lowCashDays.filter((row) => row.lowCashRoutes < 2).length > lowCashDays.length / 2) warnings.push("low-cash states usually <2 recovery routes");
-  for (const [actor, category] of [["aspen", "voyage-return"], ["sterling", "outside-service-revenue"], ["yasmin", "outside-capital-family-yield"], ["wong", "labour-produced-salvage"], ["juan", "crop-maturity"], ["octopus", "physical-arrival"]]) if (!game.recurringLedger.some((entry) => entry.actorId === actor && entry.category === category)) warnings.push(`${actor} intended loop never completed`);
+  for (const [actor, category] of [["aspen", "voyage-return"], ["yasmin", "outside-capital-family-yield"], ["wong", "labour-produced-salvage"], ["juan", "crop-maturity"], ["octopus", "physical-arrival"]]) if (!game.recurringLedger.some((entry) => entry.actorId === actor && entry.category === category)) warnings.push(`${actor} intended loop never completed`);
   if (game.settlementFloat !== 0 || game.clearingBatches.some((batch) => !batch.reconciled || batch.settlementFloat !== 0)) warnings.push("clearing float nonzero / included in wealth");
   const capability = {
     NO_ACTION: true,
@@ -233,10 +234,20 @@ const runs = HORIZONS.flatMap((horizon) => POLICIES.flatMap((policy) => (policy 
 console.log("\nECONOMIC HEALTH POLICY TABLE");
 console.table(runs.map((run) => ({ policy: run.policy, pause: run.pausePolicy, days: run.horizon, currentCash: run.snapshot.currentBodyCash, currentWealth: run.snapshot.currentBodyWealth, estateWealth: run.snapshot.formerEstateWealth, legalWealth: run.snapshot.legallyAccessibleWealth, claims: run.snapshot.currentBodyClaimsReference, liabilities: run.snapshot.currentBodyLiabilities, transitions: run.snapshot.formTransitionCount, publicFills: run.publicFills, privateDeals: run.privateDeals, claimTransfers: run.claimTransfers, infoTransactions: run.infoTransactions, uniqueGoods: run.uniqueGoods, counterparties: run.uniqueCounterparties, deadDays: run.deadDays, maxDead: run.maxDeadStreak, visibleOppsPerDay: run.visibleOpportunitiesPerDay.toFixed(1), cashVelocity: run.cashVelocity.toFixed(3), turnover: run.goodsTurnover.toFixed(3), claimHoldDays: run.claimHoldingDuration.toFixed(1), publicShare: run.publicShare.toFixed(3), lowCashDays: run.lowCashDays, lowCashRoutes: run.lowCashRecoveryRoutesMean.toFixed(1), cashHHI: run.cashHHI.toFixed(3), wealthHHI: run.wealthHHI.toFixed(3), salesCountHHI: run.salesCountHHI.toFixed(3), salesValueHHI: run.salesValueHHI.toFixed(3), largestCashShare: run.largestCashShare.toFixed(3), largestWealthShare: run.largestWealthShare.toFixed(3), largestSalesCountShare: run.largestSalesCountShare.toFixed(3), largestSalesValueShare: run.largestSalesValueShare.toFixed(3), claimHolderHHI: run.claimHolderConcentration.toFixed(3), infoBrokerHHI: run.infoBrokerConcentration.toFixed(3), warnings: run.warnings.length })));
 console.log("\nACTOR P&L / DOMINANCE TABLE");
-console.table(ACTORS.map((actor) => { const rows = runs.map((run) => run.actorRows.find((row) => row.actor === actor)); return { actor, endingCashMean: (sum(rows.map((row) => row.cash)) / rows.length).toFixed(1), endingWealthMean: (sum(rows.map((row) => row.wealth)) / rows.length).toFixed(1), claimValue: sum(rows.map((row) => row.claimValue)), claimLiabilities: sum(rows.map((row) => row.claimLiabilities)), publicBuys: sum(rows.map((row) => row.publicBuys)), publicBuyValue: sum(rows.map((row) => row.publicBuyValue)), publicSales: sum(rows.map((row) => row.publicSales)), publicSaleValue: sum(rows.map((row) => row.publicSaleValue)), privateCashflows: sum(rows.map((row) => row.privateCashflows)), outsideIncome: sum(rows.map((row) => row.outsideIncome)), outsideCost: sum(rows.map((row) => row.outsideCost)), householdSocialSupportBurn: sum(rows.map((row) => row.householdSocialSupportBurn)), businessInputs: sum(rows.map((row) => row.businessInputs)), financePrincipalFees: sum(rows.map((row) => row.financePrincipalFees)), claimsBrokerage: sum(rows.map((row) => row.claimsBrokerage)), liquidationSeizure: sum(rows.map((row) => row.liquidationSeizure)), sterlingFamilySubsidy: sum(rows.map((row) => row.sterlingFamilySubsidy)) }; }));
+console.table(ACTORS.map((actor) => { const rows = runs.map((run) => run.actorRows.find((row) => row.actor === actor)); return { actor, endingCashMean: (sum(rows.map((row) => row.cash)) / rows.length).toFixed(1), endingWealthMean: (sum(rows.map((row) => row.wealth)) / rows.length).toFixed(1), claimValue: sum(rows.map((row) => row.claimValue)), claimLiabilities: sum(rows.map((row) => row.claimLiabilities)), publicBuys: sum(rows.map((row) => row.publicBuys)), publicBuyValue: sum(rows.map((row) => row.publicBuyValue)), publicSales: sum(rows.map((row) => row.publicSales)), publicSaleValue: sum(rows.map((row) => row.publicSaleValue)), privateCashflows: sum(rows.map((row) => row.privateCashflows)), outsideIncome: sum(rows.map((row) => row.outsideIncome)), outsideCost: sum(rows.map((row) => row.outsideCost)), householdSocialSupportBurn: sum(rows.map((row) => row.householdSocialSupportBurn)), businessInputs: sum(rows.map((row) => row.businessInputs)), financePrincipalFees: sum(rows.map((row) => row.financePrincipalFees)), claimsBrokerage: sum(rows.map((row) => row.claimsBrokerage)), liquidationSeizure: sum(rows.map((row) => row.liquidationSeizure)), joelFamilySubsidy: sum(rows.map((row) => row.joelFamilySubsidy)) }; }));
 console.log("\nCHARACTER LOOP TABLE");
 console.table(ACTORS.filter((actor) => actor !== "player").map((actor) => { const entries = runs.flatMap((run) => run.game.recurringLedger.filter((entry) => entry.actorId === actor)); const counts = Object.fromEntries([...new Set(entries.map((entry) => entry.category))].sort().map((category) => [category, entries.filter((entry) => entry.category === category).length])); const batches = actor === "octopus" ? runs.flatMap((run) => run.game.clearingBatches) : []; return { actor, events: entries.length, grossIncome: sum(entries.filter((entry) => entry.amount > 0).map((entry) => entry.amount)), grossCost: -sum(entries.filter((entry) => entry.amount < 0).map((entry) => entry.amount)), cycles: entries.filter((entry) => /return|maturity|outside-service-revenue|labour-produced-salvage/.test(entry.category)).length, delays: entries.filter((entry) => entry.category === "voyage-delay").length, destroyedFutureValue: sum(entries.map((entry) => entry.destroyedFutureValue)), clearingBatches: batches.length, clearingCash: sum(batches.map((batch) => batch.cashTotal)), floatFailures: batches.filter((batch) => !batch.reconciled || batch.settlementFloat !== 0).length, categories: JSON.stringify(counts) }; }));
 console.log("\nSUN MOMENT NATURAL VS RESIST TABLE");
 console.table(runs.filter((run) => run.policy === "VALUE_CONSERVATIVE").map((run) => ({ policy: run.policy, days: run.horizon, pause: run.pausePolicy, moments: run.sun.moments, eligibleNoons: run.sun.eligibleNoons, naturalPauses: run.sun.naturalPauses, resistances: run.sun.resistances, lateEdits: run.sun.lateEdits, immediateFactualValue: run.sun.immediateFactualValue, laterAttributedValue: run.sun.laterAttributedValue, endingLegalWealth: run.snapshot.legallyAccessibleWealth })));
 console.log("\nWARNINGS");
 runs.filter((run) => run.warnings.length).forEach((run) => console.log(`${run.policy} / ${run.pausePolicy} / ${run.horizon}d: ${run.warnings.join("; ")}`));
+
+const representative = runs.find((entry) => entry.policy === "NO_ACTION" && entry.horizon === 14);
+console.log("\nBAR RAW TABLE (NO_ACTION / 14d)");
+console.table([barDiagnostics(representative.game)]);
+console.log("\nINGREDIENT RAW TABLE");
+console.table([...ACTIVE_REAL_MENU, ...ACTIVE_SUPPORT].map((name) => ({ ingredient: name, source: BAR_INGREDIENTS[name].source, family: BAR_INGREDIENTS[name].family, demandFamilies: BAR_INGREDIENTS[name].demandFamilies.join("|"), transactions: representative.game.bar.ingredientTransactions.filter((row) => row.ingredient === name).length, transactionValue: representative.game.bar.ingredientTransactions.filter((row) => row.ingredient === name).reduce((n,row)=>n+row.value,0), servingsRemaining: representative.game.bar.servings[name] || 0, unused: !representative.game.bar.ingredientTransactions.some((row)=>row.ingredient===name) })));
+console.log("Inactive real-menu registry:", INACTIVE_REAL_MENU.join(", "));
+console.log("\nMONEY / ACCOUNTING RAW TABLE");
+console.table([{ localTransfers: representative.game.backgroundEconomy.localTransfers, externalInjections: representative.game.backgroundEconomy.externalInjections, externalDrains: representative.game.backgroundEconomy.externalDrains, joelCash: representative.game.traders.joel.sardines, joelReceivables: representative.game.bar.receivables, juanLiabilities: representative.game.claims.filter(c=>c.debtorId==="juan"&&c.status==="open").reduce((n,c)=>n+c.faceAmount,0), matchingClaimAssets: representative.game.claims.filter(c=>c.debtorId==="juan"&&c.status==="open").reduce((n,c)=>n+c.faceAmount,0), octopusFloat: representative.game.settlementFloat }]);
+// Joel-removal resilience is computed by scripts/bar-factor-diagnostic.mjs.
