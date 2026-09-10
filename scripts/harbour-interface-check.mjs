@@ -54,4 +54,3 @@ assert.equal(w.actors.player.cash,16);assert.equal(w.production.marketStanding.f
 w=base();w.playerGame.location='back_room';w.production.marketStanding.status='SUSPENDED';w.actors.dima.cash=0;
 assert.deepEqual(performProductionAction(w,'private_proxy'),w);
 console.log('PASS: reserved cash survives penalties; unfunded private execution takes no fee.');
-
