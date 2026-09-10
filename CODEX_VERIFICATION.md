@@ -1,5 +1,24 @@
 # Sunflower — Dated Prototype Verification
 
+## Continuous-map working checkpoint — 2026-09-10
+
+This pass continues `codex/living-harbour`; it does not restart from `main`. The player renderer is `AppCore.jsx` / `HarbourMap.jsx`, with developer Scene Lab isolated behind a development-only flag.
+
+Verified locally:
+
+- `npm run build`: passed, 48 modules. `npm run test:production`: passed after reservation-safe production payments. `node scripts/harbour-interface-check.mjs`: passed acquaintance/route entry, absent counterparties, atomic failures, dates, unique deliveries, pledged stock, contextual knowledge, idempotent intra-day settlement and debt release checks.
+- `npm run test:browser`: actual installed Edge input, fresh saves, desktop 1440×1000 and mobile 390×844. Both completed discovery, phone/newspaper, remembered route instructions, four physical part purchases, assembly, cliff and final reflection. These route pages had no page errors or horizontal overflow.
+- Additional mobile browser flow bought a real public-market fish, previewed the bowl, borrowed eight tins, saw the nine-tin obligation and repaid it. Another flow exhausted available time through posted offers, declined tomorrow, continued looking, then chose the next day.
+- Inspected local arrival/reflection screenshots. Captures are in OS temporary directories and are not committed. Enlarged figures and separate grounded actor anchors correct the earlier water/table placements. Gallery actor hit interception was reproduced with real clicks and corrected by separating the standing position from the bowl.
+- Dialogue displays one sentence at a time and closes when no response remains. Tests click through spoken lines, rather than invoking engine methods. The whole-market time refusal now supplies the same tomorrow/keep-looking prompt as person actions.
+- Reserved cash is excluded from fines and production payments. An unfunded private payout takes no fee. Dedicated assertions reproduce both cases. Cliff comic no longer inserts Juan when he is absent.
+
+Earlier interactive play in this working session reached Auction and Supper (including the special fresh catch), Toad circle and repeated Juan/Dima Bar encounters. Those paths have not all been rerun since the latest figure positioning changes: do not infer complete browser acceptance from engine checks.
+
+Still open: background detail resolution and meaningful scene layers; remaining atlas edge quality; wider repeated encounters and route diversity; cargo/incident variability; fuller novice guidance and goods presentation; rerun Auction/Supper/Toad/private-sanction flows on the latest visual build. Approved cast identities remain unchanged. The background is working art, not final visual acceptance.
+
+The historical evidence below describes the retired interface and must not be treated as current player UI.
+
 > **Historical prototype evidence: 2026-09-04.** The executable contracts and observed checks below retain that scope. They do not verify the 2026-09-07 frozen gameplay constitution in `GAME_DESIGN.md` §5. No runtime checks were repeated by the canon/documentation pass. Git history carries superseded implementation archaeology.
 >
 > Keep verification small: production build, the two direct smoke scripts, and focused browser checks. Do not add a test framework or CI without a demonstrated need.

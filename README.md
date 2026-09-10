@@ -1,6 +1,14 @@
 # Sunflower
 
-A browser-based single-player trading game prototype about information asymmetry, private value, relationships, liquidity, obligations and a sunflower that is supposed to take you home.
+A browser-based single-player harbour game about people, objects, promises and finding a sunflower.
+
+## Current continuous-map build — 2026-09-10
+
+The `codex/living-harbour` working implementation uses one continuous illustrated map. People follow actual simulation locations; dialogue is contextual and read one line at a time. Phone and newspaper are edge drawers, objects sit along the bottom, and money and remembered instructions live in the pocketbook. There is no player home or location-page navigation. The older prototype description below is historical.
+
+Run `npm run dev -- --host 127.0.0.1 --port 5174`, then `npm run test:browser` for real desktop and 390×844 browser input. The browser check covers discovery, phone/newspaper, four part purchases, assembly, cliff and reflection; it does not claim every route is browser-verified. Run `node scripts/harbour-interface-check.mjs`, `npm run test:production` and `npm run build` for simulation/regression checks.
+
+Working art remains under revision: background resolution/layers and domestic world details are not finished. Character identities are approved, with Joel tallest and Juan shortest. See `.agents/skills/sunflower-player-interface/SKILL.md` before changing the player presentation.
 
 ## Historical prototype / migration source
 

@@ -38,7 +38,7 @@ The six main recurring figures are:
 3. **Yasmin** — family capital; strong candidate private capital allocator / elite social operator.
 4. **Wong** — household enterprise / high-turnover low-margin migrant dealer; Dog presentation, final species Open.
 5. **Juan** — botanist / grower / boundary-risk and distressed-finance operator.
-6. **Dima** — Seagull informal broker / trust and settlement intermediary.
+6. **Dima** — human informal broker / trust and settlement intermediary.
 
 **Sonya** is Joel's Penguin grandmother and a recurring supporting figure. She is not a seventh primary trader and should not be promoted into the core market graph merely because she matters to a route.
 
@@ -1053,7 +1053,7 @@ He does not automatically know elite social information, shipping schedules or h
 
 Dima is one of the six primary economic characters; he does not inherit the prototype marine supplier inventory or Octopus Clearing role.
 
-He is a male Seagull and a visible informal broker whose advantage is a bounded network of contacts, trust and settlement/enforcement capability.
+He is a human man and a visible informal broker whose advantage is a bounded network of contacts, trust and settlement/enforcement capability.
 
 `Dima` is an ordinary Russian diminutive chosen to fit the creator's preference for simple names and the character's tracksuit-gangster visual reference.
 
@@ -1062,7 +1062,7 @@ Visual direction:
 - ordinary tracksuit;
 - practical cheap bag;
 - no ornate crime-boss costume;
-- capable of looking ridiculous and threatening in the same frame because he is still a Seagull.
+- capable of looking ridiculous and threatening in the same frame through posture and social timing, without a heroic stance.
 
 Do not write him as a parody of Russian ethnicity.
 
@@ -1735,7 +1735,7 @@ The engine still does not infer the player's feeling.
 - Yasmin's identity, family capital and provenance/access direction; private allocator mechanics remain Strong Candidate;
 - Wong identity and rescue/volume structure;
 - Juan is a botanist / grower / biological real-asset operator as well as a boundary-risk operator / debtor;
-- Dima is a primary Seagull informal broker, separate from marine supply and public clearing;
+- Dima is a primary human informal broker, separate from marine supply and public clearing;
 - Sonya is Penguin grandmother / supporting figure;
 - Juan/Aspen/Wong toad circle exists before player arrival;
 - no romance system;
