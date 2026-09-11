@@ -3,7 +3,7 @@ import {createHarbourWorld,advanceHarbourWindow,finishPlayerIntervention,placePu
 import {performPlayerAction,visitLocation,visibleActions,settlePlayerDebts} from '../src/playerGame.js';
 import {advanceHarbourBeat} from '../src/relationalHarbour.js';
 import {selectDialogue} from '../src/dialogueContent.js';
-import {recordDiscoveredMisconduct,performProductionAction} from '../src/productionGame.js';
+import {recordDiscoveredMisconduct,performProductionAction,advanceProductionGame} from '../src/productionGame.js';
 const base=()=>createHarbourWorld();
 let w=visitLocation(base(),'nursery');w=performPlayerAction(w,'meet',{actor:'juan'});
 assert(visibleActions(w).some(a=>a.id==='juan_plan'));
@@ -51,6 +51,22 @@ console.log('PASS: intra-day trade once, duplicate bids and cliff guard, deadlin
 w=base();w.playerGame.commitments.push({id:'held-bid',status:'open',lockedCash:16});
 recordDiscoveredMisconduct(w,'public_listing','first');recordDiscoveredMisconduct(w,'public_listing','second');
 assert.equal(w.actors.player.cash,16);assert.equal(w.production.marketStanding.fines,2);
-w=base();w.playerGame.location='back_room';w.production.marketStanding.status='SUSPENDED';w.actors.dima.cash=0;
+w=base();w.playerGame.location='back_room';w.production.marketStanding.status='SUSPENDED';w.actors.households.cash=0;
 assert.deepEqual(performProductionAction(w,'private_proxy'),w);
-console.log('PASS: reserved cash survives penalties; unfunded private execution takes no fee.');
+console.log('PASS: reserved cash survives penalties; unfunded private buyer takes no fee.');
+
+// A unit promised to the public market cannot also become collateral or an assembly part.
+w=base();for(const unit of w.actors.player.inventory)w.market.reservations.push({orderId:`lock-${unit.unitId}`,actorId:'player',kind:'unit',unitId:unit.unitId});
+w.playerGame.location=w.actors.player.location='viewing_room';w.playerGame.routes.yasmin.preview=true;w.actors.yasmin.location='viewing_room';
+after=performPlayerAction(w,'auction_finance');assert(after.playerGame.lastBlock);assert(!after.claims.some(c=>c.issuerId==='player'));
+w=base();w.day=6;w.playerGame.location=w.actors.player.location='parcel_counter';w.playerGame.routes.juan.stage='planning';w.actors.wong.location='parcel_counter';
+for(const kind of ['Steel Rim','Chain Quick-Link','Brake Cable','Handlebar Tape'])w.actors.player.inventory.push({unitId:`test-${kind}`,kind,owner:'player',age:0,costBasis:1,source:'test',opened:false,remaining:1});
+w.market.reservations.push({orderId:'lock-rim',actorId:'player',kind:'unit',unitId:'test-Steel Rim'});
+after=performPlayerAction(w,'assemble_onewheel');assert(after.playerGame.lastBlock);assert(!after.actors.player.inventory.some(u=>u.kind==='Built Onewheel'));assert(after.actors.player.inventory.some(u=>u.unitId==='test-Steel Rim'));
+console.log('PASS: market-reserved units cannot be pledged or consumed by assembly.');
+
+// Finance can genuinely default; private execution transfers a real object to a funded buyer.
+w=base();w.playerGame.location='nursery';w=performProductionAction(w,'finance_receivable');const factored=w.claims.find(c=>c.id.startsWith('factored-'));assert(factored);w.actors.juan.cash=3;w.actors.crews.cash=5;w.day=factored.dueDay;const financeCash=w.actors.player.cash;advanceProductionGame(w);assert.equal(factored.status,'default');assert.equal(factored.paid,0);assert.equal(w.actors.player.cash,financeCash);
+w=base();w.playerGame.location='back_room';w.production.marketStanding.status='SUSPENDED';const item=w.actors.player.inventory[0],playerCount=w.actors.player.inventory.length,householdCount=w.actors.households.inventory.length,totalCash=total(w);after=performProductionAction(w,'private_proxy');assert.equal(after.actors.player.inventory.length,playerCount-1);assert.equal(after.actors.households.inventory.length,householdCount+1);assert(after.actors.households.inventory.some(u=>u.unitId===item.unitId));assert.equal(total(after),totalCash);assert.equal(after.actors.dima.cash,w.actors.dima.cash+3);
+w=base();w.playerGame.location='joels_bar';const joelCash=w.actors.joel.cash,wongCash=w.actors.wong.cash;w=performProductionAction(w,'trade_bridge');w=performProductionAction(w,'trade_bridge');assert.equal(w.actors.joel.cash,joelCash-4);assert.equal(w.actors.wong.cash,wongCash+2);assert.equal(w.production.tradeStock.length,0);
+console.log('PASS: receivable shortfall can default; private proxy moves a real unit; packing spread closes with Joel.');
