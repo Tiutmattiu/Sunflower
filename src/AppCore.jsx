@@ -1,439 +1,74 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { LOCATIONS, performPlayerAction, visibleActions, visitLocation } from "./playerGame.js";
-import { ECONOMIC_GOODS as GOODS } from "./economicContent.js";
-import { diagnosePlayer } from "./playerDiagnosis.js";
-import { SceneStage } from "./SceneStage.jsx";
-import { ConsequenceStrip } from "./ConsequenceStrip.jsx";
-import "./index.css";
-import { FORMS, ITEMS, PHASE_COPY, SARDINE } from "./gameData";
-import {
-  acceptInboundOffer,
-  acceptJuanBuyback,
-  acceptFutureDelivery,
-  applyLateOrderEdit,
-  advancePhase,
-  canAccessVenue,
-  createGame,
-  buyJuanClaim,
-  currentObligations,
-  declineInboundOffer,
-  duePrivateMatters,
-  fulfillFutureDelivery,
-  futureDeliveryAvailable,
-  giveItem,
-  informationBuyers,
-  informationPrice,
-  knownItemsForTrader,
-  performFreeAction,
-  repayObligation,
-  requestRelationshipLoan,
-  requestSecuredLoan,
-  requestMarketProxy,
-  resistSunMoment,
-  resetOrders,
-  resolveEvent,
-  resolveDuePrivateMatter,
-  resolveNoonMarket,
-  sellInformation,
-  sellInformationExclusive,
-  securedCollateralItems,
-  shareInformationAsFavor,
-} from "./gameEngine";
-import { visibleMarketBoard, visibleSellListings } from "./npcAI";
-import { ACTIVE_REAL_MENU, ACTIVE_SUPPORT, buildDrinkPropositions, usableServings } from "./barEconomy";
-import { advanceHarbourWindow, availableCash, createHarbourWorld, meetContact, phoneContact, placePublicOrder, sceneSnapshot } from "./harbourSpine";
-
-const SAVE_KEY = "sunflower-living-market-v8";
-const SAVE_VERSION = 8;
-const PHASES = ["sunrise", "morning", "noon", "afternoon", "sunset"];
-
-function loadGame() {
-  try {
-    const parsed = JSON.parse(window.localStorage.getItem(SAVE_KEY) || "null");
-    if (parsed?.version === SAVE_VERSION && parsed?.game?.traders?.player) return parsed.game;
-  } catch {
-    // Local persistence is convenience only.
-  }
-  return createGame();
-}
-
-function label(item) {
-  return item ? `${ITEMS[item]?.icon || "□"} ${item}` : "nothing";
-}
-
-function BarPanel({ game }) {
-  const bar = game.bar;
-  if (!bar) return null;
-  const last = bar.serviceWindows.at(-1);
-  const propositions = buildDrinkPropositions(game);
-  return <details className="card bar-board" open>
-    <summary className="section-title">WHAT WE HAVE TONIGHT · Joel's Bar</summary>
-    <p><strong>{bar.open ? "OPEN" : "CLOSED — Joel is absent; no drinks are produced."}</strong></p>
-    <div className="bar-columns">
-      <div><strong>Real-menu active</strong><div className="chips">{ACTIVE_REAL_MENU.map((name) => <span className="chip" key={name}>{name} · {usableServings(game, name)}</span>)}</div></div>
-      <div><strong>Sunflower support</strong><div className="chips">{ACTIVE_SUPPORT.map((name) => <span className="chip" key={name}>{name} · {usableServings(game, name)}</span>)}</div></div>
-    </div>
-    <p className="small muted">Directions: fruity · spirit-forward · dry · sweet · balanced; optionally sour · smoky · savoury · spicy · surprise me. Stock numbers are servings, not hidden customer truth.</p>
-    <div className="stack">{propositions.map((drink) => <div className="mini-card" key={drink.name}><strong>{drink.name}</strong> · {drink.style} · {drink.base.replace("_", "-")}<br/><span className="small muted">{drink.ingredients.join(" + ")}</span></div>)}</div>
-    <p><strong>Public lead:</strong> {bar.publicSignal}</p>
-    {last && <p className="small">Last service: {last.served}/{last.arrivals} served · {last.unserved} unserved · local {last.localRevenue}🥫 · visitors {last.externalRevenue}🥫 · tabs {last.tabs}🥫.</p>}
-  </details>;
-}
-
-function publicListings(game) {
-  return visibleSellListings(game);
-}
-
-function relationshipWord(value) {
-  if (value <= 0) return "stranger";
-  if (value === 1) return "recognises you";
-  if (value === 2) return "familiar";
-  return "knows you well";
-}
-
-function InboundOffers({ game, onAccept, onDecline }) {
-  const pending = (game.inboundOffers || []).filter((offer) => offer.day === game.day && offer.phase === game.phase && offer.status === "pending");
-  if (!pending.length) return null;
-  return (
-    <section className="card">
-      <div className="section-title">Someone came to you</div>
-      <div className="stack">
-        {pending.map((offer) => (
-          <div className="mini-card" key={offer.id}>
-            <strong>{game.traders[offer.buyerId]?.name}</strong>
-            <p>{offer.kind === "buy-item" ? `${offer.price}🥫 for your ${label(offer.item)}.` : `${offer.price}🥫 for one of your leads.`}</p>
-            <div className="small muted">Reason visible to you: {offer.reason}.</div>
-            <div className="inline-actions">
-              <button className="btn gold" onClick={() => onAccept(offer.id)}>Accept</button>
-              <button className="btn ghost" onClick={() => onDecline(offer.id)}>Decline</button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function LearnPanel({ game, selectedId, setSelectedId, onTalk, onInvestigate, onGift, onSellInfo, onSellExclusive, onShareInfo, onRepay, onProxy, onFuture, onFulfillFuture, onRelationshipLoan, onSecuredLoan, onBuyClaim, onBuyback }) {
-  const people = ["aspen", "joel", "yasmin", "wong", "juan", "dima", "octopus"].map((id) => game.traders[id]).filter(Boolean);
-  const target = game.traders[selectedId] || people[0];
-  const active = ["morning", "afternoon"].includes(game.phase) && game.actionsRemaining > 0;
-  const info = [...(game.information || [])].reverse();
-  const obligations = currentObligations(game).filter((entry) => entry.creditorId === target.id);
-  const knownFacts = info.filter((note) => note.subjectId === target.id);
-  const holdings = knownItemsForTrader(game, target.id);
-  const collateral = target.id === "yasmin" ? securedCollateralItems(game) : [];
-  const claimsForSale = game.claims.filter((claim) => claim.status === "open" && claim.knownByPlayer && claim.currentHolderId === target.id);
-  const playerClaims = game.claims.filter((claim) => claim.status === "open" && claim.knownByPlayer && claim.currentHolderId === "player");
-  const sellableInfo = info.filter((note) => informationBuyers(game, note).includes(target.id) && !(note.knownBy || []).includes(target.id));
-
-  return (
-    <section className="focus-desk">
-      <div className="avatar-row" role="list" aria-label="People in the harbour">
-        {people.map((person) => <button type="button" role="listitem" className={`avatar ${person.id === "octopus" ? "supporting" : ""} ${person.id === target.id ? "selected" : ""}`} key={person.id} onClick={() => setSelectedId(person.id)} aria-pressed={person.id === target.id}>
-          <span className="avatar-icon" aria-hidden="true">{person.icon}</span><span className="avatar-name">{person.name}</span>
-        </button>)}
-      </div>
-      <section className="card detail-card" data-portrait-id={target.id}>
-        <div className="detail-head"><div className="big-icon" aria-hidden="true">{target.icon}</div><div className="detail-copy"><h2>{target.name}</h2><div>{target.role}</div><span className="tag">{relationshipWord(game.relationships[target.id] || 0)}</span></div></div>
-        <p className="muted">Known holdings: {holdings.slice(0, 3).map(label).join(", ") || "nothing currently justified"}{holdings.length > 3 ? `, +${holdings.length - 3} more` : ""}.</p>
-        <p className="small muted">Saved notes: {knownFacts.length}</p>
-        <div className="verb-explainer"><div><strong>Talk</strong><span>Spend time on this person. Only a genuinely new stage can deepen the relationship, at most once per day.</span></div><div><strong>Investigate</strong><span>Spend time on market facts and record where the claim came from.</span></div></div>
-        <div className="action-grid">
-          <button className="btn" disabled={!active} onClick={() => onTalk(target.id)}>Talk</button>
-          <button className="btn" disabled={!active} onClick={() => onInvestigate(target.id)}>Investigate</button>
-        </div>
-        {game.lastInteraction?.targetId === target.id && <div className={`mini-card interaction-result ${game.lastInteraction.action === "talk" ? "conversation-result" : "investigation-result"}`}><p>{game.lastInteraction.text}{game.lastInteraction.note ? ` — ${game.lastInteraction.note}` : ""}</p>{game.lastInteraction.informationId && <span className="small muted">Saved to Notebook.</span>}</div>}
-        <details className="advanced-details">
-          <summary>More actions</summary>
-          <div className="stack">
-            {game.playerState.form === "animal" && ((target.id === "joel" && (game.relationships.joel || 0) >= 2) || target.id === "dima") && <button className="btn" disabled={!active} onClick={() => onProxy(target.id)}>Use {target.name} as formal-market proxy</button>}
-            {target.id === "aspen" && futureDeliveryAvailable(game) && <button className="btn gold" onClick={onFuture}>Promise one Lime Crate</button>}
-            {target.id === "joel" && (game.relationships.joel || 0) >= 2 && <button className="btn" disabled={!active || obligations.some((entry) => entry.kind === "relationship-loan")} onClick={onRelationshipLoan}>Ask for a short loan</button>}
-            {collateral.map((item) => <button className="btn" disabled={!active} key={item} onClick={() => onSecuredLoan(item)}>Pledge {label(item)}</button>)}
-            {claimsForSale.map((claim) => <button className="btn" disabled={!active || game.traders.player.sardines < claim.transferAsk + (target.id === "dima" ? 0 : 1)} key={claim.id} onClick={() => onBuyClaim(claim.id)}>Buy Juan claim · face {claim.faceAmount}🥫 · pay {claim.transferAsk + (target.id === "dima" ? 0 : 1)}🥫</button>)}
-            {target.id === "juan" && playerClaims.filter((claim) => claim.dueDay > game.day).map((claim) => <button className="btn" disabled={!active || game.traders.juan.sardines < Math.ceil(claim.faceAmount * .7)} key={claim.id} onClick={() => onBuyback(claim.id)}>Accept Juan buyback · {Math.ceil(claim.faceAmount * .7)}🥫</button>)}
-            {sellableInfo.map((note) => { const covenant = currentObligations(game).find((entry) => entry.kind === "information-exclusivity" && entry.infoId === note.id); return <div className="mini-card" key={note.id}><div>{note.text}</div><div className="inline-actions"><button className="btn" disabled={!active} onClick={() => onSellInfo(note.id, target.id)}>{covenant && covenant.creditorId !== target.id ? "Break exclusivity — sell" : "Sell lead"} · {informationPrice(game, note, target.id)}🥫</button>{(note.knownBy || []).length === 1 && <button className="btn" disabled={!active || game.traders[target.id].sardines < informationPrice(game, note, target.id) + 2} onClick={() => onSellExclusive(note.id, target.id)}>Exclusive · {informationPrice(game, note, target.id) + 2}🥫</button>}<button className="btn ghost" disabled={!active} onClick={() => onShareInfo(note.id, target.id)}>Tell as a favour</button></div></div>; })}
-            {!!game.traders.player.inventory.length && <div className="chips">{game.traders.player.inventory.map((item, index) => <button className="btn ghost" disabled={!active} key={`${item}-${index}`} onClick={() => onGift(target.id, item)}>Give {label(item)}</button>)}</div>}
-            {obligations.map((obligation) => <div className="mini-card" key={obligation.id}><strong>{obligation.note}</strong><div>Due Day {obligation.dueDay}{obligation.amount ? ` · ${obligation.amount}🥫` : ""}</div>{obligation.kind === "future-delivery" ? <button className="btn" disabled={!active || !game.traders.player.inventory.includes(obligation.item)} onClick={() => onFulfillFuture(obligation.id)}>Deliver Lime now</button> : obligation.kind !== "information-exclusivity" && <button className="btn" disabled={!active || game.traders.player.sardines < obligation.amount} onClick={() => onRepay(obligation.id)}>Repay</button>}</div>)}
-          </div>
-        </details>
-      </section>
-    </section>
-  );
-}
-
-function TradePanel({ game, orders, setOrders }) {
-  const listings = useMemo(() => publicListings(game), [game]);
-  function update(index, patch) {
-    const next = [...orders];
-    next[index] = { ...next[index], ...patch };
-    setOrders(next);
-  }
-  return (
-    <section className="play-flow">
-      <section className="card market-card">
-        <div className="section-title">Public stalls</div>
-        <p className="small muted">These are visible offers. Hidden stock is not shown merely because the engine stores it.</p>
-        <div className="stack">
-          {listings.map((row) => (
-            <div className="mini-card" key={`${row.sellerId}-${row.item}`}>
-              <strong>{game.traders[row.sellerId].name}</strong> · {label(row.item)} · ask {row.ask}🥫
-              <button className="btn" onClick={() => {
-                const slot = orders.findIndex((order) => !order.to || !order.wantItem);
-                const index = slot >= 0 ? slot : 0;
-                update(index, { to: row.sellerId, wantItem: row.item, sardines: row.ask, offerItem: "" });
-              }}>Write this ask onto my sheet</button>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="card order-card">
-        <div className="section-title">Your Noon order sheet</div>
-        <p className="small muted"><strong>Writing is not trading.</strong> These become binding only when Morning closes.</p>
-        {orders.map((order, index) => {
-          const known = order.to ? knownItemsForTrader(game, order.to) : [];
-          const listing = listings.find((row) => row.sellerId === order.to && row.item === order.wantItem);
-          return (
-            <div className="order-box" key={index}>
-              <strong>Order {index + 1}</strong>
-              <select value={order.to} onChange={(event) => update(index, { to: event.target.value, wantItem: "" })}>
-                <option value="">Seller</option>
-                {Object.values(game.traders).filter((trader) => trader.id !== "player").map((trader) => <option key={trader.id} value={trader.id}>{trader.name}</option>)}
-              </select>
-              <select value={order.wantItem} onChange={(event) => update(index, { wantItem: event.target.value })}>
-                <option value="">Item</option>
-                {known.map((item) => <option value={item} key={item}>{item}</option>)}
-              </select>
-              <input type="number" min="0" value={order.sardines} onChange={(event) => update(index, { sardines: Math.max(0, Number(event.target.value || 0)) })} />
-              <select value={order.offerItem || ""} onChange={(event) => update(index, { offerItem: event.target.value })}>
-                <option value="">No barter item</option>
-                {[...new Set(game.traders.player.inventory)].map((item) => <option key={item} value={item}>{item}</option>)}
-              </select>
-              {listing && <div className="small muted">Current posted ask: {listing.ask}🥫.</div>}
-            </div>
-          );
-        })}
-      </section>
-
-      <details className="advanced-details">
-        <summary>Other announced buy orders</summary>
-        {visibleMarketBoard(game).map((bid, index) => <div key={`${bid.from}-${bid.wantItem}-${index}`}>{bid.publicText}</div>)}
-      </details>
-    </section>
-  );
-}
-
-function SunMomentPanel({ game, onResist, onLateEdit }) {
-  const lockedCash = game.lockedPlayerOrders?.[0]?.sardines || 0;
-  const [cash, setCash] = useState(lockedCash);
-  const moment = game.sunMoment;
-  useEffect(() => { if (moment?.lateEditAvailable) setCash(lockedCash); }, [moment?.lateEditAvailable, lockedCash]);
-  if (!moment || !["sunrise", "noon", "sunset"].includes(game.phase)) return null;
-  return <section className="card sun-moment"><div className="section-title">Sun Moment · {game.phase}</div>
-    <p>{game.phase === "noon" ? "The harbour pauses immediately before Octopus Clearing." : "Trading stops for a brief natural pause. Continue when ready."}</p>
-    {game.phase === "noon" && moment.eligible && moment.state === "contextual_opportunity" && <button className="btn" onClick={onResist}>Keep working</button>}
-    {game.phase === "noon" && moment.lateEditAvailable && game.lockedPlayerOrders?.[0] && <div className="mini-card"><p>One late edit only. NPC commitments are already fixed; opening resources still bind.</p><label>Revised cash on Order 1 <input type="number" min="0" value={cash} onChange={(event) => setCash(Math.max(0, Number(event.target.value || 0)))} /></label><button className="btn gold" onClick={() => onLateEdit(0, { ...game.lockedPlayerOrders[0], sardines: cash })}>Apply late edit</button></div>}
-  </section>;
-}
-
-function NoonPanel({ game }) {
-  if (!game.marketResolved) {
-    return (
-      <section className="card">
-        <div className="section-title">Octopus Clearing · locked, not settled</div>
-        {(game.lockedPlayerOrders || []).length ? game.lockedPlayerOrders.map((order, index) => (
-          <div className="mini-card" key={index}>{label(order.wantItem)} from {game.traders[order.to]?.name} · {order.sardines}🥫{order.offerItem ? ` + ${label(order.offerItem)}` : ""}</div>
-        )) : <p>You locked no player order.</p>}
-      </section>
-    );
-  }
-
-  const bought = game.marketOutcome.filter((trade) => trade.from === "player");
-  const sold = game.marketOutcome.filter((trade) => trade.to === "player");
-  return (
-    <section className="play-flow">
-      <section className="card">
-        <div className="section-title">Your Octopus Clearing result</div>
-        {bought.map((trade, index) => <div className="mini-card" key={`b-${index}`}>Bought {label(trade.wantItem)} from {game.traders[trade.to]?.name} for {trade.sardines}🥫.</div>)}
-        {sold.map((trade, index) => <div className="mini-card" key={`s-${index}`}>Sold {label(trade.wantItem)} to {game.traders[trade.from]?.name} for {trade.sardines}🥫.</div>)}
-        {game.rejected.map((order, index) => <div className="mini-card" key={`r-${index}`}><strong>Did not fill:</strong> {label(order.wantItem)} · {order.reason}</div>)}
-        {!bought.length && !sold.length && !game.rejected.length && <p>Nothing on your side settled.</p>}
-      </section>
-      <details className="tape-drawer" open>
-        <summary>Public Tape · Octopus Clearing output · {game.history.filter((trade) => trade.day === game.day).length}</summary>
-        {game.history.filter((trade) => trade.day === game.day).map((trade) => <div key={trade.id}>{game.traders[trade.from]?.name} bought {label(trade.item)} from {game.traders[trade.to]?.name} for {trade.sardines}🥫.</div>)}
-      </details>
-    </section>
-  );
-}
-
-function TapeArchive({ game }) {
-  if (!game.history.length) return null;
-  return (
-    <details className="tape-drawer">
-      <summary>Public tape archive · {game.history.length}</summary>
-      <div className="log-stack">{[...game.history].reverse().slice(0, 18).map((trade) => (
-        <div className="log-line" key={trade.id}>Day {trade.day}: {game.traders[trade.from]?.name} bought {label(trade.item)} from {game.traders[trade.to]?.name} for {trade.sardines}🥫{trade.paymentItem ? ` + ${label(trade.paymentItem)}` : ""}.</div>
-      ))}</div>
-    </details>
-  );
-}
-
-function CurrentState({ game }) {
-  const due = duePrivateMatters(game).length;
-  const copy = {
-    sunrise: "The harbour is waking. Begin Morning to receive 2 scarce time actions.",
-    morning: `${game.actionsRemaining} actions left. Talk, investigate, or prepare Noon orders. Closing Morning locks written orders.`,
-    noon: game.marketResolved ? "Settlement happened. The Public Tape shows what actually traded; leave Noon for 2 Afternoon actions." : "Orders are locked. Settle Noon once to move goods and cash.",
-    afternoon: `${game.actionsRemaining} actions left. Read the Public Tape, then talk, investigate, trade privately, or arrange finance.`,
-    sunset: due ? `${due} due private matter${due === 1 ? "" : "s"} must be decided before the day can close.` : "Closing the day settles food, ordinary obligations, perishability, and business activity.",
-  }[game.phase];
-  return <section className="now-card"><strong>{PHASE_COPY[game.phase].title.toUpperCase()}</strong><span>{copy}</span></section>;
-}
-
-function DueMatters({ game, onResolve }) {
-  const due = duePrivateMatters(game);
-  if (!due.length) return null;
-  return <section className="card obligation-sheet"><div className="section-title">Due private matters</div>{due.map((matter) => <div className="mini-card" key={matter.id}>
-    <strong>{matter.note || (matter.debtorId === "juan" ? `Juan claim · face ${matter.faceAmount}🥫` : "Private matter")}</strong><p>{matter.debtorId === "juan" ? `Due Day ${matter.dueDay}. Juan currently has ${game.traders.juan.sardines}🥫; the linked crop determines whether forced liquidation is available.` : matter.kind === "future-delivery" ? "Aspen needs the promised Lime before the day closes." : `Repay ${matter.amount}🥫 or let Yasmin keep the ${matter.collateral}.`}</p>
-    <div className="inline-actions">{matter.debtorId === "juan" ? <><button className="btn gold" onClick={() => onResolve(matter.id, "collect")}>Collect now</button>{matter.linkedProductiveAsset && game.traders.juan.sardines < matter.faceAmount && <button className="btn" onClick={() => onResolve(matter.id, "liquidate")}>Force liquidation</button>}{matter.extensionCount < 1 && <button className="btn" onClick={() => onResolve(matter.id, "extend")}>Extend · face +2🥫 · due +2 days</button>}</> : matter.kind === "future-delivery" ? <><button className="btn gold" disabled={!game.traders.player.inventory.includes(matter.item)} onClick={() => onResolve(matter.id, "deliver")}>Deliver as promised</button><button className="btn" onClick={() => onResolve(matter.id, "default")}>Do not deliver</button></> : <><button className="btn gold" disabled={game.traders.player.sardines < matter.amount} onClick={() => onResolve(matter.id, "repay")}>Repay now</button><button className="btn" onClick={() => onResolve(matter.id, "seize")}>Let Yasmin take collateral</button></>}</div>
-  </div>)}</section>;
-}
-
-function EventPanel({ game, setGame }) {
-  const [bid, setBid] = useState(52);
-  if (!game.pendingEvents?.length) return null;
-  return (
-    <section className="card">
-      <div className="section-title">Opportunity</div>
-      {game.pendingEvents.map((event) => (
-        <div className="mini-card" key={event.id}>
-          <strong>{event.title}</strong><p>{event.text}</p>
-          {event.id === "auction" && <input type="number" value={bid} onChange={(e) => setBid(Number(e.target.value || 0))} />}
-          {event.actions.map((action) => <button className="btn" key={action} onClick={() => setGame((current) => resolveEvent(current, event.id, action, bid))}>{action}</button>)}
-        </div>
-      ))}
-    </section>
-  );
-}
-
-function LegacyAppCore() {
-  const [game, setGame] = useState(loadGame);
-  const [mode, setMode] = useState("learn");
-  const [selectedId, setSelectedId] = useState("wong");
-
-  useEffect(() => {
-    try { window.localStorage.setItem(SAVE_KEY, JSON.stringify({ version: SAVE_VERSION, game })); } catch { /* ignore */ }
-  }, [game]);
-
-  const orders = game.playerOrders || resetOrders();
-  const phase = game.phase;
-  const player = game.traders.player;
-  const referenceNetWorth = player.sardines + player.inventory.reduce((sum, item) => sum + Number(ITEMS[item]?.value || 0), 0);
-
-  function setOrders(next) {
-    setGame((current) => ({ ...current, playerOrders: next }));
-  }
-
-  function primary() {
-    if (game.pendingEvents?.length) return;
-    if (phase === "noon" && !game.marketResolved) setGame((current) => resolveNoonMarket(current));
-    else setGame((current) => advancePhase(current));
-  }
-
-  function restart() {
-    setGame(createGame());
-    setMode("learn");
-    setSelectedId("wong");
-  }
-
-  if (game.ended) {
-    const openObligations = game.obligations.filter((obligation) => ["open", "overdue"].includes(obligation.status)).length;
-    return <main className="app-shell"><div className="container"><section className="end-box"><h2>This prototype life ended.</h2><p>{game.finalText}</p><h3>What happened</h3><ul><li>Sunflower acquired: {game.flags.sunflowerAcquired ? "yes" : "no"}</li><li>Ending cash: {player.sardines}🥫 · reference net worth: {referenceNetWorth}🥫</li><li>Player trades completed: {game.stats.tradeCount + game.stats.inboundTrades}</li><li>Information sold/shared: {game.stats.informationSales} / {game.stats.informationFavours}</li><li>Open or overdue obligations: {openObligations} · defaults recorded: {game.stats.defaults}</li><li>Formal-market access: {canAccessVenue(game, "formalMarket") ? "available" : "unavailable"}</li></ul><button className="btn gold" onClick={restart}>Start another life</button></section></div></main>;
-  }
-
-  return (
-    <main className="app-shell">
-      <div className="container">
-        <header className="hero"><div><div className="eyebrow">Sunflower · code-first living slice</div><h1>Day {game.day}</h1><p>Objective: <strong>{game.objective}</strong></p></div><button className="btn ghost" onClick={restart}>New Game</button></header>
-        <div className="sticky-status"><span>{PHASE_COPY[phase].title}</span><span>{SARDINE} {player.sardines}</span><span>{game.actionsRemaining} time actions</span>{game.playerState.form !== "human" && <span>{FORMS[game.playerState.form].icon} {FORMS[game.playerState.form].label}</span>}</div>
-        <div className="phase-strip">{PHASES.map((id) => <div className={`phase-node ${id === phase ? "active" : ""}`} key={id}><span>{PHASE_COPY[id].icon}</span><small>{PHASE_COPY[id].title}</small></div>)}</div>
-        <CurrentState game={game} />
-        <SunMomentPanel game={game} onResist={() => setGame((current) => resistSunMoment(current))} onLateEdit={(index, order) => setGame((current) => applyLateOrderEdit(current, index, order))} />
-        <details className="notebook-drawer"><summary>HOW THIS WORKS</summary><div className="notebook-stack">Sunrise → Morning → Noon → Afternoon → Sunset. Morning and Afternoon give scarce time actions. Talk spends time on a person; Investigate spends it on facts. Written Morning orders are not trades until Noon settles once. After Noon, the Public Tape shows what actually happened.</div></details>
-
-        <section className="player-bar"><div className="player-balance"><strong>{player.sardines}🥫</strong><span>cash</span></div><div className="chips">{player.inventory.map((item, index) => <span className="chip" key={`${item}-${index}`}>{label(item)}</span>)}</div></section>
-        <BarPanel game={game} />
-
-        {game.flags.sunflowerAcquired && <section className="card flower-reveal"><div className="section-title">🌻 You got it.</div><p><strong>Nothing happens.</strong></p><p>The sunflower remains on your side of the desk. The market and your life continue.</p><p className="muted">Objective: {game.objective}</p></section>}
-
-        {game.playerState.form !== "human" && <section className="card access-sheet"><div className="section-title">The market recognises you differently</div><p>{FORMS[game.playerState.form].icon} {FORMS[game.playerState.form].label} · legal identity {game.playerState.legalIdentity.status}</p><p className="muted">Formal market: {canAccessVenue(game, "formalMarket") ? "access available through a proxy" : "direct access unavailable"}. Your memory continues, but your former estate is not automatically yours.</p></section>}
-
-        <InboundOffers game={game} onAccept={(id) => setGame((current) => acceptInboundOffer(current, id))} onDecline={(id) => setGame((current) => declineInboundOffer(current, id))} />
-        <EventPanel game={game} setGame={setGame} />
-
-        {phase === "morning" && <div className="mode-switch"><button className={`btn ${mode === "learn" ? "gold" : "ghost"}`} onClick={() => setMode("learn")}>Learn</button><button className={`btn ${mode === "trade" ? "gold" : "ghost"}`} onClick={() => setMode("trade")}>Trade</button></div>}
-
-        {((phase === "morning" && mode === "learn") || phase === "afternoon") && <LearnPanel
-          game={game}
-          selectedId={selectedId}
-          setSelectedId={setSelectedId}
-          onTalk={(id) => setGame((current) => performFreeAction(current, "talk", id))}
-          onInvestigate={(id) => setGame((current) => performFreeAction(current, "investigate", id))}
-          onGift={(id, item) => setGame((current) => giveItem(current, id, item))}
-          onSellInfo={(infoId, buyerId) => setGame((current) => sellInformation(current, infoId, buyerId))}
-          onSellExclusive={(infoId, buyerId) => setGame((current) => sellInformationExclusive(current, infoId, buyerId))}
-          onShareInfo={(infoId, buyerId) => setGame((current) => shareInformationAsFavor(current, infoId, buyerId))}
-          onRepay={(id) => setGame((current) => repayObligation(current, id))}
-          onProxy={(id) => setGame((current) => requestMarketProxy(current, id))}
-          onFuture={() => setGame((current) => acceptFutureDelivery(current))}
-          onFulfillFuture={(id) => setGame((current) => fulfillFutureDelivery(current, id))}
-          onRelationshipLoan={() => setGame((current) => requestRelationshipLoan(current))}
-          onSecuredLoan={(item) => setGame((current) => requestSecuredLoan(current, item))}
-          onBuyClaim={(id) => setGame((current) => buyJuanClaim(current, id))}
-          onBuyback={(id) => setGame((current) => acceptJuanBuyback(current, id))}
-        />}
-
-        {phase === "morning" && mode === "trade" && <TradePanel game={game} orders={orders} setOrders={setOrders} />}
-        {phase === "noon" && <NoonPanel game={game} />}
-        {phase !== "noon" && <TapeArchive game={game} />}
-        {phase === "sunset" && <section className="card"><div className="section-title">Sunset settlement</div><p>Closing the day settles food, promises, perishability and ordinary business activity.</p></section>}
-        <DueMatters game={game} onResolve={(id, action) => setGame((current) => resolveDuePrivateMatter(current, id, action))} />
-
-        {!!(game.information?.length || game.learningNotes?.length) && <details className="notebook-drawer"><summary>Notebook · {(game.information?.length || 0) + (game.learningNotes?.length || 0)} saved note(s){game.badges?.length ? ` · ${game.badges.length} badge(s)` : ""}</summary>{[...(game.information || [])].reverse().map((note) => <div className="mini-card" key={note.id}><strong>{note.text}</strong><p className="muted">Source: {note.personallyVerified ? "personally verified" : note.source} · confidence {note.confidence} · {note.freshness}</p></div>)}{(game.badges || []).map((badge) => <div className="mini-card note-card" key={badge.id}><strong>{badge.title}</strong><p>{badge.summary}</p></div>)}{game.learningNotes.map((note) => <div className="mini-card" key={note.id}>
-          <strong>? {note.title}</strong>
-          <p><small>WHAT HAPPENED</small></p>
-          {(note.occurrences?.length ? note.occurrences : [{ day: note.day, whatHappened: "This concept was discovered in an older save before occurrence links were recorded." }]).map((occurrence, index) => <p key={`${note.id}-${index}`}><strong>Day {occurrence.day}{occurrence.phase ? ` · ${PHASE_COPY[occurrence.phase]?.title || occurrence.phase}` : ""}</strong><br />{occurrence.whatHappened}</p>)}
-          <p><small>WHAT PEOPLE CALL THIS</small></p><div>{note.title}</div>
-          <p><small>WHY IT MATTERS</small></p><div>{note.text}</div>
-        </div>)}</details>}
-        {!game.pendingEvents?.length && <div className="bottom-action"><button className="btn gold primary-action" disabled={(phase === "sunset" && duePrivateMatters(game).length > 0) || game.sunMoment?.lateEditAvailable} onClick={primary}>{phase === "sunrise" ? "Continue into Morning — gain 2 actions" : phase === "morning" ? "Lock orders & pause before Noon" : phase === "noon" && !game.marketResolved ? "Continue to Octopus Clearing" : phase === "noon" ? "Leave Noon — gain 2 actions" : phase === "afternoon" ? "Go to Sunset pause" : "Close the day & settle"}</button></div>}
-      </div>
-    </main>
-  );
-}
-
-function WorkbenchPanel({ title, children, open = false }) { return <details className="card workbench-card" open={open}><summary className="section-title">{title}</summary>{children}</details>; }
-const pretty=x=>x.replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase());
-function Diagnosis({world}){const d=diagnosePlayer(world);return <main className="app-shell diagnosis"><div className="container"><header className="hero"><div><div className="eyebrow">SUNFLOWER</div><h1>YOU WENT HOME</h1><p>Day {d.outcome.dayHome} · {d.outcome.route} route</p></div></header><section className="card"><h2>{d.archetype}</h2><p>{d.evidenceCount} pieces of run evidence support this reading. It is not a moral or total score.</p></section><div className="diagnosis-grid"><section className="card"><h2>Process</h2>{d.radar.map(x=><div className="meter" key={x.key}><span>{x.label}</span><strong>{x.score??'—'}</strong><small>{x.confidence}</small>{x.score!==null&&<i style={{width:`${x.score}%`}}/>}</div>)}</section><section className="card"><h2>Style</h2>{d.style.map(x=><div className="style-row" key={x.key}><span>{x.labels[0]}</span><b>{x.value===null?'not enough evidence':`${x.value>0?'+':''}${x.value}`}</b><span>{x.labels[1]}</span></div>)}<h3>Return footprint</h3>{Object.entries(d.returnFootprint).map(([k,v])=><p key={k}>{k}: {v}</p>)}</section></div><section className="card"><h2>Market Scars</h2>{d.scars.length?d.scars.map(s=><article key={s.name}><strong>{s.name}</strong><p>{s.explanation}</p><small>{s.evidenceIds.join(', ')}</small></article>):<p>No evidence-backed Scar dominated this run.</p>}</section><section className="card"><h2>Defining cases</h2>{d.definingCases.map(e=><article className="news-item" key={e.id}><strong>Day {e.day} · {pretty(e.situation||e.type)}</strong><p>{e.summary}</p><small>{e.location} · evidence {e.id}</small></article>)}</section><section className="card"><h2>Outcome</h2><p>Cash: {d.outcome.startingCash}🥫 → {d.outcome.endingCash}🥫 · low {d.outcome.lowestCash}🥫 · maximum locked {d.outcome.maxLocked}🥫</p><p>Commitments fulfilled {d.outcome.fulfilled} · breached {d.outcome.breached}</p></section></div></main>}
+import React,{useEffect,useRef,useState} from 'react';
+import HarbourMap,{PEOPLE,PLACES,PROPS,Figure,ObjectArt,personName} from './HarbourMap.jsx';
+import {createHarbourWorld,advanceHarbourWindow,finishPlayerIntervention,availableCash,placePublicOrder,phoneContact} from './harbourSpine.js';
+import {performPlayerAction,visibleActions,visitLocation,PLAYER_COUNTERPARTIES} from './playerGame.js';
+import {diagnosePlayer} from './playerDiagnosis.js';
+import {ACTION_COPY,TARGET_ACTIONS,actionLine,reaction,readableResult,friendlyBlock} from './harbourPresentation.js';
+import {ECONOMIC_GOODS as GOODS} from './economicContent.js';
+import {selectDialogue,visibleNames} from './dialogueContent.js';
+import {NEWSPAPER_OVERRIDES,UI_COPY,SCAR_COPY,itemLabel} from './presentationCopy.js';
+import {AUDIO_CUES} from './worldLifeContent.js';
+import './harbour.css';
+import SpokenLine from './SpokenLine.jsx';
+const SAVE='sunflower-harbour-map-v1';
+function initial(){try{const s=JSON.parse(localStorage.getItem(SAVE));if(s?.version===1&&s.world?.production)return s.world}catch{}return createHarbourWorld()}
+function useSound(){const audio=useRef(null),[enabled,setEnabled]=useState(false);function sound(kind='paper'){if(!enabled)return;const ctx=audio.current||(audio.current=new AudioContext());ctx.resume();const o=ctx.createOscillator(),g=ctx.createGain();o.type=kind==='water'?'sine':'triangle';o.frequency.setValueAtTime(kind==='coin'?680:kind==='phone'?180:kind==='water'?90:280,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(kind==='water'?55:140,ctx.currentTime+.2);g.gain.setValueAtTime(.0001,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.035,ctx.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.3);o.connect(g).connect(ctx.destination);o.start();o.stop(ctx.currentTime+.32)}useEffect(()=>{if(!enabled)return;const timer=setInterval(()=>sound('water'),6500);return()=>clearInterval(timer)},[enabled]);return {sound,enabled,toggle:()=>setEnabled(x=>!x)}}
+function Comic({scene,onClose,children}){const dialog=useRef(null);const [shown,setShown]=useState(1),[paused,setPaused]=useState(false);useEffect(()=>{setShown(1);setPaused(false);dialog.current?.querySelector('button')?.focus()},[scene.title]);useEffect(()=>{if(paused||shown>=scene.lines.length)return;const t=setTimeout(()=>setShown(n=>n+1),2400);return()=>clearTimeout(t)},[shown,paused,scene]);return <section ref={dialog} className="comic" role="dialog" aria-modal="true" aria-label={scene.title}><button className="close" aria-label="Close comic" onClick={onClose}>×</button><h2>{scene.title}</h2><div className="comic-panels" onWheel={()=>{setPaused(true);setShown(scene.lines.length)}} onTouchMove={()=>{setPaused(true);setShown(scene.lines.length)}}>{scene.lines.slice(0,shown).map((line,i)=><article className={`comic-panel panel-${i}`} key={i}><svg viewBox={i===1?"70 40 120 100":"35 10 155 140"} aria-hidden="true"><svg width="220" height="150" viewBox={`${(PLACES[scene.location]||PLACES.viewing_room)[0]-150} ${(PLACES[scene.location]||PLACES.viewing_room)[1]-90} 300 200`}><image href="/art/harbour-working.png" width="1400" height="900" preserveAspectRatio="none"/></svg>{(scene.person||scene.people?.length>0)&&<g transform={`translate(${65+i*15} 122) scale(1.2)`}><Figure scale={.43} id={scene.people?.[i%scene.people.length]||scene.person||'aspen'} pose={i%2?'working':'neutral'}/></g>}<g transform="translate(120 65)"><ObjectArt kind={scene.object||'paper'}/></g></svg><p>{line}</p></article>)}</div>{shown<scene.lines.length&&<button className="response" onClick={()=>setShown(scene.lines.length)}>Read at my pace</button>}{shown===scene.lines.length&&<div className="responses">{children||<button className="response" onClick={onClose}>Back to the harbour</button>}</div>}</section>}
+function Ending({world,onReturn}){const d=diagnosePlayer(world);const names={valuation:'Judging a price',execution:'Getting things done',commitments:'Keeping promises',liquidityCredit:'Keeping money free',information:'Listening and looking',verificationAdaptation:'Checking and changing your mind',positioningStress:'Deciding under pressure',marketStructure:'Finding someone to trade with'};return <section className="ending" role="dialog" aria-label="Your story"><h1>You have the sunflower.</h1><p>The water still moves. Someone is counting glasses.</p><h2>Your time here</h2><p>{d.outcome.startingCash} tins when you arrived. {d.outcome.endingCash} now.</p><p>{d.outcome.fulfilled} promises kept. {d.outcome.breached} missed.</p><h2>What your choices suggest</h2>{d.radar.filter(x=>x.score!==null).map(x=><p key={x.key}>{names[x.key]}: {x.score>=65?'often shaped your choices':x.score<45?'sometimes cost you':'still taking shape'}.</p>)}{d.evidenceCount<3&&<p>There is too little here to call it a pattern.</p>}<h2>What stayed with you</h2>{d.scars.length?d.scars.map(s=><p key={s.name}><strong>{SCAR_COPY[s.name]?.[0]||'An encounter that stayed'}</strong><br/>{SCAR_COPY[s.name]?.[1]||'Your choices left a mark on this visit.'}</p>):<p>No single encounter has left a defining mark yet.</p>}<button className="response" onClick={onReturn}>Keep looking at the harbour</button></section>}
 export default function AppCore(){
- const [world,setWorld]=useState(()=>createHarbourWorld()); const [tab,setTab]=useState('places'); const [tradeItem,setTradeItem]=useState('Fresh Mackerel'); const [hotspot,setHotspot]=useState(null);
- const pg=world.playerGame,p=world.actors.player,actions=visibleActions(world),sceneActions=visibleActions(world).filter(a=>!a.hiddenOnly),reserved=world.market.reservations.filter(r=>r.actorId==='player'),lockedCommitments=pg.commitments.filter(x=>x.status==='open').reduce((n,x)=>n+(x.lockedCash||0),0),reservedOrders=reserved.filter(r=>r.kind==='cash').reduce((n,r)=>n+r.amount,0);
- const scene=sceneSnapshot(world,pg.location);const hotspotKinds={'handling bench':['assemble_onewheel'],'onewheel parts':['buy_part'],'auction lot':['auction_inspect','auction_bid','auction_walk'],'labels':['auction_inspect'],'provenance documents':['auction_provenance'],'cargo manifest':['buy_part'],'wrapped parcel':['lime_inspect','lime_deliver','lime_refuse'],'open tab':['joel_hear_supper','joel_patronage','joel_help'],'bar':['joel_supply_orgeat'],'hidden toad':['collect_toad']};const hotspotActions=hotspot?(scene.people.includes(hotspot)?actions.filter(a=>a.id==='meet'&&a.payload.actor===hotspot):actions.filter(a=>(hotspotKinds[hotspot]||[]).includes(a.id))):[];const act=a=>setWorld(w=>performPlayerAction(w,a.id,a.payload));useEffect(()=>{const shortcuts={n:'notebook',p:'phone',g:'newspaper',l:'ledger'};const key=e=>{if(e.key==='Escape'){setHotspot(null);setTab('places')}else if(shortcuts[e.key.toLowerCase()]&&!e.metaKey&&!e.ctrlKey){setTab(shortcuts[e.key.toLowerCase()]);e.preventDefault()}else if(/^[1-9]$/.test(e.key)&&tab==='places'){const a=sceneActions[Number(e.key)-1];if(a&&!a.disabled)act(a)}};window.addEventListener('keydown',key);return()=>window.removeEventListener('keydown',key)},[tab,sceneActions]);
- if(world.playerGame.home)return <Diagnosis world={world}/>;
- return <main className="app-shell spine-shell"><div className="container spine-container">
- <header className="hero"><div><div className="eyebrow">Sunflower · {LOCATIONS[pg.location].name}</div><h1>Day {world.day+1}</h1><p>Get a Sunflower. Then decide when to go home.</p></div><button className="btn ghost" onClick={()=>setWorld(createHarbourWorld())}>New game</button></header>
- <div className="sticky-status"><span>🥫 {p.cash} total</span><span>{availableCash(world,'player')} available</span><span>{world.attention.budget-world.attention.used} attention</span><span>{pg.commitments.filter(x=>x.status==='open').length} commitments</span></div>
- <nav className="game-tabs">{['places','newspaper','phone','notebook','ledger','inventory','clearing'].map(x=><button className={tab===x?'active':''} onClick={()=>setTab(x)} key={x}>{pretty(x)}</button>)}</nav>
- {tab==='places'&&<><section className={`scene card scene-${pg.location}`}><header><div><div className="eyebrow">Now · {LOCATIONS[pg.location].name}</div><h2>{LOCATIONS[pg.location].description}</h2></div></header><SceneStage scene={scene} selected={hotspot} onSelect={setHotspot}/><ConsequenceStrip world={world}/>{hotspot&&<div className="hotspot-focus"><strong>{pretty(hotspot)}</strong><p>{scene.people.includes(hotspot)?'Present here now.':'Ownership, custody, timing and location determine its legal uses.'}</p>{hotspotActions.length?hotspotActions.map((a,i)=><button className="btn" disabled={a.disabled} onClick={()=>act(a)} key={`${a.id}-${i}`}>{a.label}{a.reason&&<small>{a.reason}</small>}</button>):<small>No consequential use is available from this object now.</small>}</div>}{scene.traces.map((t,i)=><p className="scene-trace" key={`${t.day}-${i}`}>Earlier: {t.summary}</p>)}<div className="action-grid">{sceneActions.map((a,i)=><button key={a.id+i} className="btn" disabled={a.disabled} title={a.reason||''} onClick={()=>act(a)}><kbd>{i+1}</kbd> {a.label}{a.reason&&<small>{a.reason}</small>}</button>)}</div>{pg.lastBlock&&<p className="blocked">{pg.lastBlock}</p>}</section><section className="place-grid" aria-label="Go somewhere else">{Object.entries(LOCATIONS).filter(([id])=>id!==pg.location).map(([id,x])=><button className="place-card" onClick={()=>{setHotspot(null);setWorld(w=>visitLocation(w,id))}} key={id}><strong>{x.name}</strong><span>{x.description}</span></button>)}</section></>}
- {tab==='newspaper'&&<WorkbenchPanel title="The Harbour Gazette" open>{world.newspaper.slice().reverse().map(n=><article className="news-item" key={n.id}><strong>{n.headline}</strong><p>{n.report}</p><small>Public report · day {n.day} · may be delayed or incomplete</small></article>)}</WorkbenchPanel>}
- {tab==='phone'&&<WorkbenchPanel title="Contacts" open>{['aspen','joel','wong','juan','yasmin','dima','sonya'].map(id=><div className="contact-row" key={id}><span>{pretty(id)}</span>{p.contacts.includes(id)?<button className="btn ghost" onClick={()=>setWorld(w=>phoneContact(w,id,'Following up on our last conversation.'))}>Send narrow follow-up</button>:<small>Meet in person first</small>}</div>)}{world.production?.toadChat&&<article className="mini-card"><strong>🐸 group</strong>{world.production.toadChat.messages.map((m,i)=><p key={i}>{m}</p>)}</article>}<p className="muted">Calls can coordinate and ask. They cannot inspect, deliver, attend or transfer possession.</p></WorkbenchPanel>}
- {tab==='notebook'&&<WorkbenchPanel title={`Notebook · ${pg.notebook.length} useful records`} open>{world.evidence.filter(e=>pg.notebook.includes(e.id)).slice().reverse().map(e=><details className="news-item" key={e.id}><summary><strong>{e.summary||pretty(e.type)}</strong></summary><p>Day {e.day} · {pretty(e.location||'harbour')} · source {pretty(e.source||'system')}</p><p>{e.situation?`May matter to ${pretty(e.situation)}.`:'A contemporaneous record; no route conclusion is implied.'}</p><small>Confidence {e.confidence??'recorded'} · freshness {e.freshness||'recorded'} · {e.id}</small></details>)}</WorkbenchPanel>}
- {tab==='ledger'&&<WorkbenchPanel title="Ledger / commitments" open><div className="ledger-summary"><p><strong>Total cash</strong> {p.cash}🥫</p><p><strong>Available now</strong> {availableCash(world,'player')}🥫</p><p><strong>Reserved for public orders</strong> {reservedOrders}🥫</p><p><strong>Locked by commitments</strong> {lockedCommitments}🥫</p></div><p className="muted">Available cash is total cash minus public-order reservations and live commitments.</p>{pg.commitments.map(c=><article className="mini-card" key={c.id}><strong>{c.title}</strong><p>{c.status} · deadline day {c.dueDay} · {pretty(c.location)}</p></article>)}<h3>Claims</h3>{world.claims.filter(c=>c.holderId==='player'||c.issuerId==='player').map(c=><p key={c.id}>{c.type} · face {c.face} · {c.status}</p>)}</WorkbenchPanel>}
- {tab==='inventory'&&<WorkbenchPanel title="Inventory / assets" open>{p.inventory.map(u=><article className="mini-card" key={u.unitId}><strong>{u.kind}</strong><p>{GOODS[u.kind]?.mode||'PHYSICAL'} · owned by you · custody with you</p><small>{u.pledgedTo?`Pledged to ${pretty(u.pledgedTo)} · not freely transferable`:u.opened?`Opened · ${u.remaining} servings remain`:'Physical unit'} · cost basis {u.costBasis}🥫</small></article>)}{!p.inventory.length&&<p>Nothing in hand.</p>}<h3>Held for somebody else</h3>{world.parcelJobs?.filter(j=>j.custodianId==='player'&&j.status==='in_custody').map(j=><article className="mini-card custody" key={j.id}><strong>{j.itemKind||'Sealed parcel'}</strong><p>You hold this; you do not own it.</p><small>Recipient {j.recipientId} · deadline day {j.deadline}</small></article>)}{!world.parcelJobs?.some(j=>j.custodianId==='player'&&j.status==='in_custody')&&<p className="muted">No third-party property in your custody.</p>}</WorkbenchPanel>}
- {tab==='clearing'&&<WorkbenchPanel title="Octopus Public Clearing" open><div className="trade-controls"><select value={tradeItem} onChange={e=>setTradeItem(e.target.value)}>{['Fresh Mackerel','Lime','Rum','Soda','Packing Paper','Presta Inner Tube'].map(x=><option key={x}>{x}</option>)}</select><button className="btn" onClick={()=>setWorld(w=>placePublicOrder(w,'player','buy',tradeItem,6))}>Bid 6🥫</button><button className="btn" disabled={!p.inventory.some(x=>x.kind===tradeItem)} onClick={()=>setWorld(w=>placePublicOrder(w,'player','sell',tradeItem,5))}>Ask 5🥫</button></div><p>Resources are reserved until fill or expiry. Clearing settles; it does not own client goods or float.</p>{world.market.orders.filter(o=>o.status==='open').map(o=><p key={o.id}>{o.side} {o.quantity} {o.item} @ {o.price} · {o.actorId}</p>)}{world.market.tape.slice(-8).reverse().map(t=><p key={t.id}>{t.item} · {t.price}🥫 · {t.sellerId} → {t.buyerId}</p>)}</WorkbenchPanel>}
- <div className="bottom-action"><button className="btn gold primary-action" onClick={()=>setWorld(w=>advanceHarbourWindow(w))}>End day — let the harbour move</button></div>
- </div></main>;
+ const [world,setWorld]=useState(initial),[focus,setFocus]=useState(null),[drawer,setDrawer]=useState(null),[message,setMessage]=useState(''),[pending,setPending]=useState(null),[page,setPage]=useState(0),[comic,setComic]=useState(null),[bag,setBag]=useState(null),[contact,setContact]=useState(null),[archive,setArchive]=useState(false),[readDay,setReadDay]=useState(-1),[hint,setHint]=useState(()=>!localStorage.getItem(SAVE)),[price,setPrice]=useState(6),[tradeItem,setTradeItem]=useState('Fresh Mackerel');
+ const [readText,setReadText]=useState(null),[restOffer,setRestOffer]=useState(false);
+ const {sound,enabled,toggle}=useSound(),pg=world.playerGame,p=world.actors.player;
+ useEffect(()=>{try{localStorage.setItem(SAVE,JSON.stringify({version:1,world}))}catch{setMessage('Your browser could not save this visit. Keep this page open.')}},[world]);
+ useEffect(()=>{const key=e=>{if(comic||pg.home||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key==='Escape'){setDrawer(null);setComic(null);setFocus(null);setBag(null)}if(e.key==='n')setDrawer(d=>d==='notes'?null:'notes');if(e.key==='p')setDrawer(d=>d==='phone'?null:'phone');if(e.key==='g')setDrawer(d=>d==='news'?null:'news')};window.addEventListener('keydown',key);return()=>window.removeEventListener('keydown',key)},[comic,pg.home]);
+ const scoped=focus?{...world,playerGame:{...pg,location:focus.location}}:world;
+ const required=PLAYER_COUNTERPARTIES;
+ const personPresent=!focus||!PEOPLE[focus.id]||world.actors[focus.id]?.location===focus.location;
+ let actions=focus&&personPresent?visibleActions(scoped).filter(a=>(TARGET_ACTIONS[focus.id]||[]).includes(a.id)&&!a.disabled&&(!required[a.id]||world.actors[required[a.id]].location===focus.location)&&actionLine(a,world)):[];
+ if(focus?.id==='crate')actions=actions.filter(a=>a.id!=='lime_represent'||!pg.lime.representation).filter(a=>a.id!=='lime_inspect'||!pg.lime.inspected).filter(a=>a.id!=='lime_deliver'||pg.lime.representation).filter(a=>a.id!=='lime_represent'||pg.lime.inspected||a.payload.mode!=='disclose');
+ actions=actions.filter(a=>!world.production.playerActions.some(x=>x.id===a.id&&x.day===world.day));
+ const known=focus&&p.contacts.includes(focus.id),isPerson=focus&&PEOPLE[focus.id],pageSize=isPerson?2:3,selectedActions=actions.slice(page*pageSize,page*pageSize+pageSize);
+ function select(f){setReadText(null);setRestOffer(false);sound(AUDIO_CUES[f.location]?.[0]||'paper');setFocus(f);setDrawer(null);setPage(0);setPending(null);setMessage('');setHint(false);if(f.id==='orders'){setDrawer('trade');setBag(null)}}
+ function blocked(reason){if(/attention|intervention/.test(reason)){setRestOffer(true);setFocus(null);setDrawer(null);setPending(null);setMessage('')}else setMessage(friendlyBlock(reason));}
+ function arrive(w,loc){const n=visitLocation(w,loc);if(n.playerGame.location!==loc){blocked(n.playerGame.lastBlock||'attention');return null}return n}
+ function choose(a){if(a.id==='trade_bridge'&&world.production.tradeStock.length){setPending(a);setMessage(`Sell this bundle for ${world.day%4===0?1:4} tins. It leaves your bag when the buyer pays.`);return}if(a.id==='joel_invitation'){setPending(a);setMessage(`Supper is on day ${world.day+4}. Bring the special catch: it costs 10 tins and arrives on day ${world.day+3}. It must still be fresh when you bring it.`);return}if(['lime_accept','invest_nursery','finance_receivable','speculate_lot','private_proxy','auction_finance','auction_bid','trade_bridge','misstate_public_listing','assemble_onewheel'].includes(a.id)){setPending(a);setMessage(ACTION_COPY[a.id][1]+(a.id==='auction_finance'?` Repay on day ${pg.routes.yasmin.auctionDay+5}; the promised object is ${p.inventory.find(u=>!u.pledgedTo)?.kind||'not available'}.`:''));return}execute(a)}
+ function execute(a){setPending(null);if(!personPresent){setMessage('They have moved away. Look for them on the map.');return}let before=arrive(world,focus?.location||pg.location);if(!before)return;const after=performPlayerAction(before,a.id,a.payload);if(after.playerGame.lastBlock){blocked(after.playerGame.lastBlock);return}if(JSON.stringify(after)===JSON.stringify(before)){setMessage('Nothing changed. The person or object is not ready for that today.');return}const advanced=finishPlayerIntervention(world,after,[focus?.id,required[a.id],...(a.id==='invite_toad_circle'?after.production.toadChat.members:a.id==='sonya_attend'?['joel']:[])].filter(Boolean));setWorld(advanced);sound('coin');const result=a.id==='talk_here'?selectDialogue(after,a.payload.actor).text:readableResult(before,after,a);setMessage(result+(advanced.day>world.day?' The light changes. A new day begins.':''));setPage(0);
+ if(['lime_inspect','sonya_attend','auction_bid','cliff_commit','invite_toad_circle'].includes(a.id)){setComic({location:focus?.location,title:{lime_inspect:'The short crate',sonya_attend:'Borrowed chairs',auction_bid:'The raised hand',cliff_commit:'Above the water',invite_toad_circle:'A little circle'}[a.id],people:a.id==='invite_toad_circle'?after.production.toadChat.members.filter(id=>id!=='player'):a.id==='sonya_attend'?['joel','sonya']:[],person:a.id==='sonya_attend'?'joel':a.id==='auction_bid'?'yasmin':a.id==='cliff_commit'?null:'aspen',object:a.id==='lime_inspect'?'Lime':a.id==='cliff_commit'?'Sunflower':a.id==='invite_toad_circle'?'toad':'paper',lines:a.id==='lime_inspect'?['The string comes loose.','Twenty limes. Three bruised.','“That is the whole crate?” The paper says twenty-four.']:a.id==='invite_toad_circle'?['The jar rests between the pots.',result,'For a while, nobody offers a price.']:a.id==='sonya_attend'?['A chair is pulled to the table.',result,'Someone passes the plate. Nobody counts the helpings.']:a.id==='cliff_commit'?['A wheel mark ends at the path.',result,'Below, the boats still move.']:['A hand goes up.',result,'The bowl stays on the cloth until the sale closes.'],choices:a.id==='lime_inspect'});}
+ }
+ function introduce(){const before=arrive(world,focus.location);if(!before)return;const after=performPlayerAction(before,'meet',{actor:focus.id});if(after.playerGame.lastBlock){blocked(after.playerGame.lastBlock);return}setWorld(finishPlayerIntervention(world,after,[focus.id]));setMessage(`“${PEOPLE[focus.id].name}.” You exchange names and a number. “Leave a message if I’m out.”`);sound('paper')}
+ function nextDay(){setRestOffer(false);const next=advanceHarbourWindow(world);setWorld(next);setPage(0);setPending(null);setFocus(null);setDrawer(null);setBag(null);sound('water');const fills=next.market.tape.filter(t=>t.day===next.day&&(t.buyerId==='player'||t.sellerId==='player'));setMessage(fills.length?fills.map(t=>`${t.buyerId==='player'?'Bought':'Sold'} ${t.quantity} ${t.item} for ${t.price*t.quantity} tins.`).join(' '):next.weather!==world.weather?(next.weather==='storm'?'Rain on the water. The cliff stones are wet.':'The rain has cleared.'): 'A new day. Boats and people have moved.');if(!pg.sunflower.owned&&next.playerGame.sunflower.owned)setComic({title:'A sunflower',person:'yasmin',object:'Sunflower',lines:['The sale is over.','The bowl changes hands. A sunflower comes with it.','You hold it. Nothing supernatural happens.']});}
+ function order(side){const before=arrive(world,'public_clearing');if(!before)return;const n=placePublicOrder(before,'player',side,tradeItem,Number(price));if(n.market.orders.length===before.market.orders.length){blocked(n.playerGame.lastBlock||'The clerk cannot take that offer. Check the price, free tins and whether the object is already promised.');return}const settled=finishPlayerIntervention(world,n);setWorld(settled);const fill=settled.market.tape.slice(world.market.tape.length).find(t=>t.buyerId==='player'||t.sellerId==='player');setMessage(fill?`${fill.buyerId==='player'?'Bought':'Sold'} ${fill.quantity} ${itemLabel(fill.item)} for ${fill.price*fill.quantity} tins. ${fill.buyerId==='player'?'It is in your bag.':'It has left your bag.'}`:side==='sell'?`One ${tradeItem} is set aside. If someone pays ${price} tins, it changes hands as the harbour moves. Otherwise it stays yours.`:`${price} tins are set aside. If a seller accepts, you receive one ${tradeItem} as the harbour moves. Otherwise you keep your money.`);sound('paper')}
+ const claims=world.claims.filter(c=>c.holderId==='player'||c.issuerId==='player'),inventory=p.inventory;
+ const title=focus?(isPerson?personName(world,focus.id):{crate:'The crate',cargo:'The cargo',bowl:'The bowl',plants:'The plants',paper:'The paper',orders:'The posted offers'}[focus.id]||'A closer look'):'';
+ function edge(which){sound('paper');setDrawer(d=>d===which?null:which);if(which==='news')setReadDay(world.day);setFocus(null);setPending(null);setMessage('')}
+ const localActions=Object.fromEntries(Object.keys(PLACES).map(location=>[location,visibleActions({...world,playerGame:{...pg,location}}).filter(a=>!a.disabled&&(!required[a.id]||world.actors[required[a.id]].location===location))]));
+ const activeProps=new Set(PROPS.filter(([id,loc])=>id==='orders'||localActions[loc]?.some(a=>(TARGET_ACTIONS[id]||[]).includes(a.id))).map(([id])=>id));
+ const dialogueText=message||(!personPresent?'They have moved away.':isPerson?selectDialogue(world,focus.id).text:reaction(world,focus?.id));
+ const hasChoices=Boolean(pending||personPresent&&(!message||world.attention.used<world.attention.budget)&&(actions.length||isPerson));
+ const guide=pg.sunflower.owned?'You have the sunflower. Your pocket book holds the story of this visit.':pg.lime.stage==='held'?'Open the crate before promising what is inside.':pg.routes.sonya.stage==='invited'?`Keep the fresh catch for supper on day ${pg.routes.sonya.supperDay+1}.`:pg.routes.juan.stage==='planning'?'The wheel parts come with the cargo; your pocket book keeps the list.':pg.routes.juan.built?'Take the wheel to the path after it has stood overnight.':p.contacts.length?'Ask someone about the harbour, or offer something from your bag at the exchange.':'You are looking for a sunflower; someone in the harbour may know a way.';
+ return <main className="harbour-game"><div className="world-layer" inert={comic||pg.home?'':undefined}>
+ <HarbourMap world={world} selected={focus} onFocus={select} activeProps={activeProps}/>
+ <header className="pocket-top"><button onClick={()=>edge('notes')} aria-label="Open money and notes">Sunflower <span>⌄</span></button><span>Day {world.day+1}</span><button onClick={nextDay} aria-label="Next day">☀ <small>Next day</small></button><button onClick={toggle} aria-label={enabled?'Mute sound':'Enable sound'}>{enabled?'♪':'♩'}</button></header>
+ <aside className="edge-objects"><button onClick={()=>edge('news')} aria-label="Open newspaper" className={readDay<world.day?'unread':''}>▤<span>Paper</span></button><button onClick={()=>edge('phone')} aria-label="Open phone">▯<span>Phone</span></button></aside>
+ {hint&&<p className="gesture-hint" onClick={()=>setHint(false)}>Drag to move · scroll or pinch to look closer<br/><small>Touch a person or an object.</small></p>}
+ {message&&!focus&&!drawer&&<div className="world-reaction" role="status">{message}<button className="close" aria-label="Dismiss notice" onClick={()=>setMessage('')}>×</button></div>}
+ {focus&&!comic&&drawer!=='trade'&&<section className="conversation" aria-label="Conversation"><button className="close" aria-label="Close conversation" onClick={()=>setFocus(null)}>×</button><strong>{title}</strong><SpokenLine key={dialogueText} text={dialogueText} hasChoices={hasChoices} onReady={()=>setReadText(dialogueText)} onDone={()=>{setFocus(null);setMessage('')}}/>
+
+ {readText===dialogueText&&(pending?<div className="responses"><button className="response" onClick={()=>execute(pending)}>Yes, on those terms.</button><button className="response" onClick={()=>{setPending(null);setMessage('')}}>Let me think.</button></div>:isPerson&&!known?<div className="responses"><button className="response" onClick={introduce}>Hello. Can we keep in touch?</button></div>:<div className="responses">{isPerson&&known&&personPresent&&<button className="response" onClick={()=>execute({id:'talk_here',payload:{actor:focus.id}})}>Stay a moment.</button>}{selectedActions.slice(0,isPerson?2:3).map((a,i)=><button className="response" key={a.id+JSON.stringify(a.payload)} onClick={()=>choose(a)}>{actionLine(a,world)}</button>)}{actions.length>pageSize&&<button className="response secondary" onClick={()=>setPage(n=>(n+1)*pageSize>=actions.length?0:n+1)}>Something else…</button>}{!actions.length&&<p className="quiet">{isPerson?'You can stay a moment, or leave them to it.':'You can leave it here for now.'}</p>}</div>)}
+ </section>}
+ {drawer&&<section className={`pocket-drawer drawer-${drawer}`} aria-label={drawer==='notes'?'Money and notes':drawer==='news'?'Newspaper':drawer==='phone'?'Phone':drawer==='restart'?'Start a new visit':'Trading'}><button className="close" aria-label="Close drawer" onClick={()=>setDrawer(null)}>×</button>
+ {drawer==='news'&&<><h2>The Harbour Paper</h2><small>Day {world.day+1}</small>{world.newspaper.slice(archive?-8:-3).reverse().map(n=><article key={n.id}><h3>{NEWSPAPER_OVERRIDES[n.id]?.headline||visibleNames(world,n.headline)}</h3><p>{NEWSPAPER_OVERRIDES[n.id]?.report||visibleNames(world,n.report)}</p></article>)}<button className="response" onClick={()=>setArchive(x=>!x)}>{archive?'Fold the old pages away':'A few earlier pages'}</button></>}
+ {drawer==='phone'&&<><h2>{UI_COPY.phone}</h2>{!p.contacts.length&&<p>No numbers yet. Say hello to someone in the harbour.</p>}{p.contacts.filter(id=>PEOPLE[id]).map(id=><button className="contact-line" key={id} onClick={()=>setContact(id)}>{PEOPLE[id].name}</button>)}{contact&&p.contacts.includes(contact)&&<article><h3>{PEOPLE[contact].name}</h3>{world.messages.filter(m=>m.to===contact||m.from===contact).slice(-4).map(m=><p key={m.id}>{m.from==='player'?'You: ':''}{m.text}</p>)}<button className="response" onClick={()=>{setWorld(phoneContact(world,contact,'Can we talk when you are free?'));setMessage('Message sent.');sound('phone')}}>Can we talk when you are free?</button></article>}{world.production.toadChat&&<article><h3>The little circle</h3><p>🐸 🌒 ?</p><p>A jar. A few people. An unfinished conversation.</p></article>}</>}
+ {drawer==='notes'&&<><h2>{UI_COPY.pocketBook}</h2><p><strong>{availableCash(world,'player')} tins</strong> free to spend. A tin is money here.</p>{p.cash!==availableCash(world,'player')&&<p>{p.cash-availableCash(world,'player')} tins already promised.</p>}<p>{world.production.marketStanding.status==='SUSPENDED'?'The clerk will not take your offers. Correct your papers at the exchange, or speak to someone who arranges private sales.':world.production.marketStanding.strikes?'The clerk is checking your papers more closely.':'The clerk accepts your papers.'}</p><h3>Promises</h3>{pg.commitments.filter(c=>c.status==='open').map(c=><p key={c.id}>{c.id==='lime-delivery'?'Return the lime crate':c.id==='grandma-supper'?'Bring the special catch to supper':c.id==='auction-bid'?'Wait for the bowl sale':'Repay the borrowed tins'} · Day {c.dueDay+1}</p>)}{!pg.commitments.some(c=>c.status==='open')&&<p>Nothing due.</p>}{claims.map(c=><p key={c.id}>{c.issuerId==='player'?'You owe':'Owed to you'} {c.face} tins · Day {c.dueDay+1} · {c.status==='open'?'waiting':c.status==='settled'?'paid':'unpaid'}</p>)}<h3>Prices you have seen</h3>{world.market.tape.slice().reverse().map(t=><p key={t.id}>Day {t.day+1} · {t.quantity} {t.item} · {t.price} tins each</p>)}{!world.market.tape.length&&<p>No completed sales seen yet.</p>}{['planning','ready'].includes(pg.routes.juan.stage)&&<><h3>Up the path</h3><p>Bring a steel rim, chain link, brake cable and handlebar tape from the cargo to the parcel bench. Assembly costs 3 tins. Let it stand overnight; wait for a dry path.</p></>}<h3>Your exchanges</h3>{world.production.playerActions.filter(a=>a.counterparty).slice().reverse().map((a,i)=><p key={i}>Day {a.day+1} · {personName(world,a.counterparty)||'At the counter'} · paid {a.cost}, received {a.revenue} tins</p>)}{pg.sunflower.owned&&<button className="response" onClick={()=>setWorld(performPlayerAction(world,'finish_run'))}>Look back on this visit</button>}<button className="response secondary" onClick={()=>setDrawer('restart')}>Start a new visit…</button></>}
+ {drawer==='restart'&&<><h2>Start again?</h2><p>This replaces the saved visit in this browser.</p><button className="response" onClick={()=>{setWorld(createHarbourWorld());setDrawer(null);setFocus(null);setContact(null);setMessage('');setHint(true)}}>Yes, a new visit</button><button className="response" onClick={()=>setDrawer('notes')}>Keep this visit</button></>}
+ {drawer==='trade'&&<><h2>The exchange counter</h2><p>“Tell me what you want, and your price. I’ll match it when a buyer and seller agree. I keep the promised money or object aside until then.”</p><label>One object<select value={tradeItem} onChange={e=>setTradeItem(e.target.value)}>{Object.entries(GOODS).filter(([k,v])=>v.mode==='PUBLIC_MARKET'&&(inventory.some(u=>u.kind===k)||world.market.orders.some(o=>o.status==='open'&&o.item===k))).map(([k])=><option key={k}>{k}</option>)}</select></label><label>Tins for one<input type="number" min="1" step="1" value={price} onChange={e=>setPrice(e.target.value)}/></label><div className="responses"><button className="response" onClick={()=>order('buy')}>I’ll pay {price} for one.</button>{inventory.some(u=>u.kind===tradeItem&&!u.pledgedTo)&&<button className="response" onClick={()=>order('sell')}>Sell mine for {price}.</button>}</div><h3>Papers on the counter</h3>{world.market.orders.filter(o=>o.status==='open'&&o.item===tradeItem).slice(0,5).map(o=><p key={o.id}>{o.side==='buy'?'Someone offers':'Someone asks'} {o.price} tins · {o.quantity} {o.item}</p>)}{pending?<div><p>{ACTION_COPY[pending.id]?.[1]}</p><button className="response" onClick={()=>execute(pending)}>Yes, on those terms.</button><button className="response" onClick={()=>setPending(null)}>Let me think.</button></div>:actions.filter(a=>['restitution','fire_sale','misstate_public_listing'].includes(a.id)).map(a=><button className="response" key={a.id} onClick={()=>choose(a)}>{actionLine(a,world)}</button>)}</>}
+ {message&&<p role="status" className="receipt">{message}</p>}
+ </section>}
+ {!focus&&!drawer&&!comic&&!restOffer&&<p className="harbour-guide">{guide}</p>}
+ {restOffer&&<section className="conversation" role="dialog" aria-label="Tomorrow"><p>There is not enough time left for that today.</p><button className="response" onClick={nextDay}>Start tomorrow.</button><button className="response" onClick={()=>setRestOffer(false)}>Keep looking around.</button></section>}
+ <footer className="inventory-ribbon" aria-label="Your objects">{inventory.map(u=><button key={u.unitId} aria-label={`Your ${itemLabel(u.kind)}`} className={bag===u.unitId?'selected':''} onClick={()=>{setBag(bag===u.unitId?null:u.unitId);setMessage('');sound()}}><ObjectArt kind={u.kind}/><span>{itemLabel(u.kind)}</span>{u.pledgedTo&&<i aria-label="Promised as security">⌁</i>}</button>)}{world.production.tradeStock.length>0&&<button onClick={()=>{select({id:'packing',location:'joels_bar'});setMessage('This bundle is yours. Ask at the bar whether they need packing paper.')}}><ObjectArt kind="parcel"/><span>Packing bundle</span></button>}{world.production.toads.filter(t=>t.status==='held').map(t=><button key={t.id} onClick={()=>select({id:'plants',location:'nursery'})}><ObjectArt kind="toad"/><span>Little jar</span></button>)}{pg.sunflower.owned&&<button aria-label="Your sunflower" onClick={()=>setWorld(performPlayerAction(world,'finish_run'))}><ObjectArt kind="Sunflower"/><span>Sunflower</span></button>}{!inventory.length&&!pg.sunflower.owned&&!world.production.tradeStock.length&&!world.production.toads.some(t=>t.status==='held')&&<p>Your bag is empty.</p>}</footer>
+ {bag&&inventory.some(u=>u.unitId===bag)&&<section className="object-slip"><button className="close" aria-label="Close object" onClick={()=>setBag(null)}>×</button><h3>{itemLabel(inventory.find(u=>u.unitId===bag).kind)}</h3><p>{inventory.find(u=>u.unitId===bag).pledgedTo?'Promised against a loan. Repay before offering it elsewhere.':'Yours to carry. A sale needs someone who will pay.'}</p>{GOODS[inventory.find(u=>u.unitId===bag).kind]?.mode==='PUBLIC_MARKET'&&<button className="response" onClick={()=>{setTradeItem(inventory.find(u=>u.unitId===bag).kind);setDrawer('trade');setFocus({id:'orders',location:'public_clearing'});setBag(null)}}>Offer it at the exchange</button>}{inventory.find(u=>u.unitId===bag).kind==='Exceptional Invitation Fish'&&<button className="response" onClick={()=>{select({id:'table',location:'sonyas_kitchen'});setBag(null)}}>Bring the fresh catch to supper</button>}{inventory.find(u=>u.unitId===bag).kind==='Built Onewheel'&&<button className="response" onClick={()=>{select({id:'path',location:'cliff_path'});setBag(null)}}>Take the wheel to the path</button>}{inventory.find(u=>u.unitId===bag).kind==='Orgeat'&&<button className="response" onClick={()=>{select({id:'bottle',location:'joels_bar'});setBag(null)}}>Bring the bottle to the bar</button>}</section>}
+ </div>{comic&&<Comic scene={comic} onClose={()=>setComic(null)}>{comic.choices&&['disclose','ambiguous','misrepresent'].map(mode=><button className="response" key={mode} onClick={()=>{execute({id:'lime_represent',payload:{mode}});setComic(null)}}>{actionLine({id:'lime_represent',payload:{mode}},world)}</button>)}</Comic>}
+ {pg.home&&<Ending world={world} onReturn={()=>setWorld({...world,playerGame:{...pg,home:false}})}/>}
+ </main>
 }

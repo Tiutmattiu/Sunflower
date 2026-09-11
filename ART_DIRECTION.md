@@ -1,5 +1,21 @@
 # Sunflower — Art Direction & Asset Prompt Source of Truth
 
+## Approved working-cast correction — 2026-09-10
+
+This section supersedes conflicting older character prompts below. Preserve the approved identities in `public/art/cast-working.png`: Juan is an older braided man with plants and an olive jacket, shortest of the human cast. Joel is the tallest, a dark-skinned Black man with copper curls, round glasses, a broad ordinary face, wide nose and mouth, mustard waistcoat and teal trousers. Aspen has a black updo and cream floral clothing. Yasmin has long dark hair and a black-and-gold dress. Dima is **human**, blond with stubble, wearing a navy tracksuit and purple sunglasses; do not generate a seagull. Wong remains a whippet and Sonya a supporting penguin grandmother.
+
+The user accepts the character designs. Future adjustments may unify contour, flat colour and contrast toward Dima without redesigning faces or clothes. Joel must remain tallest and Juan shortest at the same depth. Map and comics use the same figures, with scene-specific scale and clean silhouette crops.
+
+The current harbour PNG is working art, not an accepted final environment. Replace its finish and develop meaningful layers without replacing the accepted continuous-map camera/interaction architecture. The scene should be an overlapping comic tableau with domestic and social objects spilling across spaces, not one orderly room per function. Include the authored world-life material (including shisha and social gatherings) through visible staging; most details need no click target.
+
+Surface rule: one flat local colour and at most one necessary darker flat shape. No gradients, airbrushing, rim/volumetric lighting, gloss, ambient occlusion, hatching or repeated micro-lines. Depth comes from overlap, scale and cropping. A coarse vector overlay on a painted base is not visual completion. Match figure and background sharpness at normal and close playable zoom.
+
+### Incidental harbour people
+
+The first shisha composition was liked, but its reused main-cast faces were rejected. Background people must have their own faces and silhouettes; do not recycle Juan's braid/face, Joel's glasses or the other leads. Distribute Hasidic and Sephardic Jewish, Amazigh/Berber, Jamaican, Indian and Ethiopian fictional neighbours through ordinary shared activities. Include deep brown and Black complexions, varied age and build, practical or worn clothing, different hair textures, headscarves, durags and other appropriate head coverings. They need not all be light-skinned, slim, fashionable or modern-looking. Culture does not prescribe one face or one costume; make individuals, not a labelled cultural display.
+
+Dima is the finish standard for incidental figures: contour family, flat colour, contrast and ordinary proportions. Do not interpret this as copying his identity or adding glossy highlights. Social groups are separate noninteractive scene layers, not extra named NPCs or a second AI. Their visibility may respond to weather or the current social setting. Preserve the shisha, tea and fruit composition while replacing its three people.
+
 > Status: current working visual source of truth for Sunflower.
 >
 > This file centralises visual analysis, asset-production rules, generation prompts, scene composition, storyboard grammar and UI/comic integration. Do **not** scatter character prompts across chat, extra MDs or implementation notes.
@@ -383,7 +399,7 @@ Suggested props: seed packets, cuttings, labelled jars, roots, immature plant, c
 
 ## 8. Dima
 
-**Current identity: Seagull**, as specified in `NPC_CHARACTER_BIBLE.md`. The human-form prompt below is **History / retired for current-form asset generation**; it does not override the Seagull identity. A replacement visual specification remains Open. Do not use the historical face/body instructions for a current cast asset.
+**Current identity: human**, following the approved working cast. Use blond hair, stubble, a navy tracksuit and purple sunglasses. The older alternate-form prompts are superseded; preserve the accepted face and body.
 
 ```text
 [MASTER STYLE PREFIX]
@@ -413,9 +429,9 @@ Suggested props: salvage bundle, fish bones, small ledger, rope, household food,
 ```text
 [MASTER STYLE PREFIX]
 
-JOEL — very light-skinned Black young man, tall and slim, younger-looking than earlier drafts, no glasses. Carefully groomed copper/ginger hair, possibly short waves; brown eyes. Slightly nerdy, sensitive, privileged, curious, socially magnetic, highly receptive to sensory experiences and new ideas. His body should be lanky rather than broad. He is not deeply attached to ordinary wealth and can learn frighteningly quickly.
+JOEL — dark-skinned Black young man, tallest in the cast, with round glasses, a broad ordinary face, broad nostrils and a larger mouth. Carefully groomed copper/ginger hair, possibly short waves; brown eyes. Slightly nerdy, sensitive, privileged, curious, socially magnetic, highly receptive to sensory experiences and new ideas. His body should be lanky rather than broad. He is not deeply attached to ordinary wealth and can learn frighteningly quickly.
 
-Do not make him middle-aged, businesslike, K-pop/idol pretty or bishounen. No glasses.
+Do not make him middle-aged, businesslike, K-pop/idol pretty or bishounen. Preserve his approved round glasses.
 
 Suggested props: drink, tab book, odd experimental ingredient, note, small sensory object, bar towel/glass.
 ```
@@ -425,7 +441,7 @@ Suggested props: drink, tab book, odd experimental ingredient, note, small senso
 ```text
 [MASTER STYLE PREFIX]
 
-ASPEN — Japanese adult woman, disciplined logistics/contract operator. Black bob or pixie cut. Pale natural skin, but NOT geisha-white and not porcelain. NO lipstick. Mature rather than youthful. Compact, durable, weather-aware, time-aware, physically competent, reserved and hard-working without looking rustic. Her life is organised around schedules, maintenance, provisioning and dependable low-variance work.
+ASPEN — Japanese adult woman, disciplined logistics/contract operator. Black hair worn up, following the approved cast. Pale natural skin, but NOT geisha-white and not porcelain. NO lipstick. Mature rather than youthful. Compact, durable, weather-aware, time-aware, physically competent, reserved and hard-working without looking rustic. Her life is organised around schedules, maintenance, provisioning and dependable low-variance work.
 
 Do not make her cute, doll-like, girlish, glamorous, geisha-coded, extremely white or softly fragile. Keep adult facial weight and subtle labour/tension in posture.
 
@@ -451,7 +467,7 @@ Suggested props: fish crates, sea urchin basket, ice, seaweed bundle, scales, cl
 ```text
 [MASTER STYLE PREFIX]
 
-Create one unified Sunflower cast tableau containing Aspen, Joel, Yasmin, Wong, Juan, Dima with the Octopus Clearing counter as infrastructure. Preserve each current character design from this file and the bible; exclude retired prompt details. Dima is a Seagull, and his replacement asset specification remains Open. Do not equalise their age, beauty, body or ethnicity. Arrange them as people/animals occupying one harbour economy rather than fashion models lined up for a franchise poster.
+Create one unified Sunflower cast tableau containing Aspen, Joel, Yasmin, Wong, Juan, Dima with the Octopus Clearing counter as infrastructure. Preserve each current character design from this file and the bible; exclude retired prompt details. Dima is human, wearing a navy tracksuit and purple sunglasses. Do not equalise their age, beauty, body or ethnicity. Arrange them as people/animals occupying one harbour economy rather than fashion models lined up for a franchise poster.
 
 Include a few economically meaningful props around each figure. Use a printed-comic ensemble composition with social awkwardness and material specificity. For the current asset pass, Wong is clearly a copper whippet-like dog. Octopus is clearly an octopus. The human faces must stay non-beautified and specific.
 ```

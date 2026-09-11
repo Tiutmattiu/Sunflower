@@ -293,7 +293,7 @@ Do not center every person by default.
 
 Nonhuman current presentations require suitable anchors:
 - Wong: floor/low platform/counter-adjacent;
-- Dima: perch/desk/railing where current Seagull continuity is used.
+- Dima: ordinary human stance by a desk or railing, navy tracksuit and purple sunglasses; preserve the approved figure.
 
 ---
 

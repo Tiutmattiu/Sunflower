@@ -261,7 +261,7 @@ Juan's botanical competence supports growing assets and the preparation/risk rou
 
 ### Dima
 
-Male Seagull.
+Human man; blond hair, stubble, navy tracksuit and purple sunglasses. The earlier Seagull design is superseded by the approved human cast.
 
 Informal broker / guarantee / enforcement / claim-transfer operator.
 
