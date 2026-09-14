@@ -2,7 +2,7 @@
 
 ## Scope
 
-This checkpoint extends the unified 2000×1200 harbour tableau so existing gameplay institutions remain visible inside the neighbourhood and crowd density begins to reflect real social/economic state.
+This checkpoint extends the unified 2000×1200 harbour tableau so existing gameplay institutions remain visible inside the neighbourhood, crowd density reflects real social/economic state, and selected ambient people move continuously inside bounded authored zones.
 
 ## Implemented
 
@@ -22,6 +22,8 @@ This checkpoint extends the unified 2000×1200 harbour tableau so existing gamep
   - real toad-circle occurrence -> nursery gathering,
   - cargo-rush day -> additional berth labour.
 - District signals also derive live hotspot state for gallery, bar, Wong services, clearing and nursery rather than only static calendar/day styling.
+- `walk`, `pace`, and `carry` ambient actors now receive deterministic short travel vectors and animate continuously without player clicks.
+- Motion vectors are clamped to each actor's authored zone; seated/eating/shisha/chess figures do not wander.
 
 ## Structural guards
 
@@ -34,6 +36,10 @@ New/expanded diagnostics:
   - protects seagull / tropical-fish / squirrel presence and gameplay-toad integration.
 - `scripts/harbour-hotspot-check.mjs`
   - requires real preview/auction, bar, Wong workload, market-order and toad-circle state to alter visible crowd/district state.
+- `scripts/harbour-motion-check.mjs`
+  - requires a meaningful population of autonomous walkers,
+  - checks both ends of each walk vector remain in the authored zone,
+  - checks the renderer/CSS actually consume the motion vector.
 - `package.json`
   - `build` now runs `test:harbour` before `vite build`.
 
@@ -41,7 +47,7 @@ New/expanded diagnostics:
 
 - Commit `7752836613f5756ae810bb86341a98c353fba66b` intentionally failed after the new institution contract was wired into the build while the renderer still lacked the required institutions. This was the RED phase.
 - Commit `e3231270400c45466f5152a926817ce1ad966bd0` passed the `Vercel – sunflower` deployment after the institution renderer and live crowd hotspot implementation were present. `sunflower-cgtb` was blocked by Vercel build-rate limits, not a code failure.
-- Later commit `ebf562fee9b677f19964ec6c049058a57a104e21` adds only district-level live hotspot flags/sign emphasis. Both Vercel deployments were blocked by build-rate limits, so this exact final SHA has **not** received a fresh deployment proof yet.
+- Later commits add district hotspot flags and bounded motion. Vercel subsequently returned `build-rate-limit` for both deployments, so the exact latest SHA has **not** received a fresh deployment proof yet. Do not reinterpret this quota failure as a code-pass or code-fail result.
 
 ## Not browser-verified here
 
@@ -53,8 +59,13 @@ Still requires real browser inspection at 1440×1000 and 390×844:
 - whether labels/signage become too busy at default zoom,
 - whether crowd silhouettes and named-character atlas still feel like one clarity family,
 - whether mobile panning/focus lands on the intended institution,
-- whether toads are sufficiently scan-fun rather than just tiny static targets.
+- whether bounded walkers visually cross walls/counters even though their numeric endpoints remain in-zone,
+- whether toads are sufficiently scan-fun rather than tiny static targets.
 
-## Known next-step issue
+## Known next-step issues
 
-The tableau now has institution-level density and state-driven hotspots, but background NPC movement is still mostly short CSS loops around fixed authored positions. The next checkpoint should add **bounded within-zone motion / path loops** and browser-tuned collision/visibility rules without turning background NPCs into full simulation agents.
+1. **Browser collision tuning:** numeric zone bounds cannot detect every façade/counter collision. Codex should tune authored positions and local occlusion in a real browser.
+2. **Toad motion:** gameplay toads are preserved and clickable but still need a tiny body-only hop loop that does not move the hit target unfairly.
+3. **Legacy boat coordinate:** the small Aspen boat in `HarbourMap.jsx` still uses a legacy-coordinate helper and should be moved to an authored district anchor.
+4. **Visual clarity family:** code-authored district, simple ambient figures and the named-character atlas still need real-browser art-direction judgment; do not solve mismatch by blurring named cast.
+5. **Rare surreal day variants:** leaf-hand/cat/mushroom whole-world mutations remain deliberately deferred until normal-day readability passes.
