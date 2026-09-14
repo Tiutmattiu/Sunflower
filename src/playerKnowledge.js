@@ -6,6 +6,7 @@ export const PLAYER_KNOWLEDGE = Object.freeze({
   juan_bar_drink: 'juan_bar_drink',
   juan_goal_explained: 'juan_goal_explained',
   juan_route: 'juan_route',
+  onewheel_plan: 'onewheel_plan',
 });
 
 export const knows = (world, key) => world.playerGame.knowledge?.includes(key) ?? false;
