@@ -72,6 +72,13 @@ assert.equal(transferredBoundaryPlant.ownerId,'yasmin','day-boundary default mus
 assert.equal(transferredBoundaryPlant.pledgedTo,null,'closed secured claim cannot leave a stale pledge');
 assert(w.evidence.some(e=>e.type==='secured_claim_default'&&e.claimId===closedBoundaryClaim.id),'generic secured settlement must own the default event');
 
+// Once collateral has been seized, legacy Dima workout logic must not revive or extend the closed secured debt.
+const seizedDueDay=closedBoundaryClaim.dueDay;
+w=advanceHarbourWindow(w);
+const postSeizureClaim=w.claims.find(c=>c.id===boundaryClaim.id);
+assert.equal(postSeizureClaim.dueDay,seizedDueDay,'seized secured debt has no maturity left for a generic extension');
+assert(!postSeizureClaim.workout,'Dima cannot charge a workout fee on collateral that has already been seized');
+
 // Dima buys an existing claim: cash moves to old holder, holder changes, face does not duplicate.
 w=createHarbourWorld(62,{attentionPerDay:99});
 w.claims.push({id:'juan-test-claim',type:'future_output_claim',issuerId:'juan',holderId:'yasmin',face:8,originalFace:8,dueDay:8,status:'open',purpose:'harvest_advance'});
