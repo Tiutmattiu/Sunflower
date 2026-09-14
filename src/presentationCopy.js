@@ -27,6 +27,7 @@ export const ACTION_COPY = {
   assemble_onewheel:{intent:'I have the parts.',result:'Aspen fits the uncommitted parts into one awkward but rideable wheel.'},
   practice_onewheel:{intent:'I need another run.',result:'You spend time on balance, starts and recovery. The odds improve, but not to certainty.'},
   race_juan:{intent:'All right. Race me.',result:'The wager resolves from your preparation and the actual people at the bar.'},
+  juan_field_trip:{intent:'All right. Show me.',result:'Juan leaves the bar with you and leads you beyond the familiar harbour path.'},
   repay_race_drinks:{intent:'I’m settling the rest of the drinks.',result:'The outstanding bar tab from the race is paid.'},
   joel_patronage:{intent:'A drink, please. · 3 tins',result:'Joel puts a glass down in front of you and waits for your face to answer first.'},
   joel_help:{intent:'I’ll take these.',result:'You move the empty glasses. One is not empty. Joel catches your wrist before you lift it.'},
@@ -124,7 +125,7 @@ const TERMS={
   private_proxy:'Pay 3 tins to arrange a private sale. This does not reopen the public counter.',
   trade_bridge:'Buy the packing bundle for 2 tins. Someone may pay more later; a sale is not promised.',
   assemble_onewheel:'Your unreserved rim, chain link, brake cable and one compatible finishing piece are consumed into one physical Onewheel. Aspen only takes the job after the lime shortfall was handled honestly.',
-  race_juan:'If you win, Juan takes you to the sunflower field. If you lose, you cover drinks for everyone actually at Joel’s Bar that day. The race uses time and there is no free same-day reroll.',
+  race_juan:'If you win, Juan owes you the trip to the sunflower field. If you lose, you cover drinks for everyone actually at Joel’s Bar that day. The race uses time and there is no free same-day reroll.',
   repay_race_drinks:'The remaining race-drinks balance leaves your free cash and goes to Joel.',
   misstate_public_listing:'You know the object is not as described. A complaint can make the clerk refuse your next offers.'
 };
