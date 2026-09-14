@@ -1,22 +1,54 @@
 import React from 'react';
 import './harbourTableau.css';
 
-const SKINS=['#7a4d38','#b96f4a','#d4a276','#e2ba91','#6a4938','#9e6a50'];
+const SKIN_BY_COMPLEXION={deep:'#5a382e',dark:'#744635',brown:'#956047',olive:'#b67b5b',tan:'#d19a72',light:'#e4bb94'};
 const CLOTHES=['#415f66','#8b4d3e','#596849','#8b7048','#534d68','#a36a3d','#4c6175'];
 const HAIR=['#2f2a28','#4c352d','#7c5a45','#171b1b','#5a463d'];
 const pick=(list,id,offset=0)=>list[(id.length+id.charCodeAt(0)+offset)%list.length];
 const loopStyle=item=>({'--loop-duration':`${item.duration}s`,'--travel-x':`${item.motion?.dx||0}px`,'--travel-y':`${item.motion?.dy||0}px`});
+const skinFor=item=>SKIN_BY_COMPLEXION[item.complexion]||'#b87959';
+const hairFor=item=>item.age==='elder'?'#c5bdac':pick(HAIR,item.id,2);
+
+function Hair({item,cy=-38}){
+ const hair=hairFor(item),style=item.hairStyle||'cropped';
+ if(['headscarf','headwrap'].includes(item.headwear))return null;
+ if(style==='coils')return <g fill={hair}>{[-6,-2,2,6].map((x,i)=><circle key={x} cx={x} cy={cy-8-(i%2)} r="3.2"/>)}</g>;
+ if(style==='curls')return <path d={`M-8 ${cy-3}q1-10 5-7q3-7 6 0q4-4 7 7`} fill="none" stroke={hair} strokeWidth="3.5" strokeLinecap="round"/>;
+ if(style==='braids')return <><path d={`M-6 ${cy-5}Q0 ${cy-13} 6 ${cy-5}`} fill="none" stroke={hair} strokeWidth="3"/><path d={`M-6 ${cy-1}q-4 10-1 18M6 ${cy-1}q4 10 1 18`} fill="none" stroke={hair} strokeWidth="2"/></>;
+ if(style==='long')return <path d={`M-8 ${cy-3}Q0 ${cy-14} 8 ${cy-3}L10 ${cy+10}M-8 ${cy-3}L-10 ${cy+10}`} fill="none" stroke={hair} strokeWidth="3"/>;
+ if(style==='waves')return <path d={`M-8 ${cy-3}q4-12 8-5q4-7 8 5q-3 5-1 10`} fill="none" stroke={hair} strokeWidth="3"/>;
+ return <path d={`M-7 ${cy-3}Q0 ${cy-13} 7 ${cy-3}`} fill="none" stroke={hair} strokeWidth="3"/>;
+}
+
+function Headwear({item,cy=-38}){
+ const type=item.headwear||'none',cloth=pick(CLOTHES,item.id,5);
+ if(type==='none')return null;
+ if(type==='cap')return <><path d={`M-8 ${cy-6}Q0 ${cy-13} 9 ${cy-6}H-8Z`} fill={cloth}/><path d={`M6 ${cy-6}h8`} stroke={cloth} strokeWidth="2"/></>;
+ if(type==='brimmed')return <><path d={`M-12 ${cy-8}H12M-8 ${cy-9}q8-9 16 0Z`} fill={cloth} stroke={cloth} strokeWidth="2"/></>;
+ if(type==='skullcap')return <path d={`M-6 ${cy-8}Q0 ${cy-14} 6 ${cy-8}Z`} fill={cloth}/>;
+ if(type==='headwrap')return <><path d={`M-8 ${cy-5}Q0 ${cy-15} 8 ${cy-5}Q0 ${cy-10}-8 ${cy-5}Z`} fill={cloth}/><circle cx="0" cy={cy-11} r="3" fill={cloth}/></>;
+ if(type==='headscarf')return <path d={`M-9 ${cy-5}Q0 ${cy-15} 9 ${cy-5}L12 ${cy+12}L5 ${cy+6}L0 ${cy+11}L-6 ${cy+5}L-11 ${cy+11}Z`} fill={cloth} opacity=".95"/>;
+ return null;
+}
 
 function Face({item,cy=-38}){
- const skin=pick(SKINS,item.id),hair=item.age==='elder'?'#c5bdac':pick(HAIR,item.id,2);
- return <><ellipse cy={cy} rx="7" ry="9" fill={skin}/><path d={`M-7 ${cy-3}Q0 ${cy-13} 7 ${cy-3}`} fill="none" stroke={hair} strokeWidth="3"/></>;
+ const skin=skinFor(item);
+ return <><ellipse cy={cy} rx="7" ry="9" fill={skin}/><Hair item={item} cy={cy}/><Headwear item={item} cy={cy}/></>;
+}
+
+function torsoPath(item,top=-28,bottom=-5){
+ const build=item.build||item.body||'average';
+ if(build==='wide')return `M-15${top}Q0 ${top-7} 15${top}L12${bottom}H-12Z`;
+ if(build==='stocky')return `M-13${top}Q0 ${top-6} 13${top}L14${bottom}H-14Z`;
+ if(build==='slender')return `M-8${top}Q0 ${top-5} 8${top}L6${bottom}H-6Z`;
+ return `M-10${top}Q0 ${top-6} 10${top}L8${bottom}H-8Z`;
 }
 
 function StandingPerson({item}){
- const skin=pick(SKINS,item.id),coat=pick(CLOTHES,item.id,3),wide=item.body==='wide',wealthy=item.variant==='wealthy';
+ const skin=skinFor(item),coat=pick(CLOTHES,item.id,3),wealthy=item.variant==='wealthy';
  return <g className={`tableau-loop activity-${item.activity}`} style={loopStyle(item)}>
    <Face item={item}/>
-   <path d={wide?'M-15-28Q0-35 15-28L12-5H-12Z':'M-10-28Q0-34 10-28L8-5H-8Z'} fill={wealthy?'#393f56':coat}/>
+   <path d={torsoPath(item)} fill={wealthy?'#393f56':coat}/>
    <path d="M-6-5L-8 17M6-5L8 17" stroke="#3b3935" strokeWidth="3" strokeLinecap="round"/>
    <path d="M-8-24L-16-9M8-24L16-11" stroke={skin} strokeWidth="3" strokeLinecap="round"/>
    {item.activity==='carry'&&<rect x="12" y="-14" width="15" height="12" fill="#9a7048" stroke="#4f463b"/>}
@@ -29,10 +61,10 @@ function StandingPerson({item}){
 }
 
 function SeatedPerson({item}){
- const skin=pick(SKINS,item.id),coat=pick(CLOTHES,item.id,4);
+ const coat=pick(CLOTHES,item.id,4),build=item.build||'average',half=build==='wide'||build==='stocky'?12:build==='slender'?8:10;
  return <g className={`tableau-loop activity-${item.activity}`} style={loopStyle(item)}>
    <Face item={item} cy={-30}/>
-   <path d="M-10-20Q0-27 10-20L7-4H-7Z" fill={coat}/>
+   <path d={`M-${half}-20Q0-27 ${half}-20L${Math.max(6,half-2)}-4H-${Math.max(6,half-2)}Z`} fill={coat}/>
    <path d="M-6-4L-15 8M6-4L15 8" stroke="#393833" strokeWidth="3" strokeLinecap="round"/>
    <path d="M-13 9H13" stroke="#625846" strokeWidth="3"/>
    {item.activity==='chess'&&<><rect x="14" y="-3" width="18" height="12" fill="#d7c8a2" stroke="#5a5041"/><circle cx="19" cy="1" r="1.4"/><circle cx="25" cy="5" r="1.4"/></>}
@@ -41,7 +73,7 @@ function SeatedPerson({item}){
 }
 
 function SlumpFigure({item}){
- const skin=pick(SKINS,item.id),coat=pick(CLOTHES,item.id,1);
+ const skin=skinFor(item),coat=pick(CLOTHES,item.id,1);
  return <g className="tableau-loop activity-slump" style={loopStyle(item)} transform="rotate(8)">
    <ellipse cx="-20" cy="-11" rx="7" ry="8" fill={skin}/><path d="M-13-10Q4-18 18-5L12 7H-5Z" fill={coat}/><path d="M8 6L26 14M0 6L-13 18" stroke="#403d38" strokeWidth="3" strokeLinecap="round"/>
  </g>;
@@ -53,12 +85,12 @@ function SkeletonFigure({item}){
  </g>;
 }
 
-function Swimmer({item}){return <g className="tableau-loop activity-swim" style={loopStyle(item)}><ellipse cy="-4" rx="8" ry="7" fill={pick(SKINS,item.id)}/><path d="M-15 2Q0 8 16 2" fill="none" stroke="#e4efe3" strokeWidth="2" opacity=".8"/></g>}
-function Sunbather({item}){return <g className="tableau-loop activity-sunbathe" style={loopStyle(item)} transform="rotate(-8)"><ellipse cx="-18" cy="-4" rx="6" ry="5" fill={pick(SKINS,item.id)}/><path d="M-12-4H18" stroke={pick(CLOTHES,item.id)} strokeWidth="7" strokeLinecap="round"/><path d="M18-4L31-8M18-4L31 2" stroke={pick(SKINS,item.id)} strokeWidth="3" strokeLinecap="round"/></g>}
+function Swimmer({item}){return <g className="tableau-loop activity-swim" style={loopStyle(item)}><ellipse cy="-4" rx="8" ry="7" fill={skinFor(item)}/><path d="M-15 2Q0 8 16 2" fill="none" stroke="#e4efe3" strokeWidth="2" opacity=".8"/></g>}
+function Sunbather({item}){return <g className="tableau-loop activity-sunbathe" style={loopStyle(item)} transform="rotate(-8)"><ellipse cx="-18" cy="-4" rx="6" ry="5" fill={skinFor(item)}/><path d="M-12-4H18" stroke={pick(CLOTHES,item.id)} strokeWidth="7" strokeLinecap="round"/><path d="M18-4L31-8M18-4L31 2" stroke={skinFor(item)} strokeWidth="3" strokeLinecap="round"/></g>}
 
 export function CrowdFigure({item,...props}){
  const seated=['chess','shisha','eat'].includes(item.activity),scale=item.scale||1;
- return <g {...props} aria-hidden="true" pointerEvents="none" className={`tableau-crowd tableau-${item.activity} variant-${item.variant||'ordinary'}`} transform={`translate(${item.x} ${item.y}) scale(${scale})`}>
+ return <g {...props} aria-hidden="true" pointerEvents="none" data-complexion={item.complexion} data-hair-style={item.hairStyle} data-headwear={item.headwear} data-build={item.build} className={`tableau-crowd tableau-${item.activity} variant-${item.variant||'ordinary'} headwear-${item.headwear||'none'} hair-${item.hairStyle||'cropped'} build-${item.build||'average'}`} transform={`translate(${item.x} ${item.y}) scale(${scale})`}>
    {item.variant==='skeleton'?<SkeletonFigure item={item}/>:item.activity==='slump'?<SlumpFigure item={item}/>:item.activity==='swim'?<Swimmer item={item}/>:item.activity==='sunbathe'?<Sunbather item={item}/>:seated?<SeatedPerson item={item}/>:<StandingPerson item={item}/>} 
  </g>;
 }
