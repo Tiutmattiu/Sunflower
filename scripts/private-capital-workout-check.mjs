@@ -101,7 +101,26 @@ assert.equal(claim.face,face);
 assert.equal(w.actors.juan.cash,juanCash-2);
 assert.equal(w.actors.dima.cash,dimaCash+2);
 
+// A guarantee must be live in the world, not only settle when a test manually calls the helper.
+w=createHarbourWorld(65,{attentionPerDay:99});
+const seedClaim=w.claims.find(c=>c.id==='juan-working-capital');
+if(seedClaim)seedClaim.status='cancelled';
+w.claims.push({id:'auto-guaranteed-claim',type:'future_output_claim',issuerId:'juan',holderId:'yasmin',face:6,originalFace:6,dueDay:1,status:'open',purpose:'auto_guarantee_test'});
+const autoGuaranteed=w.claims.find(c=>c.id==='auto-guaranteed-claim');
+r=dimaGuaranteeClaim(w,autoGuaranteed.id,{fee:1,coverage:4});
+assert.equal(r.ok,true,r.reason);
+const autoExposure=w.npcEconomy.guarantees.find(g=>g.id===r.guaranteeId);
+w.actors.juan.cash=0;
+w=advanceHarbourWindow(w);
+const settledExposure=w.npcEconomy.guarantees.find(g=>g.id===autoExposure.id);
+assert.equal(w.claims.find(c=>c.id===autoGuaranteed.id).status,'default','underlying claim must really default before guarantee performance');
+assert.equal(settledExposure.status,'called','normal day processing must call an active guarantee after underlying default');
+assert.equal(settledExposure.paid,4);
+assert(w.privateTransactions.some(t=>t.kind==='guarantee_payout'&&t.purpose===autoGuaranteed.id&&t.amount===4),'guarantee call must move recorded cash from Dima to holder');
+assert(w.claims.some(c=>c.type==='guarantee_recourse'&&c.holderId==='dima'&&c.issuerId==='juan'&&c.face===4),'Dima payment creates bounded recourse rather than erasing the borrower exposure');
+
 // Guarantee is contingent: fee now, Dima pays only after an actual default.
+w=createHarbourWorld(62,{attentionPerDay:99});
 w.claims.push({id:'guaranteed-claim',type:'future_output_claim',issuerId:'juan',holderId:'yasmin',face:6,originalFace:6,dueDay:w.day+1,status:'open',purpose:'guarantee_test'});
 const guaranteed=w.claims.find(c=>c.id==='guaranteed-claim');
 const dimaBeforeGuarantee=w.actors.dima.cash,yasminBeforeGuarantee=w.actors.yasmin.cash;
