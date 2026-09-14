@@ -4,12 +4,15 @@ import {LOCATION_LABELS} from './presentationCopy.js';
 import {UNKNOWN_PEOPLE,visibleNames} from './dialogueContent.js';
 import {availableMicroScenes} from './worldLifeContent.js';
 import {crowdForWorld,creaturesForWorld,namedActorPoint} from './harbourTableau.js';
-import {CrowdFigure,CreatureFigure,TableauSignals} from './HarbourTableauLayer.jsx';
+import {HARBOUR_WORLD,legacyPoint} from './harbourWorld.js';
+import {clampCamera,centeredCamera,coverScale,focusCamera,zoomCamera} from './harbourCamera.js';
+import {CrowdFigure,CreatureFigure,ExpandedWorldBackdrop,TableauSignals} from './HarbourTableauLayer.jsx';
 
+const place=(x,y,name)=>{const p=legacyPoint(x,y);return [p.x,p.y,name]};
 export const PLACES = {
- harbour_berth:[930,620,'Berth'], joels_bar:[590,380,'Bar'], parcel_counter:[1050,330,'Parcel shop'],
- nursery:[285,290,'Growing yard'], viewing_room:[720,130,'Gallery'], back_room:[1160,150,'Side room'],
- sonyas_kitchen:[370,120,'Kitchen'], cliff_path:[120,520,'Cliff path'], public_clearing:[750,520,'Exchange'], old_hall:[480,540,'Screening hall']
+ harbour_berth:place(930,620,'Berth'), joels_bar:place(590,380,'Bar'), parcel_counter:place(1050,330,'Parcel shop'),
+ nursery:place(285,290,'Growing yard'), viewing_room:place(720,130,'Gallery'), back_room:place(1160,150,'Side room'),
+ sonyas_kitchen:place(370,120,'Kitchen'), cliff_path:place(120,520,'Cliff path'), public_clearing:place(750,520,'Exchange'), old_hall:place(480,540,'Screening hall')
 };
 export const PEOPLE = {
  aspen:{name:'Aspen',unknown:'Woman with a blue scarf',coat:'#345779',hair:'#422e29'},
@@ -20,7 +23,6 @@ export const PEOPLE = {
  dima:{name:'Dima',unknown:'Fair-haired man',coat:'#4d5954',hair:'#272b29'}
 };
 export const personName=(w,id)=>w.actors.player.contacts.includes(id)?PEOPLE[id]?.name:UNKNOWN_PEOPLE[id];
-// One approved atlas, shared by map and comics. Feet stay on the same baseline.
 const CAST = {
  juan:[0,433,74],
  joel:[433,332,94,'polygon(0 0,94% 0,94% 84%,100% 90%,100% 100%,0 100%)'],
@@ -43,30 +45,36 @@ export function ObjectArt({kind=''}) {const k=kind.toLowerCase();return <svg wid
  /paper|notice|claim|photo/.test(k)?<><path d="M-17-23 18-20 15 23-19 19Z" fill="#eddfb8"/><path d="M-11-11 11-9M-12-4 8-2M-12 4 11 6M-12 12 0 13" fill="none"/></>:
  <><path d="M-20-13 17-18 22 15-16 20Z" fill="#ba8e5b"/><path d="M-20-4 20-8M-18 8 21 5M-8-15-4 19M10-17 14 16" fill="none"/></>}
  </g></svg>}
-function Scenery({world}) {return <g aria-hidden="true">
- <image href="/art/harbour-working.png" width="1400" height="900" preserveAspectRatio="none"/>
- <g className="boat" style={{transform:`translate(${world.aspenRoute.status==='away'?1330:1150}px,${world.aspenRoute.status==='away'?850:735}px)`}} stroke="#393d36" strokeWidth="2"><path d="M-40 0H45L30 22H-25Z" fill="#9f493a"/><path d="M-20-3V-24H20V-3Z" fill="#ded1ac"/><path d="M-12-19H10V-7H-12Z" fill="#406978"/></g>
- {world.weather==='storm'&&<g opacity=".27" stroke="#d1ded5"><path d="M0 0H1400V900H0Z" fill="#193948" stroke="none"/>{Array.from({length:50},(_,i)=><path key={i} d={`M${i*29} ${(i*79)%800}l-16 40`}/>)}</g>}
- </g>}
-export const PROPS=[['crate','harbour_berth',905,590,'Lime crate'],['cargo','harbour_berth',978,573,'Cargo'],['bottle','joels_bar',555,337,'Bottle'],['glass','joels_bar',644,357,'Glass'],['packing','joels_bar',498,364,'Packing bundle'],['parcel','parcel_counter',1095,309,'Parcel'],['parts','parcel_counter',1000,310,'Wheel parts'],['plants','nursery',258,297,'Plants'],['paper','nursery',337,278,'Paper'],['bowl','viewing_room',737,112,'Bowl'],['photo','viewing_room',799,114,'Photograph'],['envelope','back_room',1185,130,'Envelope'],['table','sonyas_kitchen',389,108,'Supper table'],['path','cliff_path',105,489,'Path'],['orders','public_clearing',737,478,'Posted offers']];
+function Scenery({world}) {
+ const art=HARBOUR_WORLD.legacy;
+ const boat=legacyPoint(...(world.aspenRoute?.status==='away'?[1330,850]:[1150,735]));
+ return <g aria-hidden="true">
+  <ExpandedWorldBackdrop/>
+  <image href="/art/harbour-working.png" x={art.x} y={art.y} width={art.width} height={art.height} preserveAspectRatio="none"/>
+  <g className="boat" transform={`translate(${boat.x} ${boat.y})`} stroke="#393d36" strokeWidth="2"><path d="M-40 0H45L30 22H-25Z" fill="#9f493a"/><path d="M-20-3V-24H20V-3Z" fill="#ded1ac"/><path d="M-12-19H10V-7H-12Z" fill="#406978"/></g>
+  {world.weather==='storm'&&<g opacity=".27" stroke="#d1ded5"><rect width={HARBOUR_WORLD.width} height={HARBOUR_WORLD.height} fill="#193948" stroke="none"/>{Array.from({length:70},(_,i)=><path key={i} d={`M${i*31} ${(i*83)%1120}l-16 40`}/>)}</g>}
+ </g>
+}
+const prop=(id,loc,x,y,label)=>{const p=legacyPoint(x,y);return[id,loc,p.x,p.y,label]};
+export const PROPS=[prop('crate','harbour_berth',905,590,'Lime crate'),prop('cargo','harbour_berth',978,573,'Cargo'),prop('bottle','joels_bar',555,337,'Bottle'),prop('glass','joels_bar',644,357,'Glass'),prop('packing','joels_bar',498,364,'Packing bundle'),prop('parcel','parcel_counter',1095,309,'Parcel'),prop('parts','parcel_counter',1000,310,'Wheel parts'),prop('plants','nursery',258,297,'Plants'),prop('paper','nursery',337,278,'Paper'),prop('bowl','viewing_room',737,112,'Bowl'),prop('photo','viewing_room',799,114,'Photograph'),prop('envelope','back_room',1185,130,'Envelope'),prop('table','sonyas_kitchen',389,108,'Supper table'),prop('path','cliff_path',105,489,'Path'),prop('orders','public_clearing',737,478,'Posted offers')];
 export default function HarbourMap({world,onFocus,selected,activeProps}) {
  const ref=useRef(null), pointers=useRef(new Map()), gesture=useRef(null), moved=useRef(false), initialized=useRef(false);
- const [camera,setCamera]=useState({x:0,y:0,z:1}),[size,setSize]=useState({w:1400,h:900});
- useEffect(()=>{const o=new ResizeObserver(([e])=>{const w=e.contentRect.width,h=e.contentRect.height;setSize({w,h});if(!initialized.current){initialized.current=true;if(w<600){const b=Math.min(w/1400,h/900);setCamera({z:2.5,x:w/2-760*b*2.5,y:h*.4-440*b*2.5})}}});o.observe(ref.current);return()=>o.disconnect()},[]);
- const base=Math.min(size.w/1400,size.h/900),scale=base*camera.z;
- const change=(fn)=>setCamera(c=>{const n=fn(c);return {...n,x:1400*base*n.z<=size.w?(size.w-1400*base*n.z)/2:Math.max(size.w-1400*base*n.z,Math.min(0,n.x)),y:900*base*n.z<=size.h-85?Math.max(55,(size.h-85-900*base*n.z)/2):Math.max(size.h-85-900*base*n.z,Math.min(55,n.y))}});
- const zoom=(factor,x=size.w/2,y=size.h/2)=>change(c=>{const z=Math.max(1,Math.min(4.8,c.z*factor)),ratio=z/c.z;return {z,x:x-(x-c.x)*ratio,y:y-(y-c.y)*ratio}});
- useEffect(()=>{const el=ref.current;const wheel=e=>{e.preventDefault();const r=el.getBoundingClientRect();if(Math.abs(e.deltaX)>Math.abs(e.deltaY)||e.shiftKey)change(c=>({...c,x:c.x-e.deltaX-(e.shiftKey?e.deltaY:0),y:c.y}));else zoom(Math.exp(-e.deltaY*.0015),e.clientX-r.left,e.clientY-r.top)};el.addEventListener('wheel',wheel,{passive:false});return()=>el.removeEventListener('wheel',wheel)},[size.w,size.h,base]);
+ const [camera,setCamera]=useState({x:0,y:0,z:1}),[size,setSize]=useState({w:1,h:1});
+ useEffect(()=>{const el=ref.current;if(!el)return;const o=new ResizeObserver(([e])=>{const next={w:e.contentRect.width,h:e.contentRect.height};setSize(next);setCamera(c=>{if(!initialized.current){initialized.current=true;return centeredCamera(next,HARBOUR_WORLD,1)}return clampCamera(c,next,HARBOUR_WORLD)})});o.observe(el);return()=>o.disconnect()},[]);
+ const base=coverScale(size,HARBOUR_WORLD),scale=base*camera.z;
+ const change=fn=>setCamera(c=>clampCamera(fn(c),size,HARBOUR_WORLD));
+ const zoom=(factor,x=size.w/2,y=size.h/2)=>setCamera(c=>zoomCamera(c,factor,{x,y},size,HARBOUR_WORLD));
+ useEffect(()=>{const el=ref.current;const wheel=e=>{e.preventDefault();const r=el.getBoundingClientRect();if(Math.abs(e.deltaX)>Math.abs(e.deltaY)||e.shiftKey)change(c=>({...c,x:c.x-e.deltaX-(e.shiftKey?e.deltaY:0),y:c.y}));else zoom(Math.exp(-e.deltaY*.0015),e.clientX-r.left,e.clientY-r.top)};el.addEventListener('wheel',wheel,{passive:false});return()=>el.removeEventListener('wheel',wheel)},[size.w,size.h]);
  function down(e){if((e.button&&e.button!==0)||e.target.closest('button'))return;pointers.current.set(e.pointerId,{x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY});moved.current=false;gesture.current=null;}
  function move(e){if(!pointers.current.has(e.pointerId))return;const prev=pointers.current.get(e.pointerId);pointers.current.set(e.pointerId,{...prev,x:e.clientX,y:e.clientY});const a=[...pointers.current.values()];if(a.length===2){const distance=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);if(gesture.current){const r=ref.current.getBoundingClientRect();zoom(distance/gesture.current,(a[0].x+a[1].x)/2-r.left,(a[0].y+a[1].y)/2-r.top)}gesture.current=distance;moved.current=true;}else{const dx=e.clientX-prev.x,dy=e.clientY-prev.y;if(Math.hypot(e.clientX-prev.startX,e.clientY-prev.startY)>6)moved.current=true;if(moved.current){e.currentTarget.setPointerCapture(e.pointerId);change(c=>({...c,x:c.x+dx,y:c.y+dy}))}}}
- function focus(id,location,x,y){if(moved.current)return;if(camera.z<1.7)change(()=>({z:2.3,x:size.w/2-x*base*2.3,y:size.h*.43-y*base*2.3}));onFocus({id,location,x,y});}
+ function focus(id,location,x,y){if(moved.current)return;if(camera.z<1.7)setCamera(focusCamera({x,y},size,HARBOUR_WORLD,2.15));onFocus({id,location,x,y});}
  const crowd=crowdForWorld(world),creatures=creaturesForWorld(world);
  const named=Object.keys(PEOPLE).filter(id=>!world.actors[id].removed&&PLACES[world.actors[id].location]).map(id=>{const point=namedActorPoint(world,id);return {kind:'named',id,loc:world.actors[id].location,...point}});
  const depth=[...crowd.map(item=>({kind:'crowd',id:item.id,y:item.y,item})),...creatures.map(item=>({kind:'creature',id:item.id,y:item.y,item})),...named].sort((a,b)=>a.y-b.y);
  const micro=availableMicroScenes(world).filter(scene=>scene.requires.some(([id])=>id===selected?.id))[0];
  const key=e=>{if(e.target!==ref.current)return;const d={ArrowLeft:[45,0],ArrowRight:[-45,0],ArrowUp:[0,45],ArrowDown:[0,-45]}[e.key];if(d){e.preventDefault();change(c=>({...c,x:c.x+d[0],y:c.y+d[1]}))}if(e.key==='+'||e.key==='=')zoom(1.2);if(e.key==='-')zoom(.8)};
  return <section ref={ref} className={`harbour-camera ${camera.z>1.7?'near':''}`} aria-label="Harbour map" tabIndex="0" onKeyDown={key} onPointerDown={down} onPointerMove={move} onPointerUp={e=>{pointers.current.delete(e.pointerId);gesture.current=null}} onPointerCancel={e=>{pointers.current.delete(e.pointerId);gesture.current=null}}>
- <svg width="1400" height="900" viewBox="0 0 1400 900" className="harbour-world" style={{transform:`translate(${camera.x}px,${camera.y}px) scale(${scale})`}}><Scenery world={world}/>
+ <svg width={HARBOUR_WORLD.width} height={HARBOUR_WORLD.height} viewBox={`0 0 ${HARBOUR_WORLD.width} ${HARBOUR_WORLD.height}`} className="harbour-world" style={{transform:`translate(${camera.x}px,${camera.y}px) scale(${scale})`}}><Scenery world={world}/>
  <TableauSignals/>
  {depth.map(entry=>entry.kind==='crowd'?<CrowdFigure key={`crowd-${entry.id}`} item={entry.item} data-crowd-id={entry.id}/>:
   entry.kind==='creature'?<CreatureFigure key={`creature-${entry.id}`} item={entry.item} data-creature-id={entry.id}/>:
@@ -75,6 +83,6 @@ export default function HarbourMap({world,onFocus,selected,activeProps}) {
  {world.production.toads.filter(t=>t.status==='hidden'&&world.day>=t.availableFrom&&PLACES[t.location]).map(t=>{const [x,y]=PLACES[t.location];return <g key={t.id} role="button" tabIndex="0" aria-label="Something in the leaves" className="map-target toad" transform={`translate(${x-48} ${y+27})`} onClick={()=>focus('toad',t.location,x-48,y+27)} onKeyDown={e=>{if(e.key==='Enter')focus('toad',t.location,x-48,y+27)}}><circle r="18" fill="transparent"/><ellipse rx="6" ry="4" fill="#768454"/><circle cx="-3" cy="-3" r="2" fill="#a3a266"/><circle cx="3" cy="-3" r="2" fill="#a3a266"/></g>})}
  {Object.entries(PLACES).map(([id,[x,y,name]])=><text className="local-label place-label" key={id} x={x} y={y+110} textAnchor="middle">{id==='cliff_path'&&!knows(world,'juan_route')?'Outer path':LOCATION_LABELS[id]||name}</text>)}
  {micro&&camera.z>1.7&&<g className="map-murmur" aria-hidden="true" transform={`translate(${PLACES[micro.requires[0][1]][0]} ${PLACES[micro.requires[0][1]][1]-50})`}><rect x="-130" y="-28" width="260" height="36" rx="8" fill="#f3e8d0"/><text textAnchor="middle" y="-7">{visibleNames(world,micro.lines[(world.relationshipEcology.beats?.length||0)%micro.lines.length])}</text></g>}
- </svg><div className="camera-tools"><button aria-label="Zoom in" onClick={()=>zoom(1.3)}>+</button><button aria-label="Zoom out" onClick={()=>zoom(.77)}>−</button><button aria-label="See whole harbour" onClick={()=>change(()=>({x:0,y:0,z:1}))}>↔</button></div>
+ </svg><div className="camera-tools"><button aria-label="Zoom in" onClick={()=>zoom(1.3)}>+</button><button aria-label="Zoom out" onClick={()=>zoom(.77)}>−</button><button aria-label="Reset harbour view" onClick={()=>setCamera(centeredCamera(size,HARBOUR_WORLD,1))}>↔</button></div>
  </section>
 }
