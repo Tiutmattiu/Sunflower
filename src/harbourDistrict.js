@@ -91,10 +91,22 @@ function dayNumber(world={}) {
   return Number.isFinite(world.day) ? world.day : 0;
 }
 
+function liveDistrictFacts(world,day){
+  const auction=world.playerGame?.routes?.yasmin;
+  const auctionPreview=Boolean(auction&&day>=auction.previewOpens&&day<=auction.previewCloses);
+  const auctionDay=Boolean(auction&&day===auction.auctionDay);
+  const barBusy=Boolean(world.relationshipEcology?.barEvenings?.some(x=>x.day===day&&(x.attendees?.length||0)>1));
+  const wongLoad=(world.actors?.wong?.busy||0)+(world.wongBusiness?.stored?.length||0);
+  const openOrders=(world.market?.orders||[]).filter(x=>x.status==='open').length;
+  const toadGathering=Boolean(world.toadCircle?.occurrences?.some(x=>x.day===day));
+  return {auctionPreview,auctionDay,barBusy,wongBusy:wongLoad>=3,exchangeBusy:openOrders>=2,toadGathering};
+}
+
 export function districtStateForWorld(world={}) {
   const day = dayNumber(world);
   const storm = world.weather === 'storm';
   const shabbatLike = day % 7 === 5;
+  const live=liveDistrictFacts(world,day);
   return Object.freeze({
     day,
     storm,
@@ -105,6 +117,7 @@ export function districtStateForWorld(world={}) {
     cinemaNight: !storm && day % 3 === 0,
     commercialQuiet: shabbatLike,
     seaEnergy: storm ? 'rough' : (day % 2 ? 'bright' : 'calm'),
+    ...live,
   });
 }
 
@@ -113,7 +126,14 @@ export function districtSignals(world={}) {
   return SIGNALS.map(signal => ({
     ...signal,
     muted: state.commercialQuiet && ['wong-services','pizza-deli','barber','massage'].includes(signal.kind),
-    emphasized: (state.musicNight && signal.kind === 'bar-live-music') || (state.shabbatLike && signal.kind === 'faith-house') || (state.cinemaNight && signal.kind === 'old-hall'),
+    emphasized:
+      ((state.musicNight||state.barBusy) && signal.kind === 'bar-live-music') ||
+      (state.shabbatLike && signal.kind === 'faith-house') ||
+      (state.cinemaNight && signal.kind === 'old-hall') ||
+      ((state.auctionPreview||state.auctionDay) && signal.kind === 'gallery') ||
+      (state.wongBusy && signal.kind === 'wong-services') ||
+      (state.exchangeBusy && signal.kind === 'public-clearing') ||
+      (state.toadGathering && signal.kind === 'growing-yard'),
   }));
 }
 
