@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
 import {TABLEAU_ZONES,crowdForWorld} from '../src/harbourTableau.js';
 
 const zones=new Map(TABLEAU_ZONES.map(x=>[x.id,x]));
@@ -16,4 +17,10 @@ for(const item of movers){
 }
 const seated=rows.filter(x=>['chess','shisha','eat'].includes(x.activity));
 assert(seated.every(x=>!x.motion||Math.abs(x.motion.dx)<=3),'seated crowd should not wander across the tableau');
-console.log('PASS: background crowd motion stays bounded inside authored zones');
+
+const layer=await readFile(new URL('../src/HarbourTableauLayer.jsx',import.meta.url),'utf8');
+const css=await readFile(new URL('../src/harbourTableau.css',import.meta.url),'utf8');
+assert(layer.includes("'--travel-x'"),'renderer must pass motion distance into CSS');
+assert(css.includes('var(--travel-x'),'CSS walk loop must consume authored motion distance');
+assert(css.includes('.activity-walk,.activity-pace,.activity-carry'),'walk/pace/carry should share bounded traversal animation');
+console.log('PASS: background crowd motion stays bounded and reaches the renderer');
