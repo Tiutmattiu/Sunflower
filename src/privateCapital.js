@@ -86,7 +86,7 @@ export function settleDimaGuarantees(w){
  for(const guarantee of book.guarantees.filter(g=>g.status==='active')){
   const claim=w.claims.find(c=>c.id===guarantee.claimId);if(!claim||claim.status!=='default')continue;
   const amount=Math.min(guarantee.coverage,freeCash(w,'dima'));const holder=w.actors[guarantee.holderId];
-  if(amount>0&&holder){w.actors.dima.cash-=amount;holder.cash+=amount;tx(w,'guarantee_call','dima',guarantee.holderId,amount,claim.id);}
+  if(amount>0&&holder){w.actors.dima.cash-=amount;holder.cash+=amount;tx(w,'guarantee_payout','dima',guarantee.holderId,amount,claim.id);}
   guarantee.paid=amount;guarantee.status=amount>=guarantee.coverage?'called':'breached';guarantee.calledDay=w.day;
   if(amount>0){const recourse={id:`recourse-${++w.nextEvent}`,type:'guarantee_recourse',issuerId:guarantee.issuerId,holderId:'dima',face:amount,originalFace:amount,dueDay:w.day+5,status:'open',purpose:`recourse_${claim.id}`,createdDay:w.day};w.claims.push(recourse);guarantee.recourseClaimId=recourse.id;}
   emit(w,'dima_guarantee_called',{guaranteeId:guarantee.id,claimId:claim.id,amount,status:guarantee.status});
