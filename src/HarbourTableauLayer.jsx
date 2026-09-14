@@ -1,9 +1,29 @@
 import React from 'react';
+import {HARBOUR_WORLD} from './harbourWorld.js';
 import './harbourTableau.css';
 
 const SKINS=['#7a4d38','#b96f4a','#d4a276','#e2ba91','#6a4938','#9e6a50'];
 const CLOTHES=['#415f66','#8b4d3e','#596849','#8b7048','#534d68','#a36a3d','#4c6175'];
 const pick=(list,id,offset=0)=>list[(id.length+id.charCodeAt(0)+offset)%list.length];
+
+export function ExpandedWorldBackdrop() {
+  const {width,height}=HARBOUR_WORLD;
+  return <g aria-hidden="true" pointerEvents="none" className="expanded-world-backdrop">
+    <rect className="world-paper" width={width} height={height}/>
+    <path className="world-sea" d="M0 765C320 718 620 785 930 790C1260 796 1570 704 2000 675V1200H0Z"/>
+    <path className="world-shore" d="M0 704C305 680 590 734 920 744C1190 752 1460 688 1690 654L1680 722C1435 756 1205 814 920 806C585 797 300 754 0 788Z"/>
+    <path className="world-cliff" d="M0 230C80 265 150 344 183 438C213 526 204 650 154 766L0 834Z"/>
+    <path className="world-park" d="M475 706C585 666 796 674 950 739L924 934C744 978 560 951 448 858Z"/>
+    <path className="world-upper-street" d="M1260 95H2000V656C1814 678 1602 694 1432 651L1282 525Z"/>
+    <path className="world-road" d="M108 450C420 420 624 470 820 565C1010 659 1215 652 1510 570C1677 524 1830 493 1972 510"/>
+    <path className="world-breakwater" d="M1045 809C1270 840 1515 822 1760 770"/>
+    <g className="world-water-lines">
+      <path d="M1040 910C1230 884 1425 928 1605 898C1745 876 1855 840 1970 850"/>
+      <path d="M1110 1010C1280 986 1485 1026 1680 998C1794 981 1882 955 1978 960"/>
+      <path d="M990 1102C1218 1078 1434 1120 1648 1094C1780 1078 1888 1049 1985 1053"/>
+    </g>
+  </g>;
+}
 
 function StandingPerson({item}) {
   const skin=pick(SKINS,item.id), coat=pick(CLOTHES,item.id,3);
@@ -64,7 +84,8 @@ export function CreatureFigure({item,...props}) {
 }
 
 export function TableauSignals() {
-  return <g aria-hidden="true" pointerEvents="none" className="tableau-signals">
+  const {x,y}=HARBOUR_WORLD.legacy;
+  return <g aria-hidden="true" pointerEvents="none" className="tableau-signals" transform={`translate(${x} ${y})`}>
     <g transform="translate(1165 425)"><rect x="-45" y="-18" width="90" height="28" rx="4"/><text y="1" textAnchor="middle">WONG • PARCEL • LAUNDRY</text><circle cx="36" cy="23" r="11"/><text x="36" y="27" textAnchor="middle">₿</text></g>
     <g transform="translate(905 585)"><rect x="-42" y="-17" width="84" height="26" rx="13"/><text y="1" textAnchor="middle">OCTOPUS BANK</text></g>
     <g transform="translate(512 453)"><text>SHISHA</text><path d="M15 6V25M8 25H22M10 8Q15 2 20 8"/></g>
