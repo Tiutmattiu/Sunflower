@@ -1,14 +1,14 @@
 import assert from 'node:assert/strict';
 import {createHarbourWorld} from '../src/harbourSpine.js';
+import {settleSecuredClaims} from '../src/npcEconomy.js';
 import {
   yasminSecuredAdvance,
   sellUnitOutright,
-  settleSecuredClaims,
   dimaBuyClaim,
   dimaExtendClaim,
   dimaGuaranteeClaim,
   settleDimaGuarantees,
-} from '../src/npcEconomy.js';
+} from '../src/privateCapital.js';
 
 // Pledge is not a sale: borrower keeps ownership until default, principal is haircutted.
 let w=createHarbourWorld(61,{attentionPerDay:99});
