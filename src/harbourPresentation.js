@@ -5,7 +5,7 @@ export {friendlyBlock};
 export const ACTION_COPY=Object.fromEntries(Object.entries(COPY).map(([id,c])=>[id,[c.intent,c.terms||c.result]]));
 
 export const TARGET_ACTIONS={
-  aspen:['aspen_onewheel_plan','assemble_onewheel','operate_inspection'],
+  aspen:['aspen_onewheel_plan','assemble_onewheel','aspen_modify_onewheel','operate_inspection'],
   joel:['mai_tai_taste','mai_tai_check_shelf','joel_hear_supper','joel_invitation','joel_supply_orgeat','joel_serve_juan','joel_patronage','joel_help','repay_race_drinks'],
   juan:['juan_explain_goal','juan_race_offer','race_juan','juan_field_trip','invest_nursery','finance_receivable','sell_toad'],
   yasmin:['auction_preview','auction_finance','repay_finance'],
@@ -17,7 +17,7 @@ export const TARGET_ACTIONS={
   glass:['mai_tai_taste','joel_patronage','joel_hear_supper','joel_help','joel_serve_juan','intermediate_lead'],
   packing:['trade_bridge'],
   parcel:[],
-  parts:['assemble_onewheel'],
+  parts:['assemble_onewheel','aspen_modify_onewheel'],
   plants:['invest_nursery','invite_toad_circle'],
   paper:['finance_receivable'],
   bowl:['auction_preview','auction_inspect','auction_bid','auction_walk','speculate_lot'],
@@ -31,6 +31,7 @@ export const TARGET_ACTIONS={
 
 export function actionLine(a,w){
   if(a.id==='trade_bridge'&&w.production.tradeStock.length)return 'Would you buy the packing bundle?';
+  if(a.id==='aspen_modify_onewheel')return 'Could you look at the wheel again?';
   return actionIntent(a);
 }
 
@@ -66,6 +67,7 @@ export function readableResult(before,after,a){
   if(a.id==='lime_deliver')return after.playerGame.lime.representation==='disclose'?'“Twenty, then.” She pays 6 tins and writes the shortage down.':'She pays 8. Later, the count does not match your words. She will remember.';
   if(a.id==='joel_invitation')return `“Day ${after.playerGame.routes.sonya.supperDay}. Bring the special fresh catch; it arrives the day before.”`;
   if(a.id==='buy_part')return `The ${a.payload.kind.toLowerCase()} is in your bag.`;
+  if(a.id==='aspen_modify_onewheel')return 'Aspen uses her own torque wrench to true the wheel. The tool stays with her; the favor does not.';
   if(a.id==='auction_finance')return `Eight tins now. Repay nine on day ${after.claims.at(-1).dueDay}. ${after.actors.player.inventory.find(u=>u.pledgedTo)?.kind} is promised until you repay.`;
   if(a.id==='race_juan'){
     if(after.playerGame.routes.juan.stage==='won'&&before.playerGame.routes.juan.stage!=='won')return 'You win. Juan says he will take you there now.';
