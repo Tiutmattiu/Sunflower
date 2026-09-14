@@ -18,12 +18,12 @@ const base=crowdForWorld(world());
 const previewWorld=world({day:4});
 const preview=crowdForWorld(previewWorld);
 assert(count(preview,'auction-preview')>0,'preview days should visibly populate Yasmin gallery');
-assert.equal(districtStateForWorld(previewWorld).auctionPreview,true,'preview should be a district hotspot state');
-assert(districtSignals(previewWorld).some(x=>x.kind==='gallery'&&x.emphasized),'gallery signal should strengthen during preview');
+assert.equal(districtStateForWorld(previewWorld).auctionPreview,true);
+assert(districtSignals(previewWorld).some(x=>x.kind==='gallery'&&x.emphasized));
 const auctionWorld=world({day:6});
 const auction=crowdForWorld(auctionWorld);
 assert(count(auction,'auction-day')>count(preview,'auction-day'),'auction day should create a stronger gallery crowd');
-assert.equal(districtStateForWorld(auctionWorld).auctionDay,true,'auction day should be a district hotspot state');
+assert.equal(districtStateForWorld(auctionWorld).auctionDay,true);
 
 const barWorld=world({relationshipEcology:{barEvenings:[{day:3,attendees:['joel','juan','dima','yasmin'],served:['juan','dima','yasmin']}]}});
 const barBusy=crowdForWorld(barWorld);
@@ -35,13 +35,17 @@ const wongBusy=crowdForWorld(wongWorld);
 assert(count(wongBusy,'wong-hotspot')>count(base,'wong-hotspot'),'Wong workload should lengthen the visible service queue');
 assert.equal(districtStateForWorld(wongWorld).wongBusy,true);
 
-const marketWorld=world({market:{orders:[{status:'open'},{status:'open'},{status:'open'},{status:'open'}]}});
-const marketBusy=crowdForWorld(marketWorld);
-assert(count(marketBusy,'exchange-hotspot')>count(base,'exchange-hotspot'),'open public orders should populate Octopus Clearing');
-assert.equal(districtStateForWorld(marketWorld).exchangeBusy,true);
+const octopusWorld=world({market:{orders:[{status:'open'},{status:'open'},{status:'open'},{status:'open'}]}});
+const octopusBusy=crowdForWorld(octopusWorld);
+assert(count(octopusBusy,'octopus-hotspot')>count(base,'octopus-hotspot'),'open public orders should populate Octopus');
+assert.equal(districtStateForWorld(octopusWorld).octopusBusy,true);
+assert(districtSignals(octopusWorld).some(x=>x.kind==='octopus'&&x.emphasized),'the single Octopus signal should strengthen when the clearing is busy');
 
 const toadWorld=world({toadCircle:{occurrences:[{day:3,attending:['juan','aspen']}]}});
 const toadDay=crowdForWorld(toadWorld);
 assert(count(toadDay,'toad-circle')>0,'a real toad-circle occurrence should be visible near the nursery');
 assert.equal(districtStateForWorld(toadWorld).toadGathering,true);
-console.log('PASS: harbour crowd and district cues reflect live social/economic state');
+
+const festival=crowdForWorld(world({day:2}));
+assert(count(festival,'music-festival')>=4,'festival day should create a distinct live-music crowd away from the Bar');
+console.log('PASS: harbour hotspots reflect live state without duplicating institutions');
