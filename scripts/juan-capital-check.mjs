@@ -24,6 +24,27 @@ lime.health=1;mint.health=1;
 applyJuanCropEconomicsDay(w,{chargeInputs:false,applyFailureRoll:false});
 assert(lime.health!==mint.health,'species-specific storm sensitivity must affect asset health differently');
 
+// The normal day boundary must apply exactly one crop-health model, not legacy generic decay plus the profile model.
+let actualHealthWorld=createHarbourWorld(56,{attentionPerDay:99});
+for(const asset of actualHealthWorld.livingAssets){asset.health=1;asset.maturity=0;}
+actualHealthWorld=advanceHarbourWindow(actualHealthWorld);
+let profileOnlyWorld=createHarbourWorld(56,{attentionPerDay:99});
+profileOnlyWorld.day=actualHealthWorld.day;profileOnlyWorld.weather=actualHealthWorld.weather;
+for(const asset of profileOnlyWorld.livingAssets){asset.health=1;asset.maturity=0;}
+applyJuanCropEconomicsDay(profileOnlyWorld,{chargeInputs:true,applyFailureRoll:true});
+for(const expectedAsset of profileOnlyWorld.livingAssets.filter(a=>a.ownerId==='juan'&&JUAN_CROP_PROFILES[a.species])){
+ const actualAsset=actualHealthWorld.livingAssets.find(a=>a.id===expectedAsset.id);
+ assert.equal(actualAsset.health,expectedAsset.health,`${expectedAsset.species} health must be changed by the profile model exactly once per day`);
+}
+
+// Day 5 is not an input date for the four starting crop profiles; there must be no legacy generic 2-tin plant bill.
+let dayFiveWorld=createHarbourWorld(57,{attentionPerDay:99});
+dayFiveWorld.day=4;
+for(const asset of dayFiveWorld.livingAssets){asset.maturity=0;asset.health=1;}
+dayFiveWorld=advanceHarbourWindow(dayFiveWorld);
+assert.equal(dayFiveWorld.npcEconomy.cropEvents.filter(e=>e.day===5&&e.type==='crop_input').length,0,'no species profile is due for cultivation input on day 5');
+assert.equal(dayFiveWorld.externalFlows.filter(f=>f.day===5&&f.sector==='growing_inputs'&&f.reason==='plant_inputs').length,0,'legacy generic cultivation charge must not stack on species input economics');
+
 // The normal daily world tick must use the crop profile's real base yield, not a fixed one-unit harvest.
 w=createHarbourWorld(54,{attentionPerDay:99});
 const harvestMint=w.livingAssets.find(a=>a.species==='mint');
