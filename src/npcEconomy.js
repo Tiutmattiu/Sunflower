@@ -1,3 +1,5 @@
+import {reconcileJuanHarvestEconomics} from './juanEconomy.js';
+
 const SOURCE_ORDER=['UNKNOWN','SOURCE_LOCATED','LOCALLY_AVAILABLE','ESTABLISHED'];
 const WONG_STAGE_ORDER=['counter','storage','laundry','frontage'];
 
@@ -287,4 +289,4 @@ export function settleFutureOutputAssignment(w,assignmentId,grossValue){
  return {ok:true,amount};
 }
 
-export function npcEconomyDay(w){initializeNpcEconomy(w);runWongBusinessDay(w);applyJuanCropEconomicsDay(w);settleSecuredClaims(w);return w;}
+export function npcEconomyDay(w){initializeNpcEconomy(w);runWongBusinessDay(w);reconcileJuanHarvestEconomics(w,JUAN_CROP_PROFILES);applyJuanCropEconomicsDay(w);settleSecuredClaims(w);return w;}
