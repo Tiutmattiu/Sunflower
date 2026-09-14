@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {createHarbourWorld} from '../src/harbourSpine.js';
+import {createHarbourWorld,advanceHarbourWindow} from '../src/harbourSpine.js';
 import {
   JUAN_CROP_PROFILES,
   applyJuanCropEconomicsDay,
@@ -23,6 +23,15 @@ const mint=w.livingAssets.find(a=>a.species==='mint');
 lime.health=1;mint.health=1;
 applyJuanCropEconomicsDay(w,{chargeInputs:false,applyFailureRoll:false});
 assert(lime.health!==mint.health,'species-specific storm sensitivity must affect asset health differently');
+
+// The normal daily world tick must use the crop profile's real base yield, not a fixed one-unit harvest.
+w=createHarbourWorld(54,{attentionPerDay:99});
+const harvestMint=w.livingAssets.find(a=>a.species==='mint');
+harvestMint.maturity=JUAN_CROP_PROFILES.mint.maturityDays-1;
+const mintBefore=w.actors.juan.inventory.filter(u=>u.kind==='Mint').length;
+w=advanceHarbourWindow(w);
+const mintAfter=w.actors.juan.inventory.filter(u=>u.kind==='Mint').length;
+assert.equal(mintAfter-mintBefore,JUAN_CROP_PROFILES.mint.baseYield,'real Juan harvest must materialise the configured biological yield');
 
 // Distressed early sale: cash now, asset ownership leaves Juan, later upside leaves too.
 w=createHarbourWorld(52,{attentionPerDay:99});
