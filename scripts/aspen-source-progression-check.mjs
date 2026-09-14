@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {createHarbourWorld} from '../src/harbourSpine.js';
+import {advanceProductionGame} from '../src/productionGame.js';
 import {sourceState} from '../src/npcEconomy.js';
 import {advanceRouteSources,requestEstablishedReplenishment} from '../src/routeSources.js';
 
@@ -45,5 +46,16 @@ w.day=r.dueDay;advanceRouteSources(w);
 assert.equal(w.actors.aspen.inventory.filter(u=>u.kind==='Brass Compass').length,beforeUnits+r.quantity,'due replenishment creates only ordered physical units');
 const newUnits=w.actors.aspen.inventory.filter(u=>u.kind==='Brass Compass').slice(-r.quantity);
 assert(newUnits.every(u=>u.source==='established_route_source'),'replenished goods retain source provenance');
+
+// The normal daily production boundary must consume a real route-return fact automatically.
+let integrated=createHarbourWorld(72,{attentionPerDay:99});
+integrated.day=4;
+integrated.aspenRoute.activeRoute='medium';
+integrated.aspenRoute.activeCargo=['Lime'];
+integrated.actors.aspen.inventory.push({unitId:'integration-route-lime',kind:'Lime',owner:'aspen',age:0,costBasis:1,source:'route_medium_import',opened:false,remaining:6});
+integrated.returnLedger.push({day:4,class:'OPERATE',actorId:'aspen',amount:8,context:'medium_logistics_margin'});
+advanceProductionGame(integrated);
+assert.equal(sourceState(integrated,'Lime').status,'LOCALLY_AVAILABLE','real Aspen returns must reach source progression without a manual helper call');
+assert.equal(sourceState(integrated,'Lime').successfulReturns,1);
 
 console.log('PASS: Aspen route returns causally establish bounded replenishable sources');
