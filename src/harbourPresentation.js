@@ -7,7 +7,7 @@ export const ACTION_COPY=Object.fromEntries(Object.entries(COPY).map(([id,c])=>[
 export const TARGET_ACTIONS={
   aspen:['aspen_onewheel_plan','assemble_onewheel','operate_inspection'],
   joel:['mai_tai_taste','mai_tai_check_shelf','joel_hear_supper','joel_invitation','joel_supply_orgeat','joel_serve_juan','joel_patronage','joel_help','repay_race_drinks'],
-  juan:['juan_explain_goal','juan_race_offer','race_juan','invest_nursery','finance_receivable','sell_toad'],
+  juan:['juan_explain_goal','juan_race_offer','race_juan','juan_field_trip','invest_nursery','finance_receivable','sell_toad'],
   yasmin:['auction_preview','auction_finance','repay_finance'],
   wong:['sell_toad'],
   dima:['private_proxy'],
@@ -68,11 +68,12 @@ export function readableResult(before,after,a){
   if(a.id==='buy_part')return `The ${a.payload.kind.toLowerCase()} is in your bag.`;
   if(a.id==='auction_finance')return `Eight tins now. Repay nine on day ${after.claims.at(-1).dueDay}. ${after.actors.player.inventory.find(u=>u.pledgedTo)?.kind} is promised until you repay.`;
   if(a.id==='race_juan'){
-    if(after.playerGame.sunflower.owned&&!before.playerGame.sunflower.owned)return 'You win. Juan keeps the wager and takes you to the sunflower field.';
+    if(after.playerGame.routes.juan.stage==='won'&&before.playerGame.routes.juan.stage!=='won')return 'You win. Juan says he will take you there now.';
     const debt=after.playerGame.commitments.find(x=>x.id.startsWith('juan-race-drinks-')&&['open','breached'].includes(x.status));
     const paid=before.actors.player.cash-after.actors.player.cash;
     return debt?`You lose. ${paid} tins go to the bar now; ${debt.amountDue} tins remain owed for the drinks.`:`You lose. ${paid} tins go to Joel for everyone’s drinks.`;
   }
+  if(a.id==='juan_field_trip')return 'Juan leads you out beyond the familiar harbour path. The wager is kept before the sunflower changes hands.';
   const delta=after.actors.player.cash-before.actors.player.cash;
   return `${COPY[a.id]?.result||'The exchange is finished.'}${delta?` (${delta>0?'+':''}${delta} tins.)`:''}`;
 }
