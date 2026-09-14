@@ -5,6 +5,7 @@ const SKINS=['#7a4d38','#b96f4a','#d4a276','#e2ba91','#6a4938','#9e6a50'];
 const CLOTHES=['#415f66','#8b4d3e','#596849','#8b7048','#534d68','#a36a3d','#4c6175'];
 const HAIR=['#2f2a28','#4c352d','#7c5a45','#171b1b','#5a463d'];
 const pick=(list,id,offset=0)=>list[(id.length+id.charCodeAt(0)+offset)%list.length];
+const loopStyle=item=>({'--loop-duration':`${item.duration}s`,'--travel-x':`${item.motion?.dx||0}px`,'--travel-y':`${item.motion?.dy||0}px`});
 
 function Face({item,cy=-38}){
  const skin=pick(SKINS,item.id),hair=item.age==='elder'?'#c5bdac':pick(HAIR,item.id,2);
@@ -13,7 +14,7 @@ function Face({item,cy=-38}){
 
 function StandingPerson({item}){
  const skin=pick(SKINS,item.id),coat=pick(CLOTHES,item.id,3),wide=item.body==='wide',wealthy=item.variant==='wealthy';
- return <g className={`tableau-loop activity-${item.activity}`} style={{'--loop-duration':`${item.duration}s`}}>
+ return <g className={`tableau-loop activity-${item.activity}`} style={loopStyle(item)}>
    <Face item={item}/>
    <path d={wide?'M-15-28Q0-35 15-28L12-5H-12Z':'M-10-28Q0-34 10-28L8-5H-8Z'} fill={wealthy?'#393f56':coat}/>
    <path d="M-6-5L-8 17M6-5L8 17" stroke="#3b3935" strokeWidth="3" strokeLinecap="round"/>
@@ -29,7 +30,7 @@ function StandingPerson({item}){
 
 function SeatedPerson({item}){
  const skin=pick(SKINS,item.id),coat=pick(CLOTHES,item.id,4);
- return <g className={`tableau-loop activity-${item.activity}`} style={{'--loop-duration':`${item.duration}s`}}>
+ return <g className={`tableau-loop activity-${item.activity}`} style={loopStyle(item)}>
    <Face item={item} cy={-30}/>
    <path d="M-10-20Q0-27 10-20L7-4H-7Z" fill={coat}/>
    <path d="M-6-4L-15 8M6-4L15 8" stroke="#393833" strokeWidth="3" strokeLinecap="round"/>
@@ -41,19 +42,19 @@ function SeatedPerson({item}){
 
 function SlumpFigure({item}){
  const skin=pick(SKINS,item.id),coat=pick(CLOTHES,item.id,1);
- return <g className="tableau-loop activity-slump" style={{'--loop-duration':`${item.duration}s`}} transform="rotate(8)">
+ return <g className="tableau-loop activity-slump" style={loopStyle(item)} transform="rotate(8)">
    <ellipse cx="-20" cy="-11" rx="7" ry="8" fill={skin}/><path d="M-13-10Q4-18 18-5L12 7H-5Z" fill={coat}/><path d="M8 6L26 14M0 6L-13 18" stroke="#403d38" strokeWidth="3" strokeLinecap="round"/>
  </g>;
 }
 
 function SkeletonFigure({item}){
- return <g className="tableau-loop activity-idle tableau-skeleton" style={{'--loop-duration':`${item.duration}s`}}>
+ return <g className="tableau-loop activity-idle tableau-skeleton" style={loopStyle(item)}>
    <circle cy="-35" r="7"/><path d="M0-28V-7M-9-22H9M-6-17L-11-9M6-17L11-9M0-7L-8 13M0-7L8 13"/><path d="M-6-25h12M-6-20h12M-5-15h10"/>
  </g>;
 }
 
-function Swimmer({item}){return <g className="tableau-loop activity-swim" style={{'--loop-duration':`${item.duration}s`}}><ellipse cy="-4" rx="8" ry="7" fill={pick(SKINS,item.id)}/><path d="M-15 2Q0 8 16 2" fill="none" stroke="#e4efe3" strokeWidth="2" opacity=".8"/></g>}
-function Sunbather({item}){return <g className="tableau-loop activity-sunbathe" style={{'--loop-duration':`${item.duration}s`}} transform="rotate(-8)"><ellipse cx="-18" cy="-4" rx="6" ry="5" fill={pick(SKINS,item.id)}/><path d="M-12-4H18" stroke={pick(CLOTHES,item.id)} strokeWidth="7" strokeLinecap="round"/><path d="M18-4L31-8M18-4L31 2" stroke={pick(SKINS,item.id)} strokeWidth="3" strokeLinecap="round"/></g>}
+function Swimmer({item}){return <g className="tableau-loop activity-swim" style={loopStyle(item)}><ellipse cy="-4" rx="8" ry="7" fill={pick(SKINS,item.id)}/><path d="M-15 2Q0 8 16 2" fill="none" stroke="#e4efe3" strokeWidth="2" opacity=".8"/></g>}
+function Sunbather({item}){return <g className="tableau-loop activity-sunbathe" style={loopStyle(item)} transform="rotate(-8)"><ellipse cx="-18" cy="-4" rx="6" ry="5" fill={pick(SKINS,item.id)}/><path d="M-12-4H18" stroke={pick(CLOTHES,item.id)} strokeWidth="7" strokeLinecap="round"/><path d="M18-4L31-8M18-4L31 2" stroke={pick(SKINS,item.id)} strokeWidth="3" strokeLinecap="round"/></g>}
 
 export function CrowdFigure({item,...props}){
  const seated=['chess','shisha','eat'].includes(item.activity),scale=item.scale||1;
