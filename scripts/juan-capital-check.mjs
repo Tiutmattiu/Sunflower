@@ -66,4 +66,25 @@ assert.equal(w.actors.dima.cash,dimaCash+5);
 assert.equal(w.actors.juan.cash,15);
 assert.equal(settleFutureOutputAssignment(w,assignment.id,10).ok,false,'one assigned harvest cannot settle twice');
 
+// A real future-output contract must also perform on the actual harvest without inventing cash proceeds.
+w=createHarbourWorld(55,{attentionPerDay:99});
+const assignedMint=w.livingAssets.find(a=>a.species==='mint');
+assignedMint.maturity=JUAN_CROP_PROFILES.mint.maturityDays-1;
+r=assignFutureOutput(w,assignedMint.id,'dima',{cashNow:3,share:.5});
+assert.equal(r.ok,true,r.reason);
+const physicalAssignment=w.npcEconomy.futureOutputAssignments.find(a=>a.id===r.assignmentId);
+const dimaMintBefore=w.actors.dima.inventory.filter(u=>u.kind==='Mint').length;
+const juanMintBefore=w.actors.juan.inventory.filter(u=>u.kind==='Mint').length;
+const dimaCashAfterAdvance=w.actors.dima.cash;
+w=advanceHarbourWindow(w);
+const dimaMintAfter=w.actors.dima.inventory.filter(u=>u.kind==='Mint').length;
+const juanMintAfter=w.actors.juan.inventory.filter(u=>u.kind==='Mint').length;
+assert.equal(physicalAssignment.id,w.npcEconomy.futureOutputAssignments.find(a=>a.id===physicalAssignment.id).id);
+const settledPhysical=w.npcEconomy.futureOutputAssignments.find(a=>a.id===physicalAssignment.id);
+assert.equal(settledPhysical.status,'settled','actual harvest must close the one-harvest output assignment');
+assert.equal(dimaMintAfter-dimaMintBefore,1,'half of a two-unit mint harvest should become Dima-owned physical output');
+assert.equal(juanMintAfter-juanMintBefore,JUAN_CROP_PROFILES.mint.baseYield-1,'Juan retains the unassigned physical harvest share');
+assert.equal(w.actors.dima.cash,dimaCashAfterAdvance,'harvest allocation must not invent a second cash settlement');
+assert(w.actors.dima.inventory.filter(u=>u.kind==='Mint').every(u=>u.owner==='dima'));
+
 console.log('PASS: Juan crops differ in biological economics and liquidity structures preserve ownership/risk distinctions');
