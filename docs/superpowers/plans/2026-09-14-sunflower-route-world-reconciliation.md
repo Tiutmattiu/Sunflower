@@ -2,7 +2,7 @@
 
 **Spec:** `CURRENT_GAME.md`
 
-Use one new integration branch from latest `main`, one eventual PR, and meaningful checkpoint commits. Do not squash the whole pass into one opaque commit.
+Latest user direction: preserve unpublished work first, then implement and push meaningful checkpoint commits directly on `main`. Do not create development branches, force-push, or rewrite published history.
 
 ## Checkpoint 1 — Knowledge gates
 Add explicit player knowledge state. Remove the early Juan cliff prompt and prove a fresh player cannot learn sunflower/cliff/Onewheel/race vocabulary before the Joel gate. Audit actions, dialogue, phone, newspaper, notes, guide text, tooltips and accessibility copy.

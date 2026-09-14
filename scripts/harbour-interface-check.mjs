@@ -1,3 +1,4 @@
+import {learn} from '../src/playerKnowledge.js';
 import assert from 'node:assert/strict';
 import {createHarbourWorld,advanceHarbourWindow,finishPlayerIntervention,placePublicOrder,assertHarbourInvariants} from '../src/harbourSpine.js';
 import {performPlayerAction,visitLocation,visibleActions,settlePlayerDebts} from '../src/playerGame.js';
@@ -6,7 +7,8 @@ import {selectDialogue} from '../src/dialogueContent.js';
 import {recordDiscoveredMisconduct,performProductionAction,advanceProductionGame} from '../src/productionGame.js';
 const base=()=>createHarbourWorld();
 let w=visitLocation(base(),'nursery');w=performPlayerAction(w,'meet',{actor:'juan'});
-assert(visibleActions(w).some(a=>a.id==='juan_plan'));
+assert(!visibleActions(w).some(a=>a.id==='juan_plan'));
+learn(w,'juan_goal_explained');learn(w,'juan_route');
 w=performPlayerAction(w,'juan_plan');w=performPlayerAction(w,'meet',{actor:'juan'});assert.equal(w.playerGame.routes.juan.stage,'planning');
 let exhausted=base();exhausted.playerGame.location='joels_bar';exhausted.attention.used=4;
 let fail=performPlayerAction(exhausted,'joel_patronage');assert.equal(fail.actors.player.cash,18);assert.equal(fail.attention.used,4);
@@ -59,7 +61,7 @@ console.log('PASS: reserved cash survives penalties; unfunded private buyer take
 w=base();for(const unit of w.actors.player.inventory)w.market.reservations.push({orderId:`lock-${unit.unitId}`,actorId:'player',kind:'unit',unitId:unit.unitId});
 w.playerGame.location=w.actors.player.location='viewing_room';w.playerGame.routes.yasmin.preview=true;w.actors.yasmin.location='viewing_room';
 after=performPlayerAction(w,'auction_finance');assert(after.playerGame.lastBlock);assert(!after.claims.some(c=>c.issuerId==='player'));
-w=base();w.day=6;w.playerGame.location=w.actors.player.location='parcel_counter';w.playerGame.routes.juan.stage='planning';w.actors.wong.location='parcel_counter';
+w=base();learn(w,'juan_route');w.day=6;w.playerGame.location=w.actors.player.location='parcel_counter';w.playerGame.routes.juan.stage='planning';w.actors.wong.location='parcel_counter';
 for(const kind of ['Steel Rim','Chain Quick-Link','Brake Cable','Handlebar Tape'])w.actors.player.inventory.push({unitId:`test-${kind}`,kind,owner:'player',age:0,costBasis:1,source:'test',opened:false,remaining:1});
 w.market.reservations.push({orderId:'lock-rim',actorId:'player',kind:'unit',unitId:'test-Steel Rim'});
 after=performPlayerAction(w,'assemble_onewheel');assert(after.playerGame.lastBlock);assert(!after.actors.player.inventory.some(u=>u.kind==='Built Onewheel'));assert(after.actors.player.inventory.some(u=>u.unitId==='test-Steel Rim'));

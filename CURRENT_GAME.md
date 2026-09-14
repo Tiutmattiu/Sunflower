@@ -149,7 +149,7 @@ Dima is the reference for linework, flat colour, contrast, proportions, and fini
 
 ## 10. Development and verification policy
 
-The next pass may be one large integration branch/PR because route state, information gating, tutorial copy, NPC timing, economic consequences, and renderer presentation affect each other.
+Latest user direction: implement directly on `main`, after preserving any unpublished local work. Do not create a development branch. ChatGPT is read-only while Codex holds write ownership. Route state, knowledge, timing, economy and rendering still require coherent checkpoints.
 
 The requirement is **structured checkpoints, not artificial PR boundaries**.
 
@@ -163,7 +163,7 @@ Recommended checkpoint sequence:
 6. world density / incidents / repeated encounters,
 7. full browser acceptance and regression pass.
 
-Each checkpoint should be a meaningful commit (or small coherent series), pushed to the same integration branch so it can be reviewed without waiting for the final PR.
+Each checkpoint is a meaningful commit (or small coherent series) pushed to `main`, with its SHA serving as a rollback/review point. Never force-push or rewrite published history.
 
 For every meaningful gameplay checkpoint:
 

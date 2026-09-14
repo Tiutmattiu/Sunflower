@@ -9,7 +9,7 @@ description: Implement and browser-test Sunflower player interactions, dialogue,
 
 **Read `CURRENT_GAME.md` first.** It is the current short-form authority layer and supersedes conflicting older design, handoff, verification, historical prototype, or current-implementation assumptions. Use deeper documents for detail only when they do not conflict with `CURRENT_GAME.md`.
 
-Continue the current worktree and branch. Preserve uncommitted work. The accepted product architecture is one continuous harbour world inside `src/AppCore.jsx`, with shared map/comic figures, edge phone/newspaper, bottom object strip, and a collapsed pocketbook. Do not restore location pages, tabs, card grids, contact encyclopedias, action-button forests, or a player home/workbench. Scene Lab is development-only.
+Preserve unpublished work before syncing. The latest user direction requires implementation and checkpoint pushes directly on `main`; do not create a development branch. The accepted product architecture is one continuous harbour world inside `src/AppCore.jsx`, with shared map/comic figures, edge phone/newspaper, bottom object strip, and a collapsed pocketbook. Do not restore location pages, tabs, card grids, contact encyclopedias, action-button forests, or a player home/workbench. Scene Lab is development-only.
 
 The existing `src/HarbourMap.jsx` implementation is a working continuous-map prototype, **not final renderer acceptance**. Follow the camera, layering, occlusion and resolution corrections in `CURRENT_GAME.md`; do not treat the current 1400×900 flattened background or contain-style gutters as immutable architecture.
 
@@ -39,9 +39,9 @@ For the world renderer, follow `CURRENT_GAME.md`: the camera should feel like a 
 
 ## Development shape
 
-The next major pass may use one integration branch and one large PR because information gates, route state, Onewheel/Aspen preparation, betting/race resolution, novice guidance, world timing and renderer presentation affect each other.
+Work directly on `main` under the latest user direction. Information gates, route state, preparation, races and renderer changes still require ordered coherent checkpoints.
 
-Do **not** turn this into one unstructured commit. Push meaningful checkpoint commits so the branch can be reviewed while work continues. Use the checkpoint order in `CURRENT_GAME.md` and the current implementation plan under `docs/superpowers/plans/`.
+Do **not** turn this into one unstructured commit. Push meaningful checkpoint commits to `main` so each SHA can be reviewed while work continues. Use the checkpoint order in `CURRENT_GAME.md` and the current implementation plan under `docs/superpowers/plans/`.
 
 ## Verification
 

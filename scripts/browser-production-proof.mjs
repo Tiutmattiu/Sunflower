@@ -32,40 +32,29 @@ try{
   await page.screenshot({path:path.join(captures,`${name}-arrival.png`)});
   await page.getByRole('button',{name:'Open phone'}).click();assert(await page.getByText('No numbers yet.',{exact:false}).count());await page.getByRole('button',{name:'Close drawer'}).click();
   await page.getByRole('button',{name:'Open newspaper'}).click();assert(!/Wong|Sonya/.test(await page.getByRole('region',{name:'Newspaper',exact:true}).innerText()));await page.getByRole('button',{name:'Close drawer'}).click();
-  await look(page,'the older man carrying plants');await act(page,'Hello. Can we keep in touch?');await act(page,'What is up that path?');
-  assert(await page.getByRole('button',{name:'Juan',exact:true}).count());
+  await look(page,'the older man carrying plants');await act(page,'Hello. Can we keep in touch?');
+  const forbidden=/cliff|one.?wheel|race|what is up|up the path/i;
+  assert(!forbidden.test(await page.locator('.conversation').innerText()));
+  assert.equal(await page.getByRole('button',{name:'Wheel parts',exact:true}).count(),0);
+  assert.equal(await page.getByRole('button',{name:'Path',exact:true}).count(),0);
+  await act(page,'Stay a moment.');
+  assert(!forbidden.test(await page.locator('body').innerText()));
   const close=page.getByRole('button',{name:'Close conversation',exact:true});if(await close.count())await close.click();
-  await page.getByRole('button',{name:'Open money and notes'}).click();assert(await page.getByText('Up the path',{exact:true}).count());await page.getByRole('button',{name:'Close drawer'}).click();
-  for(const [day,part,price] of [[3,'chain quick-link',2],[4,'brake cable',2],[5,'steel rim',5],[6,'handlebar tape',2]]){
-   await through(page,day);await look(page,'Cargo');const wanted=`I’ll take the ${part}. · ${price} tins`;
-   for(let n=0;n<3&&!(await page.getByRole('button',{name:wanted,exact:true}).count());n++)await act(page,'Something else…');
-   await act(page,wanted);assert(await page.getByRole('button',{name:new RegExp('^Your '+part+'$','i')}).count());
+  for(const drawer of ['Open money and notes','Open phone','Open newspaper']){
+   await page.getByRole('button',{name:drawer,exact:true}).click();
+   if(drawer==='Open phone'){
+    await page.locator('.contact-line').filter({hasText:'Juan'}).click();
+    await act(page,'Can we talk when you are free?');
+   }
+   assert(!forbidden.test(await page.locator('.pocket-drawer').innerText()));
+   await page.getByRole('button',{name:'Close drawer',exact:true}).click();
   }
-  let built=false;
-  for(let n=0;n<12&&!built;n++){
-   await next(page);
-   if(!(await page.getByRole('button',{name:'Wheel parts',exact:true}).count()))continue;
-   await look(page,'Wheel parts');
-   const button=page.getByRole('button',{name:'Let’s fit these.',exact:true});
-   if(!(await button.count()))throw Error('Assembly line changed: '+await page.locator('.conversation').innerText());
-   await act(page,'Let’s fit these.');await act(page,'Yes, on those terms.');built=Boolean(await page.getByRole('button',{name:'Your Onewheel',exact:true}).count());
-  }
-  assert(built,'Wheel assembly remained unreachable');
-  let flower=false;
-  for(let n=0;n<8&&!flower;n++){
-   await next(page);await look(page,'Path');
-   const choices=await page.locator('.conversation .responses button').allTextContents();
-   assert(choices.length);await act(page,choices[0]);
-   const scene=page.getByRole('button',{name:'Close comic'});if(await scene.count())await scene.click();
-   flower=Boolean(await page.getByRole('button',{name:'Your sunflower',exact:true}).count());
-  }
-  assert(flower,'Cliff remained unreachable');
-  const comic=page.getByRole('button',{name:'Close comic'});if(await comic.count())await comic.click();
-  await page.getByRole('button',{name:'Your sunflower',exact:true}).click();assert(await page.getByRole('dialog',{name:'Your story'}).count());
-  assert(!/SNAKE OIL|causal|evidence-supported|enum|runtime/.test(await page.getByRole('dialog',{name:'Your story'}).innerText()));
+  await through(page,2);await look(page,'Juan');
+  assert(!forbidden.test(await page.locator('.conversation').innerText()));
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);assert.deepEqual(errors,[]);
-  await page.screenshot({path:path.join(captures,`${name}-reflection.png`)});
-  results.push({name,viewport:{width,height},routes:['introduction','phone','paper','remembered route instructions','four physical part purchases','assembly','cliff','reflection'],pageErrors:errors});
+  await page.screenshot({path:path.join(captures,`${name}-early-juan.png`)});
+  await through(page,9);assert(!forbidden.test(await page.locator('body').innerText()));
+  results.push({name,viewport:{width,height},routes:['early acquaintance','repeat encounter','phone and paper','negative route knowledge','hidden premature props'],pageErrors:errors});
   await page.close();
  }
  const page=await browser.newPage({viewport:{width:390,height:844}});await page.goto(url);

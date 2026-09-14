@@ -1,5 +1,17 @@
 # Sunflower — Dated Prototype Verification
 
+## Main checkpoint 1 — 2026-09-14
+
+Verified: unpublished social images were copied byte-for-byte into `art-source/social-salvage-2026-09-14` before switching to main (preservation commit `1c635ab`). These are source candidates, not transparent runtime assets. The revised shisha design is accepted by the user; background removal remains open.
+
+Explicit player knowledge now gates Juan route actions in both visibility and execution. Early acquaintance, repeated acquaintance and old route stages cannot unlock them. Notes/guide/labels obey the same fact state. A review found and removed a storm receipt's premature cliff reference. Corrected the secured advance's due-date reference, which had reverted to an undefined route field in the merged main baseline.
+
+Commands passed: build (49 modules), `player-knowledge-check.mjs`, `harbour-interface-check.mjs`, `test:production`, `test:browser`. Real Edge input at 1440×1000 and 390×844 checks early Juan contact/repeated dialogue, phone reply, paper/notes, unavailable premature route props and the first storm. Additional mobile flows buy a real public item, borrow/repay and choose tomorrow after exhausting time. Screenshots were inspected locally and remain untracked.
+
+Updated economic diagnostics retain main's real private-sale object/cash transfers and possible factored-claim defaults. They no longer require guaranteed finance profit or the superseded private-sale payout without goods. No economic subsidy was restored.
+
+Still open: checkpoints 2–7. The old direct Juan completion browser scenario is intentionally superseded; a new happy-path browser scenario must follow the earned social/race chain once implemented. No claim of new-route completion is made by this checkpoint.
+
 ## Continuous-map working checkpoint — 2026-09-10
 
 This pass continues `codex/living-harbour`; it does not restart from `main`. The player renderer is `AppCore.jsx` / `HarbourMap.jsx`, with developer Scene Lab isolated behind a development-only flag.
