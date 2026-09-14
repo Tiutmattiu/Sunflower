@@ -4,13 +4,14 @@
 export const LOCATION_LABELS = {
   harbour_berth:'Berth',
   joels_bar:'Bar',
-  parcel_counter:'Parcel shop',
+  parcel_counter:'Wong’s services',
   nursery:'Nursery',
   viewing_room:'Gallery',
-  back_room:'Back room',
+  back_room:'Apartments',
   sonyas_kitchen:'Kitchen',
   cliff_path:'Cliff path',
-  public_clearing:'Exchange'
+  public_clearing:'Octopus',
+  old_hall:'Old Hall'
 };
 
 export const ACTION_COPY = {
@@ -93,7 +94,7 @@ export const UI_COPY = {
   phone:'Phone',
   paper:'Paper',
   pocketBook:'Pocket book',
-  exchange:'Exchange',
+  exchange:'Octopus',
   close:'Close',
   emptyBag:'Your bag is empty.',
   noContacts:'No numbers yet.',
