@@ -4,10 +4,10 @@
 export const DISTRICT_LANDMARKS = Object.freeze([
   {id:'open-sea',kind:'sea',x:1500,y:980,w:920,h:390},
   {id:'south-shore',kind:'shore',x:380,y:875,w:560,h:170},
-  {id:'working-berth',kind:'berth',x:1180,y:690,w:520,h:260},
-  {id:'wong-empire',kind:'wong-services',x:1625,y:410,w:410,h:300,label:'WONG SERVICES'},
+  {id:'working-berth',kind:'berth',x:1180,y:690,w:520,h:260,locationId:'harbour_berth'},
+  {id:'wong-empire',kind:'wong-services',x:1625,y:410,w:410,h:300,label:'WONG SERVICES',locationId:'parcel_counter'},
   {id:'octopus-bank',kind:'octopus-bank',x:1285,y:500,w:220,h:150,label:'OCTOPUS BANK'},
-  {id:'joels-bar',kind:'bar-live-music',x:805,y:480,w:430,h:280,label:"JOEL'S BAR"},
+  {id:'joels-bar',kind:'bar-live-music',x:805,y:480,w:430,h:280,label:"JOEL'S BAR",locationId:'joels_bar'},
   {id:'shisha-courtyard',kind:'shisha',x:585,y:545,w:300,h:220,label:'SHISHA • TEA'},
   {id:'pizza-deli',kind:'pizza-deli',x:1080,y:385,w:250,h:175,label:'PIZZA • DELI'},
   {id:'barber',kind:'barber',x:1430,y:245,w:180,h:150,label:'BARBER'},
@@ -23,8 +23,37 @@ export const DISTRICT_LANDMARKS = Object.freeze([
   {id:'pet-shop',kind:'exotic-pet',x:315,y:390,w:230,h:190,label:'ODD PETS'},
   {id:'glass-shop',kind:'glassblower',x:430,y:520,w:220,h:185,label:'GLASS'},
   {id:'snake-pitch',kind:'snake-performer',x:270,y:660,w:190,h:150,label:'SNAKE SHOW'},
-  {id:'cliff',kind:'cliff',x:120,y:355,w:300,h:700,label:'OUTER PATH'},
+  {id:'cliff',kind:'cliff',x:120,y:355,w:300,h:700,label:'OUTER PATH',locationId:'cliff_path'},
+  {id:'nursery-garden',kind:'growing-yard',x:500,y:650,w:260,h:170,label:'GROWING YARD',locationId:'nursery'},
+  {id:'gallery',kind:'gallery',x:1050,y:210,w:270,h:185,label:'VIEWING ROOM',locationId:'viewing_room'},
+  {id:'side-room',kind:'side-room',x:1840,y:520,w:150,h:140,locationId:'back_room'},
+  {id:'sonya-kitchen',kind:'kitchen',x:610,y:340,w:250,h:170,label:'KITCHEN',locationId:'sonyas_kitchen'},
+  {id:'public-exchange',kind:'public-clearing',x:1080,y:720,w:270,h:150,label:'EXCHANGE',locationId:'public_clearing'},
+  {id:'old-hall',kind:'old-hall',x:480,y:745,w:240,h:160,label:'OLD HALL',locationId:'old_hall'},
 ]);
+
+export const DISTRICT_LOCATION_POINTS=Object.freeze({
+  harbour_berth:{x:1190,y:735},
+  joels_bar:{x:805,y:575},
+  parcel_counter:{x:1605,y:575},
+  nursery:{x:500,y:690},
+  viewing_room:{x:1050,y:320},
+  back_room:{x:1840,y:575},
+  sonyas_kitchen:{x:610,y:410},
+  cliff_path:{x:170,y:720},
+  public_clearing:{x:1080,y:760},
+  old_hall:{x:480,y:790},
+});
+
+export const DISTRICT_PROP_POINTS=Object.freeze({
+  crate:{x:1160,y:700},cargo:{x:1230,y:685},
+  bottle:{x:760,y:520},glass:{x:850,y:520},packing:{x:705,y:545},
+  parcel:{x:1545,y:520},parts:{x:1640,y:520},
+  plants:{x:455,y:650},paper:{x:545,y:655},
+  bowl:{x:1010,y:285},photo:{x:1100,y:285},
+  envelope:{x:1840,y:535},table:{x:610,y:370},
+  path:{x:145,y:700},orders:{x:1080,y:715},
+});
 
 const SIGNALS = Object.freeze([
   {id:'wong-sign',kind:'wong-services',x:1640,y:335,label:'PARCEL • LAUNDRY • STORAGE • ₿'},
