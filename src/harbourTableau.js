@@ -1,13 +1,16 @@
 import {HARBOUR_WORLD} from './harbourWorld.js';
 import {DISTRICT_LOCATION_POINTS,districtStateForWorld} from './harbourDistrict.js';
 
-export const TABLEAU_ZONES = Object.freeze([
+export const TABLEAU_ZONES=Object.freeze([
   {id:'sea-water',kind:'water',bounds:[1080,840,1960,1160]},
   {id:'sea-shore',kind:'ground',bounds:[70,785,520,920]},
   {id:'berth-cargo',kind:'ground',bounds:[980,620,1450,805]},
   {id:'wong-strip',kind:'ground',bounds:[1460,500,1790,700]},
-  {id:'social-strip',kind:'ground',bounds:[520,455,1030,650]},
+  {id:'social-strip',kind:'ground',bounds:[520,455,910,650]},
+  {id:'pizza-lane',kind:'ground',bounds:[900,430,1070,585]},
+  {id:'deli-lane',kind:'ground',bounds:[1080,430,1248,585]},
   {id:'park-civic',kind:'ground',bounds:[500,770,930,980]},
+  {id:'festival-square',kind:'ground',bounds:[760,645,1020,760]},
   {id:'faith-vice',kind:'ground',bounds:[1420,210,1960,665]},
   {id:'craft-oddity',kind:'ground',bounds:[180,360,625,700]},
   {id:'cliff-edge',kind:'ground',bounds:[45,430,270,865]},
@@ -15,109 +18,118 @@ export const TABLEAU_ZONES = Object.freeze([
   {id:'kitchen-courtyard',kind:'ground',bounds:[500,350,730,470]},
   {id:'nursery-garden',kind:'ground',bounds:[430,625,680,775]},
   {id:'cinema-street',kind:'ground',bounds:[310,690,600,850]},
-  {id:'exchange-floor',kind:'ground',bounds:[960,690,1220,825]},
+  {id:'octopus-floor',kind:'ground',bounds:[1130,610,1405,790]},
   {id:'apartment-street',kind:'ground',bounds:[1720,545,1960,735]},
 ]);
 
 const ZONES=Object.fromEntries(TABLEAU_ZONES.map(zone=>[zone.id,zone]));
-const LOCATION_ZONE={harbour_berth:'berth-cargo',joels_bar:'social-strip',parcel_counter:'wong-strip',nursery:'nursery-garden',viewing_room:'gallery-auction',back_room:'apartment-street',sonyas_kitchen:'kitchen-courtyard',cliff_path:'cliff-edge',public_clearing:'exchange-floor',old_hall:'cinema-street'};
+const LOCATION_ZONE={harbour_berth:'berth-cargo',joels_bar:'social-strip',parcel_counter:'wong-strip',nursery:'nursery-garden',viewing_room:'gallery-auction',back_room:'apartment-street',sonyas_kitchen:'kitchen-courtyard',cliff_path:'cliff-edge',public_clearing:'octopus-floor',old_hall:'cinema-street'};
 const LOCATION_SLOTS=Object.freeze(Object.fromEntries(Object.entries(DISTRICT_LOCATION_POINTS).map(([id,p])=>[id,{...p,zoneId:LOCATION_ZONE[id]}])));
 
 export const NAMED_ACTOR_SLOTS=Object.freeze({aspen:{dx:-26,dy:0},joel:{dx:-34,dy:0},wong:{dx:40,dy:4},juan:{dx:-12,dy:0},yasmin:{dx:30,dy:0},dima:{dx:18,dy:2}});
+const person=(id,zoneId,activity,tags,more={})=>({id,zoneId,activity,tags,...more});
 
 const BASE_CROWD=Object.freeze([
-  {id:'shore-swimmer-a',zoneId:'sea-water',activity:'swim',tags:['sea-leisure','youth'],age:'young',dryOnly:true},
-  {id:'shore-swimmer-b',zoneId:'sea-water',activity:'swim',tags:['sea-leisure'],dryOnly:true},
-  {id:'shore-swimmer-c',zoneId:'sea-water',activity:'swim',tags:['sea-leisure'],dryOnly:true},
-  {id:'shore-sunbather-a',zoneId:'sea-shore',activity:'sunbathe',tags:['sea-leisure'],dryOnly:true},
-  {id:'shore-sunbather-b',zoneId:'sea-shore',activity:'sunbathe',tags:['sea-leisure'],dryOnly:true},
-  {id:'shore-couple-a',zoneId:'sea-shore',activity:'talk',tags:['sea-leisure','date'],dryOnly:true},
-  {id:'shore-couple-b',zoneId:'sea-shore',activity:'talk',tags:['sea-leisure','date'],dryOnly:true},
-  {id:'shore-fisher',zoneId:'sea-shore',activity:'idle',tags:['sea-leisure','elder'],age:'elder',stormZoneId:'social-strip'},
-  {id:'shore-sea-watcher',zoneId:'cliff-edge',activity:'idle',tags:['sea-leisure'],stormZoneId:'social-strip'},
+  person('shore-swimmer-a','sea-water','swim',['sea-leisure','youth'],{age:'young',dryOnly:true}),
+  person('shore-swimmer-b','sea-water','swim',['sea-leisure'],{dryOnly:true}),
+  person('shore-swimmer-c','sea-water','swim',['sea-leisure'],{dryOnly:true}),
+  person('shore-sunbather-a','sea-shore','sunbathe',['sea-leisure'],{dryOnly:true}),
+  person('shore-sunbather-b','sea-shore','sunbathe',['sea-leisure'],{dryOnly:true}),
+  person('shore-couple-a','sea-shore','talk',['sea-leisure','date'],{dryOnly:true}),
+  person('shore-couple-b','sea-shore','talk',['sea-leisure','date'],{dryOnly:true}),
+  person('shore-fisher','sea-shore','idle',['sea-leisure','elder'],{age:'elder',stormZoneId:'social-strip'}),
+  person('shore-sea-watcher','cliff-edge','idle',['sea-leisure'],{stormZoneId:'social-strip'}),
 
-  {id:'berth-loader-a',zoneId:'berth-cargo',activity:'carry',tags:['labour','working-class'],body:'wide'},
-  {id:'berth-loader-b',zoneId:'berth-cargo',activity:'work',tags:['labour','working-class']},
-  {id:'berth-loader-c',zoneId:'berth-cargo',activity:'carry',tags:['labour','working-class']},
-  {id:'berth-counter',zoneId:'berth-cargo',activity:'inspect',tags:['labour']},
-  {id:'berth-buyer',zoneId:'berth-cargo',activity:'inspect',tags:['labour']},
-  {id:'berth-crew-rest',zoneId:'berth-cargo',activity:'idle',tags:['labour','elder'],age:'elder'},
-  {id:'berth-hawker',zoneId:'berth-cargo',activity:'pace',tags:['labour','street-trade']},
+  person('berth-loader-a','berth-cargo','carry',['labour','working-class'],{body:'wide'}),
+  person('berth-loader-b','berth-cargo','work',['labour','working-class']),
+  person('berth-loader-c','berth-cargo','carry',['labour','working-class']),
+  person('berth-counter','berth-cargo','inspect',['labour']),
+  person('berth-buyer','berth-cargo','inspect',['labour']),
+  person('berth-crew-rest','berth-cargo','idle',['labour','elder'],{age:'elder'}),
+  person('berth-hawker','berth-cargo','pace',['labour','street-trade']),
 
-  {id:'wong-parcel-customer',zoneId:'wong-strip',activity:'queue',tags:['wong-services'],commercial:true},
-  {id:'wong-parcel-customer-b',zoneId:'wong-strip',activity:'queue',tags:['wong-services'],commercial:true},
-  {id:'wong-laundry-waiter',zoneId:'wong-strip',activity:'idle',tags:['wong-services','family'],commercial:true},
-  {id:'wong-luggage-customer',zoneId:'wong-strip',activity:'queue',tags:['wong-services'],commercial:true},
-  {id:'wong-atm-lingerer',zoneId:'wong-strip',activity:'machine',tags:['wong-services','octopus-bank'],commercial:true},
-  {id:'octopus-bank-queue',zoneId:'wong-strip',activity:'queue',tags:['octopus-bank'],commercial:true},
-  {id:'octopus-bank-queue-b',zoneId:'wong-strip',activity:'queue',tags:['octopus-bank','wealth'],variant:'wealthy',commercial:true},
-  {id:'ice-cream-customer',zoneId:'wong-strip',activity:'eat',tags:['ice-cream','youth'],age:'young',commercial:true,dryOnly:true},
-  {id:'ice-cream-customer-b',zoneId:'wong-strip',activity:'eat',tags:['ice-cream','family'],commercial:true,dryOnly:true},
+  person('wong-parcel-customer','wong-strip','queue',['wong-services'],{commercial:true}),
+  person('wong-parcel-customer-b','wong-strip','queue',['wong-services'],{commercial:true}),
+  person('wong-laundry-waiter','wong-strip','idle',['wong-services','family'],{commercial:true}),
+  person('wong-luggage-customer','wong-strip','queue',['wong-services'],{commercial:true}),
+  person('wong-bitcoin-atm-lingerer','wong-strip','machine',['wong-services','bitcoin-atm'],{commercial:true}),
+  person('ice-cream-customer','wong-strip','eat',['ice-cream','youth'],{age:'young',commercial:true,dryOnly:true}),
+  person('ice-cream-customer-b','wong-strip','eat',['ice-cream','family'],{commercial:true,dryOnly:true}),
 
-  {id:'bar-regular-a',zoneId:'social-strip',activity:'talk',tags:['bar-life']},
-  {id:'bar-regular-b',zoneId:'social-strip',activity:'talk',tags:['bar-life']},
-  {id:'bar-music-listener',zoneId:'social-strip',activity:'music',tags:['live-music']},
-  {id:'bar-musician',zoneId:'social-strip',activity:'music',tags:['live-music']},
-  {id:'bar-musician-b',zoneId:'social-strip',activity:'music',tags:['live-music'],musicOnly:true},
-  {id:'shisha-regular-a',zoneId:'social-strip',activity:'shisha',tags:['shisha','elder'],age:'elder'},
-  {id:'shisha-regular-b',zoneId:'social-strip',activity:'shisha',tags:['shisha']},
-  {id:'shisha-regular-c',zoneId:'social-strip',activity:'shisha',tags:['shisha'],body:'wide'},
-  {id:'shisha-watcher',zoneId:'social-strip',activity:'idle',tags:['shisha']},
-  {id:'pizza-counter-customer',zoneId:'social-strip',activity:'eat',tags:['pizza-deli'],commercial:true},
-  {id:'pizza-counter-customer-b',zoneId:'social-strip',activity:'eat',tags:['pizza-deli','date'],commercial:true},
-  {id:'deli-worker',zoneId:'social-strip',activity:'work',tags:['pizza-deli','working-class'],commercial:true},
-  {id:'deli-elder',zoneId:'social-strip',activity:'eat',tags:['pizza-deli','elder'],age:'elder',commercial:true},
-  {id:'social-date-a',zoneId:'social-strip',activity:'talk',tags:['date']},
-  {id:'social-date-b',zoneId:'social-strip',activity:'talk',tags:['date']},
+  person('bar-regular-a','social-strip','talk',['bar-life']),
+  person('bar-regular-b','social-strip','talk',['bar-life']),
+  person('bar-music-listener','social-strip','music',['bar-life','bar-music']),
+  person('bar-musician','social-strip','music',['bar-life','bar-music']),
+  person('bar-musician-b','social-strip','music',['bar-life','bar-music'],{musicOnly:true}),
+  person('shisha-regular-a','social-strip','shisha',['shisha','elder'],{age:'elder'}),
+  person('shisha-regular-b','social-strip','shisha',['shisha']),
+  person('shisha-regular-c','social-strip','shisha',['shisha'],{body:'wide'}),
+  person('shisha-watcher','social-strip','idle',['shisha']),
+  person('social-date-a','social-strip','talk',['date']),
+  person('social-date-b','social-strip','talk',['date']),
 
-  {id:'basketball-player-a',zoneId:'park-civic',activity:'basketball',tags:['basketball','youth','park-life'],age:'young',dryOnly:true,stormZoneId:'social-strip'},
-  {id:'basketball-player-b',zoneId:'park-civic',activity:'basketball',tags:['basketball','youth','park-life'],age:'young',dryOnly:true,stormZoneId:'social-strip'},
-  {id:'basketball-player-c',zoneId:'park-civic',activity:'basketball',tags:['basketball','youth','park-life'],age:'young',dryOnly:true,stormZoneId:'social-strip'},
-  {id:'basketball-watcher',zoneId:'park-civic',activity:'idle',tags:['basketball','park-life'],dryOnly:true,stormZoneId:'social-strip'},
-  {id:'chess-player-a',zoneId:'park-civic',activity:'chess',tags:['chess','elder','park-life'],age:'elder',stormZoneId:'social-strip'},
-  {id:'chess-player-b',zoneId:'park-civic',activity:'chess',tags:['chess','elder','park-life'],age:'elder',stormZoneId:'social-strip'},
-  {id:'chess-watcher',zoneId:'park-civic',activity:'chess',tags:['chess','elder','park-life'],age:'elder',stormZoneId:'social-strip'},
-  {id:'chess-watcher-b',zoneId:'park-civic',activity:'idle',tags:['chess','park-life'],stormZoneId:'social-strip'},
-  {id:'park-reader',zoneId:'park-civic',activity:'idle',tags:['park-life'],dryOnly:true,stormZoneId:'wong-strip'},
-  {id:'park-lounger',zoneId:'park-civic',activity:'idle',tags:['park-life'],dryOnly:true,stormZoneId:'social-strip'},
-  {id:'park-family-a',zoneId:'park-civic',activity:'walk',tags:['park-life','family'],dryOnly:true,stormZoneId:'wong-strip'},
-  {id:'park-family-b',zoneId:'park-civic',activity:'walk',tags:['park-life','family'],dryOnly:true,stormZoneId:'wong-strip'},
+  person('pizza-customer-a','pizza-lane','eat',['pizza-shop'],{commercial:true}),
+  person('pizza-customer-b','pizza-lane','eat',['pizza-shop','date'],{commercial:true}),
+  person('pizza-runner','pizza-lane','walk',['pizza-shop','working-class'],{commercial:true}),
+  person('deli-worker','deli-lane','work',['deli','working-class'],{commercial:true}),
+  person('deli-elder','deli-lane','eat',['deli','elder'],{age:'elder',commercial:true}),
+  person('deli-customer','deli-lane','queue',['deli'],{commercial:true}),
 
-  {id:'faith-walker-a',zoneId:'faith-vice',activity:'walk',tags:['faith','elder'],age:'elder'},
-  {id:'faith-walker-b',zoneId:'faith-vice',activity:'walk',tags:['faith']},
-  {id:'faith-family-a',zoneId:'faith-vice',activity:'walk',tags:['faith','family'],shabbatOnly:true},
-  {id:'faith-family-b',zoneId:'faith-vice',activity:'walk',tags:['faith','family'],shabbatOnly:true},
-  {id:'faith-elder-extra',zoneId:'faith-vice',activity:'walk',tags:['faith','elder'],age:'elder',shabbatOnly:true},
-  {id:'faith-neighbour-extra',zoneId:'faith-vice',activity:'walk',tags:['faith'],shabbatOnly:true},
-  {id:'vice-door-watcher',zoneId:'faith-vice',activity:'idle',tags:['vice']},
-  {id:'street-hustler',zoneId:'faith-vice',activity:'pace',tags:['vice','crime']},
-  {id:'street-hustler-b',zoneId:'faith-vice',activity:'talk',tags:['vice','crime']},
-  {id:'atm-shadow',zoneId:'faith-vice',activity:'idle',tags:['vice','crime']},
-  {id:'hard-luck-street',zoneId:'faith-vice',activity:'rummage',tags:['poverty','homeless'],fateCycle:true},
-  {id:'wealthy-patron',zoneId:'faith-vice',activity:'walk',tags:['wealth'],variant:'wealthy'},
+  person('basketball-player-a','park-civic','basketball',['basketball','youth','park-life'],{age:'young',dryOnly:true,stormZoneId:'social-strip'}),
+  person('basketball-player-b','park-civic','basketball',['basketball','youth','park-life'],{age:'young',dryOnly:true,stormZoneId:'social-strip'}),
+  person('basketball-player-c','park-civic','basketball',['basketball','youth','park-life'],{age:'young',dryOnly:true,stormZoneId:'social-strip'}),
+  person('basketball-watcher','park-civic','idle',['basketball','park-life'],{dryOnly:true,stormZoneId:'social-strip'}),
+  person('chess-player-a','park-civic','chess',['chess','elder','park-life'],{age:'elder',stormZoneId:'social-strip'}),
+  person('chess-player-b','park-civic','chess',['chess','elder','park-life'],{age:'elder',stormZoneId:'social-strip'}),
+  person('chess-watcher','park-civic','chess',['chess','elder','park-life'],{age:'elder',stormZoneId:'social-strip'}),
+  person('chess-watcher-b','park-civic','idle',['chess','park-life'],{stormZoneId:'social-strip'}),
+  person('park-reader','park-civic','idle',['park-life'],{dryOnly:true,stormZoneId:'wong-strip'}),
+  person('park-lounger','park-civic','idle',['park-life'],{dryOnly:true,stormZoneId:'social-strip'}),
+  person('park-family-a','park-civic','walk',['park-life','family'],{dryOnly:true,stormZoneId:'wong-strip'}),
+  person('park-family-b','park-civic','walk',['park-life','family'],{dryOnly:true,stormZoneId:'wong-strip'}),
 
-  {id:'pet-shop-browser',zoneId:'craft-oddity',activity:'inspect',tags:['exotic-pet']},
-  {id:'pet-shop-browser-b',zoneId:'craft-oddity',activity:'inspect',tags:['exotic-pet','youth'],age:'young'},
-  {id:'glassblower',zoneId:'craft-oddity',activity:'glassblow',tags:['glassblower','working-class']},
-  {id:'glassblower-watcher',zoneId:'craft-oddity',activity:'idle',tags:['glassblower']},
-  {id:'glassblower-watcher-b',zoneId:'craft-oddity',activity:'idle',tags:['glassblower']},
-  {id:'snake-charmer',zoneId:'craft-oddity',activity:'perform',tags:['snake-charmer','street-trade']},
-  {id:'snake-charmer-watcher',zoneId:'craft-oddity',activity:'idle',tags:['snake-charmer']},
-  {id:'snake-charmer-watcher-b',zoneId:'craft-oddity',activity:'idle',tags:['snake-charmer']},
-  {id:'craft-runner',zoneId:'craft-oddity',activity:'walk',tags:['youth','working-class'],age:'young'},
+  person('festival-musician-a','festival-square','music',['music-festival'],{festivalOnly:true}),
+  person('festival-musician-b','festival-square','music',['music-festival'],{festivalOnly:true}),
+  person('festival-listener-a','festival-square','talk',['music-festival'],{festivalOnly:true}),
+  person('festival-listener-b','festival-square','idle',['music-festival'],{festivalOnly:true}),
 
-  {id:'cliff-smoker',zoneId:'cliff-edge',activity:'idle',tags:['vice']},
-  {id:'cliff-couple-a',zoneId:'cliff-edge',activity:'talk',tags:['sea-leisure','date']},
-  {id:'cliff-couple-b',zoneId:'cliff-edge',activity:'talk',tags:['sea-leisure','date']},
-  {id:'cliff-old-watcher',zoneId:'cliff-edge',activity:'idle',tags:['elder','sea-leisure'],age:'elder'},
+  person('faith-walker-a','faith-vice','walk',['faith','elder'],{age:'elder'}),
+  person('faith-walker-b','faith-vice','walk',['faith']),
+  person('faith-family-a','faith-vice','walk',['faith','family'],{shabbatOnly:true}),
+  person('faith-family-b','faith-vice','walk',['faith','family'],{shabbatOnly:true}),
+  person('faith-elder-extra','faith-vice','walk',['faith','elder'],{age:'elder',shabbatOnly:true}),
+  person('faith-neighbour-extra','faith-vice','walk',['faith'],{shabbatOnly:true}),
+  person('vice-door-watcher','faith-vice','idle',['vice']),
+  person('street-hustler','faith-vice','pace',['vice','crime']),
+  person('street-hustler-b','faith-vice','talk',['vice','crime']),
+  person('atm-shadow','faith-vice','idle',['vice','crime']),
+  person('hard-luck-street','faith-vice','rummage',['poverty','homeless'],{fateCycle:true}),
+  person('wealthy-patron','faith-vice','walk',['wealth'],{variant:'wealthy'}),
 
-  {id:'gallery-caretaker',zoneId:'gallery-auction',activity:'work',tags:['gallery-life','working-class']},
-  {id:'cinema-usher',zoneId:'cinema-street',activity:'idle',tags:['cinema','working-class']},
-  {id:'cinema-patron-a',zoneId:'cinema-street',activity:'talk',tags:['cinema','date']},
-  {id:'apartment-tenant-a',zoneId:'apartment-street',activity:'walk',tags:['apartment-life']},
-  {id:'apartment-tenant-b',zoneId:'apartment-street',activity:'idle',tags:['apartment-life','elder'],age:'elder'},
-  {id:'nursery-neighbour',zoneId:'nursery-garden',activity:'inspect',tags:['nursery-life','elder'],age:'elder'},
-  {id:'exchange-clerk',zoneId:'exchange-floor',activity:'work',tags:['exchange-life','working-class']},
+  person('pet-shop-browser','craft-oddity','inspect',['exotic-pet']),
+  person('pet-shop-browser-b','craft-oddity','inspect',['exotic-pet','youth'],{age:'young'}),
+  person('glassblower','craft-oddity','glassblow',['glassblower','working-class']),
+  person('glassblower-watcher','craft-oddity','idle',['glassblower']),
+  person('glassblower-watcher-b','craft-oddity','idle',['glassblower']),
+  person('snake-charmer','craft-oddity','perform',['snake-charmer','street-trade']),
+  person('snake-charmer-watcher','craft-oddity','idle',['snake-charmer']),
+  person('snake-charmer-watcher-b','craft-oddity','idle',['snake-charmer']),
+  person('craft-runner','craft-oddity','walk',['youth','working-class'],{age:'young'}),
+
+  person('cliff-smoker','cliff-edge','idle',['vice']),
+  person('cliff-couple-a','cliff-edge','talk',['sea-leisure','date']),
+  person('cliff-couple-b','cliff-edge','talk',['sea-leisure','date']),
+  person('cliff-old-watcher','cliff-edge','idle',['elder','sea-leisure'],{age:'elder'}),
+
+  person('gallery-caretaker','gallery-auction','work',['gallery-life','working-class']),
+  person('cinema-usher','cinema-street','idle',['cinema','working-class']),
+  person('cinema-patron-a','cinema-street','talk',['cinema','date']),
+  person('apartment-tenant-a','apartment-street','walk',['apartment-life']),
+  person('apartment-tenant-b','apartment-street','idle',['apartment-life','elder'],{age:'elder'}),
+  person('nursery-neighbour','nursery-garden','inspect',['nursery-life','elder'],{age:'elder'}),
+  person('octopus-clerk','octopus-floor','work',['octopus','working-class']),
+  person('octopus-payment-customer','octopus-floor','queue',['octopus'],{commercial:true}),
+  person('octopus-market-reader','octopus-floor','inspect',['octopus'],{commercial:true}),
 ]);
 
 const CREATURES=Object.freeze([
@@ -137,32 +149,32 @@ function hash(text=''){let h=2166136261;for(let i=0;i<text.length;i++){h^=text.c
 function pointIn(zone,id,day=0){const[x1,y1,x2,y2]=zone.bounds,hx=hash(`${id}:x:${day}`)/0xffffffff,hy=hash(`${id}:y:${day}`)/0xffffffff;return{x:Math.round(x1+(x2-x1)*(.12+hx*.76)),y:Math.round(y1+(y2-y1)*(.12+hy*.76))}}
 function variantShift(item,day=0){const phase=(hash(`${item.id}:phase`)+day)%5;return{dx:(phase-2)*3,dy:((phase*3)%5-2)*2}}
 function fateFor(day){return ['rummage','slump','skeleton','absent'][day%4]}
-function activeItem(item,state){if(state.storm&&item.dryOnly&&!item.stormZoneId)return false;if(item.shabbatOnly&&!state.shabbatLike)return false;if(item.musicOnly&&!state.musicNight)return false;if(state.commercialQuiet&&item.commercial&&hash(item.id)%2===0)return false;if(item.fateCycle&&fateFor(state.day)==='absent')return false;return true}
-const extra=(id,zoneId,activity,tags,more={})=>({id,zoneId,activity,tags,...more});
+function activeItem(item,state){if(state.storm&&item.dryOnly&&!item.stormZoneId)return false;if(item.shabbatOnly&&!state.shabbatLike)return false;if(item.musicOnly&&!state.musicNight)return false;if(item.festivalOnly&&!state.festivalDay)return false;if(state.commercialQuiet&&item.commercial&&hash(item.id)%2===0)return false;if(item.fateCycle&&fateFor(state.day)==='absent')return false;return true}
+const extra=(id,zoneId,activity,tags,more={})=>person(id,zoneId,activity,tags,more);
 
 function hotspotCrowd(world,state){
   const rows=[];
   const auction=world.playerGame?.routes?.yasmin;
   const preview=auction&&state.day>=auction.previewOpens&&state.day<=auction.previewCloses;
   const auctionDay=auction&&state.day===auction.auctionDay;
-  if(preview) for(let i=0;i<3;i++) rows.push(extra(`gallery-preview-${i}`,'gallery-auction',i===0?'inspect':'talk',['gallery-life','auction-preview'],{commercial:true}));
-  if(auctionDay) for(let i=0;i<7;i++) rows.push(extra(`gallery-auction-${i}`,'gallery-auction',i<2?'queue':'talk',['gallery-life','auction-day'],{commercial:true}));
+  if(preview)for(let i=0;i<3;i++)rows.push(extra(`gallery-preview-${i}`,'gallery-auction',i===0?'inspect':'talk',['gallery-life','auction-preview'],{commercial:true}));
+  if(auctionDay)for(let i=0;i<7;i++)rows.push(extra(`gallery-auction-${i}`,'gallery-auction',i<2?'queue':'talk',['gallery-life','auction-day'],{commercial:true}));
 
   const evening=world.relationshipEcology?.barEvenings?.find(x=>x.day===state.day);
   const barCount=Math.min(6,Math.max(0,(evening?.attendees?.length||0)-1));
-  for(let i=0;i<barCount;i++) rows.push(extra(`bar-hotspot-${i}`,'social-strip',i%2?'talk':'eat',['bar-life','bar-hotspot']));
+  for(let i=0;i<barCount;i++)rows.push(extra(`bar-hotspot-${i}`,'social-strip',i%2?'talk':'eat',['bar-life','bar-hotspot']));
 
   const wong=world.actors?.wong;
   const wongLoad=Math.min(5,Math.max(0,Math.floor(((wong?.busy||0)+(world.wongBusiness?.stored?.length||0))/2)));
-  for(let i=0;i<wongLoad;i++) rows.push(extra(`wong-hotspot-${i}`,'wong-strip',i%2?'queue':'machine',['wong-services','wong-hotspot'],{commercial:true}));
+  for(let i=0;i<wongLoad;i++)rows.push(extra(`wong-hotspot-${i}`,'wong-strip',i%2?'queue':'machine',['wong-services','wong-hotspot'],{commercial:true}));
 
   const openOrders=(world.market?.orders||[]).filter(x=>x.status==='open').length;
-  const exchangeCount=Math.min(6,Math.ceil(openOrders/2));
-  for(let i=0;i<exchangeCount;i++) rows.push(extra(`exchange-hotspot-${i}`,'exchange-floor',i%2?'queue':'inspect',['exchange-life','exchange-hotspot'],{commercial:true}));
+  const octopusCount=Math.min(6,Math.ceil(openOrders/2));
+  for(let i=0;i<octopusCount;i++)rows.push(extra(`octopus-hotspot-${i}`,'octopus-floor',i%2?'queue':'inspect',['octopus','octopus-hotspot'],{commercial:true}));
 
   const occurrence=world.toadCircle?.occurrences?.find(x=>x.day===state.day);
   if(occurrence){const n=Math.max(2,Math.min(4,occurrence.attending?.length||2));for(let i=0;i<n;i++)rows.push(extra(`toad-circle-${i}`,'nursery-garden',i%2?'idle':'talk',['nursery-life','toad-circle']))}
-  if(state.cargoRush) for(let i=0;i<2;i++) rows.push(extra(`cargo-rush-${i}`,'berth-cargo','carry',['labour','cargo-hotspot','working-class']));
+  if(state.cargoRush)for(let i=0;i<2;i++)rows.push(extra(`cargo-rush-${i}`,'berth-cargo','carry',['labour','cargo-hotspot','working-class']));
   return rows;
 }
 
@@ -171,7 +183,7 @@ function motionFor(item,zone,point,day){
   const[x1,y1,x2,y2]=zone.bounds;
   const roomX=Math.max(0,Math.min(point.x-x1,x2-point.x)-10),roomY=Math.max(0,Math.min(point.y-y1,y2-point.y)-8);
   const wantedX=8+(hash(`${item.id}:motion-x:${day}`)%17),wantedY=hash(`${item.id}:motion-y:${day}`)%7;
-  return {dx:Math.max(0,Math.min(wantedX,roomX)),dy:Math.max(0,Math.min(wantedY,roomY))};
+  return{dx:Math.max(0,Math.min(wantedX,roomX)),dy:Math.max(0,Math.min(wantedY,roomY))};
 }
 
 export function crowdForWorld(world={}){
