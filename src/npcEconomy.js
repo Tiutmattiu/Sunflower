@@ -7,6 +7,14 @@ export const WONG_ASSETS=Object.freeze({
  expanded_frontage:Object.freeze({stage:'frontage',cost:18,residualValue:10,capacity:4,operatingCost:2,label:'Expanded shop frontage'}),
 });
 
+export const JUAN_CROP_PROFILES=Object.freeze({
+ lime_tree:Object.freeze({maturityDays:8,inputCost:2,inputInterval:4,baseYield:2,weatherSensitivity:.12,failureRisk:.08,earlySaleFraction:.45,matureValue:14}),
+ mint:Object.freeze({maturityDays:4,inputCost:1,inputInterval:3,baseYield:2,weatherSensitivity:.03,failureRisk:.03,earlySaleFraction:.68,matureValue:6}),
+ basil:Object.freeze({maturityDays:5,inputCost:1,inputInterval:3,baseYield:2,weatherSensitivity:.05,failureRisk:.05,earlySaleFraction:.62,matureValue:6}),
+ tomato:Object.freeze({maturityDays:6,inputCost:2,inputInterval:4,baseYield:3,weatherSensitivity:.10,failureRisk:.10,earlySaleFraction:.50,matureValue:12}),
+ lemongrass:Object.freeze({maturityDays:6,inputCost:1,inputInterval:4,baseYield:2,weatherSensitivity:.04,failureRisk:.04,earlySaleFraction:.66,matureValue:8}),
+});
+
 function reservedUnitIds(w){return new Set((w.market?.reservations||[]).filter(r=>r.kind==='unit').map(r=>r.unitId));}
 function reservedCash(w,id){return (w.market?.reservations||[]).filter(r=>r.actorId===id&&r.kind==='cash').reduce((n,r)=>n+(r.amount||0),0);}
 function freeCash(w,id){return Math.max(0,(w.actors[id]?.cash||0)-reservedCash(w,id));}
@@ -36,10 +44,11 @@ function stageFromAssets(b){
  b.capacity=b.serviceCapacity;b.operatingCost=b.dailyCost;
  return b;
 }
+function riskRoll(w,assetId){let h=(Number(w.seed||0)^Math.imul((w.day||0)+11,2654435761))>>>0;for(const c of String(assetId))h=Math.imul(h^c.charCodeAt(0),16777619)>>>0;h^=h>>>16;return (h>>>0)/4294967296;}
 
 export function initializeNpcEconomy(w){
- w.npcEconomy??={securedClaims:[],sourceEvents:[],enterpriseEvents:[],version:1};
- w.npcEconomy.securedClaims??=[];w.npcEconomy.sourceEvents??=[];w.npcEconomy.enterpriseEvents??=[];
+ w.npcEconomy??={securedClaims:[],sourceEvents:[],enterpriseEvents:[],futureOutputAssignments:[],cropEvents:[],version:2};
+ w.npcEconomy.securedClaims??=[];w.npcEconomy.sourceEvents??=[];w.npcEconomy.enterpriseEvents??=[];w.npcEconomy.futureOutputAssignments??=[];w.npcEconomy.cropEvents??=[];
  w.sourceBook??={};
  ensureWongBusiness(w);stageFromAssets(w.wongBusiness);
  return w;
@@ -191,4 +200,73 @@ export function runWongBusinessDay(w,{forceDemand=null,skipRent=false}={}){
  emit(w,'wong_business_day',row);return b;
 }
 
-export function npcEconomyDay(w){initializeNpcEconomy(w);runWongBusinessDay(w);settleSecuredClaims(w);return w;}
+export function applyJuanCropEconomicsDay(w,{chargeInputs=true,applyFailureRoll=true}={}){
+ initializeNpcEconomy(w);
+ for(const asset of w.livingAssets.filter(a=>a.ownerId==='juan'&&JUAN_CROP_PROFILES[a.species])){
+  const profile=JUAN_CROP_PROFILES[asset.species];
+  asset.economicProfile=asset.species;asset.inputSpent??=0;asset.inputShortfall??=0;asset.riskEvents??=0;
+  const weatherStress=w.weather==='storm'?profile.weatherSensitivity:profile.weatherSensitivity*.15;
+  asset.health=Math.max(.2,asset.health-weatherStress);
+  if(applyFailureRoll&&riskRoll(w,asset.id)<profile.failureRisk*(w.weather==='storm'?1.5:.5)){
+   asset.health=Math.max(.2,asset.health-.12);asset.riskEvents++;
+   w.npcEconomy.cropEvents.push({day:w.day,type:'crop_risk',assetId:asset.id,species:asset.species,weather:w.weather});
+   emit(w,'juan_crop_risk',{assetId:asset.id,species:asset.species,weather:w.weather});
+  }
+  if(chargeInputs&&w.day>0&&w.day%profile.inputInterval===0){
+   const paid=transferCash(w,'juan','wharf_suppliers',profile.inputCost,'cultivation_input',asset.species);
+   asset.inputSpent+=paid;
+   if(paid<profile.inputCost){asset.inputShortfall+=profile.inputCost-paid;asset.health=Math.max(.2,asset.health-.08);}
+   w.npcEconomy.cropEvents.push({day:w.day,type:'crop_input',assetId:asset.id,species:asset.species,cost:profile.inputCost,paid});
+  }
+ }
+ return w;
+}
+
+export function earlySellLivingAsset(w,assetId,buyerId){
+ initializeNpcEconomy(w);
+ const asset=w.livingAssets.find(a=>a.id===assetId),profile=asset&&JUAN_CROP_PROFILES[asset.species],buyer=w.actors[buyerId];
+ if(!asset||asset.ownerId!=='juan'||!profile)return {ok:false,reason:'Juan does not own that productive asset'};
+ if(asset.pledgedTo)return {ok:false,reason:'living asset is pledged'};
+ if(!buyer)return {ok:false,reason:'buyer missing'};
+ if(w.npcEconomy.futureOutputAssignments.some(a=>a.assetId===assetId&&a.status==='open'))return {ok:false,reason:'future output is already assigned'};
+ const price=Math.max(1,Math.floor(profile.matureValue*profile.earlySaleFraction*Math.max(.5,asset.health)));
+ if(freeCash(w,buyerId)<price)return {ok:false,reason:'buyer lacks cash'};
+ buyer.cash-=price;w.actors.juan.cash+=price;asset.ownerId=buyerId;
+ tx(w,'living_asset_distress_sale',buyerId,'juan',price,assetId);
+ w.npcEconomy.cropEvents.push({day:w.day,type:'living_asset_early_sale',assetId,buyerId,price});
+ emit(w,'living_asset_early_sale',{assetId,buyerId,price,species:asset.species});
+ return {ok:true,price};
+}
+
+export function assignFutureOutput(w,assetId,buyerId,{cashNow,share=.5}={}){
+ initializeNpcEconomy(w);
+ const asset=w.livingAssets.find(a=>a.id===assetId),buyer=w.actors[buyerId];
+ if(!asset||asset.ownerId!=='juan')return {ok:false,reason:'Juan does not own that productive asset'};
+ if(asset.pledgedTo)return {ok:false,reason:'living asset is pledged'};
+ if(!buyer||!Number.isFinite(cashNow)||cashNow<=0||!(share>0&&share<=1))return {ok:false,reason:'invalid output assignment terms'};
+ if(w.npcEconomy.futureOutputAssignments.some(a=>a.assetId===assetId&&a.status==='open'))return {ok:false,reason:'future output already assigned'};
+ if(freeCash(w,buyerId)<cashNow)return {ok:false,reason:'buyer lacks cash'};
+ buyer.cash-=cashNow;w.actors.juan.cash+=cashNow;
+ const assignment={id:`output-share-${++w.nextEvent}`,assetId,species:asset.species,sellerId:'juan',buyerId,cashNow,share,status:'open',createdDay:w.day,lastSettlementDay:null,remainingHarvests:1};
+ w.npcEconomy.futureOutputAssignments.push(assignment);tx(w,'future_output_advance',buyerId,'juan',cashNow,assetId);
+ emit(w,'future_output_assigned',{assignmentId:assignment.id,assetId,buyerId,cashNow,share});
+ return {ok:true,assignmentId:assignment.id};
+}
+
+export function settleFutureOutputAssignment(w,assignmentId,grossValue){
+ initializeNpcEconomy(w);
+ const assignment=w.npcEconomy.futureOutputAssignments.find(a=>a.id===assignmentId);
+ if(!assignment||assignment.status!=='open')return {ok:false,reason:'no open output assignment'};
+ if(assignment.lastSettlementDay===w.day)return {ok:false,reason:'this harvest is already settled'};
+ if(!Number.isFinite(grossValue)||grossValue<=0)return {ok:false,reason:'invalid realised harvest value'};
+ const amount=Math.max(1,Math.floor(grossValue*assignment.share));
+ if(freeCash(w,assignment.sellerId)<amount)return {ok:false,reason:'harvest proceeds are not yet liquid'};
+ w.actors[assignment.sellerId].cash-=amount;w.actors[assignment.buyerId].cash+=amount;
+ assignment.lastSettlementDay=w.day;assignment.remainingHarvests--;assignment.settledAmount=(assignment.settledAmount||0)+amount;
+ if(assignment.remainingHarvests<=0)assignment.status='settled';
+ tx(w,'future_output_share',assignment.sellerId,assignment.buyerId,amount,assignment.assetId);
+ emit(w,'future_output_share_settled',{assignmentId,assetId:assignment.assetId,amount,grossValue});
+ return {ok:true,amount};
+}
+
+export function npcEconomyDay(w){initializeNpcEconomy(w);runWongBusinessDay(w);applyJuanCropEconomicsDay(w);settleSecuredClaims(w);return w;}
