@@ -1,11 +1,13 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {HARBOUR_WORLD} from '../src/harbourWorld.js';
 import {
   TABLEAU_ZONES,
   NAMED_ACTOR_SLOTS,
   crowdForWorld,
   creaturesForWorld,
   namedActorPoint,
+  pointInsideWorld,
 } from '../src/harbourTableau.js';
 
 assert(TABLEAU_ZONES.length >= 8);
@@ -13,6 +15,8 @@ for (const zone of TABLEAU_ZONES) {
   assert(zone.id);
   assert(zone.kind === 'ground' || zone.kind === 'water');
   assert(zone.bounds && zone.bounds.length === 4);
+  const [x1,y1,x2,y2]=zone.bounds;
+  assert(x1>=0 && y1>=0 && x2<=HARBOUR_WORLD.width && y2<=HARBOUR_WORLD.height, `zone outside world: ${zone.id}`);
 }
 
 const world = {
@@ -37,19 +41,23 @@ assert(crowd.some(x => x.activity === 'swim'));
 
 for (const person of crowd.filter(x => x.kind === 'person' && x.activity !== 'swim')) {
   assert.equal(person.zoneKind, 'ground');
+  assert(pointInsideWorld(person), `crowd outside world: ${person.id}`);
 }
 for (const swimmer of crowd.filter(x => x.activity === 'swim')) {
   assert.equal(swimmer.zoneKind, 'water');
+  assert(pointInsideWorld(swimmer), `swimmer outside world: ${swimmer.id}`);
 }
 
 const creatures = creaturesForWorld(world);
 assert(creatures.some(x => x.species === 'seagull'));
 assert(creatures.some(x => x.species === 'squirrel'));
 assert(creatures.some(x => x.species === 'tropical-fish'));
+for(const creature of creatures) assert(pointInsideWorld(creature), `creature outside world: ${creature.id}`);
 
 for (const id of Object.keys(NAMED_ACTOR_SLOTS)) {
   const point = namedActorPoint(world, id);
   assert(point && Number.isFinite(point.x) && Number.isFinite(point.y));
+  assert(pointInsideWorld(point), `named actor outside world: ${id}`);
 }
 
 const rainy = crowdForWorld({...world, weather:'storm'});
@@ -67,4 +75,4 @@ for (const marker of ['crowdForWorld','creaturesForWorld','namedActorPoint','dat
   assert(mapSource.includes(marker), `HarbourMap renderer missing ${marker}`);
 }
 
-console.log('PASS: harbour tableau zones, crowd, creatures, scene tags and renderer integration');
+console.log('PASS: harbour tableau zones, crowd, creatures, scene tags, expanded bounds and renderer integration');
