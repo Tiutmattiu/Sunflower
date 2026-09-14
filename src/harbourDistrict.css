@@ -6,7 +6,7 @@
 /* Octopus is one clearing/payment/data institution, not a separate bank plus exchange. */
 .octopus-canopy{fill:#73877a}.octopus-board{fill:#d9c9a6}.octopus-orders,.octopus-counter,.octopus-mark path,.octopus-payments path{fill:none;stroke:#4d4a42;stroke-width:3}.octopus-payments rect{fill:#617977;stroke:#4d4a42}.octopus-mark{fill:none}
 
-/* The street festival is distinct from ordinary music inside Joel's Bar. */
-.festival-stage{opacity:.48}.festival-stage.active{opacity:1}.festival-platform{fill:#8a654f}.festival-rig,.festival-mic{fill:none;stroke:#4d4a42;stroke-width:4}.festival-speaker{fill:#4f4c49}.festival-light{fill:#d8a85b}.festival-stage.active .festival-light{filter:drop-shadow(0 0 3px #e8c47d)}
+/* The street festival is distinct from ordinary music inside Joel's Bar. Renderer origin is shifted off the old shoreline and onto the hard street. */
+.festival-stage{opacity:.48;transform:translateY(-200px)}.festival-stage.active{opacity:1}.festival-platform{fill:#8a654f}.festival-rig,.festival-mic{fill:none;stroke:#4d4a42;stroke-width:4}.festival-speaker{fill:#4f4c49}.festival-light{fill:#d8a85b}.festival-stage.active .festival-light{filter:drop-shadow(0 0 3px #e8c47d)}
 
 @media(prefers-reduced-motion:reduce){.weather-overlay{display:none}}
