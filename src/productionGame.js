@@ -1,12 +1,13 @@
 import { ECONOMIC_GOODS } from './economicContent.js';
 import {initializeNpcEconomy,npcEconomyDay} from './npcEconomy.js';
+import {settleDimaGuarantees} from './privateCapital.js';
 import {advanceRouteSources} from './routeSources.js';
 
 const clone=x=>structuredClone(x);
 const CLASSES=['TRADE','OPERATE','INVEST','FINANCE','INTERMEDIATE','SPECULATE'];
 const evt=(w,type,data={})=>{const e={id:`player-${++w.nextEvent}`,day:w.day,type,source:'local_action',location:w.playerGame.location,confidence:1,weight:2,...data};w.evidence.push(e);w.playerGame.notebook.push(e.id);return e};
 const freeCash=(w,id)=>w.actors[id].cash-w.market.reservations.filter(r=>r.actorId===id&&r.kind==='cash').reduce((n,r)=>n+r.amount,0)-(id==='player'?w.playerGame.commitments.filter(c=>c.status==='open').reduce((n,c)=>n+(c.lockedCash||0),0):0);
-const freeUnits=(w,id)=>{const reserved=new Set(w.market.reservations.filter(r=>r.actorId===id&&r.kind==='unit').map(r=>r.unitId));return w.actors[id].inventory.filter(u=>!reserved.has(u.unitId)&&!u.pledgedTo)};
+const freeUnits=(w,id)=>{const reserved=new Set(w.market.reservations.filter(r=>r.kind==='unit').map(r=>r.unitId));return w.actors[id].inventory.filter(u=>!reserved.has(u.unitId)&&!u.pledgedTo)};
 const transfer=(w,from,to,amount)=>{if(freeCash(w,from)<amount)return false;w.actors[from].cash-=amount;w.actors[to].cash+=amount;return true};
 const once=(w,id)=>!w.production.playerActions.some(x=>x.id===id&&x.day===w.day);
 
@@ -118,6 +119,7 @@ export function advanceProductionGame(w){
  }
  advanceRouteSources(w);
  npcEconomyDay(w);
+ settleDimaGuarantees(w);
  return w;
 }
 
