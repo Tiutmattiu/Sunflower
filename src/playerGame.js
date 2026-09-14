@@ -31,6 +31,7 @@ const ACTION_KNOWLEDGE = {
   assemble_onewheel: KNOWLEDGE.onewheel_plan,
   practice_onewheel: KNOWLEDGE.juan_route,
   race_juan: KNOWLEDGE.juan_route,
+  juan_field_trip: KNOWLEDGE.juan_route,
 };
 const actionKnown = (w, id) => !ACTION_KNOWLEDGE[id] || knows(w, ACTION_KNOWLEDGE[id]);
 
@@ -59,6 +60,7 @@ export const PLAYER_COUNTERPARTIES = {
   juan_explain_goal: 'juan',
   juan_race_offer: 'juan',
   race_juan: 'juan',
+  juan_field_trip: 'juan',
   repay_race_drinks: 'joel',
   aspen_onewheel_plan: 'aspen',
   assemble_onewheel: 'aspen',
@@ -560,6 +562,10 @@ function applyPlayerAction(current, id, payload = {}) {
       w.playerGame.lastBlock = 'The wager only happens from the real Bar scene with Joel and Juan present.';
       return w;
     }
+    if (['won','complete'].includes(r.juan.stage)) {
+      w.playerGame.lastBlock = 'The race is already settled.';
+      return w;
+    }
     if (r.juan.lastRaceDay === w.day) {
       w.playerGame.lastBlock = 'Juan is not offering a free reroll on the same day.';
       return w;
@@ -570,12 +576,11 @@ function applyPlayerAction(current, id, payload = {}) {
     r.juan.races += 1;
     r.juan.lastRaceDay = w.day;
     if (roll <= chance) {
-      r.juan.stage = 'complete';
-      note(w, 'juan_race_won', `Won Juan’s race at a ${Math.round(chance * 100)}% preparation chance.`, {
+      r.juan.stage = 'won';
+      note(w, 'juan_race_won', `Won Juan’s race at a ${Math.round(chance * 100)}% preparation chance. Juan still has to lead you to the field.`, {
         people: ['juan'], goods: ['Built Onewheel'], weight: 3,
         process: { execution: 1, positioningStress: .9, commitments: .8 },
       });
-      grantFlower(w, 'juan');
       return w;
     }
 
@@ -596,6 +601,28 @@ function applyPlayerAction(current, id, payload = {}) {
       process: { execution: -.4, commitments: .7, liquidityCredit: -.7, positioningStress: -.5 },
       context: { raceChance: chance, raceRoll: roll, drinksCost },
     });
+    return w;
+  }
+
+  if (id === 'juan_field_trip') {
+    if (r.juan.stage !== 'won') {
+      w.playerGame.lastBlock = 'Juan has not yet owed you the trip.';
+      return w;
+    }
+    if (w.playerGame.location !== 'joels_bar' || !present(w, 'juan')) {
+      w.playerGame.lastBlock = 'Leave with Juan from the Bar while he is actually there.';
+      return w;
+    }
+    if (!spendAttention(w)) return w;
+    w.playerGame.location = 'cliff_path';
+    w.actors.player.location = 'cliff_path';
+    w.actors.juan.location = 'cliff_path';
+    r.juan.stage = 'complete';
+    note(w, 'juan_field_trip', 'Juan kept the wager and led you beyond the familiar harbour path to the sunflower field.', {
+      people: ['juan'], goods: ['Built Onewheel'], weight: 3,
+      process: { execution: .8, commitments: 1, positioningStress: .4 },
+    });
+    grantFlower(w, 'juan');
     return w;
   }
 
@@ -962,8 +989,9 @@ export function visibleActions(w) {
     const missingParts = !ONEWHEEL_CORE.every(owned) || !ONEWHEEL_FINISH.some(owned);
     add('assemble_onewheel', 'Ask Aspen to assemble the one-wheel', !aspenHere ? 'Aspen is away from the berth' : !honestLimes ? 'Aspen is waiting on an honest lime settlement' : missingParts ? 'Compatible uncommitted parts are still missing' : null);
   }
-  if (l === 'harbour_berth' && r.juan.built && r.juan.practice < 4) add('practice_onewheel', `Practise on the one-wheel · ${Math.round(juanRaceChance(w) * 100)}% now`);
-  if (l === 'joels_bar' && r.juan.built && !w.playerGame.sunflower.owned && knows(w, KNOWLEDGE.juan_route) && joelHere && juanHere) add('race_juan', `Race Juan · ${Math.round(juanRaceChance(w) * 100)}% chance`, r.juan.lastRaceDay === w.day ? 'No free same-day reroll' : null);
+  if (l === 'harbour_berth' && r.juan.built && r.juan.practice < 4 && !['won','complete'].includes(r.juan.stage)) add('practice_onewheel', `Practise on the one-wheel · ${Math.round(juanRaceChance(w) * 100)}% now`);
+  if (l === 'joels_bar' && r.juan.built && !w.playerGame.sunflower.owned && knows(w, KNOWLEDGE.juan_route) && joelHere && juanHere && !['won','complete'].includes(r.juan.stage)) add('race_juan', `Race Juan · ${Math.round(juanRaceChance(w) * 100)}% chance`, r.juan.lastRaceDay === w.day ? 'No free same-day reroll' : null);
+  if (l === 'joels_bar' && r.juan.stage === 'won' && !w.playerGame.sunflower.owned && juanHere) add('juan_field_trip', 'Go with Juan');
   const raceDebt = w.playerGame.commitments.find(x => x.id.startsWith('juan-race-drinks-') && ['open', 'breached'].includes(x.status));
   if (l === 'joels_bar' && raceDebt) add('repay_race_drinks', `Pay remaining race drinks · ${raceDebt.amountDue}🥫`, cash < raceDebt.amountDue ? `Need ${raceDebt.amountDue}🥫 available` : null);
 
