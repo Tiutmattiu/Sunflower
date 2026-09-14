@@ -194,9 +194,6 @@ function grantFlower(w, route) {
 export function initializePlayerGame(w) {
   w.attention.budget = w.config.attentionPerDay || 4;
 
-  // Reconcile the historical starter inventory with the current Mai Tai route.
-  // The existing physical Orgeat unit moves from Joel to the berth supplier; it is
-  // not duplicated or minted, and Joel truly begins without the missing ingredient.
   const starterOrgeat = w.actors.joel?.inventory.find(x => x.kind === 'Orgeat');
   if (starterOrgeat && w.actors.wharf_suppliers) {
     w.actors.joel.inventory.splice(w.actors.joel.inventory.indexOf(starterOrgeat), 1);
@@ -290,16 +287,9 @@ export function juanRaceRoll(w) {
 }
 
 function barPeopleForRace(w) {
-  const ids = new Set(
-    Object.entries(w.actors)
-      .filter(([id, a]) => id !== 'player' && !a.background && a.location === 'joels_bar')
-      .map(([id]) => id)
-  );
-  const evening = w.relationshipEcology?.barEvenings?.find(x => x.day === w.day);
-  for (const id of evening?.attendees || []) if (id !== 'player') ids.add(id);
-  ids.add('joel');
-  ids.add('juan');
-  return [...ids];
+  return Object.entries(w.actors)
+    .filter(([id,a])=>id!=='player'&&!a.background&&!a.removed&&a.location==='joels_bar')
+    .map(([id])=>id);
 }
 
 function raceDrinksCommitment(w, amount) {
@@ -630,8 +620,6 @@ function applyPlayerAction(current, id, payload = {}) {
     return w;
   }
 
-  // Sonya route remains independent of the Juan route. The corrected Mai Tai can deepen Joel trust,
-  // but supper still requires its own invitation, fresh catch and dated commitment.
   if (id === 'joel_patronage') {
     if (w.playerGame.location !== 'joels_bar' || !spendAttention(w) || !pay(w, 'joel', 3)) return w;
     r.sonya.patronage++;
@@ -702,7 +690,6 @@ function applyPlayerAction(current, id, payload = {}) {
     return w;
   }
 
-  // Yasmin auction/finance route retained as-is.
   if (id === 'auction_preview') {
     if (w.day < r.yasmin.previewOpens) { w.playerGame.lastBlock = 'The public auction notice has not opened preview access yet.'; return w; }
     if (w.day > r.yasmin.previewCloses) { w.playerGame.lastBlock = `Preview closed on day ${r.yasmin.previewCloses}; the next sale will be announced.`; return w; }
@@ -790,7 +777,6 @@ function applyPlayerAction(current, id, payload = {}) {
     return w;
   }
 
-  // Existing lime-honesty route is the earned relationship condition for Aspen assembly.
   if (id === 'lime_accept') {
     if (w.playerGame.lime.stage !== 'available') { w.playerGame.lastBlock = 'The crate has already been taken.'; return w; }
     if (!spendAttention(w) || !pay(w, 'aspen', 5)) return w;
@@ -873,7 +859,6 @@ function publicStory(w, id, headline, report, category = 'public_life') {
   w.actors.player.knowledge.push(id);
 }
 
-// Due dates include the whole named day. One settlement owns cash, promise and pledge.
 export function settlePlayerDebts(w, time = w.day) {
   for (const claim of w.claims.filter(c => c.issuerId === 'player' && c.status === 'open' && (c.dueAt ?? c.dueDay + 1) <= time)) {
     const p = w.actors.player;
@@ -1025,7 +1010,6 @@ export function visibleActions(w) {
 
 export const PROCESS_AXES = processAxes;
 
-// Failed actions are atomic: no partial attention, cash, inventory or evidence writes.
 export function performPlayerAction(current, id, payload = {}) {
   if (!actionKnown(current, id)) return { ...current, playerGame: { ...current.playerGame, lastBlock: 'You have not learned enough to do that yet.' } };
   const actor = PLAYER_COUNTERPARTIES[id];
