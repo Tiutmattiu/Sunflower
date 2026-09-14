@@ -24,35 +24,37 @@ export const DISTRICT_LANDMARKS = Object.freeze([
   {id:'glass-shop',kind:'glassblower',x:430,y:520,w:220,h:185,label:'GLASS'},
   {id:'snake-pitch',kind:'snake-performer',x:270,y:660,w:190,h:150,label:'SNAKE SHOW'},
   {id:'cliff',kind:'cliff',x:120,y:355,w:300,h:700,label:'OUTER PATH',locationId:'cliff_path'},
-  {id:'nursery-garden',kind:'growing-yard',x:500,y:650,w:260,h:170,label:'GROWING YARD',locationId:'nursery'},
-  {id:'gallery',kind:'gallery',x:1050,y:210,w:270,h:185,label:'VIEWING ROOM',locationId:'viewing_room'},
-  {id:'side-room',kind:'side-room',x:1840,y:520,w:150,h:140,locationId:'back_room'},
-  {id:'sonya-kitchen',kind:'kitchen',x:610,y:340,w:250,h:170,label:'KITCHEN',locationId:'sonyas_kitchen'},
-  {id:'public-exchange',kind:'public-clearing',x:1080,y:720,w:270,h:150,label:'EXCHANGE',locationId:'public_clearing'},
-  {id:'old-hall',kind:'old-hall',x:480,y:745,w:240,h:160,label:'OLD HALL',locationId:'old_hall'},
+
+  // Existing gameplay institutions are part of the neighbourhood, not invisible menu destinations.
+  {id:'nursery-garden',kind:'growing-yard',x:560,y:650,w:260,h:180,label:'GROWING YARD',locationId:'nursery'},
+  {id:'gallery',kind:'gallery',x:1050,y:220,w:290,h:195,label:'VIEWING • AUCTION',locationId:'viewing_room'},
+  {id:'dima-apartments',kind:'apartment-block',x:1840,y:565,w:220,h:245,label:'ROOMS',locationId:'back_room'},
+  {id:'sonya-kitchen',kind:'kitchen',x:605,y:335,w:245,h:170,label:'KITCHEN',locationId:'sonyas_kitchen'},
+  {id:'public-exchange',kind:'public-clearing',x:1090,y:720,w:280,h:155,label:'OCTOPUS CLEARING',locationId:'public_clearing'},
+  {id:'old-hall',kind:'old-hall',x:430,y:735,w:250,h:165,label:'OLD HALL • FILMS',locationId:'old_hall'},
 ]);
 
 export const DISTRICT_LOCATION_POINTS=Object.freeze({
   harbour_berth:{x:1190,y:735},
   joels_bar:{x:805,y:575},
   parcel_counter:{x:1605,y:575},
-  nursery:{x:500,y:690},
-  viewing_room:{x:1050,y:320},
-  back_room:{x:1840,y:575},
-  sonyas_kitchen:{x:610,y:410},
+  nursery:{x:560,y:735},
+  viewing_room:{x:1050,y:335},
+  back_room:{x:1840,y:685},
+  sonyas_kitchen:{x:605,y:425},
   cliff_path:{x:170,y:720},
-  public_clearing:{x:1080,y:760},
-  old_hall:{x:480,y:790},
+  public_clearing:{x:1090,y:790},
+  old_hall:{x:430,y:825},
 });
 
 export const DISTRICT_PROP_POINTS=Object.freeze({
   crate:{x:1160,y:700},cargo:{x:1230,y:685},
   bottle:{x:760,y:520},glass:{x:850,y:520},packing:{x:705,y:545},
   parcel:{x:1545,y:520},parts:{x:1640,y:520},
-  plants:{x:455,y:650},paper:{x:545,y:655},
-  bowl:{x:1010,y:285},photo:{x:1100,y:285},
-  envelope:{x:1840,y:535},table:{x:610,y:370},
-  path:{x:145,y:700},orders:{x:1080,y:715},
+  plants:{x:520,y:700},paper:{x:605,y:700},
+  bowl:{x:1010,y:300},photo:{x:1110,y:300},
+  envelope:{x:1840,y:635},table:{x:605,y:390},
+  path:{x:145,y:700},orders:{x:1090,y:745},
 });
 
 const SIGNALS = Object.freeze([
@@ -67,6 +69,11 @@ const SIGNALS = Object.freeze([
   {id:'vice-sign',kind:'night-venue',x:1880,y:335,label:'PEEP SHOW'},
   {id:'pet-sign',kind:'exotic-pet',x:315,y:300,label:'ODD PETS'},
   {id:'glass-sign',kind:'glassblower',x:430,y:430,label:'GLASS'},
+  {id:'gallery-sign',kind:'gallery',x:1050,y:140,label:'VIEWING • AUCTION'},
+  {id:'cinema-sign',kind:'old-hall',x:430,y:665,label:'OLD HALL • FILMS'},
+  {id:'apartments-sign',kind:'apartment-block',x:1840,y:505,label:'ROOMS • RENT'},
+  {id:'nursery-sign',kind:'growing-yard',x:560,y:585,label:'GROWING YARD'},
+  {id:'exchange-sign',kind:'public-clearing',x:1090,y:655,label:'OCTOPUS CLEARING'},
 ]);
 
 const OCCLUDERS = Object.freeze([
@@ -76,6 +83,8 @@ const OCCLUDERS = Object.freeze([
   {id:'dock-rail',kind:'dock-rail',x:1210,y:745,depthY:770,w:430,h:38},
   {id:'park-fence',kind:'park-fence',x:760,y:920,depthY:935,w:390,h:34},
   {id:'pet-awning',kind:'pet-awning',x:315,y:450,depthY:468,w:200,h:40},
+  {id:'nursery-fence',kind:'nursery-fence',x:560,y:746,depthY:755,w:230,h:32},
+  {id:'gallery-rope',kind:'gallery-rope',x:1050,y:350,depthY:360,w:220,h:24},
 ]);
 
 function dayNumber(world={}) {
@@ -93,6 +102,7 @@ export function districtStateForWorld(world={}) {
     hotBeach: !storm && day % 3 === 1,
     cargoRush: day % 3 === 0,
     musicNight: !storm && day % 4 === 2,
+    cinemaNight: !storm && day % 3 === 0,
     commercialQuiet: shabbatLike,
     seaEnergy: storm ? 'rough' : (day % 2 ? 'bright' : 'calm'),
   });
@@ -103,7 +113,7 @@ export function districtSignals(world={}) {
   return SIGNALS.map(signal => ({
     ...signal,
     muted: state.commercialQuiet && ['wong-services','pizza-deli','barber','massage'].includes(signal.kind),
-    emphasized: (state.musicNight && signal.kind === 'bar-live-music') || (state.shabbatLike && signal.kind === 'faith-house'),
+    emphasized: (state.musicNight && signal.kind === 'bar-live-music') || (state.shabbatLike && signal.kind === 'faith-house') || (state.cinemaNight && signal.kind === 'old-hall'),
   }));
 }
 
