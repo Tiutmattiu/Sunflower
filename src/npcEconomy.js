@@ -20,8 +20,11 @@ function transferCash(w,from,to,amount,kind,purpose){
  w.actors[from].cash-=paid;w.actors[to].cash+=paid;tx(w,kind,from,to,paid,purpose);return paid;
 }
 function ensureWongBusiness(w){
- if(!w.wongBusiness)w.wongBusiness={stage:'counter',fixedAssets:[],serviceCapacity:3,dailyRevenue:0,dailyCost:1,baseOperatingCost:1,rentAmount:2,rentDueDay:3,rentCadence:5,landlordId:'dima',rentArrears:0,operatingArrears:0,expansionHistory:[],serviceHistory:[],lastRunDay:null};
- w.wongBusiness.fixedAssets??=[];w.wongBusiness.expansionHistory??=[];w.wongBusiness.serviceHistory??=[];
+ const legacy=w.wongBusiness||{};
+ const defaults={stage:'counter',fixedAssets:[],serviceCapacity:Number.isFinite(legacy.capacity)?legacy.capacity:3,dailyRevenue:0,dailyCost:Number.isFinite(legacy.operatingCost)?legacy.operatingCost:1,baseOperatingCost:Number.isFinite(legacy.operatingCost)?legacy.operatingCost:1,rentAmount:2,rentDueDay:3,rentCadence:5,landlordId:'dima',rentArrears:0,operatingArrears:0,expansionHistory:[],serviceHistory:[],lastRunDay:null};
+ w.wongBusiness=legacy;
+ for(const [key,value] of Object.entries(defaults))if(w.wongBusiness[key]===undefined)w.wongBusiness[key]=Array.isArray(value)?[]:value;
+ w.wongBusiness.fixedAssets??=[];w.wongBusiness.expansionHistory??=[];w.wongBusiness.serviceHistory??=[];w.wongBusiness.stored??=[];
  return w.wongBusiness;
 }
 function stageFromAssets(b){
@@ -30,11 +33,13 @@ function stageFromAssets(b){
  b.stage=WONG_STAGE_ORDER[Math.max(0,best)];
  b.serviceCapacity=3+b.fixedAssets.reduce((n,a)=>n+(WONG_ASSETS[a.assetId]?.capacity||0),0);
  b.dailyCost=b.baseOperatingCost+b.fixedAssets.reduce((n,a)=>n+(WONG_ASSETS[a.assetId]?.operatingCost||0),0);
+ b.capacity=b.serviceCapacity;b.operatingCost=b.dailyCost;
  return b;
 }
 
 export function initializeNpcEconomy(w){
  w.npcEconomy??={securedClaims:[],sourceEvents:[],enterpriseEvents:[],version:1};
+ w.npcEconomy.securedClaims??=[];w.npcEconomy.sourceEvents??=[];w.npcEconomy.enterpriseEvents??=[];
  w.sourceBook??={};
  ensureWongBusiness(w);stageFromAssets(w.wongBusiness);
  return w;
@@ -167,7 +172,7 @@ export function runWongBusinessDay(w,{forceDemand=null,skipRent=false}={}){
  initializeNpcEconomy(w);
  const b=stageFromAssets(w.wongBusiness);
  if(b.lastRunDay===w.day)return b;
- b.lastRunDay=w.day;b.dailyRevenue=0;b.dailyCost=b.baseOperatingCost+b.fixedAssets.reduce((n,a)=>n+(WONG_ASSETS[a.assetId]?.operatingCost||0),0);
+ b.lastRunDay=w.day;b.dailyRevenue=0;b.dailyCost=b.baseOperatingCost+b.fixedAssets.reduce((n,a)=>n+(WONG_ASSETS[a.assetId]?.operatingCost||0),0);b.operatingCost=b.dailyCost;
  const demand=serviceDemand(w,b,forceDemand),price=1;
  const affordable=Math.min(demand,Math.floor(freeCash(w,'households')/price));
  const revenue=transferCash(w,'households','wong',affordable*price,'wong_service_payment',b.stage);
