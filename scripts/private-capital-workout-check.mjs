@@ -40,6 +40,23 @@ assert.equal(secured.status,'default');
 assert.equal(fish.owner,'yasmin');
 assert.equal(fish.pledgedTo,null);
 
+// The same secured-loan ontology must accept Juan's living productive assets.
+w=createHarbourWorld(63,{attentionPerDay:99});
+const plant=w.livingAssets.find(a=>a.species==='lime_tree');
+const juanBeforePlantLoan=w.actors.juan.cash;
+r=yasminSecuredAdvance(w,'juan',plant.id,{requestedPrincipal:6,term:2});
+assert.equal(r.ok,true,r.reason);
+const plantClaim=w.claims.find(c=>c.id===r.claimId);
+assert.equal(plant.ownerId,'juan','living collateral stays Juan-owned before default');
+assert.equal(plant.pledgedTo,'yasmin');
+assert(w.actors.juan.cash>juanBeforePlantLoan,'living collateral must unlock current cash');
+assert.equal(plantClaim.collateralAssetId,plant.id);
+w.day=plantClaim.dueDay;w.actors.juan.cash=0;
+settleSecuredClaims(w);
+assert.equal(plantClaim.status,'default');
+assert.equal(plant.ownerId,'yasmin','living collateral transfers only after default');
+assert.equal(plant.pledgedTo,null);
+
 // Dima buys an existing claim: cash moves to old holder, holder changes, face does not duplicate.
 w=createHarbourWorld(62,{attentionPerDay:99});
 w.claims.push({id:'juan-test-claim',type:'future_output_claim',issuerId:'juan',holderId:'yasmin',face:8,originalFace:8,dueDay:8,status:'open',purpose:'harvest_advance'});
