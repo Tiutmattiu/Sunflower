@@ -8,7 +8,7 @@ import {
 
 const requiredKinds = new Set([
   'sea','shore','berth','wong-services','octopus-bank','bar-live-music','shisha','pizza-deli',
-  'barber','massage','park','basketball','chess','faith-house','night-venue','exotic-pet',
+  'barber','massage','ice-cream','trash','park','grass','basketball','chess','faith-house','night-venue','exotic-pet',
   'glassblower','snake-performer','cliff'
 ]);
 for (const landmark of DISTRICT_LANDMARKS) requiredKinds.delete(landmark.kind);
