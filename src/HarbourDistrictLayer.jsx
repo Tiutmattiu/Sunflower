@@ -19,7 +19,7 @@ const Sign=({signal})=><g className={`district-sign ${signal.muted?'muted':''} $
 export function HarbourDistrictBase({world}) {
   const state=districtStateForWorld(world);
   const signals=districtSignals(world);
-  return <g aria-hidden="true" pointerEvents="none" className={`harbour-district sea-${state.seaEnergy} ${state.commercialQuiet?'district-quiet':''}`}>
+  return <g aria-hidden="true" pointerEvents="none" className={`harbour-district sea-${state.seaEnergy} ${state.commercialQuiet?'district-quiet':''} ${state.cinemaNight?'cinema-night':''}`}>
     <rect className="district-paper" width={HARBOUR_WORLD.width} height={HARBOUR_WORLD.height}/>
     <path className="district-sea" d="M0 825C260 780 540 805 820 835C1110 867 1390 816 1640 745C1780 705 1902 682 2000 696V1200H0Z"/>
     <path className="district-shore" d="M0 742C260 705 510 742 785 778C1040 812 1240 790 1434 742L1466 812C1240 866 1030 884 778 846C515 807 264 784 0 824Z"/>
@@ -55,6 +55,46 @@ export function HarbourDistrictBase({world}) {
       <g className="peep-show" transform="translate(1840 292)"><rect width="144" height="184" rx="5"/><rect className="peep-marquee" x="10" y="16" width="124" height="34"/><path className="peep-door" d="M42 184V76h60v108"/><circle className="peep-bulb" cx="22" cy="66" r="4"/><circle className="peep-bulb" cx="122" cy="66" r="4"/></g>
     </g>
 
+    <g className="district-gameplay-institutions">
+      <Shop x={905} y={145} w={290} h={192} className="yasmin-gallery">
+        <rect className="gallery-window" x="28" y="68" width="182" height="82"/>
+        <rect className="gallery-frame" x="45" y="82" width="38" height="50"/><rect className="gallery-frame" x="98" y="76" width="46" height="58"/><rect className="gallery-frame" x="157" y="86" width="35" height="44"/>
+        <g className="auction-podium" transform="translate(230 146)"><rect x="-24" y="-28" width="48" height="28"/><path d="M0-28v-24M-8-52h16"/></g>
+        <g className="auction-seats"><path d="M34 162h34M82 162h34M130 162h34M178 162h34"/><path d="M44 162v18M92 162v18M140 162v18M188 162v18"/></g>
+      </Shop>
+
+      <Shop x={500} y={250} w={245} h={168} className="sonya-kitchen">
+        <rect className="kitchen-stove" x="30" y="94" width="62" height="50"/><circle cx="45" cy="104" r="7"/><circle cx="73" cy="104" r="7"/>
+        <rect className="kitchen-table" x="112" y="112" width="70" height="28"/><path className="kitchen-pans" d="M116 70q12-18 24 0M150 70q12-18 24 0"/>
+      </Shop>
+
+      <g className="nursery-garden" transform="translate(440 590)">
+        <path className="nursery-wall" d="M0 120V22H230V120"/><path className="nursery-shade" d="M-10 30Q110-20 240 30"/>
+        <rect className="nursery-bed" x="12" y="72" width="80" height="38"/><rect className="nursery-bed" x="108" y="64" width="102" height="46"/>
+        {[28,52,76,126,150,178,198].map((x,i)=><path key={x} className="nursery-plant" d={`M${x} ${96-(i%2)*8}v-26m0 12q-12-10-16-2m16-4q12-12 17-3`}/>) }
+        <ellipse className="toad-basin" cx="214" cy="116" rx="28" ry="10"/>
+      </g>
+
+      <g className="old-cinema" transform="translate(305 620)">
+        <rect className="cinema-shell" width="250" height="168" rx="4"/><rect className="cinema-marquee" x="18" y="18" width="214" height="38"/>
+        <rect className="cinema-screen" x="34" y="72" width="120" height="70"/><path className="cinema-seats" d="M174 86h46M174 102h46M174 118h46M174 134h46"/>
+        <path className="film-reel" d="M62 107a16 16 0 1 0 32 0a16 16 0 1 0-32 0M102 107a16 16 0 1 0 32 0a16 16 0 1 0-32 0"/>
+      </g>
+
+      <g className="public-exchange" transform="translate(950 660)">
+        <path className="exchange-canopy" d="M0 42L30 0H250L280 42Z"/><rect className="exchange-board" x="42" y="46" width="196" height="86"/>
+        <path className="exchange-orders" d="M58 64h72M58 82h110M58 100h88M160 64h58M160 118h58"/>
+        <path className="exchange-counter" d="M24 142h232M38 142v28M242 142v28"/>
+      </g>
+
+      <g className="dima-apartments" transform="translate(1730 455)">
+        <rect className="apartment-shell" width="220" height="232"/><path className="apartment-roof" d="M-8 0h236l-22-28H14Z"/>
+        {[24,82,140].map(x=><g key={x}><rect className="apartment-window" x={x} y="38" width="36" height="38"/><rect className="apartment-window" x={x} y="98" width="36" height="38"/></g>)}
+        <path className="apartment-balconies" d="M12 84h190M12 144h190M30 84v12M88 84v12M146 84v12M188 84v12M30 144v12M88 144v12M146 144v12M188 144v12"/>
+        <rect className="apartment-door" x="88" y="166" width="46" height="66"/><path className="apartment-stairs" d="M144 226h54M154 216h44M164 206h34"/>
+      </g>
+    </g>
+
     <g className="district-park" transform="translate(440 730)">
       <path className="park-grass" d="M0 24Q200-36 470 14L520 210Q254 286 22 192Z"/>
       <g className="basketball-court" transform="translate(210 46)"><rect width="250" height="138" rx="4"/><path d="M125 0v138M0 69h250M45 0v138M205 0v138"/><path d="M34 28v56h22M216 28v56h-22"/></g>
@@ -88,6 +128,8 @@ export function DistrictOccluder({item}) {
   if(item.kind==='shisha-screen') return <g className="district-occluder shisha-screen" transform={`translate(${x} ${y})`}><path d={`M${-w/2} 0V${-h}H${w/2}V0`}/><path d={`M${-w/2+22} ${-h}V0M${-w/2+66} ${-h}V0M${w/2-64} ${-h}V0M${w/2-20} ${-h}V0`}/></g>;
   if(item.kind==='dock-rail') return <g className="district-occluder dock-rail" transform={`translate(${x} ${y})`}><path d={`M${-w/2} 0H${w/2}M${-w/2+10} 0V${-h}M${-w/6} 0V${-h}M${w/6} 0V${-h}M${w/2-10} 0V${-h}`}/></g>;
   if(item.kind==='park-fence') return <g className="district-occluder park-fence" transform={`translate(${x} ${y})`}><path d={`M${-w/2} 0H${w/2}M${-w/2} ${-h}H${w/2}`}/>{[-.45,-.3,-.15,0,.15,.3,.45].map(n=><path key={n} d={`M${n*w} 0V${-h}`}/>)}</g>;
+  if(item.kind==='nursery-fence') return <g className="district-occluder nursery-fence" transform={`translate(${x} ${y})`}><path d={`M${-w/2} 0H${w/2}M${-w/2+12} 0V${-h}M${-w/4} 0V${-h}M0 0V${-h}M${w/4} 0V${-h}M${w/2-12} 0V${-h}`}/></g>;
+  if(item.kind==='gallery-rope') return <g className="district-occluder gallery-rope" transform={`translate(${x} ${y})`}><path d={`M${-w/2} 0V${-h}M${w/2} 0V${-h}M${-w/2} ${-h+5}Q0 ${-h+22} ${w/2} ${-h+5}`}/></g>;
   return <g className="district-occluder pet-awning" transform={`translate(${x} ${y})`}><path d={`M${-w/2} 0H${w/2}L${w/2-20} ${-h}H${-w/2+18}Z`}/></g>;
 }
 
