@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {createHarbourWorld} from '../src/harbourSpine.js';
+import {createHarbourWorld,advanceHarbourWindow} from '../src/harbourSpine.js';
 import {settleSecuredClaims} from '../src/npcEconomy.js';
 import {
   yasminSecuredAdvance,
@@ -56,6 +56,21 @@ settleSecuredClaims(w);
 assert.equal(plantClaim.status,'default');
 assert.equal(plant.ownerId,'yasmin','living collateral transfers only after default');
 assert.equal(plant.pledgedTo,null);
+
+// The normal day boundary must leave generic secured-claim settlement to the generic authority.
+w=createHarbourWorld(64,{attentionPerDay:99});
+const boundaryPlant=w.livingAssets.find(a=>a.species==='lime_tree');
+r=yasminSecuredAdvance(w,'juan',boundaryPlant.id,{requestedPrincipal:6,term:1});
+assert.equal(r.ok,true,r.reason);
+const boundaryClaim=w.claims.find(c=>c.id===r.claimId);
+w.actors.juan.cash=0;
+w=advanceHarbourWindow(w);
+const closedBoundaryClaim=w.claims.find(c=>c.id===boundaryClaim.id);
+const transferredBoundaryPlant=w.livingAssets.find(a=>a.id===boundaryPlant.id);
+assert.equal(closedBoundaryClaim.status,'default','generic secured claim must actually default at its due boundary');
+assert.equal(transferredBoundaryPlant.ownerId,'yasmin','day-boundary default must transfer living collateral through secured settlement');
+assert.equal(transferredBoundaryPlant.pledgedTo,null,'closed secured claim cannot leave a stale pledge');
+assert(w.evidence.some(e=>e.type==='secured_claim_default'&&e.claimId===closedBoundaryClaim.id),'generic secured settlement must own the default event');
 
 // Dima buys an existing claim: cash moves to old holder, holder changes, face does not duplicate.
 w=createHarbourWorld(62,{attentionPerDay:99});
