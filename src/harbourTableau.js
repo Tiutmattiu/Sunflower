@@ -61,8 +61,8 @@ const BASE_CROWD=Object.freeze([
   person('bar-music-listener','social-strip','music',['bar-life','bar-music']),
   person('bar-musician','social-strip','music',['bar-life','bar-music']),
   person('bar-musician-b','social-strip','music',['bar-life','bar-music'],{musicOnly:true}),
-  person('shisha-regular-a','social-strip','shisha',['shisha','elder'],{age:'elder'}),
-  person('shisha-regular-b','social-strip','shisha',['shisha']),
+  person('shisha-regular-a','social-strip','shisha',['shisha','elder'],{age:'elder',headwear:'headwrap'}),
+  person('shisha-regular-b','social-strip','shisha',['shisha'],{headwear:'headscarf'}),
   person('shisha-regular-c','social-strip','shisha',['shisha'],{body:'wide'}),
   person('shisha-watcher','social-strip','idle',['shisha']),
   person('social-date-a','social-strip','talk',['date']),
@@ -93,25 +93,25 @@ const BASE_CROWD=Object.freeze([
   person('festival-listener-a','festival-square','talk',['music-festival'],{festivalOnly:true}),
   person('festival-listener-b','festival-square','idle',['music-festival'],{festivalOnly:true}),
 
-  person('faith-walker-a','faith-vice','walk',['faith','elder'],{age:'elder'}),
-  person('faith-walker-b','faith-vice','walk',['faith']),
-  person('faith-family-a','faith-vice','walk',['faith','family'],{shabbatOnly:true}),
-  person('faith-family-b','faith-vice','walk',['faith','family'],{shabbatOnly:true}),
-  person('faith-elder-extra','faith-vice','walk',['faith','elder'],{age:'elder',shabbatOnly:true}),
-  person('faith-neighbour-extra','faith-vice','walk',['faith'],{shabbatOnly:true}),
+  person('faith-walker-a','faith-vice','walk',['faith','elder'],{age:'elder',headwear:'skullcap'}),
+  person('faith-walker-b','faith-vice','walk',['faith'],{headwear:'brimmed'}),
+  person('faith-family-a','faith-vice','walk',['faith','family'],{shabbatOnly:true,headwear:'headscarf'}),
+  person('faith-family-b','faith-vice','walk',['faith','family'],{shabbatOnly:true,headwear:'skullcap'}),
+  person('faith-elder-extra','faith-vice','walk',['faith','elder'],{age:'elder',shabbatOnly:true,headwear:'brimmed'}),
+  person('faith-neighbour-extra','faith-vice','walk',['faith'],{shabbatOnly:true,headwear:'headwrap'}),
   person('vice-door-watcher','faith-vice','idle',['vice']),
   person('street-hustler','faith-vice','pace',['vice','crime']),
   person('street-hustler-b','faith-vice','talk',['vice','crime']),
   person('atm-shadow','faith-vice','idle',['vice','crime']),
   person('hard-luck-street','faith-vice','rummage',['poverty','homeless'],{fateCycle:true}),
-  person('wealthy-patron','faith-vice','walk',['wealth'],{variant:'wealthy'}),
+  person('wealthy-patron','faith-vice','walk',['wealth'],{variant:'wealthy',headwear:'brimmed'}),
 
   person('pet-shop-browser','craft-oddity','inspect',['exotic-pet']),
   person('pet-shop-browser-b','craft-oddity','inspect',['exotic-pet','youth'],{age:'young'}),
   person('glassblower','craft-oddity','glassblow',['glassblower','working-class']),
   person('glassblower-watcher','craft-oddity','idle',['glassblower']),
   person('glassblower-watcher-b','craft-oddity','idle',['glassblower']),
-  person('snake-charmer','craft-oddity','perform',['snake-charmer','street-trade']),
+  person('snake-charmer','craft-oddity','perform',['snake-charmer','street-trade'],{headwear:'headwrap'}),
   person('snake-charmer-watcher','craft-oddity','idle',['snake-charmer']),
   person('snake-charmer-watcher-b','craft-oddity','idle',['snake-charmer']),
   person('craft-runner','craft-oddity','walk',['youth','working-class'],{age:'young'}),
@@ -145,7 +145,25 @@ const CREATURES=Object.freeze([
   {id:'reef-fish-d',species:'tropical-fish',zoneId:'sea-water',activity:'fish'},
 ]);
 
+const COMPLEXIONS=['deep','dark','brown','olive','tan','light'];
+const HAIR_STYLES=['coils','curls','braids','cropped','waves','long'];
+const HEADWEAR=['none','none','none','cap','scarf','headwrap'];
+const BUILDS=['slender','average','average','wide','stocky'];
 function hash(text=''){let h=2166136261;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function pickIdentity(list,id,salt=''){return list[hash(`${id}:${salt}`)%list.length]}
+function identityFor(item){
+ const ageGroup=item.age==='young'?'young':item.age==='elder'?'elder':'adult';
+ const build=item.build||item.body||pickIdentity(BUILDS,item.id,'build');
+ const complexion=item.complexion||pickIdentity(COMPLEXIONS,item.id,'complexion');
+ const hairStyle=item.hairStyle||pickIdentity(HAIR_STYLES,item.id,'hair');
+ let headwear=item.headwear;
+ if(!headwear){
+  if(item.tags?.includes('faith'))headwear=pickIdentity(['skullcap','headscarf','brimmed','none'],item.id,'faith-headwear');
+  else if(item.tags?.includes('labour'))headwear=pickIdentity(['cap','none','none'],item.id,'labour-headwear');
+  else headwear=pickIdentity(HEADWEAR,item.id,'headwear');
+ }
+ return {complexion,hairStyle,headwear,build,ageGroup};
+}
 function pointIn(zone,id,day=0){const[x1,y1,x2,y2]=zone.bounds,hx=hash(`${id}:x:${day}`)/0xffffffff,hy=hash(`${id}:y:${day}`)/0xffffffff;return{x:Math.round(x1+(x2-x1)*(.12+hx*.76)),y:Math.round(y1+(y2-y1)*(.12+hy*.76))}}
 function variantShift(item,day=0){const phase=(hash(`${item.id}:phase`)+day)%5;return{dx:(phase-2)*3,dy:((phase*3)%5-2)*2}}
 function fateFor(day){return ['rummage','slump','skeleton','absent'][day%4]}
@@ -192,8 +210,8 @@ export function crowdForWorld(world={}){
     const stormSheltered=Boolean(state.storm&&item.stormZoneId),zoneId=stormSheltered?item.stormZoneId:item.zoneId;
     const zone=ZONES[zoneId]||ZONES['social-strip'],p=pointIn(zone,item.id,day),shift=variantShift(item,day),faithBoost=state.shabbatLike&&item.tags?.includes('faith');
     const x=p.x+shift.dx,y=p.y+shift.dy,fate=item.fateCycle?fateFor(day):null,ageScale=item.age==='young'?.86:item.age==='elder'?.95:1,scale=Math.max(.78,Math.min(1.15,ageScale+((hash(`${item.id}:scale`)%9)-4)*.015));
-    const motion=motionFor(item,zone,{x,y},day);
-    return{...item,activity:fate==='rummage'?'rummage':fate==='slump'?'slump':fate==='skeleton'?'idle':item.activity,variant:fate||item.variant||null,kind:'person',zoneId,zoneKind:zone.kind,x,y,emphasis:faithBoost?'busy':'normal',duration:6+(hash(item.id)%7),scale,stormSheltered,motion};
+    const motion=motionFor(item,zone,{x,y},day),identity=identityFor(item);
+    return{...item,...identity,activity:fate==='rummage'?'rummage':fate==='slump'?'slump':fate==='skeleton'?'idle':item.activity,variant:fate||item.variant||null,kind:'person',zoneId,zoneKind:zone.kind,x,y,emphasis:faithBoost?'busy':'normal',duration:6+(hash(item.id)%7),scale,stormSheltered,motion};
   });
 }
 
