@@ -2,32 +2,32 @@
 // This module is deliberately pure: it never mutates route, economy, inventory, or actor state.
 
 export const TABLEAU_ZONES = Object.freeze([
-  {id:'sea-water', kind:'water', bounds:[35,690,355,865]},
-  {id:'sea-shore', kind:'ground', bounds:[55,610,375,710]},
-  {id:'berth-cargo', kind:'ground', bounds:[800,505,1080,705]},
-  {id:'wong-strip', kind:'ground', bounds:[1000,315,1320,560]},
-  {id:'social-strip', kind:'ground', bounds:[430,330,760,585]},
-  {id:'park-civic', kind:'ground', bounds:[545,560,880,805]},
-  {id:'faith-vice', kind:'ground', bounds:[1050,115,1370,355]},
-  {id:'craft-oddity', kind:'ground', bounds:[145,340,455,625]},
-  {id:'cliff-edge', kind:'ground', bounds:[55,500,260,760]},
-  {id:'gallery-rise', kind:'ground', bounds:[640,105,930,350]},
-  {id:'kitchen-rise', kind:'ground', bounds:[260,90,470,315]},
+  {id:'sea-water', kind:'water', bounds:[720,730,1050,820]},
+  {id:'sea-shore', kind:'ground', bounds:[80,600,320,690]},
+  {id:'berth-cargo', kind:'ground', bounds:[760,460,1020,600]},
+  {id:'wong-strip', kind:'ground', bounds:[1000,300,1250,500]},
+  {id:'social-strip', kind:'ground', bounds:[430,300,760,520]},
+  {id:'park-civic', kind:'ground', bounds:[420,600,670,730]},
+  {id:'faith-vice', kind:'ground', bounds:[1100,150,1320,360]},
+  {id:'craft-oddity', kind:'ground', bounds:[160,330,430,520]},
+  {id:'cliff-edge', kind:'ground', bounds:[60,520,260,690]},
+  {id:'gallery-rise', kind:'ground', bounds:[650,100,930,340]},
+  {id:'kitchen-rise', kind:'ground', bounds:[250,90,470,300]},
 ]);
 
 const ZONES = Object.fromEntries(TABLEAU_ZONES.map(zone => [zone.id, zone]));
 
 const LOCATION_SLOTS = Object.freeze({
-  harbour_berth:{x:950,y:620,zoneId:'berth-cargo'},
-  joels_bar:{x:610,y:520,zoneId:'social-strip'},
-  parcel_counter:{x:1115,y:525,zoneId:'wong-strip'},
-  nursery:{x:265,y:500,zoneId:'craft-oddity'},
-  viewing_room:{x:790,y:340,zoneId:'gallery-rise'},
-  back_room:{x:1195,y:350,zoneId:'faith-vice'},
-  sonyas_kitchen:{x:365,y:300,zoneId:'kitchen-rise'},
-  cliff_path:{x:165,y:690,zoneId:'cliff-edge'},
-  public_clearing:{x:760,y:625,zoneId:'park-civic'},
-  old_hall:{x:505,y:690,zoneId:'park-civic'},
+  harbour_berth:{x:960,y:540,zoneId:'berth-cargo'},
+  joels_bar:{x:600,y:515,zoneId:'social-strip'},
+  parcel_counter:{x:1080,y:540,zoneId:'wong-strip'},
+  nursery:{x:210,y:490,zoneId:'craft-oddity'},
+  viewing_room:{x:850,y:350,zoneId:'gallery-rise'},
+  back_room:{x:1220,y:355,zoneId:'faith-vice'},
+  sonyas_kitchen:{x:340,y:300,zoneId:'kitchen-rise'},
+  cliff_path:{x:145,y:690,zoneId:'cliff-edge'},
+  public_clearing:{x:710,y:630,zoneId:'park-civic'},
+  old_hall:{x:470,y:700,zoneId:'park-civic'},
 });
 
 export const NAMED_ACTOR_SLOTS = Object.freeze({
