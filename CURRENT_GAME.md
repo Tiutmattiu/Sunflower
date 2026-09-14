@@ -6,9 +6,9 @@
 
 ## 1. Current implementation baseline
 
-`main` currently contains the merged continuous-harbour checkpoint from PR #5. Keep the continuous map, shared map/comic figures, edge phone/newspaper, bottom object strip, collapsed pocketbook, contextual dialogue system, bounded intra-day time, and the simulation/economic conservation work already verified there.
+`main` currently contains the merged continuous-harbour checkpoint from PR #5 plus subsequent direct-main renderer/tableau checkpoints. Keep the continuous map, shared map/comic figures, edge phone/newspaper, bottom object strip, collapsed pocketbook, contextual dialogue system, bounded intra-day time, and the simulation/economic conservation work already verified there.
 
-The checkpoint is **not** final design acceptance. In particular, the current Juan route, flattened 1400×900 world presentation, novice legibility, dialogue quality, social density, and background layering remain subject to the corrections below.
+The checkpoint is **not** final design acceptance. In particular, the current Juan route, novice legibility, dialogue quality, social density, and world composition remain subject to the corrections below.
 
 ## 2. Non-negotiable player-information rule
 
@@ -53,7 +53,7 @@ The current Wong-bench assembly gate is not the intended final route.
 
 - The player must discover how to obtain/build the one-wheel rather than receiving the full parts checklist immediately.
 - Physical components still matter and must remain real inventory objects subject to reservation/pledge/commitment rules.
-- Aspen is the intended assembler/modifier for the Juan route.
+- Aspen is the intended assembler/modifier **for the current Juan route**. This does not redefine her primary economic identity as a generic mechanic; logistics/contracts remain her core role.
 - Aspen requires honest lime provision/supply as an earned condition. If the player comes up short, that must have a real consequence, debt, obligation, or tradeoff; do not silently forgive the shortfall.
 - Do not destroy the existing lime honesty/short-crate mechanics if they can be reused; reconcile them with Aspen's assembly relationship instead of creating a second unrelated lime system.
 - Modifications should be optional alternate preparation, not a mandatory checklist if practice can also produce a viable win chance.
@@ -98,7 +98,7 @@ NPCs do not move once per player click.
 
 ## 8. Continuous-world renderer correction
 
-The accepted product idea is a continuous harbour world, but the current renderer is still a working prototype.
+The accepted product idea is a continuous harbour world, but the renderer remains iterative rather than final art acceptance.
 
 The final presentation must not behave like a webpage surrounding a single fitted illustration.
 
@@ -126,9 +126,9 @@ People must be able to stand behind counters, plants, tables, railings, curtains
 
 ### Resolution and assets
 
-- The current background is lower-detail than the character atlas; CSS enlargement cannot fix missing source detail.
-- Replace or extend the world with sufficiently high-resolution authored material and aligned layers.
-- Remove crude decorative overlays and dead hotspots that do not produce a current meaningful interaction.
+- The old raster background is historical/prototype material; the current main-map renderer may replace it with authored vector/layered world material.
+- Keep environment, crowd, props and named cast in a compatible clarity/detail family. CSS enlargement cannot fix missing source detail.
+- Remove crude decorative overlays and dead hotspots that do not produce current meaningful world information or interaction.
 - Most ambient details are noninteractive.
 - Shisha, tea, fruit, repairs, domestic/social gatherings, and other life details belong in visible world layers without automatically becoming buttons.
 - Incidental people must have identities distinct from the main cast. Preserve the approved cultural/skin-tone/age/body/hair/head-covering diversity direction in `ART_DIRECTION.md`.
@@ -141,19 +141,38 @@ Preserve the approved identities. Style unification is allowed; redesign is not.
 - Juan: shortest human; older braided man, plants/olive jacket.
 - Aspen: black updo, cream floral clothing.
 - Yasmin: long dark hair, black-and-gold dress.
-- Dima: human, blond/stubble, navy tracksuit, purple sunglasses.
-- Wong: whippet.
+- Dima: **human**, blond/stubble, navy tracksuit, purple sunglasses.
+- Wong: **whippet**.
 - Sonya: supporting penguin grandmother.
 
 Dima is the reference for linework, flat colour, contrast, proportions, and finish. This does not authorize copying his face/body/clothes onto other characters.
 
-## 10. Development and verification policy
+## 10. World ontology / one-place rule
 
-Latest user direction: implement directly on `main`, after preserving any unpublished local work. Do not create a development branch. ChatGPT is read-only while Codex holds write ownership. Route state, knowledge, timing, economy and rendering still require coherent checkpoints.
+Do not invent a second institution because one existing institution has several functions, and do not silently merge distinct businesses/events merely because they are adjacent.
+
+- **Octopus is one institution**: public clearing, payment, settlement records, bids/asks, and local-market data/price discovery belong to Octopus. `public_clearing` and historical `octopus_clearing` may remain internal compatibility IDs; they do not authorize a separate `Octopus Bank`, `Exchange`, or second clearing-house landmark. Octopus is not an ordinary named NPC.
+- Yasmin's gallery / viewing room / auction are one place/institution with several activities.
+- Dima's `back_room` is a private room within the visible apartment-building context, not a second invisible Dima business.
+- Wong's parcel counter and his expanded parcel/laundry/storage/convenience-service frontage are one Wong enterprise. A Bitcoin ATM/service at Wong's does not make it part of Octopus.
+- **Pizza shop and deli are distinct businesses** unless the creator explicitly merges them later.
+- Joel's Bar may have ordinary live music, but the **street/live music festival is a distinct event/space** and must not be silently absorbed into the Bar.
+- Old Hall is the cinema/screening venue.
+- Juan's nursery/growing yard is one place.
+- Sonya's kitchen is a household place, not another commercial venue.
+- Seagulls, tropical fish, squirrels and gameplay toads are distinct small-life systems; do not substitute one for another or remove them because they are not quest NPCs.
+
+For current canonical aliases and runtime mappings, use `src/worldOntology.js`. If source code and an older document disagree, follow this file and update the stale source/document rather than multiplying entities.
+
+## 11. Development and verification policy
+
+Implement directly on `main`, after preserving any unpublished local work. Do not create a development branch.
+
+**Single-writer rule:** only one agent writes to `main` at a time. The writer may be ChatGPT or Codex. While one holds write ownership, the other acts as a read-only reviewer until the writer pushes a coherent checkpoint or explicitly hands ownership back.
 
 The requirement is **structured checkpoints, not artificial PR boundaries**.
 
-Recommended checkpoint sequence:
+Recommended checkpoint sequence remains causal rather than UI-only:
 
 1. information gates + Joel/Mai Tai discovery,
 2. Juan social unlock + race contract,
@@ -168,7 +187,7 @@ Each checkpoint is a meaningful commit (or small coherent series) pushed to `mai
 For every meaningful gameplay checkpoint:
 
 - run engine/regression checks,
-- run the real browser,
+- run the real browser where browser access exists,
 - use fresh saves,
 - test desktop 1440×1000 and mobile 390×844 where UI is affected,
 - test both happy paths and information-gating failures,
@@ -177,8 +196,8 @@ For every meaningful gameplay checkpoint:
 
 A route is not accepted merely because an internal action can be invoked. The player must be able to discover and complete it through the visible UI without prior knowledge.
 
-## 11. Historical-status warning
+## 12. Historical-status warning
 
-Documents and code describing the old dashboard, location-page navigation, 14-day/noon-clearing assumptions, direct Juan cliff prompt, Wong-as-final-assembler shortcut, or flattened-map implementation as final visual acceptance are historical/current-implementation evidence, not higher-priority design authority.
+Documents and code describing the old dashboard, location-page navigation, 14-day/noon-clearing assumptions, direct Juan cliff prompt, Wong-as-final-assembler shortcut, Octopus as multiple institutions, Dima as a Seagull, Wong species as open, or flattened-map implementation as final visual acceptance are historical/current-implementation evidence, not higher-priority design authority.
 
-When unsure, preserve working economic invariants and existing tested infrastructure, but follow the causal, information, dialogue, and presentation rules in this file.
+When unsure, preserve working economic invariants and existing tested infrastructure, but follow the causal, information, dialogue, ontology, and presentation rules in this file.
