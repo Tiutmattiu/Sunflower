@@ -1,178 +1,211 @@
 // SUNFLOWER — contextual dialogue content pack
-// Authored against main @ 4ad195f and the current continuous-map presentation branch.
 // Presentation-only: this module must never mutate simulation truth.
 
-const arr = x => Array.isArray(x) ? x : [x];
-const loc = (w,id) => w?.actors?.[id]?.location;
-const near = (w,a,b) => !w.actors[a]?.removed && !w.actors[b]?.removed && !['away','private'].includes(loc(w,a)) && loc(w,a) && loc(w,a) === loc(w,b);
-const route = (w,key) => w?.playerGame?.routes?.[key] || {};
-const recentInteraction = (w,id) =>
-  [...(w?.relationshipEcology?.interactions || [])].reverse().find(x => x.day===w.day && (x.initiator===id || x.target===id));
-export const VOICE_NOTES = {
-  aspen:'quantity → time → condition → exception; exact without sounding like a calculator',
-  joel:'sensory notice → curiosity → attempt → delayed conclusion; can change subject because he notices an object',
-  yasmin:'courtesy → positioning → one precise question → silence or changed access',
-  wong:'quantity → immediate cost → interrupted work → bargain; busiest voice, not “cheap merchant” voice',
-  juan:'sober: long causal chains and real competence; activated: shorter horizon, repetition, another trial',
-  dima:'scope → enforceability → fee → next operational step; mundane brokerage, not movie-gangster cool lines'
+const arr=x=>Array.isArray(x)?x:[x];
+const loc=(w,id)=>w?.actors?.[id]?.location;
+const near=(w,a,b)=>!w.actors[a]?.removed&&!w.actors[b]?.removed&&!['away','private'].includes(loc(w,a))&&loc(w,a)&&loc(w,a)===loc(w,b);
+const route=(w,key)=>w?.playerGame?.routes?.[key]||{};
+const has=(w,key)=>w?.playerGame?.knowledge?.includes(key)||false;
+const recentInteraction=(w,id)=>[...(w?.relationshipEcology?.interactions||[])].reverse().find(x=>x.day===w.day&&(x.initiator===id||x.target===id));
+
+export const VOICE_NOTES={
+ aspen:'quantity → time → condition → exception; exact without sounding like a calculator',
+ joel:'sensory notice → curiosity → attempt → delayed conclusion; can change subject because he notices an object',
+ yasmin:'courtesy → positioning → one precise question → silence or changed access',
+ wong:'quantity → immediate cost → interrupted work → bargain; busiest voice, not “cheap merchant” voice',
+ juan:'sober: long causal chains and real competence; activated: shorter horizon, repetition, another trial',
+ dima:'scope → enforceability → fee → next operational step; mundane brokerage, not movie-gangster cool lines'
 };
 
-export const DIALOGUE_BEATS = [
-  // ASPEN
-  {id:'aspen.berth.weather',speaker:'aspen',locations:['harbour_berth'],priority:40,
-   when:w=>w.weather==='storm',
-   lines:['She puts a stone on the corner of the manifest.','“The paper is dry. The route is not.”']},
-  {id:'aspen.berth.departure',speaker:'aspen',locations:['harbour_berth'],priority:35,
-   when:w=>w.aspenRoute?.status==='preparing' && (w.aspenRoute?.deadline??99)-(w.day??0)<=1,
-   lines:['She checks the same line twice, then the water.','“If it is not aboard before I leave, it is not aboard.”']},
-  {id:'aspen.berth.time',speaker:'aspen',locations:['harbour_berth'],priority:15,
-   lines:['She folds the cargo paper along an old crease.','“Three now, or three total?”']},
-  {id:'aspen.bar.juan',speaker:'aspen',locations:['joels_bar'],priority:50,
-   when:w=>near(w,'aspen','juan'),
-   lines:['Aspen presses two fingers to her wrist.','Juan: “Dying?”','“Coffee.”','“Could still be dying.”','“Yes.”']},
-  {id:'aspen.bar.deadline',speaker:'aspen',locations:['joels_bar'],priority:35,
-   when:w=>(w.aspenRoute?.deadline??99)-(w.day??0)<=1,
-   lines:['Her glass is still almost full.','She looks at her watch before answering. “Nine minutes.”']},
-  {id:'aspen.bar.quiet',speaker:'aspen',locations:['joels_bar'],priority:10,
-   lines:['She has moved the coaster exactly under the wet ring.','“I am not staying late.”']},
-  {id:'aspen.parcel.gift',speaker:'aspen',locations:['parcel_counter'],priority:35,
-   when:w=>(w.relationshipEcology?.gifts||[]).some(g=>g.ownerId==='aspen'&&g.status==='in_transit'),
-   lines:['A small wrapped box sits apart from the cargo.','You point to it.','“Not cargo.”']},
-  {id:'aspen.viewing.delivery',speaker:'aspen',locations:['viewing_room'],priority:15,
-   lines:['She holds a folded receipt instead of touching the object.','“I brought the paper. I did not appraise the thing.”']},
-  {id:'aspen.nursery.measure',speaker:'aspen',locations:['nursery'],priority:15,
-   lines:['Aspen measures the gap between two trays.','Juan watches. “They grow.”','“I know.”']},
+export const DIALOGUE_BEATS=[
+ // ASPEN
+ {id:'aspen.berth.onewheel.plan',speaker:'aspen',locations:['harbour_berth'],priority:56,
+  when:w=>has(w,'onewheel_plan')&&!route(w,'juan').built,
+  lines:['Aspen taps four marks on the cargo sheet.','“Rim. Link. Cable. One finishing piece that actually fits.”','She looks at the lime paper. “And I have not forgotten that.”']},
+ {id:'aspen.berth.onewheel.problem',speaker:'aspen',locations:['harbour_berth'],priority:54,
+  when:w=>has(w,'juan_route')&&!has(w,'onewheel_plan'),
+  lines:['You mention the one-wheel wager. Aspen holds out her hand.','“Do not buy parts yet. Show me what the machine has to do.”']},
+ {id:'aspen.berth.lime-honest',speaker:'aspen',locations:['harbour_berth'],priority:52,
+  when:w=>w.playerGame?.lime?.stage==='complete'&&w.playerGame?.lime?.representation==='disclose',
+  lines:['Aspen folds the corrected lime count into the manifest.','“Twenty is usable information. Twenty-four was not.”']},
+ {id:'aspen.berth.weather',speaker:'aspen',locations:['harbour_berth'],priority:40,
+  when:w=>w.weather==='storm',
+  lines:['She puts a stone on the corner of the manifest.','“The paper is dry. The route is not.”']},
+ {id:'aspen.berth.departure',speaker:'aspen',locations:['harbour_berth'],priority:35,
+  when:w=>w.aspenRoute?.status==='preparing'&&(w.aspenRoute?.deadline??99)-(w.day??0)<=1,
+  lines:['She checks the same line twice, then the water.','“If it is not aboard before I leave, it is not aboard.”']},
+ {id:'aspen.berth.time',speaker:'aspen',locations:['harbour_berth'],priority:15,
+  lines:['She folds the cargo paper along an old crease.','“Three now, or three total?”']},
+ {id:'aspen.bar.juan',speaker:'aspen',locations:['joels_bar'],priority:50,
+  when:w=>near(w,'aspen','juan'),
+  lines:['Aspen presses two fingers to her wrist.','Juan: “Dying?”','“Coffee.”','“Could still be dying.”','“Yes.”']},
+ {id:'aspen.bar.deadline',speaker:'aspen',locations:['joels_bar'],priority:35,
+  when:w=>(w.aspenRoute?.deadline??99)-(w.day??0)<=1,
+  lines:['Her glass is still almost full.','She looks at her watch before answering. “Nine minutes.”']},
+ {id:'aspen.bar.quiet',speaker:'aspen',locations:['joels_bar'],priority:10,
+  lines:['She has moved the coaster exactly under the wet ring.','“I am not staying late.”']},
+ {id:'aspen.parcel.gift',speaker:'aspen',locations:['parcel_counter'],priority:35,
+  when:w=>(w.relationshipEcology?.gifts||[]).some(g=>g.ownerId==='aspen'&&g.status==='in_transit'),
+  lines:['A small wrapped box sits apart from the cargo.','You point to it.','“Not cargo.”']},
+ {id:'aspen.viewing.delivery',speaker:'aspen',locations:['viewing_room'],priority:15,
+  lines:['She holds a folded receipt instead of touching the object.','“I brought the paper. I did not appraise the thing.”']},
+ {id:'aspen.nursery.measure',speaker:'aspen',locations:['nursery'],priority:15,
+  lines:['Aspen measures the gap between two trays.','Juan watches. “They grow.”','“I know.”']},
 
-  // JOEL
-  {id:'joel.bar.first',speaker:'joel',locations:['joels_bar'],priority:18,
-   when:w=>!(w.actors?.player?.contacts||[]).includes('joel'),
-   lines:['Joel puts down a glass.','“I know what’s in it.”','He looks at it again. “That isn’t the same as knowing what it is.”']},
-  {id:'joel.bar.orgeat',speaker:'joel',locations:['joels_bar'],priority:45,
-   when:w=>route(w,'sonya').stage==='known'&&!route(w,'sonya').orgeatSupplied,
-   lines:['He tips an almost-empty bottle toward the light.','“Enough for one, maybe. Two if I lie to myself.”']},
-  {id:'joel.bar.invited',speaker:'joel',locations:['joels_bar'],priority:40,
-   when:w=>route(w,'sonya').stage==='invited',
-   lines:['A spare chair has been pulled against the wall.','Joel follows your glance. “That one is going with us.”']},
-  {id:'joel.bar.dima',speaker:'joel',locations:['joels_bar'],priority:38,
-   when:w=>near(w,'joel','dima'),
-   lines:['Joel closes the tab book.','Dima: “Again?”','Joel leaves his hand on the cover.']},
-  {id:'joel.bar.juan.tab',speaker:'joel',locations:['joels_bar'],priority:42,
-   when:w=>near(w,'joel','juan')&&(w.claimRights?.tabs||[]).some(t=>t.issuerId==='juan'&&t.state==='open'),
-   lines:['Juan looks at the bottle.','Joel looks at the book.','Neither of them says “one more.”']},
-  {id:'joel.bar.blue-thread',speaker:'joel',locations:['joels_bar'],priority:12,
-   lines:['Joel starts to answer, then looks at your sleeve.','A blue thread is caught there.','“Sorry. What were you saying?”']},
-  {id:'joel.berth.object',speaker:'joel',locations:['harbour_berth'],priority:15,
-   lines:['Joel turns a small metal tool over in his hand.','“It looked simpler from the other side.”']},
-  {id:'joel.nursery',speaker:'joel',locations:['nursery'],priority:12,
-   lines:['Joel smells a leaf he was not invited to smell.','Juan: “That one is not aromatic.”','“I know that now.”']},
+ // JOEL
+ {id:'joel.bar.juan-ready',speaker:'joel',locations:['joels_bar'],priority:58,
+  when:w=>has(w,'mai_tai_supplied')&&!has(w,'juan_bar_drink')&&near(w,'joel','juan'),
+  lines:['Joel tastes the remade drink once, then notices Juan at the bar.','“He will tell me if it is bad.”']},
+ {id:'joel.bar.mai-tai-ingredient',speaker:'joel',locations:['joels_bar'],priority:53,
+  when:w=>has(w,'mai_tai_ingredient')&&!has(w,'mai_tai_supplied'),
+  lines:['Joel follows your eyes to the empty slot.','“Orgeat. Right. That would explain the hole in the middle.”']},
+ {id:'joel.bar.mai-tai-problem',speaker:'joel',locations:['joels_bar'],priority:52,
+  when:w=>has(w,'mai_tai_problem')&&!has(w,'mai_tai_ingredient'),
+  lines:['Joel tastes his own drink again.','“The start is fine. The end is fine. Something disappears between them.”','He turns the glass, annoyed rather than mysterious.']},
+ {id:'joel.bar.race-debt',speaker:'joel',locations:['joels_bar'],priority:57,
+  when:w=>w.playerGame?.commitments?.some(c=>c.id?.startsWith('juan-race-drinks-')&&['open','breached'].includes(c.status)),
+  lines:['Joel checks the tab you left after the race.','“I am not chasing you. I am also not erasing it.”']},
+ {id:'joel.bar.first',speaker:'joel',locations:['joels_bar'],priority:18,
+  when:w=>!(w.actors?.player?.contacts||[]).includes('joel'),
+  lines:['Joel puts down a glass.','“I know what’s in it.”','He looks at it again. “That isn’t the same as knowing what it is.”']},
+ {id:'joel.bar.invited',speaker:'joel',locations:['joels_bar'],priority:40,
+  when:w=>route(w,'sonya').stage==='invited',
+  lines:['A spare chair has been pulled against the wall.','Joel follows your glance. “That one is going with us.”']},
+ {id:'joel.bar.dima',speaker:'joel',locations:['joels_bar'],priority:38,
+  when:w=>near(w,'joel','dima'),
+  lines:['Joel closes the tab book.','Dima: “Again?”','Joel leaves his hand on the cover.']},
+ {id:'joel.bar.juan.tab',speaker:'joel',locations:['joels_bar'],priority:42,
+  when:w=>near(w,'joel','juan')&&(w.claimRights?.tabs||[]).some(t=>t.issuerId==='juan'&&t.state==='open'),
+  lines:['Juan looks at the bottle.','Joel looks at the book.','Neither of them says “one more.”']},
+ {id:'joel.bar.blue-thread',speaker:'joel',locations:['joels_bar'],priority:12,
+  lines:['Joel starts to answer, then looks at your sleeve.','A blue thread is caught there.','“Sorry. What were you saying?”']},
+ {id:'joel.berth.object',speaker:'joel',locations:['harbour_berth'],priority:15,
+  lines:['Joel turns a small metal tool over in his hand.','“It looked simpler from the other side.”']},
+ {id:'joel.nursery',speaker:'joel',locations:['nursery'],priority:12,
+  lines:['Joel smells a leaf he was not invited to smell.','Juan: “That one is not aromatic.”','“I know that now.”']},
 
-  // YASMIN
-  {id:'yasmin.preview.closed',speaker:'yasmin',locations:['viewing_room'],priority:45,
-   when:w=>(w.day??0)>(route(w,'yasmin').previewCloses??99),
-   lines:['The folded cloth is gone.','Yasmin: “You missed the preview.”']},
-  {id:'yasmin.preview.inspect',speaker:'yasmin',locations:['viewing_room'],priority:35,
-   when:w=>route(w,'yasmin').preview&&!route(w,'yasmin').inspected,
-   lines:['She turns the bowl half an inch.','“Now you can see the repair.”']},
-  {id:'yasmin.preview.provenance',speaker:'yasmin',locations:['viewing_room'],priority:38,
-   when:w=>route(w,'yasmin').inspected&&!route(w,'yasmin').provenance,
-   lines:['The bowl stays where it is.','Yasmin moves the old label beside it instead.']},
-  {id:'yasmin.bar.social',speaker:'yasmin',locations:['joels_bar'],priority:16,
-   lines:['Yasmin remembers the bartender’s question from ten minutes ago.','She answers it only after finishing another conversation.']},
-  {id:'yasmin.parcel.wong',speaker:'yasmin',locations:['parcel_counter'],priority:36,
-   when:w=>near(w,'yasmin','wong'),
-   lines:['Wong unwraps one corner.','Yasmin: “Where did it come from?”','Wong ties the corner shut again. “That costs extra.”']},
-  {id:'yasmin.berth',speaker:'yasmin',locations:['harbour_berth'],priority:12,
-   lines:['She does not step over the wet rope.','Aspen notices and moves the paper to her instead.']},
-  {id:'yasmin.backroom',speaker:'yasmin',locations:['back_room'],priority:16,
-   lines:['Yasmin reads the name on the envelope before sitting down.','“Who else has seen this?”']},
+ // YASMIN
+ {id:'yasmin.preview.closed',speaker:'yasmin',locations:['viewing_room'],priority:45,
+  when:w=>(w.day??0)>(route(w,'yasmin').previewCloses??99),
+  lines:['The folded cloth is gone.','Yasmin: “You missed the preview.”']},
+ {id:'yasmin.preview.inspect',speaker:'yasmin',locations:['viewing_room'],priority:35,
+  when:w=>route(w,'yasmin').preview&&!route(w,'yasmin').inspected,
+  lines:['She turns the bowl half an inch.','“Now you can see the repair.”']},
+ {id:'yasmin.preview.provenance',speaker:'yasmin',locations:['viewing_room'],priority:38,
+  when:w=>route(w,'yasmin').inspected&&!route(w,'yasmin').provenance,
+  lines:['The bowl stays where it is.','Yasmin moves the old label beside it instead.']},
+ {id:'yasmin.bar.social',speaker:'yasmin',locations:['joels_bar'],priority:16,
+  lines:['Yasmin remembers the bartender’s question from ten minutes ago.','She answers it only after finishing another conversation.']},
+ {id:'yasmin.parcel.wong',speaker:'yasmin',locations:['parcel_counter'],priority:36,
+  when:w=>near(w,'yasmin','wong'),
+  lines:['Wong unwraps one corner.','Yasmin: “Where did it come from?”','Wong ties the corner shut again. “That costs extra.”']},
+ {id:'yasmin.berth',speaker:'yasmin',locations:['harbour_berth'],priority:12,
+  lines:['She does not step over the wet rope.','Aspen notices and moves the paper to her instead.']},
+ {id:'yasmin.backroom',speaker:'yasmin',locations:['back_room'],priority:16,
+  lines:['Yasmin reads the name on the envelope before sitting down.','“Who else has seen this?”']},
 
-  // WONG
-  {id:'wong.counter.busy',speaker:'wong',locations:['parcel_counter'],priority:15,
-   lines:['Wong pulls one string tight with his teeth, one paw on the next parcel.','“Paper first.”']},
-  {id:'wong.counter.dima',speaker:'wong',locations:['parcel_counter'],priority:40,
-   when:w=>near(w,'wong','dima'),
-   lines:['Dima taps the seal once.','Wong does not look up. “Guarantee the contents or guarantee the arrival. Pick one.”']},
-  {id:'wong.counter.aspen',speaker:'wong',locations:['parcel_counter'],priority:35,
-   when:w=>near(w,'wong','aspen'),
-   lines:['Aspen points to a date.','Wong adds another knot.','“The knot is not the schedule.”','“No. It survives the schedule.”']},
-  {id:'wong.bar',speaker:'wong',locations:['joels_bar'],priority:12,
-   lines:['Wong argues over one tin without raising his voice.','Joel waits until the argument is finished before pouring anything.']},
-  {id:'wong.nursery',speaker:'wong',locations:['nursery'],priority:20,
-   lines:['Wong nudges a cracked container forward.','Juan: “Useful.”','Wong: “Then pay useful.”']},
-  {id:'wong.viewing',speaker:'wong',locations:['viewing_room'],priority:18,
-   lines:['Wong keeps his paws clear of the cloth.','“I am only telling you where I found it.”']},
+ // WONG
+ {id:'wong.counter.busy',speaker:'wong',locations:['parcel_counter'],priority:15,
+  lines:['Wong pulls one string tight with his teeth, one paw on the next parcel.','“Paper first.”']},
+ {id:'wong.counter.dima',speaker:'wong',locations:['parcel_counter'],priority:40,
+  when:w=>near(w,'wong','dima'),
+  lines:['Dima taps the seal once.','Wong does not look up. “Guarantee the contents or guarantee the arrival. Pick one.”']},
+ {id:'wong.counter.aspen',speaker:'wong',locations:['parcel_counter'],priority:35,
+  when:w=>near(w,'wong','aspen'),
+  lines:['Aspen points to a date.','Wong adds another knot.','“The knot is not the schedule.”','“No. It survives the schedule.”']},
+ {id:'wong.bar',speaker:'wong',locations:['joels_bar'],priority:12,
+  lines:['Wong argues over one tin without raising his voice.','Joel waits until the argument is finished before pouring anything.']},
+ {id:'wong.nursery',speaker:'wong',locations:['nursery'],priority:20,
+  lines:['Wong nudges a cracked container forward.','Juan: “Useful.”','Wong: “Then pay useful.”']},
+ {id:'wong.viewing',speaker:'wong',locations:['viewing_room'],priority:18,
+  lines:['Wong keeps his paws clear of the cloth.','“I am only telling you where I found it.”']},
 
-  // JUAN — deliberately location-specific so he does not carry nursery mud into every scene
-  {id:'juan.nursery.default',speaker:'juan',locations:['nursery'],priority:15,
-   lines:['Juan pinches one leaf, then another.','“This one is thirsty. That one is lying.”']},
-  {id:'juan.nursery.claim',speaker:'juan',locations:['nursery'],priority:34,
-   when:w=>(w.claims||[]).some(c=>c.issuerId==='juan'&&c.status==='seeking_finance'),
-   lines:['A paper is weighted under a terracotta chip.','Juan: “The plants are slow. The bill is not.”']},
-  {id:'juan.nursery.aspen',speaker:'juan',locations:['nursery'],priority:40,
-   when:w=>near(w,'juan','aspen'),
-   lines:['Aspen measures the tray spacing.','Juan: “They move.”','“Not during measurement.”']},
-  {id:'juan.bar.default',speaker:'juan',locations:['joels_bar'],priority:15,
-   lines:['Juan is holding a glass he has forgotten to drink from.','“I had a reason for coming here.”','He looks at the glass. “That was not it.”']},
-  {id:'juan.bar.joel',speaker:'juan',locations:['joels_bar'],priority:38,
-   when:w=>near(w,'juan','joel'),
-   lines:['Juan: “One more.”','Joel looks at the tab book.','Juan: “That look is becoming expensive.”']},
-  {id:'juan.berth',speaker:'juan',locations:['harbour_berth'],priority:18,
-   lines:['Juan watches a crate come off the boat.','“Everything arrives with a story about why it is late.”']},
-  {id:'juan.viewing',speaker:'juan',locations:['viewing_room'],priority:18,
-   lines:['Juan reads the estimate twice.','“The second number is not more true. It is only second.”']},
-  {id:'juan.backroom',speaker:'juan',locations:['back_room'],priority:22,
-   lines:['Juan pushes a folded claim across the table.','Dima does not unfold it yet. “When do they pay?”']},
+ // JUAN — location-specific; route vocabulary appears only after the player earns it.
+ {id:'juan.bar.after-drink',speaker:'juan',locations:['joels_bar'],priority:56,
+  when:w=>has(w,'juan_bar_drink')&&!has(w,'juan_goal_explained'),
+  lines:['Juan puts the glass down.','“You have been trying to ask me something since I came in. Ask it.”']},
+ {id:'juan.bar.goal-heard',speaker:'juan',locations:['joels_bar'],priority:55,
+  when:w=>has(w,'juan_goal_explained')&&!has(w,'juan_route'),
+  lines:['Juan listens all the way through without interrupting.','“All right. I may know a way.”','He waits, as if deciding how serious you are.']},
+ {id:'juan.bar.wager',speaker:'juan',locations:['joels_bar'],priority:54,
+  when:w=>has(w,'juan_route')&&!route(w,'juan').built,
+  lines:['Juan points at the open space beyond the tables.','“The race is still the race. Win, I take you. Lose, everybody here drinks on you.”']},
+ {id:'juan.bar.ready',speaker:'juan',locations:['joels_bar'],priority:55,
+  when:w=>has(w,'juan_route')&&route(w,'juan').built,
+  lines:['Juan glances at the wheel, then at your feet.','“You can practise more. Or you can find out.”']},
+ {id:'juan.nursery.default',speaker:'juan',locations:['nursery'],priority:15,
+  lines:['Juan pinches one leaf, then another.','“This one is thirsty. That one is lying.”']},
+ {id:'juan.nursery.claim',speaker:'juan',locations:['nursery'],priority:34,
+  when:w=>(w.claims||[]).some(c=>c.issuerId==='juan'&&c.status==='seeking_finance'),
+  lines:['A paper is weighted under a terracotta chip.','Juan: “The plants are slow. The bill is not.”']},
+ {id:'juan.nursery.aspen',speaker:'juan',locations:['nursery'],priority:40,
+  when:w=>near(w,'juan','aspen'),
+  lines:['Aspen measures the tray spacing.','Juan: “They move.”','“Not during measurement.”']},
+ {id:'juan.bar.default',speaker:'juan',locations:['joels_bar'],priority:15,
+  lines:['Juan is holding a glass he has forgotten to drink from.','“I had a reason for coming here.”','He looks at the glass. “That was not it.”']},
+ {id:'juan.bar.joel',speaker:'juan',locations:['joels_bar'],priority:38,
+  when:w=>near(w,'juan','joel'),
+  lines:['Juan: “One more.”','Joel looks at the tab book.','Juan: “That look is becoming expensive.”']},
+ {id:'juan.berth',speaker:'juan',locations:['harbour_berth'],priority:18,
+  lines:['Juan watches a crate come off the boat.','“Everything arrives with a story about why it is late.”']},
+ {id:'juan.viewing',speaker:'juan',locations:['viewing_room'],priority:18,
+  lines:['Juan reads the estimate twice.','“The second number is not more true. It is only second.”']},
+ {id:'juan.backroom',speaker:'juan',locations:['back_room'],priority:22,
+  lines:['Juan pushes a folded claim across the table.','Dima does not unfold it yet. “When do they pay?”']},
 
-  // DIMA
-  {id:'dima.backroom.default',speaker:'dima',locations:['back_room'],priority:15,
-   lines:['Dima reads the first page and leaves the second folded.','“What exactly do you want me to guarantee?”']},
-  {id:'dima.backroom.suspended',speaker:'dima',locations:['back_room'],priority:45,
-   when:w=>w.production?.marketStanding?.status==='SUSPENDED',
-   lines:['He reads the refusal stamp.','“They will not take your paper. My buyer may. Different price.”']},
-  {id:'dima.bar',speaker:'dima',locations:['joels_bar'],priority:14,
-   lines:['Dima sits where he can see the door.','He moves his glass once when someone blocks the view.']},
-  {id:'dima.bar.joel',speaker:'dima',locations:['joels_bar'],priority:35,
-   when:w=>near(w,'dima','joel'),
-   lines:['Joel leaves the tab book open.','Dima: “You know closing it does not erase the number.”']},
-  {id:'dima.parcel',speaker:'dima',locations:['parcel_counter'],priority:18,
-   lines:['Dima checks the seal, not the wrapping.','“If it arrives open, call me before you call them.”']},
-  {id:'dima.viewing',speaker:'dima',locations:['viewing_room'],priority:18,
-   lines:['Dima reads the back of the label.','Yasmin waits until he puts it down.']},
-  {id:'dima.nursery',speaker:'dima',locations:['nursery'],priority:18,
-   lines:['Dima looks at the maturity date on the paper, not the plant.','Juan notices. “Same thing, eventually.”']},
+ // DIMA
+ {id:'dima.backroom.default',speaker:'dima',locations:['back_room'],priority:15,
+  lines:['Dima reads the first page and leaves the second folded.','“What exactly do you want me to guarantee?”']},
+ {id:'dima.backroom.suspended',speaker:'dima',locations:['back_room'],priority:45,
+  when:w=>w.production?.marketStanding?.status==='SUSPENDED',
+  lines:['He reads the refusal stamp.','“They will not take your paper. My buyer may. Different price.”']},
+ {id:'dima.bar',speaker:'dima',locations:['joels_bar'],priority:14,
+  lines:['Dima sits where he can see the door.','He moves his glass once when someone blocks the view.']},
+ {id:'dima.bar.joel',speaker:'dima',locations:['joels_bar'],priority:35,
+  when:w=>near(w,'dima','joel'),
+  lines:['Joel leaves the tab book open.','Dima: “You know closing it does not erase the number.”']},
+ {id:'dima.parcel',speaker:'dima',locations:['parcel_counter'],priority:18,
+  lines:['Dima checks the seal, not the wrapping.','“If it arrives open, call me before you call them.”']},
+ {id:'dima.viewing',speaker:'dima',locations:['viewing_room'],priority:18,
+  lines:['Dima reads the back of the label.','Yasmin waits until he puts it down.']},
+ {id:'dima.nursery',speaker:'dima',locations:['nursery'],priority:18,
+  lines:['Dima looks at the maturity date on the paper, not the plant.','Juan notices. “Same thing, eventually.”']},
 
-  // RECENT-STATE OVERRIDES
-  {id:'general.recent.refusal',speaker:'*',priority:32,
-   when:(w,id)=>recentInteraction(w,id)?.response==='REFUSE',
-   lineBySpeaker:{
-     aspen:['“No still means no after lunch.”'],
-     joel:['“I heard you.”','He does not make you repeat it.'],
-     yasmin:['“We already answered that.”'],
-     wong:['Wong keeps tying the parcel.'],
-     juan:['“Try a different assumption.”'],
-     dima:['“Different terms, or different person.”']
-   }}
+ // RECENT-STATE OVERRIDES
+ {id:'general.recent.refusal',speaker:'*',priority:32,
+  when:(w,id)=>recentInteraction(w,id)?.response==='REFUSE',
+  lineBySpeaker:{
+   aspen:['“No still means no after lunch.”'],
+   joel:['“I heard you.”','He does not make you repeat it.'],
+   yasmin:['“We already answered that.”'],
+   wong:['Wong keeps tying the parcel.'],
+   juan:['“Try a different assumption.”'],
+   dima:['“Different terms, or different person.”']
+  }}
 ];
 
 function linesFor(beat,speaker){
-  if(beat.lineBySpeaker) return arr(beat.lineBySpeaker[speaker]||[]);
-  return arr(beat.lines||[]);
+ if(beat.lineBySpeaker)return arr(beat.lineBySpeaker[speaker]||[]);
+ return arr(beat.lines||[]);
 }
 
-const CO_PRESENT = {
- 'aspen.nursery.measure':['juan'], 'joel.nursery':['juan'], 'yasmin.berth':['aspen'],
- 'wong.bar':['joel'], 'wong.nursery':['juan'], 'juan.backroom':['dima'],
- 'dima.viewing':['yasmin'], 'dima.nursery':['juan']
+const CO_PRESENT={
+ 'aspen.nursery.measure':['juan'],'joel.nursery':['juan'],'yasmin.berth':['aspen'],
+ 'wong.bar':['joel'],'wong.nursery':['juan'],'juan.backroom':['dima'],
+ 'dima.viewing':['yasmin'],'dima.nursery':['juan']
 };
-export const UNKNOWN_PEOPLE = {
- aspen:'the woman in the flowered blouse', joel:'the young man in the yellow waistcoat',
- yasmin:'the woman in black and gold', juan:'the older man carrying plants',
- wong:'the copper dog', dima:'the fair-haired man'
+
+export const UNKNOWN_PEOPLE={
+ aspen:'the woman in the flowered blouse',joel:'the young man in the yellow waistcoat',
+ yasmin:'the woman in black and gold',juan:'the older man carrying plants',
+ wong:'the copper whippet',dima:'the fair-haired man'
 };
+
 export function visibleNames(world,text){
  return String(text).replace(/\b(Aspen|Joel|Yasmin|Juan|Wong|Dima)\b/g,name=>
   world.actors.player.contacts.includes(name.toLowerCase())?name:UNKNOWN_PEOPLE[name.toLowerCase()]);
 }
+
 export function eligibleDialogueBeats(world,speaker){
  const location=loc(world,speaker);
  if(world.actors[speaker]?.removed||['away','private'].includes(location))return [];
@@ -183,8 +216,9 @@ export function eligibleDialogueBeats(world,speaker){
   .filter(b=>linesFor(b,speaker).length)
   .sort((a,b)=>(b.priority||0)-(a.priority||0)||a.id.localeCompare(b.id));
 }
+
 export function selectDialogueBeat(world,speaker){
- const actor=world.actors[speaker], memory=world.playerGame.encounters?.[speaker];
+ const actor=world.actors[speaker],memory=world.playerGame.encounters?.[speaker];
  if(!actor||actor.removed||['away','private'].includes(actor.location))return {id:'absent',speaker,lines:['They have gone.']};
  // An actor can discuss their own promise; other actors do not inherit that knowledge.
  const debt=world.claims.find(c=>c.issuerId==='player'&&c.holderId===speaker&&c.status==='open'&&c.dueDay<=world.day+1);
@@ -203,5 +237,6 @@ export function selectDialogueBeat(world,speaker){
  if(!choice)return {id:`${speaker}.${actor.location}.quiet`,speaker,lines:['They acknowledge you, then turn back to what they were doing.']};
  return {...choice,speaker,lines:linesFor(choice,speaker).map(line=>visibleNames(world,line))};
 }
+
 export const selectDialogue=(world,speaker)=>{const beat=selectDialogueBeat(world,speaker);return {...beat,text:beat.lines.join('\n')};};
 export const reactionText=(world,speaker)=>selectDialogue(world,speaker).text;
