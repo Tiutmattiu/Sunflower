@@ -111,7 +111,6 @@ const BASE_CROWD=Object.freeze([
   {id:'cliff-couple-b',zoneId:'cliff-edge',activity:'talk',tags:['sea-leisure','date']},
   {id:'cliff-old-watcher',zoneId:'cliff-edge',activity:'idle',tags:['elder','sea-leisure'],age:'elder'},
 
-  // Institutions need ordinary life even when no route beat is active.
   {id:'gallery-caretaker',zoneId:'gallery-auction',activity:'work',tags:['gallery-life','working-class']},
   {id:'cinema-usher',zoneId:'cinema-street',activity:'idle',tags:['cinema','working-class']},
   {id:'cinema-patron-a',zoneId:'cinema-street',activity:'talk',tags:['cinema','date']},
@@ -162,12 +161,17 @@ function hotspotCrowd(world,state){
   for(let i=0;i<exchangeCount;i++) rows.push(extra(`exchange-hotspot-${i}`,'exchange-floor',i%2?'queue':'inspect',['exchange-life','exchange-hotspot'],{commercial:true}));
 
   const occurrence=world.toadCircle?.occurrences?.find(x=>x.day===state.day);
-  if(occurrence){
-    const n=Math.max(2,Math.min(4,occurrence.attending?.length||2));
-    for(let i=0;i<n;i++) rows.push(extra(`toad-circle-${i}`,'nursery-garden',i%2?'idle':'talk',['nursery-life','toad-circle']));
-  }
+  if(occurrence){const n=Math.max(2,Math.min(4,occurrence.attending?.length||2));for(let i=0;i<n;i++)rows.push(extra(`toad-circle-${i}`,'nursery-garden',i%2?'idle':'talk',['nursery-life','toad-circle']))}
   if(state.cargoRush) for(let i=0;i<2;i++) rows.push(extra(`cargo-rush-${i}`,'berth-cargo','carry',['labour','cargo-hotspot','working-class']));
   return rows;
+}
+
+function motionFor(item,zone,point,day){
+  if(!['walk','pace','carry'].includes(item.activity))return null;
+  const[x1,y1,x2,y2]=zone.bounds;
+  const roomX=Math.max(0,Math.min(point.x-x1,x2-point.x)-10),roomY=Math.max(0,Math.min(point.y-y1,y2-point.y)-8);
+  const wantedX=8+(hash(`${item.id}:motion-x:${day}`)%17),wantedY=hash(`${item.id}:motion-y:${day}`)%7;
+  return {dx:Math.max(0,Math.min(wantedX,roomX)),dy:Math.max(0,Math.min(wantedY,roomY))};
 }
 
 export function crowdForWorld(world={}){
@@ -175,8 +179,9 @@ export function crowdForWorld(world={}){
   return source.filter(item=>activeItem(item,state)).map(item=>{
     const stormSheltered=Boolean(state.storm&&item.stormZoneId),zoneId=stormSheltered?item.stormZoneId:item.zoneId;
     const zone=ZONES[zoneId]||ZONES['social-strip'],p=pointIn(zone,item.id,day),shift=variantShift(item,day),faithBoost=state.shabbatLike&&item.tags?.includes('faith');
-    const fate=item.fateCycle?fateFor(day):null,ageScale=item.age==='young'?.86:item.age==='elder'?.95:1,scale=Math.max(.78,Math.min(1.15,ageScale+((hash(`${item.id}:scale`)%9)-4)*.015));
-    return{...item,activity:fate==='rummage'?'rummage':fate==='slump'?'slump':fate==='skeleton'?'idle':item.activity,variant:fate||item.variant||null,kind:'person',zoneId,zoneKind:zone.kind,x:p.x+shift.dx,y:p.y+shift.dy,emphasis:faithBoost?'busy':'normal',duration:6+(hash(item.id)%7),scale,stormSheltered};
+    const x=p.x+shift.dx,y=p.y+shift.dy,fate=item.fateCycle?fateFor(day):null,ageScale=item.age==='young'?.86:item.age==='elder'?.95:1,scale=Math.max(.78,Math.min(1.15,ageScale+((hash(`${item.id}:scale`)%9)-4)*.015));
+    const motion=motionFor(item,zone,{x,y},day);
+    return{...item,activity:fate==='rummage'?'rummage':fate==='slump'?'slump':fate==='skeleton'?'idle':item.activity,variant:fate||item.variant||null,kind:'person',zoneId,zoneKind:zone.kind,x,y,emphasis:faithBoost?'busy':'normal',duration:6+(hash(item.id)%7),scale,stormSheltered,motion};
   });
 }
 
