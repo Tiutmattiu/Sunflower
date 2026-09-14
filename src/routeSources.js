@@ -36,8 +36,9 @@ function ensureState(w){
 function reservedCash(w,id){
  return (w.market?.reservations||[]).filter(r=>r.actorId===id&&r.kind==='cash').reduce((n,r)=>n+(r.amount||0),0);
 }
-
 function freeCash(w,id){return Math.max(0,(w.actors[id]?.cash||0)-reservedCash(w,id));}
+function tx(w,kind,from,to,amount,purpose){w.privateTransactions??=[];w.privateTransactions.push({day:w.day,kind,from,to,amount,purpose});}
+function emit(w,type,data={}){w.evidence??=[];const row={id:`ev${++w.nextEvent}`,day:w.day,type,...data};w.evidence.push(row);return row;}
 
 function routeFromReturn(row){
  if(row?.actorId!=='aspen'||row?.class!=='OPERATE')return null;
@@ -65,15 +66,11 @@ function unlockAspenBatch(w,routeId){
  const remaining=ASPEN_UNLOCKABLE_GOODS.filter(good=>!unlocked.has(good));
  if(!remaining.length){catalog.completedDay??=w.day;return [];}
  const config=ROUTE_SOURCE_CONFIG[routeId],batch=discoveryOrder(routeId,remaining).slice(0,config?.batchSize||4);
- for(const good of batch){
-  catalog.unlocked.push(good);
-  recordSourceDiscovery(w,routeId,[good],{returned:false,establishAfter:3});
- }
+ for(const good of batch){catalog.unlocked.push(good);recordSourceDiscovery(w,routeId,[good],{returned:false,establishAfter:3});}
  const row={id:`aspen-batch-${++w.nextEvent}`,day:w.day,routeId,goods:[...batch],number:catalog.batches.length+1};
  catalog.batches.push(row);
  if(catalog.unlocked.length>=ASPEN_UNLOCKABLE_GOODS.length)catalog.completedDay=w.day;
- w.evidence??=[];
- w.evidence.push({id:`ev${++w.nextEvent}`,day:w.day,type:'aspen_catalog_batch_unlocked',routeId,goods:[...batch],batchNumber:row.number,remaining:Math.max(0,ASPEN_UNLOCKABLE_GOODS.length-catalog.unlocked.length)});
+ emit(w,'aspen_catalog_batch_unlocked',{routeId,goods:[...batch],batchNumber:row.number,remaining:Math.max(0,ASPEN_UNLOCKABLE_GOODS.length-catalog.unlocked.length)});
  return batch;
 }
 
@@ -86,13 +83,11 @@ function arrivedGoodsForRoute(w,routeId){
 }
 
 function processRouteReturns(w){
- const state=ensureState(w);
- const seen=new Set(state.routeSourceReturns.map(r=>r.token));
+ const state=ensureState(w),seen=new Set(state.routeSourceReturns.map(r=>r.token));
  for(const row of w.returnLedger||[]){
   const routeId=routeFromReturn(row);if(!routeId)continue;
   const token=`${row.day}:${routeId}`;if(seen.has(token))continue;
-  const unlocked=unlockAspenBatch(w,routeId);
-  const goods=arrivedGoodsForRoute(w,routeId);
+  const unlocked=unlockAspenBatch(w,routeId),goods=arrivedGoodsForRoute(w,routeId);
   if(goods.length)recordSourceDiscovery(w,routeId,goods,{returned:true,establishAfter:3});
   state.routeSourceReturns.push({token,day:row.day,routeId,goods:[...goods],unlocked:[...unlocked]});seen.add(token);
  }
@@ -102,44 +97,55 @@ function settleSourceOrders(w){
  const state=ensureState(w);
  for(const order of state.sourceOrders.filter(o=>o.status==='pending'&&o.dueDay<=w.day)){
   const actor=w.actors?.[order.actorId];if(!actor){order.status='failed';order.failureReason='recipient missing';continue;}
-  const good=ECONOMIC_GOODS[order.good];
+  const good=ECONOMIC_GOODS[order.good],sourceLabel=order.orderKind==='located_import'?'located_route_source':'established_route_source';
   for(let i=0;i<order.quantity;i++)actor.inventory.push({
-   unitId:`u${++w.nextUnit}`,
-   kind:order.good,
-   owner:order.actorId,
-   age:0,
-   costBasis:order.unitCost,
-   source:'established_route_source',
-   opened:false,
-   remaining:good?.servings||1,
+   unitId:`u${++w.nextUnit}`,kind:order.good,owner:order.actorId,age:0,costBasis:order.unitCost,source:sourceLabel,opened:false,remaining:good?.servings||1,
   });
   order.status='arrived';order.arrivedDay=w.day;
-  w.evidence??=[];
-  w.evidence.push({id:`ev${++w.nextEvent}`,day:w.day,type:'established_source_arrival',good:order.good,actorId:order.actorId,quantity:order.quantity,orderId:order.id});
+  if(order.orderKind==='located_import')recordSourceDiscovery(w,order.routeId,[order.good],{returned:true,establishAfter:3});
+  emit(w,order.orderKind==='located_import'?'located_source_arrival':'established_source_arrival',{good:order.good,actorId:order.actorId,quantity:order.quantity,orderId:order.id,routeId:order.routeId});
  }
 }
 
-export function advanceRouteSources(w){
- ensureState(w);processRouteReturns(w);settleSourceOrders(w);return w;
+export function advanceRouteSources(w){ensureState(w);processRouteReturns(w);settleSourceOrders(w);return w;}
+
+export function requestLocatedImport(w,good,actorId,{quantity=1}={}){
+ const state=ensureState(w),source=sourceState(w,good);
+ if(!UNLOCKABLE_SET.has(good))return {ok:false,reason:'good is not part of Aspen source progression'};
+ if(!['SOURCE_LOCATED','LOCALLY_AVAILABLE'].includes(source.status))return {ok:false,reason:source.status==='ESTABLISHED'?'source is established; use replenishment terms':'source has not been located'};
+ const routeId=source.routes.find(id=>ROUTE_SOURCE_CONFIG[id]),config=routeId&&ROUTE_SOURCE_CONFIG[routeId],actor=w.actors?.[actorId];
+ if(!config)return {ok:false,reason:'no route terms for located source'};
+ if(!actor)return {ok:false,reason:'recipient missing'};
+ const bounded=Math.max(1,Math.min(1,Math.floor(Number(quantity)||1)));
+ const reference=Math.max(1,Number(ECONOMIC_GOODS[good]?.value)||config.sourceCost);
+ const unitSourceCost=Math.min(config.sourceCost+5,Math.max(config.sourceCost,Math.ceil(reference*.45)));
+ const sourceCost=bounded*unitSourceCost,serviceFee=actorId==='aspen'?0:Math.max(1,Math.ceil(sourceCost*.2)),totalCost=sourceCost+serviceFee;
+ if(freeCash(w,actorId)<totalCost)return {ok:false,reason:'insufficient free cash for located source'};
+ actor.cash-=totalCost;
+ if(serviceFee){w.actors.aspen.cash+=serviceFee;tx(w,'aspen_sourcing_fee',actorId,'aspen',serviceFee,`${routeId}:${good}`);}
+ w.externalFlows??=[];
+ w.externalFlows.push({day:w.day,direction:'out',sector:'located_route_sources',actorId,reason:`located_source_${routeId}_${good.toLowerCase().replace(/[^a-z0-9]+/g,'_')}`,amount:sourceCost,returnClass:'TRADE'});
+ const dueDay=w.day+config.leadDays+1;
+ const order={id:`source-order-${++w.nextEvent}`,orderKind:'located_import',good,actorId,routeId,quantity:bounded,unitCost:totalCost/bounded,sourceCost,serviceFee,totalCost,createdDay:w.day,dueDay,status:'pending'};
+ state.sourceOrders.push(order);
+ emit(w,'located_source_ordered',{good,actorId,routeId,quantity:bounded,sourceCost,serviceFee,totalCost,dueDay,orderId:order.id});
+ return {ok:true,orderId:order.id,quantity:bounded,dueDay,cost:totalCost,sourceCost,serviceFee};
 }
 
 export function requestEstablishedReplenishment(w,good,actorId,{quantity=1}={}){
  const state=ensureState(w),source=sourceState(w,good);
  if(source.status!=='ESTABLISHED')return {ok:false,reason:'source is not established'};
- const routeId=source.routes.find(id=>ROUTE_SOURCE_CONFIG[id]);
- const config=routeId&&ROUTE_SOURCE_CONFIG[routeId];
+ const routeId=source.routes.find(id=>ROUTE_SOURCE_CONFIG[id]),config=routeId&&ROUTE_SOURCE_CONFIG[routeId];
  if(!config)return {ok:false,reason:'no replenishment terms for this source'};
  const actor=w.actors?.[actorId];if(!actor)return {ok:false,reason:'recipient missing'};
- const bounded=Math.max(1,Math.min(config.maxOrder,Math.floor(Number(quantity)||1)));
- const totalCost=bounded*config.sourceCost;
+ const bounded=Math.max(1,Math.min(config.maxOrder,Math.floor(Number(quantity)||1))),totalCost=bounded*config.sourceCost;
  if(freeCash(w,actorId)<totalCost)return {ok:false,reason:'insufficient free cash for source order'};
  actor.cash-=totalCost;
  w.externalFlows??=[];
  w.externalFlows.push({day:w.day,direction:'out',sector:'established_route_sources',actorId,reason:`established_source_${routeId}_${good.toLowerCase().replace(/[^a-z0-9]+/g,'_')}`,amount:totalCost,returnClass:'TRADE'});
- const order={id:`source-order-${++w.nextEvent}`,good,actorId,routeId,quantity:bounded,unitCost:config.sourceCost,totalCost,createdDay:w.day,dueDay:w.day+config.leadDays,status:'pending'};
+ const order={id:`source-order-${++w.nextEvent}`,orderKind:'established_replenishment',good,actorId,routeId,quantity:bounded,unitCost:config.sourceCost,totalCost,createdDay:w.day,dueDay:w.day+config.leadDays,status:'pending'};
  state.sourceOrders.push(order);
- w.evidence??=[];
- w.evidence.push({id:`ev${++w.nextEvent}`,day:w.day,type:'established_source_ordered',good,actorId,quantity:bounded,cost:totalCost,dueDay:order.dueDay,orderId:order.id});
+ emit(w,'established_source_ordered',{good,actorId,quantity:bounded,cost:totalCost,dueDay:order.dueDay,orderId:order.id});
  return {ok:true,orderId:order.id,quantity:bounded,dueDay:order.dueDay,cost:totalCost};
 }
 
