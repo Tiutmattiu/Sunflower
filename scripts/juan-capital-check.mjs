@@ -85,8 +85,11 @@ assert.equal(dimaMintAfter-dimaMintBefore,1,'half of a two-unit mint harvest sho
 assert.equal(juanMintAfter-juanMintBefore,JUAN_CROP_PROFILES.mint.baseYield-1,'Juan retains the unassigned physical harvest share');
 assert(w.actors.dima.inventory.filter(u=>u.kind==='Mint').every(u=>u.owner==='dima'));
 assert.equal(w.privateTransactions.filter(t=>t.day===w.day&&t.kind==='future_output_share'&&t.to==='dima').length,0,'physical harvest performance must not create a second cash settlement');
-const explainedDimaOutflow=w.privateTransactions.filter(t=>t.day===w.day&&t.from==='dima'&&Number(t.amount)>0).reduce((sum,t)=>sum+t.amount,0);
-assert.equal(dimaCashBeforeDay-w.actors.dima.cash,explainedDimaOutflow,'Dima cash changes during harvest day must come from recorded independent activity');
-assert(w.privateTransactions.some(t=>t.day===w.day&&t.kind==='named_bar_service'&&t.from==='dima'&&t.amount===3),'seed 55 confirms the independent 3-tin movement is Dima drinking at Joel’s Bar');
+const dimaDayTransactions=w.privateTransactions.filter(t=>t.day===w.day&&Number(t.amount)>0);
+const explainedDimaOutflow=dimaDayTransactions.filter(t=>t.from==='dima').reduce((sum,t)=>sum+t.amount,0);
+const explainedDimaInflow=dimaDayTransactions.filter(t=>t.to==='dima').reduce((sum,t)=>sum+t.amount,0);
+assert.equal(dimaCashBeforeDay-w.actors.dima.cash,explainedDimaOutflow-explainedDimaInflow,'Dima net cash change must reconcile to recorded independent activity');
+assert(w.privateTransactions.some(t=>t.day===w.day&&t.kind==='named_bar_service'&&t.from==='dima'&&t.amount===3),'seed 55 confirms one independent movement is Dima drinking at Joel’s Bar');
+assert(w.privateTransactions.some(t=>t.day===w.day&&t.to==='dima'&&t.amount===2),'seed 55 also preserves Dima intermediary income while the harvest contract performs');
 
 console.log('PASS: Juan crops differ in biological economics and liquidity structures preserve ownership/risk distinctions');
