@@ -8,12 +8,12 @@ import {HARBOUR_WORLD,legacyPoint} from './harbourWorld.js';
 import {clampCamera,centeredCamera,coverScale,focusCamera,zoomCamera} from './harbourCamera.js';
 import {CrowdFigure,CreatureFigure,ExpandedWorldBackdrop,TableauSignals} from './HarbourTableauLayer.jsx';
 
-const place=(x,y,name)=>{const p=legacyPoint(x,y);return [p.x,p.y,name]};
 export const PLACES = {
- harbour_berth:place(930,620,'Berth'), joels_bar:place(590,380,'Bar'), parcel_counter:place(1050,330,'Parcel shop'),
- nursery:place(285,290,'Growing yard'), viewing_room:place(720,130,'Gallery'), back_room:place(1160,150,'Side room'),
- sonyas_kitchen:place(370,120,'Kitchen'), cliff_path:place(120,520,'Cliff path'), public_clearing:place(750,520,'Exchange'), old_hall:place(480,540,'Screening hall')
+ harbour_berth:[930,620,'Berth'], joels_bar:[590,380,'Bar'], parcel_counter:[1050,330,'Parcel shop'],
+ nursery:[285,290,'Growing yard'], viewing_room:[720,130,'Gallery'], back_room:[1160,150,'Side room'],
+ sonyas_kitchen:[370,120,'Kitchen'], cliff_path:[120,520,'Cliff path'], public_clearing:[750,520,'Exchange'], old_hall:[480,540,'Screening hall']
 };
+const WORLD_PLACES=Object.fromEntries(Object.entries(PLACES).map(([id,[x,y,name]])=>{const p=legacyPoint(x,y);return [id,[p.x,p.y,name]]}));
 export const PEOPLE = {
  aspen:{name:'Aspen',unknown:'Woman with a blue scarf',coat:'#345779',hair:'#422e29'},
  joel:{name:'Joel',unknown:'Man in a white apron',coat:'#eee4c9',hair:'#34332c'},
@@ -55,8 +55,8 @@ function Scenery({world}) {
   {world.weather==='storm'&&<g opacity=".27" stroke="#d1ded5"><rect width={HARBOUR_WORLD.width} height={HARBOUR_WORLD.height} fill="#193948" stroke="none"/>{Array.from({length:70},(_,i)=><path key={i} d={`M${i*31} ${(i*83)%1120}l-16 40`}/>)}</g>}
  </g>
 }
-const prop=(id,loc,x,y,label)=>{const p=legacyPoint(x,y);return[id,loc,p.x,p.y,label]};
-export const PROPS=[prop('crate','harbour_berth',905,590,'Lime crate'),prop('cargo','harbour_berth',978,573,'Cargo'),prop('bottle','joels_bar',555,337,'Bottle'),prop('glass','joels_bar',644,357,'Glass'),prop('packing','joels_bar',498,364,'Packing bundle'),prop('parcel','parcel_counter',1095,309,'Parcel'),prop('parts','parcel_counter',1000,310,'Wheel parts'),prop('plants','nursery',258,297,'Plants'),prop('paper','nursery',337,278,'Paper'),prop('bowl','viewing_room',737,112,'Bowl'),prop('photo','viewing_room',799,114,'Photograph'),prop('envelope','back_room',1185,130,'Envelope'),prop('table','sonyas_kitchen',389,108,'Supper table'),prop('path','cliff_path',105,489,'Path'),prop('orders','public_clearing',737,478,'Posted offers')];
+export const PROPS=[['crate','harbour_berth',905,590,'Lime crate'],['cargo','harbour_berth',978,573,'Cargo'],['bottle','joels_bar',555,337,'Bottle'],['glass','joels_bar',644,357,'Glass'],['packing','joels_bar',498,364,'Packing bundle'],['parcel','parcel_counter',1095,309,'Parcel'],['parts','parcel_counter',1000,310,'Wheel parts'],['plants','nursery',258,297,'Plants'],['paper','nursery',337,278,'Paper'],['bowl','viewing_room',737,112,'Bowl'],['photo','viewing_room',799,114,'Photograph'],['envelope','back_room',1185,130,'Envelope'],['table','sonyas_kitchen',389,108,'Supper table'],['path','cliff_path',105,489,'Path'],['orders','public_clearing',737,478,'Posted offers']];
+const WORLD_PROPS=PROPS.map(([id,loc,x,y,label])=>{const p=legacyPoint(x,y);return [id,loc,p.x,p.y,label]});
 export default function HarbourMap({world,onFocus,selected,activeProps}) {
  const ref=useRef(null), pointers=useRef(new Map()), gesture=useRef(null), moved=useRef(false), initialized=useRef(false);
  const [camera,setCamera]=useState({x:0,y:0,z:1}),[size,setSize]=useState({w:1,h:1});
@@ -79,10 +79,10 @@ export default function HarbourMap({world,onFocus,selected,activeProps}) {
  {depth.map(entry=>entry.kind==='crowd'?<CrowdFigure key={`crowd-${entry.id}`} item={entry.item} data-crowd-id={entry.id}/>:
   entry.kind==='creature'?<CreatureFigure key={`creature-${entry.id}`} item={entry.item} data-creature-id={entry.id}/>:
   (()=>{const {id,loc,x,y}=entry;return <g key={id} data-actor={id} data-location={loc} role="button" tabIndex="0" aria-label={personName(world,id)} className="map-target person" style={{transform:`translate(${x}px,${y}px)`}} onClick={()=>focus(id,loc,x,y-80)} onKeyDown={e=>{if(e.key==='Enter')focus(id,loc,x,y-80)}}><rect x="-28" y="-235" width="56" height="242" fill="transparent"/><Figure id={id} scale={({viewing_room:.82,sonyas_kitchen:.82,back_room:.85,joels_bar:1,nursery:.95,harbour_berth:1.08,cliff_path:1.1})[loc]||1} pose={world.actors[id].busy?'working':'neutral'}/>{world.actors.player.contacts.includes(id)&&<text className="local-label" y="24" textAnchor="middle">{PEOPLE[id].name}</text>}</g>})())}
- {PROPS.filter(([id])=>!activeProps||activeProps.has(id)).map(([id,loc,x,y,label])=><g key={id} role="button" tabIndex="0" aria-label={label} className={`map-target prop ${selected?.id===id?'focused':''}`} transform={`translate(${x} ${y})`} onClick={()=>focus(id,loc,x,y)} onKeyDown={e=>{if(e.key==='Enter')focus(id,loc,x,y)}}><circle r="24" fill="transparent"/><title>{label}</title></g>)}
- {world.production.toads.filter(t=>t.status==='hidden'&&world.day>=t.availableFrom&&PLACES[t.location]).map(t=>{const [x,y]=PLACES[t.location];return <g key={t.id} role="button" tabIndex="0" aria-label="Something in the leaves" className="map-target toad" transform={`translate(${x-48} ${y+27})`} onClick={()=>focus('toad',t.location,x-48,y+27)} onKeyDown={e=>{if(e.key==='Enter')focus('toad',t.location,x-48,y+27)}}><circle r="18" fill="transparent"/><ellipse rx="6" ry="4" fill="#768454"/><circle cx="-3" cy="-3" r="2" fill="#a3a266"/><circle cx="3" cy="-3" r="2" fill="#a3a266"/></g>})}
- {Object.entries(PLACES).map(([id,[x,y,name]])=><text className="local-label place-label" key={id} x={x} y={y+110} textAnchor="middle">{id==='cliff_path'&&!knows(world,'juan_route')?'Outer path':LOCATION_LABELS[id]||name}</text>)}
- {micro&&camera.z>1.7&&<g className="map-murmur" aria-hidden="true" transform={`translate(${PLACES[micro.requires[0][1]][0]} ${PLACES[micro.requires[0][1]][1]-50})`}><rect x="-130" y="-28" width="260" height="36" rx="8" fill="#f3e8d0"/><text textAnchor="middle" y="-7">{visibleNames(world,micro.lines[(world.relationshipEcology.beats?.length||0)%micro.lines.length])}</text></g>}
+ {WORLD_PROPS.filter(([id])=>!activeProps||activeProps.has(id)).map(([id,loc,x,y,label])=><g key={id} role="button" tabIndex="0" aria-label={label} className={`map-target prop ${selected?.id===id?'focused':''}`} transform={`translate(${x} ${y})`} onClick={()=>focus(id,loc,x,y)} onKeyDown={e=>{if(e.key==='Enter')focus(id,loc,x,y)}}><circle r="24" fill="transparent"/><title>{label}</title></g>)}
+ {world.production.toads.filter(t=>t.status==='hidden'&&world.day>=t.availableFrom&&WORLD_PLACES[t.location]).map(t=>{const [x,y]=WORLD_PLACES[t.location];return <g key={t.id} role="button" tabIndex="0" aria-label="Something in the leaves" className="map-target toad" transform={`translate(${x-48} ${y+27})`} onClick={()=>focus('toad',t.location,x-48,y+27)} onKeyDown={e=>{if(e.key==='Enter')focus('toad',t.location,x-48,y+27)}}><circle r="18" fill="transparent"/><ellipse rx="6" ry="4" fill="#768454"/><circle cx="-3" cy="-3" r="2" fill="#a3a266"/><circle cx="3" cy="-3" r="2" fill="#a3a266"/></g>})}
+ {Object.entries(WORLD_PLACES).map(([id,[x,y,name]])=><text className="local-label place-label" key={id} x={x} y={y+110} textAnchor="middle">{id==='cliff_path'&&!knows(world,'juan_route')?'Outer path':LOCATION_LABELS[id]||name}</text>)}
+ {micro&&camera.z>1.7&&<g className="map-murmur" aria-hidden="true" transform={`translate(${WORLD_PLACES[micro.requires[0][1]][0]} ${WORLD_PLACES[micro.requires[0][1]][1]-50})`}><rect x="-130" y="-28" width="260" height="36" rx="8" fill="#f3e8d0"/><text textAnchor="middle" y="-7">{visibleNames(world,micro.lines[(world.relationshipEcology.beats?.length||0)%micro.lines.length])}</text></g>}
  </svg><div className="camera-tools"><button aria-label="Zoom in" onClick={()=>zoom(1.3)}>+</button><button aria-label="Zoom out" onClick={()=>zoom(.77)}>−</button><button aria-label="Reset harbour view" onClick={()=>setCamera(centeredCamera(size,HARBOUR_WORLD,1))}>↔</button></div>
  </section>
 }
