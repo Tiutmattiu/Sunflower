@@ -4,7 +4,7 @@
 export const LOCATION_LABELS = {
   harbour_berth:'Berth',
   joels_bar:'Bar',
-  parcel_counter:'Wong’s services',
+  parcel_counter:'Parcel shop',
   nursery:'Nursery',
   viewing_room:'Gallery',
   back_room:'Apartments',

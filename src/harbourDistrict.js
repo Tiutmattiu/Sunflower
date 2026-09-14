@@ -6,7 +6,7 @@ export const DISTRICT_LANDMARKS = Object.freeze([
   {id:'south-shore',kind:'shore',x:380,y:875,w:560,h:170},
   {id:'working-berth',kind:'berth',x:1180,y:690,w:520,h:260,locationId:'harbour_berth'},
   {id:'wong-empire',ontologyId:'wong-services',kind:'wong-services',x:1625,y:410,w:410,h:300,label:'WONG SERVICES',locationId:'parcel_counter'},
-  {id:'joels-bar',ontologyId:'joels-bar',kind:'bar',x:805,y:480,w:430,h:280,label:"JOEL'S BAR",locationId:'joels_bar'},
+  {id:'joels-bar',ontologyId:'joels-bar',kind:'bar',x:805,y:480,w:430,h:280,label:'BAR',locationId:'joels_bar'},
   {id:'shisha-courtyard',kind:'shisha',x:585,y:545,w:300,h:220,label:'SHISHA • TEA'},
   {id:'pizza-shop',ontologyId:'pizza-shop',kind:'pizza-shop',x:985,y:390,w:150,h:165,label:'PIZZA'},
   {id:'deli',ontologyId:'deli',kind:'deli',x:1150,y:395,w:155,h:165,label:'DELI'},
@@ -43,7 +43,7 @@ export const DISTRICT_PROP_POINTS=Object.freeze({
 
 const SIGNALS=Object.freeze([
   {id:'wong-sign',kind:'wong-services',x:1640,y:335,label:'PARCEL • LAUNDRY • STORAGE • ₿'},
-  {id:'bar-sign',kind:'bar',x:810,y:360,label:"JOEL'S BAR"},
+  {id:'bar-sign',kind:'bar',x:810,y:360,label:'BAR'},
   {id:'shisha-sign',kind:'shisha',x:590,y:458,label:'SHISHA • TEA'},
   {id:'pizza-sign',kind:'pizza-shop',x:985,y:312,label:'PIZZA'},
   {id:'deli-sign',kind:'deli',x:1150,y:315,label:'DELI'},

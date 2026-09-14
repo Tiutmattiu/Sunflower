@@ -32,9 +32,27 @@ try{
   await page.screenshot({path:path.join(captures,`${name}-arrival.png`)});
   await look(page,'the older man carrying plants');
   assert(await page.locator('.conversation').isVisible());
+  const forbidden=/Orgeat|one.?wheel|unicycle|race|cliff|steel rim|quick.link|brake cable|sunflower field/i;
+  assert.doesNotMatch(await page.locator('.conversation').innerText(),forbidden);
+  await page.getByRole('button',{name:'Hello. Can we keep in touch?',exact:true}).click();await read(page);
+  assert.doesNotMatch(await page.locator('.conversation').innerText(),forbidden);
+  await close(page);
+  for(const drawer of ['Open phone','Open newspaper','Open money and notes']){
+   await page.getByRole('button',{name:drawer,exact:true}).click();
+   assert.doesNotMatch(await page.locator('.pocket-drawer').innerText(),forbidden);
+   assert.doesNotMatch(await page.locator('.pocket-drawer').innerText(),/Joel|Wong|Aspen|Yasmin|Dima|Sonya/);
+   await close(page);
+  }
+  assert.equal(await page.getByRole('button',{name:'Wheel parts',exact:true}).count(),0);
+  await look(page,'the young man in the yellow waistcoat');
+  assert.doesNotMatch(await page.locator('.conversation').innerText(),forbidden);
+  await close(page);
+  assert.doesNotMatch(await page.locator('.harbour-world').textContent(),/JOEL|Wong/);
   assert.deepEqual(errors,[]);results.push({name,viewport:{width,height},freshSave:true,entry:'Visible Juan interaction'});await page.close();
  }
  console.log(JSON.stringify({results,captures},null,2));
 }catch(error){for(const page of browser.contexts().flatMap(c=>c.pages())){console.error(await page.locator('body').innerText());await page.screenshot({path:path.join(captures,'failure.png')});}console.error(captures);throw error;}finally{await browser.close();}
+
+
 
 
