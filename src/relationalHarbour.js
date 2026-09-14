@@ -5,6 +5,12 @@ const relation=()=>({familiarity:0,affection:0,businessUsefulness:0,paymentRelia
 const DRINKING={aspen:{visit:2,ceiling:5,impairmentAversion:5,social:3,tab:0,round:0,leave:5,nextDay:5},joel:{visit:5,ceiling:4,impairmentAversion:3,social:5,tab:4,round:3,leave:2,nextDay:2},yasmin:{visit:2,ceiling:8,impairmentAversion:5,social:4,tab:0,round:2,leave:4,nextDay:4},wong:{visit:2,ceiling:3,impairmentAversion:4,social:2,tab:1,round:1,leave:5,nextDay:4},juan:{visit:4,ceiling:5,impairmentAversion:1,social:4,tab:5,round:2,leave:1,nextDay:2},dima:{visit:3,ceiling:8,impairmentAversion:5,social:3,tab:0,round:4,leave:4,nextDay:4}};
 const ROUTES={short:{duration:2,cost:6,revenue:11,cargo:['Hardtack Tin','Packing Paper'],risk:1},medium:{duration:3,cost:10,revenue:18,cargo:['Lime','Rum','Presta Inner Tube'],risk:3},outer:{duration:5,cost:17,revenue:31,cargo:['Brass Compass','Gelatin Silver Print, 20 × 25 cm'],risk:6}};
 const INTRADAY_WINDOWS={aspen:[.18,.58],joel:[.26,.68],wong:[.32,.74],juan:[.38,.78],yasmin:[.46],dima:[.54]};
+const RACE_BET_PROFILES={
+ aspen:{playerBias:.22,maxStake:2,minEdge:.04},
+ wong:{playerBias:-.08,maxStake:1,minEdge:.04},
+ yasmin:{playerBias:.04,maxStake:2,minEdge:.05},
+ dima:{playerBias:.12,maxStake:3,minEdge:.07},
+};
 const CANDIDATES=[
  ['aspen','joel','TRADE','joels_bar','bar_import_bundle',2,4,3],['aspen','yasmin','SERVICE','viewing_room','provenance_delivery',3,6,5],['aspen','wong','SERVICE','parcel_counter','ordinary_gift_custody',2,3,4],['aspen','juan','INFORMATION','nursery','route_measurements',0,4,5],['aspen','dima','SERVICE','back_room','discreet_timed_delivery',3,5,7],
  ['joel','yasmin','SOCIAL','joels_bar','patron_hosting',2,3,6],['joel','wong','TRADE','joels_bar','salvage_glass',1,3,4],['joel','juan','OBLIGATION','joels_bar','bounded_bar_tab',0,5,3],['joel','dima','SERVICE','joels_bar','closing_settlement',2,4,5],
@@ -16,6 +22,48 @@ const CANDIDATES=[
 function emit(w,type,data){const row={id:`ev${++w.nextEvent}`,day:w.day,type,...data};w.evidence.push(row);w.activityLog?.push(row);return row}
 function active(w,id){return w.actors[id]&&!w.actors[id].removed&&w.actors[id].capacity>0&&!['away','private'].includes(w.actors[id].location)}
 function rel(w,a,b){return w.relationshipEcology.relations[pair(a,b)]}
+function availableNamedCash(w,id){return Math.max(0,(w.actors[id]?.cash||0)-w.market.reservations.filter(r=>r.actorId===id&&r.kind==='cash').reduce((n,r)=>n+(r.amount||0),0))}
+function raceOpinion(w,id,raceChance){
+ const profile=RACE_BET_PROFILES[id];
+ if(!profile)return null;
+ const juanRel=rel(w,id,'juan')||relation();
+ const relationshipLean=(juanRel.affection||0)*.05+(juanRel.familiarity||0)*.01-(juanRel.friction||0)*.03;
+ const estimate=Math.max(.05,Math.min(.95,raceChance+profile.playerBias-relationshipLean));
+ const edge=Math.abs(estimate-.5);
+ return {actorId:id,estimate:Number(estimate.toFixed(3)),side:edge<profile.minEdge?'pass':estimate>.5?'player':'juan',confidence:Number(edge.toFixed(3)),maxStake:profile.maxStake};
+}
+function settleJuanRaceBets(w){
+ const route=w.playerGame?.routes?.juan;
+ if(!route?.races||route.lastBetting?.raceNumber===route.races)return;
+ const raceEvent=[...w.evidence].reverse().find(e=>e.day===w.day&&['juan_race_won','juan_race_lost'].includes(e.type));
+ if(!raceEvent)return;
+ const raceChance=Number(raceEvent.context?.raceChance??String(raceEvent.summary||'').match(/(\d+)%/)?.[1]/100??0);
+ const present=NAMES.filter(id=>active(w,id)&&w.actors[id].location==='joels_bar');
+ const opinions=present.filter(id=>!['joel','juan'].includes(id)).map(id=>raceOpinion(w,id,raceChance)).filter(Boolean);
+ const playerSide=opinions.filter(o=>o.side==='player'&&availableNamedCash(w,o.actorId)>0).sort((a,b)=>b.confidence-a.confidence||a.actorId.localeCompare(b.actorId));
+ const juanSide=opinions.filter(o=>o.side==='juan'&&availableNamedCash(w,o.actorId)>0).sort((a,b)=>b.confidence-a.confidence||a.actorId.localeCompare(b.actorId));
+ const bets=[];
+ while(playerSide.length&&juanSide.length){
+  const p=playerSide.shift(),j=juanSide.shift();
+  const stake=Math.floor(Math.min(p.maxStake,j.maxStake,availableNamedCash(w,p.actorId),availableNamedCash(w,j.actorId)));
+  if(stake<1)continue;
+  const winnerSide=raceEvent.type==='juan_race_won'?'player':'juan';
+  const winnerId=winnerSide==='player'?p.actorId:j.actorId;
+  const loserId=winnerSide==='player'?j.actorId:p.actorId;
+  w.actors[loserId].cash-=stake;
+  w.actors[winnerId].cash+=stake;
+  const bet={id:`race-bet-${w.day}-${route.races}-${bets.length+1}`,day:w.day,raceNumber:route.races,playerBacker:p.actorId,juanBacker:j.actorId,stake,winnerSide,winnerId,loserId,settled:true};
+  bets.push(bet);
+  w.privateTransactions??=[];
+  w.privateTransactions.push({day:w.day,kind:'race_side_bet',from:loserId,to:winnerId,amount:stake,purpose:'juan_onewheel_race'});
+  w.relationshipEcology.traces.unshift({day:w.day,location:'joels_bar',summary:`${p.actorId} backed the rider for ${stake} tin${stake===1?'':'s'} against ${j.actorId}; ${winnerId} collected.`});
+ }
+ const scene={day:w.day,raceNumber:route.races,raceChance,present,opinions,bets,outcome:raceEvent.type==='juan_race_won'?'player':'juan'};
+ route.lastBetting=scene;
+ w.relationshipEcology.raceBets.push(scene);
+ if(bets.length)emit(w,'juan_race_side_bets',{raceNumber:route.races,present,people:[...new Set(bets.flatMap(b=>[b.playerBacker,b.juanBacker]))],bets});
+ return scene;
+}
 function record(w,c,response,value=0,info=0,obligation=0,reason=''){const row={id:`ri${++w.relationshipEcology.nextId}`,day:w.day,initiator:c.initiator,target:c.target,targets:c.targets,location:c.location,channel:c.channel,purpose:c.purpose,response,accepted:response==='ACCEPT',refused:['REFUSE','COUNTER','DELAY','REDIRECT'].includes(response),valueTransferred:value,informationTransferred:info,obligationsCreated:obligation,coPresence:response==='ACCEPT',reason};w.relationshipEcology.interactions.push(row);if(value)w.privateTransactions.push({day:w.day,kind:'named_relational_transfer',channel:c.channel,from:c.initiator,to:c.target,amount:value,purpose:c.purpose});w.relationshipEcology.traces.unshift({...row,summary:traceText(c,response)});w.relationshipEcology.traces=w.relationshipEcology.traces.slice(0,24);emit(w,'relational_interaction',row);return row}
 function traceText(c,response){const verbs={ACCEPT:'agreed',REFUSE:'refused',COUNTER:'countered',DELAY:'asked for time on',REDIRECT:'redirected'};return `${c.initiator} ${verbs[response].toLowerCase()} ${c.target}’s ${c.purpose.replaceAll('_',' ')}.`}
 function targetResponse(w,c){const initiator=w.actors[c.initiator],reserve=c.initiator==='aspen'?10:c.initiator==='joel'?8:3;if(c.cashRequirement&&initiator.cash-c.cashRequirement<reserve)return 'COUNTER';const target=w.actors[c.target],r=rel(w,c.initiator,c.target);if(!active(w,c.target))return 'REDIRECT';if(target.busy>=target.capacity-1)return 'DELAY';if(c.cashRequirement&&target.cash<c.cashRequirement)return 'COUNTER';if(c.privacy&&r.privateAccess<1&&c.channel!=='SERVICE')return 'REFUSE';if(r.friction>3)return 'REFUSE';return 'ACCEPT'}
@@ -43,10 +91,10 @@ function intradayShift(w,id){return (((w.seed||0)+(w.day||0)*7+id.charCodeAt(0)*
 function scheduleIntraday(w){const ecology=w.relationshipEcology;if(ecology.intraday?.day===w.day)return ecology.intraday;const windows={};for(const id of NAMES){const shift=intradayShift(w,id);windows[id]=(INTRADAY_WINDOWS[id]||[]).map(f=>w.day+Math.max(.15,Math.min(.79,f+shift)))}ecology.intraday={day:w.day,windows,cursor:Object.fromEntries(NAMES.map(id=>[id,0]))};return ecology.intraday}
 function initiatorDue(w,id,time){const clock=scheduleIntraday(w),index=clock.cursor[id]||0,due=clock.windows[id]?.[index];return Number.isFinite(due)&&due<=time}
 function consumeInitiatorWindow(w,id){const clock=scheduleIntraday(w);clock.cursor[id]=(clock.cursor[id]||0)+1}
-export function initializeRelationalHarbour(w){w.relationshipEcology={nextId:0,relations:{},candidates:CANDIDATES,interactions:[],traces:[],obligations:[],information:[],gifts:[],barEvenings:[],sharedEvents:[],auctions:[],capacityEffects:[],routeDecisions:[],drinkingProfiles:DRINKING,routeGraph:ROUTES,beats:[]};for(let i=0;i<NAMES.length;i++)for(let j=i+1;j<NAMES.length;j++)w.relationshipEcology.relations[pair(NAMES[i],NAMES[j])]=relation();scheduleIntraday(w);return w}
+export function initializeRelationalHarbour(w){w.relationshipEcology={nextId:0,relations:{},candidates:CANDIDATES,interactions:[],traces:[],obligations:[],information:[],gifts:[],barEvenings:[],sharedEvents:[],auctions:[],capacityEffects:[],routeDecisions:[],drinkingProfiles:DRINKING,routeGraph:ROUTES,beats:[],raceBets:[]};for(let i=0;i<NAMES.length;i++)for(let j=i+1;j<NAMES.length;j++)w.relationshipEcology.relations[pair(NAMES[i],NAMES[j])]=relation();scheduleIntraday(w);return w}
 export function prepareRelationalDay(w){for(const effect of w.relationshipEcology.capacityEffects.filter(x=>x.day===w.day))if(active(w,effect.actorId))w.actors[effect.actorId].busy+=effect.amount;scheduleIntraday(w);chooseAspenRoute(w);return w}
 export function advanceRelationalHarbour(w){const candidates=CANDIDATES.filter(c=>active(w,c.initiator)&&active(w,c.target)&&!w.relationshipEcology.interactions.some(x=>x.day===w.day&&x.purpose===c.purpose)&&(w.day+c.utility+(w.seed%5))%c.cadence===0).sort((a,b)=>b.utility-a.utility||a.id.localeCompare(b.id));const accepted=new Set(),attempts={};for(const c of candidates){if(accepted.has(c.initiator)||(attempts[c.initiator]||0)>=2||w.actors[c.initiator].busy>=w.actors[c.initiator].capacity)continue;attempts[c.initiator]=(attempts[c.initiator]||0)+1;const result=execute(w,c);if(result.accepted)accepted.add(c.initiator)}barAttendance(w);yasminAgenda(w);toadAftermath(w);auctionAttendance(w);settleRelationalObligations(w);settleGifts(w);return w}
-export function relationalDiagnostics(w){const matrix={};for(const a of NAMES)for(const b of NAMES)if(a!==b){const rows=w.relationshipEcology.interactions.filter(x=>x.initiator===a&&x.target===b);matrix[`${a}->${b}`]={initiated:rows.length,accepted:rows.filter(x=>x.accepted).length,refusedOrCountered:rows.filter(x=>x.refused).length,valueTransferred:rows.reduce((n,x)=>n+x.valueTransferred,0),informationTransferred:rows.reduce((n,x)=>n+x.informationTransferred,0),obligationsCreated:rows.reduce((n,x)=>n+x.obligationsCreated,0),coPresence:rows.filter(x=>x.coPresence).length,channels:[...new Set(rows.map(x=>x.channel))]}}const undirectedPairs=new Set(w.relationshipEcology.candidates.map(c=>pair(c.initiator,c.target)));const counts=Object.values(matrix).map(x=>x.initiated).filter(Boolean),total=counts.reduce((a,b)=>a+b,0),entropy=total? -counts.reduce((n,x)=>{const p=x/total;return n+p*Math.log2(p)},0):0;return{day:w.day,matrix,executablePairCount:undirectedPairs.size,totalInteractions:w.relationshipEcology.interactions.length,accepted:w.relationshipEcology.interactions.filter(x=>x.accepted).length,refusedOrCountered:w.relationshipEcology.interactions.filter(x=>x.refused).length,entropy,barEvenings:w.relationshipEcology.barEvenings,gifts:w.relationshipEcology.gifts,auctions:w.relationshipEcology.auctions,sharedEvents:w.relationshipEcology.sharedEvents,routeChoices:w.relationshipEcology.routeDecisions,intraday:w.relationshipEcology.intraday}}
+export function relationalDiagnostics(w){const matrix={};for(const a of NAMES)for(const b of NAMES)if(a!==b){const rows=w.relationshipEcology.interactions.filter(x=>x.initiator===a&&x.target===b);matrix[`${a}->${b}`]={initiated:rows.length,accepted:rows.filter(x=>x.accepted).length,refusedOrCountered:rows.filter(x=>x.refused).length,valueTransferred:rows.reduce((n,x)=>n+x.valueTransferred,0),informationTransferred:rows.reduce((n,x)=>n+x.informationTransferred,0),obligationsCreated:rows.reduce((n,x)=>n+x.obligationsCreated,0),coPresence:rows.filter(x=>x.coPresence).length,channels:[...new Set(rows.map(x=>x.channel))]}}const undirectedPairs=new Set(w.relationshipEcology.candidates.map(c=>pair(c.initiator,c.target)));const counts=Object.values(matrix).map(x=>x.initiated).filter(Boolean),total=counts.reduce((a,b)=>a+b,0),entropy=total? -counts.reduce((n,x)=>{const p=x/total;return n+p*Math.log2(p)},0):0;return{day:w.day,matrix,executablePairCount:undirectedPairs.size,totalInteractions:w.relationshipEcology.interactions.length,accepted:w.relationshipEcology.interactions.filter(x=>x.accepted).length,refusedOrCountered:w.relationshipEcology.interactions.filter(x=>x.refused).length,entropy,barEvenings:w.relationshipEcology.barEvenings,gifts:w.relationshipEcology.gifts,auctions:w.relationshipEcology.auctions,sharedEvents:w.relationshipEcology.sharedEvents,routeChoices:w.relationshipEcology.routeDecisions,raceBets:w.relationshipEcology.raceBets,intraday:w.relationshipEcology.intraday}}
 export function sceneSnapshot(w,location){const people=NAMES.filter(id=>active(w,id)&&w.actors[id].location===location),base={joels_bar:['bar','tonight menu','open tab'],parcel_counter:['parcel','packing paper','handling bench','handoff door'],nursery:['living plants','tools',...(w.playerGame?.knowledge?.includes('onewheel_plan')?['onewheel parts']:[]),...(w.toadCircle?.occurrences.some(x=>x.day===w.day)?['toad container']:[])],viewing_room:['auction lot','labels','provenance documents'],harbour_berth:['cargo manifest','mooring line','wrapped parcel'],back_room:['claim papers','settlement envelope'],workbench:['newspaper','phone','notebook','ledger'],sonyas_kitchen:['table','borrowed chairs'],cliff_path:['cliff path']}[location]||[];const hidden=w.production?.toads?.find(t=>t.status==='hidden'&&t.location===location&&w.day>=t.availableFrom);return{location,people,objects:hidden?[...base,'hidden toad']:base,traces:w.relationshipEcology.traces.filter(x=>x.location===location).slice(0,4),actions:[]}}
 export { NAMES as RELATIONAL_ACTORS, CHANNELS as RELATIONAL_CHANNELS };
 
@@ -57,6 +105,7 @@ export function advanceHarbourBeat(current,token,protectedActors=[]) {
  if(existing.some(b=>b.token===token))return current;
  const w=structuredClone(current), ecology=w.relationshipEcology;
  ecology.beats=(ecology.beats||[]).filter(b=>b.day===w.day);
+ settleJuanRaceBets(w);
  const time=w.day+w.attention.used/Math.max(1,w.attention.budget)*.8;
  scheduleIntraday(w);
  const candidates=CANDIDATES.filter(c=>active(w,c.initiator)&&active(w,c.target)
