@@ -9,6 +9,7 @@ import {ACTION_COPY,TARGET_ACTIONS,actionLine,reaction,readableResult,friendlyBl
 import {ECONOMIC_GOODS as GOODS} from './economicContent.js';
 import {selectDialogue,visibleNames} from './dialogueContent.js';
 import {NEWSPAPER_OVERRIDES,UI_COPY,SCAR_COPY,itemLabel} from './presentationCopy.js';
+import {raceBettingLines} from './racePresentation.js';
 import {AUDIO_CUES} from './worldLifeContent.js';
 import './harbour.css';
 import SpokenLine from './SpokenLine.jsx';
@@ -146,7 +147,9 @@ export default function AppCore(){
   const result=a.id==='talk_here'?selectDialogue(after,a.payload.actor).text:readableResult(before,after,a);
   setMessage(result+(advanced.day>world.day?' The light changes. A new day begins.':''));setPage(0);
   if(['lime_inspect','sonya_attend','auction_bid','invite_toad_circle','race_juan','juan_field_trip'].includes(a.id)){
-   const racePeople=a.id==='race_juan'?Object.entries(after.actors).filter(([id,x])=>id!=='player'&&!x.background&&x.location==='joels_bar').map(([id])=>id):[];
+   const betting=a.id==='race_juan'?advanced.playerGame.routes.juan.lastBetting:null;
+   const racePeople=a.id==='race_juan'?(betting?.present||Object.entries(after.actors).filter(([id,x])=>id!=='player'&&!x.background&&x.location==='joels_bar').map(([id])=>id)):[];
+   const bettingLines=a.id==='race_juan'?raceBettingLines(betting,id=>personName(advanced,id)||id):[];
    const raceWon=a.id==='race_juan'&&after.playerGame.routes.juan.stage==='won'&&before.playerGame.routes.juan.stage!=='won';
    setComic({
     location:a.id==='juan_field_trip'?'cliff_path':focus?.location,
@@ -154,7 +157,7 @@ export default function AppCore(){
     people:a.id==='juan_field_trip'?['juan']:a.id==='race_juan'?racePeople:a.id==='invite_toad_circle'?after.production.toadChat.members.filter(id=>id!=='player'):a.id==='sonya_attend'?['joel','sonya']:[],
     person:a.id==='sonya_attend'?'joel':a.id==='auction_bid'?'yasmin':a.id==='race_juan'||a.id==='juan_field_trip'?null:'aspen',
     object:a.id==='lime_inspect'?'Lime':a.id==='juan_field_trip'?'Sunflower':a.id==='race_juan'?(raceWon?'Built Onewheel':'glass'):a.id==='invite_toad_circle'?'toad':'paper',
-    lines:a.id==='lime_inspect'?['The string comes loose.','Twenty limes. Three bruised.','“That is the whole crate?” The paper says twenty-four.']:a.id==='invite_toad_circle'?['The jar rests between the pots.',result,'For a while, nobody offers a price.']:a.id==='sonya_attend'?['A chair is pulled to the table.',result,'Someone passes the plate. Nobody counts the helpings.']:a.id==='juan_field_trip'?['Juan leaves the bar before you can turn the win into a speech.','The harbour drops behind the path.',result,'At the field, he finally points instead of explaining.']:a.id==='race_juan'?[raceWon?'Juan puts the wheel down second.':'Juan reaches the mark first.',result,raceWon?'He jerks his head toward the door. “Come on.”':'Joel starts counting the people whose drinks you now cover.']:['A hand goes up.',result,'The bowl stays on the cloth until the sale closes.'],
+    lines:a.id==='lime_inspect'?['The string comes loose.','Twenty limes. Three bruised.','“That is the whole crate?” The paper says twenty-four.']:a.id==='invite_toad_circle'?['The jar rests between the pots.',result,'For a while, nobody offers a price.']:a.id==='sonya_attend'?['A chair is pulled to the table.',result,'Someone passes the plate. Nobody counts the helpings.']:a.id==='juan_field_trip'?['Juan leaves the bar before you can turn the win into a speech.','The harbour drops behind the path.',result,'At the field, he finally points instead of explaining.']:a.id==='race_juan'?[raceWon?'Juan puts the wheel down second.':'Juan reaches the mark first.',...bettingLines,result,raceWon?'He jerks his head toward the door. “Come on.”':'Joel starts counting the people whose drinks you now cover.']:['A hand goes up.',result,'The bowl stays on the cloth until the sale closes.'],
     choices:a.id==='lime_inspect'
    });
   }
