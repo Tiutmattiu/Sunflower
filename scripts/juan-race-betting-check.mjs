@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {createHarbourWorld} from '../src/harbourSpine.js';
+import {createHarbourWorld,finishPlayerIntervention} from '../src/harbourSpine.js';
 import {performPlayerAction,juanRaceChance} from '../src/playerGame.js';
 import {learn,PLAYER_KNOWLEDGE as K} from '../src/playerKnowledge.js';
 
@@ -21,8 +21,9 @@ w.actors.player.inventory.push({unitId:'test-built-onewheel',kind:'Built Onewhee
 
 assert.equal(juanRaceChance(w),.32,'fixture should exercise the difficult first-race expectation');
 const beforeCash=cashTotal(w);
-const next=performPlayerAction(w,'race_juan');
-assert(!next.playerGame.lastBlock,next.playerGame.lastBlock);
+const raced=performPlayerAction(w,'race_juan');
+assert(!raced.playerGame.lastBlock,raced.playerGame.lastBlock);
+const next=finishPlayerIntervention(w,raced,['joel','juan','aspen','wong','yasmin']);
 const scene=next.playerGame.routes.juan.lastBetting;
 assert(scene,'race must persist an actual betting/reaction scene in state');
 assert.equal(scene.day,w.day);
@@ -50,7 +51,8 @@ locked.actors.yasmin.location='viewing_room';locked.actors.dima.location='back_r
 locked.actors.wong.cash=2;
 locked.market.reservations.push({orderId:'test-lock',actorId:'wong',kind:'cash',amount:2});
 locked.actors.player.inventory.push({unitId:'test-wheel-2',kind:'Built Onewheel',owner:'player',age:0,costBasis:0,source:'test_fixture',opened:false,remaining:1});
-const lockedNext=performPlayerAction(locked,'race_juan');
+const lockedRace=performPlayerAction(locked,'race_juan');
+const lockedNext=finishPlayerIntervention(locked,lockedRace,['joel','juan','aspen','wong']);
 assert(!lockedNext.playerGame.routes.juan.lastBetting.bets.some(b=>b.playerBacker==='wong'||b.juanBacker==='wong'),'reserved Wong cash was double-spent into a race bet');
 assert.equal(lockedNext.actors.wong.cash,2,'reserved Wong cash moved during race betting');
 
