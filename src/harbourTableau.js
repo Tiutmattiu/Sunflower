@@ -2,7 +2,8 @@
 // This module is deliberately pure: it never mutates route, economy, inventory, or actor state.
 
 export const TABLEAU_ZONES = Object.freeze([
-  {id:'sea-shore', kind:'water', bounds:[40,650,360,860]},
+  {id:'sea-water', kind:'water', bounds:[35,690,355,865]},
+  {id:'sea-shore', kind:'ground', bounds:[55,610,375,710]},
   {id:'berth-cargo', kind:'ground', bounds:[800,505,1080,705]},
   {id:'wong-strip', kind:'ground', bounds:[1000,315,1320,560]},
   {id:'social-strip', kind:'ground', bounds:[430,330,760,585]},
@@ -39,8 +40,8 @@ export const NAMED_ACTOR_SLOTS = Object.freeze({
 });
 
 const BASE_CROWD = Object.freeze([
-  {id:'shore-swimmer-a',zoneId:'sea-shore',activity:'swim',tags:['sea-leisure'],dryOnly:true},
-  {id:'shore-swimmer-b',zoneId:'sea-shore',activity:'swim',tags:['sea-leisure'],dryOnly:true},
+  {id:'shore-swimmer-a',zoneId:'sea-water',activity:'swim',tags:['sea-leisure'],dryOnly:true},
+  {id:'shore-swimmer-b',zoneId:'sea-water',activity:'swim',tags:['sea-leisure'],dryOnly:true},
   {id:'shore-sunbather-a',zoneId:'sea-shore',activity:'sunbathe',tags:['sea-leisure'],dryOnly:true},
   {id:'shore-sunbather-b',zoneId:'sea-shore',activity:'sunbathe',tags:['sea-leisure'],dryOnly:true},
   {id:'shore-sea-watcher',zoneId:'cliff-edge',activity:'idle',tags:['sea-leisure']},
@@ -89,9 +90,9 @@ const CREATURES = Object.freeze([
   {id:'gull-shore',species:'seagull',zoneId:'sea-shore',activity:'gull'},
   {id:'squirrel-park-a',species:'squirrel',zoneId:'park-civic',activity:'squirrel'},
   {id:'squirrel-park-b',species:'squirrel',zoneId:'park-civic',activity:'squirrel'},
-  {id:'reef-fish-a',species:'tropical-fish',zoneId:'sea-shore',activity:'fish'},
-  {id:'reef-fish-b',species:'tropical-fish',zoneId:'sea-shore',activity:'fish'},
-  {id:'reef-fish-c',species:'tropical-fish',zoneId:'sea-shore',activity:'fish'},
+  {id:'reef-fish-a',species:'tropical-fish',zoneId:'sea-water',activity:'fish'},
+  {id:'reef-fish-b',species:'tropical-fish',zoneId:'sea-water',activity:'fish'},
+  {id:'reef-fish-c',species:'tropical-fish',zoneId:'sea-water',activity:'fish'},
 ]);
 
 function hash(text='') {
