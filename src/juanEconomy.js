@@ -1,21 +1,20 @@
 import {ECONOMIC_GOODS,LIVING_ASSET_FAMILIES} from './economicContent.js';
-import {JUAN_CROP_PROFILES} from './npcEconomy.js';
 
 function outputFor(asset){return LIVING_ASSET_FAMILIES[asset.species]?.outputs?.[0]||null;}
 function emit(w,type,data={}){const row={id:`ev${++w.nextEvent}`,day:w.day,type,...data};w.evidence??=[];w.evidence.push(row);return row;}
 
-export function reconcileJuanHarvestEconomics(w){
+export function reconcileJuanHarvestEconomics(w,profiles){
  const harvestRows=(w.returnLedger||[]).filter(row=>row.day===w.day&&row.actorId==='juan'&&row.context==='crop_yield'&&!row.profileReconciled);
  if(!harvestRows.length)return w;
  const harvested=(w.livingAssets||[]).filter(asset=>
   asset.ownerId==='juan'&&
   asset.maturity===0&&
-  JUAN_CROP_PROFILES[asset.species]&&
+  profiles?.[asset.species]&&
   asset.lastProfileHarvestDay!==w.day
  );
  let remainingRows=[...harvestRows];
  for(const asset of harvested){
-  const profile=JUAN_CROP_PROFILES[asset.species],kind=outputFor(asset),good=kind&&ECONOMIC_GOODS[kind];
+  const profile=profiles[asset.species],kind=outputFor(asset),good=kind&&ECONOMIC_GOODS[kind];
   if(!kind||!good)continue;
   let rowIndex=remainingRows.findIndex(row=>Number(row.amount)===Number(good.value));
   if(rowIndex<0)rowIndex=remainingRows.length?0:-1;
