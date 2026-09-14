@@ -19,6 +19,7 @@ function reservedUnitIds(w){return new Set((w.market?.reservations||[]).filter(r
 function reservedCash(w,id){return (w.market?.reservations||[]).filter(r=>r.actorId===id&&r.kind==='cash').reduce((n,r)=>n+(r.amount||0),0);}
 function freeCash(w,id){return Math.max(0,(w.actors[id]?.cash||0)-reservedCash(w,id));}
 function unitOwner(w,unitId){for(const actor of Object.values(w.actors||{})){const unit=actor.inventory?.find(u=>u.unitId===unitId);if(unit)return {actor,unit};}return null;}
+function livingAssetOwner(w,assetId){const asset=(w.livingAssets||[]).find(a=>a.id===assetId);return asset?{ownerId:asset.ownerId,asset}:null;}
 function emit(w,type,data={}){const row={id:`ev${++w.nextEvent}`,day:w.day,type,...data};w.evidence??=[];w.evidence.push(row);return row;}
 function tx(w,kind,from,to,amount,purpose){w.privateTransactions??=[];w.privateTransactions.push({day:w.day,kind,from,to,amount,purpose});}
 function transferCash(w,from,to,amount,kind,purpose){
@@ -79,26 +80,43 @@ export function recordSourceDiscovery(w,routeId,goods,{returned=false,establishA
  return w;
 }
 
-export function createSecuredClaim(w,{borrowerId,lenderId,collateralUnitId,principal,face,dueDay,purpose='secured_advance'}){
+export function createSecuredClaim(w,{borrowerId,lenderId,collateralUnitId=null,collateralAssetId=null,principal,face,dueDay,purpose='secured_advance'}){
  initializeNpcEconomy(w);
  const borrower=w.actors[borrowerId],lender=w.actors[lenderId];
  if(!borrower||!lender)return {ok:false,reason:'missing counterparty'};
  if(!Number.isFinite(principal)||principal<=0||!Number.isFinite(face)||face<principal)return {ok:false,reason:'invalid secured terms'};
  if(freeCash(w,lenderId)<principal)return {ok:false,reason:'lender lacks free cash'};
- const found=unitOwner(w,collateralUnitId);
- if(!found||found.actor.id!==borrowerId)return {ok:false,reason:'borrower does not own collateral'};
- if(reservedUnitIds(w).has(collateralUnitId)||found.unit.pledgedTo)return {ok:false,reason:'collateral is already committed'};
+ if(Boolean(collateralUnitId)===Boolean(collateralAssetId))return {ok:false,reason:'claim requires exactly one collateral object'};
+ const foundUnit=collateralUnitId?unitOwner(w,collateralUnitId):null;
+ const foundAsset=collateralAssetId?livingAssetOwner(w,collateralAssetId):null;
+ if(foundUnit){
+  if(foundUnit.actor.id!==borrowerId)return {ok:false,reason:'borrower does not own collateral'};
+  if(reservedUnitIds(w).has(collateralUnitId)||foundUnit.unit.pledgedTo)return {ok:false,reason:'collateral is already committed'};
+ }else if(foundAsset){
+  if(foundAsset.ownerId!==borrowerId)return {ok:false,reason:'borrower does not own collateral'};
+  if(foundAsset.asset.pledgedTo)return {ok:false,reason:'collateral is already committed'};
+ }else return {ok:false,reason:'borrower does not own collateral'};
  lender.cash-=principal;borrower.cash+=principal;
- found.unit.pledgedTo=lenderId;
- const claim={id:`secured-${++w.nextEvent}`,type:'secured_claim',settlementModel:'secured_unit',issuerId:borrowerId,holderId:lenderId,principal,face,originalFace:face,dueDay,collateralUnitId,status:'open',purpose,createdDay:w.day};
+ if(foundUnit)foundUnit.unit.pledgedTo=lenderId;else foundAsset.asset.pledgedTo=lenderId;
+ const settlementModel=foundUnit?'secured_unit':'secured_living_asset';
+ const claim={id:`secured-${++w.nextEvent}`,type:'secured_claim',settlementModel,issuerId:borrowerId,holderId:lenderId,principal,face,originalFace:face,dueDay,collateralUnitId:foundUnit?collateralUnitId:null,collateralAssetId:foundAsset?collateralAssetId:null,status:'open',purpose,createdDay:w.day};
  w.claims.push(claim);w.npcEconomy.securedClaims.push(claim.id);
  tx(w,'secured_advance',lenderId,borrowerId,principal,purpose);
- emit(w,'secured_claim_created',{claimId:claim.id,borrowerId,lenderId,collateralUnitId,principal,face,dueDay,purpose});
+ emit(w,'secured_claim_created',{claimId:claim.id,borrowerId,lenderId,collateralUnitId:claim.collateralUnitId,collateralAssetId:claim.collateralAssetId,principal,face,dueDay,purpose});
  return {ok:true,claimId:claim.id};
 }
 
-function releaseCollateral(w,claim){const found=unitOwner(w,claim.collateralUnitId);if(found?.unit?.pledgedTo===claim.holderId)found.unit.pledgedTo=null;}
+function releaseCollateral(w,claim){
+ if(claim.settlementModel==='secured_living_asset'){
+  const found=livingAssetOwner(w,claim.collateralAssetId);if(found?.asset?.pledgedTo===claim.holderId)found.asset.pledgedTo=null;return;
+ }
+ const found=unitOwner(w,claim.collateralUnitId);if(found?.unit?.pledgedTo===claim.holderId)found.unit.pledgedTo=null;
+}
 function seizeCollateral(w,claim){
+ if(claim.settlementModel==='secured_living_asset'){
+  const found=livingAssetOwner(w,claim.collateralAssetId);if(!found)return;
+  found.asset.ownerId=claim.holderId;found.asset.pledgedTo=null;return;
+ }
  const found=unitOwner(w,claim.collateralUnitId);if(!found)return;
  const lender=w.actors[claim.holderId];if(!lender)return;
  const index=found.actor.inventory.findIndex(u=>u.unitId===claim.collateralUnitId);if(index<0)return;
@@ -107,7 +125,7 @@ function seizeCollateral(w,claim){
 
 export function settleSecuredClaims(w){
  initializeNpcEconomy(w);
- for(const claim of w.claims.filter(c=>c.settlementModel==='secured_unit'&&c.status==='open'&&c.dueDay<=w.day)){
+ for(const claim of w.claims.filter(c=>['secured_unit','secured_living_asset'].includes(c.settlementModel)&&c.status==='open'&&c.dueDay<=w.day)){
   const borrower=w.actors[claim.issuerId],lender=w.actors[claim.holderId];if(!borrower||!lender)continue;
   if(freeCash(w,claim.issuerId)>=claim.face){
    borrower.cash-=claim.face;lender.cash+=claim.face;claim.paid=claim.face;claim.status='settled';releaseCollateral(w,claim);
@@ -115,7 +133,7 @@ export function settleSecuredClaims(w){
    emit(w,'secured_claim_settled',{claimId:claim.id,amount:claim.face});
   }else{
    claim.paid=0;claim.status='default';seizeCollateral(w,claim);
-   emit(w,'secured_claim_default',{claimId:claim.id,collateralUnitId:claim.collateralUnitId});
+   emit(w,'secured_claim_default',{claimId:claim.id,collateralUnitId:claim.collateralUnitId,collateralAssetId:claim.collateralAssetId});
   }
  }
  return w;
