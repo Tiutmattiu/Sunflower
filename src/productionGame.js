@@ -1,5 +1,6 @@
 import { ECONOMIC_GOODS } from './economicContent.js';
 import {initializeNpcEconomy,npcEconomyDay} from './npcEconomy.js';
+import {advanceRouteSources} from './routeSources.js';
 
 const clone=x=>structuredClone(x);
 const CLASSES=['TRADE','OPERATE','INVEST','FINANCE','INTERMEDIATE','SPECULATE'];
@@ -115,6 +116,7 @@ export function advanceProductionGame(w){
  for(const claim of w.claims.filter(x=>w.production.claims.includes(x.id)&&x.status==='open'&&x.dueDay<=w.day)){
   let paid=Math.min(claim.face,Math.max(0,freeCash(w,'juan')-3));w.actors.juan.cash-=paid;const outputBuyer=w.actors.crews,shortfall=Math.min(claim.face-paid,Math.max(0,freeCash(w,'crews')-5));outputBuyer.cash-=shortfall;paid+=shortfall;claim.paid=paid;claim.shortfall=Math.max(0,claim.face-paid);w.actors.player.cash+=paid;claim.status=paid===claim.face?'settled':'default';record(w,`${claim.id}_collection`,'FINANCE',paid,0,'juan',claim.status);if(claim.status==='default')evt(w,'claim_default',{summary:`The factored output claim paid ${paid} of ${claim.face}🥫 and defaulted on the rest.`,situation:'JUAN_PAPER',claims:[claim.id]});
  }
+ advanceRouteSources(w);
  npcEconomyDay(w);
  return w;
 }
