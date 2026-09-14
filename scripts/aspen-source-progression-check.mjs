@@ -3,8 +3,9 @@ import {createHarbourWorld} from '../src/harbourSpine.js';
 import {ECONOMIC_GOODS} from '../src/economicContent.js';
 import {advanceProductionGame} from '../src/productionGame.js';
 import {sourceState} from '../src/npcEconomy.js';
-import {advanceRouteSources,requestEstablishedReplenishment,ROUTE_SOURCE_CONFIG} from '../src/routeSources.js';
+import * as routeSources from '../src/routeSources.js';
 
+const {advanceRouteSources,requestEstablishedReplenishment,ROUTE_SOURCE_CONFIG}=routeSources;
 const sourceableGoods=Object.entries(ECONOMIC_GOODS)
  .filter(([name,good])=>good.category==='physical_good'&&good.mode!=='SPECIAL_STORY'&&name!=='Built Onewheel')
  .map(([name])=>name);
@@ -43,6 +44,27 @@ assert.equal(sourceState(w,discoveredNotCarried).status,'SOURCE_LOCATED','unship
 assert.equal(sourceState(w,'Sunflower').status,'UNKNOWN','Aspen voyages cannot bypass the Sunflower acquisition routes');
 assert.equal(sourceState(w,'Exceptional Invitation Fish').status,'UNKNOWN','story-specific fish keeps its authored source');
 assert.equal(sourceState(w,'Built Onewheel').status,'UNKNOWN','constructed output cannot be unlocked as imported stock');
+
+// A located source must be a real option: pay source cost + Aspen service, wait, receive one physical unit.
+assert.equal(typeof routeSources.requestLocatedImport,'function','SOURCE_LOCATED goods need an actionable Aspen sourcing route');
+const playerCashBeforeSpot=w.actors.player.cash,aspenCashBeforeSpot=w.actors.aspen.cash;
+const spotUnitsBefore=w.actors.player.inventory.filter(u=>u.kind===discoveredNotCarried).length;
+let spot=routeSources.requestLocatedImport(w,discoveredNotCarried,'player',{quantity:99});
+assert.equal(spot.ok,true,spot.reason);
+assert.equal(spot.quantity,1,'an unestablished source remains a small, uncertain channel rather than bulk supply');
+assert(w.actors.player.cash<playerCashBeforeSpot,'requester pays real sourcing cost up front');
+assert(w.actors.aspen.cash>aspenCashBeforeSpot,'Aspen earns an explicit sourcing service fee');
+assert.equal(w.actors.player.inventory.filter(u=>u.kind===discoveredNotCarried).length,spotUnitsBefore,'located stock cannot teleport before lead time');
+assert(w.externalFlows.some(f=>f.direction==='out'&&f.actorId==='player'&&f.reason.includes('located_source')),'external source payment must be explained');
+assert.equal(routeSources.requestLocatedImport(w,'Sunflower','player').ok,false,'story goods are not import shortcuts');
+w.day=spot.dueDay-1;advanceRouteSources(w);
+assert.equal(w.actors.player.inventory.filter(u=>u.kind===discoveredNotCarried).length,spotUnitsBefore);
+w.day=spot.dueDay;advanceRouteSources(w);
+assert.equal(w.actors.player.inventory.filter(u=>u.kind===discoveredNotCarried).length,spotUnitsBefore+1,'successful sourcing job must deliver a physical unit');
+const spotUnit=w.actors.player.inventory.find(u=>u.kind===discoveredNotCarried&&u.source==='located_route_source');
+assert(spotUnit,'sourced unit retains located-route provenance');
+assert.equal(sourceState(w,discoveredNotCarried).status,'LOCALLY_AVAILABLE','successful spot sourcing upgrades source availability');
+assert.equal(sourceState(w,discoveredNotCarried).successfulReturns,1);
 
 fakeRealReturn(2);fakeRealReturn(3);
 assert.equal(sourceState(w,'Brass Compass').status,'ESTABLISHED','repeated successful physical returns establish configured source');
@@ -101,4 +123,4 @@ assert.equal(sourceState(integrated,'Lime').status,'LOCALLY_AVAILABLE','real Asp
 assert.equal(sourceState(integrated,'Lime').successfulReturns,1);
 assert.equal(integrated.npcEconomy.aspenCatalog?.batches?.length,1,'normal production boundary must also record Aspen catalogue progress');
 
-console.log('PASS: Aspen voyages unlock the full sourceable catalogue while physical returns establish bounded replenishment');
+console.log('PASS: Aspen voyages unlock actionable source batches and physical returns establish bounded replenishment');
