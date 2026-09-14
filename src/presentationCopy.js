@@ -15,9 +15,19 @@ export const LOCATION_LABELS = {
 };
 
 export const ACTION_COPY = {
-  joel_hear_supper:{intent:'Long evening?',result:'He glances at the nearly empty almond-syrup bottle before answering.'},
-  source_orgeat:{intent:'I’ll take the almond syrup. · 6 tins',result:'One sealed bottle goes into your bag.'},
-  joel_supply_orgeat:{intent:'This is for the bar.',result:'Joel reads the label twice, then clears a place behind the counter.'},
+  mai_tai_taste:{intent:'Sure. Let me taste it.',result:'You taste it. The drink is close, but something in the middle is missing.'},
+  mai_tai_check_shelf:{intent:'Let me look at what you used.',result:'The old drink card and an empty almond-syrup slot point to Orgeat.'},
+  joel_hear_supper:{intent:'Long evening?',result:'Joel mentions Sonya, borrowed chairs and a family supper. He does not invite you.'},
+  source_orgeat:{intent:'I’ll take the Orgeat. · 6 tins',result:'One real bottle leaves the berth supplier and goes into your bag.'},
+  joel_supply_orgeat:{intent:'Try it with this.',result:'Joel reads the Orgeat label, remakes the drink and tastes it again.'},
+  joel_serve_juan:{intent:'Juan should try the fixed one.',result:'Joel pours it while Juan is actually there at the bar.'},
+  juan_explain_goal:{intent:'I’m trying to reach something outside the harbour.',result:'You explain what you are looking for instead of naming a route you do not know.'},
+  juan_race_offer:{intent:'You said you might know a way?',result:'Juan asks whether you can ride one wheel, then names the wager.'},
+  aspen_onewheel_plan:{intent:'Can this be made rideable?',result:'Aspen looks at the job first, then names the minimum compatible parts.'},
+  assemble_onewheel:{intent:'I have the parts.',result:'Aspen fits the uncommitted parts into one awkward but rideable wheel.'},
+  practice_onewheel:{intent:'I need another run.',result:'You spend time on balance, starts and recovery. The odds improve, but not to certainty.'},
+  race_juan:{intent:'All right. Race me.',result:'The wager resolves from your preparation and the actual people at the bar.'},
+  repay_race_drinks:{intent:'I’m settling the rest of the drinks.',result:'The outstanding bar tab from the race is paid.'},
   joel_patronage:{intent:'A drink, please. · 3 tins',result:'Joel puts a glass down in front of you and waits for your face to answer first.'},
   joel_help:{intent:'I’ll take these.',result:'You move the empty glasses. One is not empty. Joel catches your wrist before you lift it.'},
   joel_invitation:{intent:'You were saying something about supper?',result:'Joel pulls one of the borrowed chairs away from the wall.'},
@@ -30,9 +40,6 @@ export const ACTION_COPY = {
   auction_finance:{intent:'Could you advance eight?',result:'Eight tins now. Nine later. One of your objects stays attached to the promise.'},
   repay_finance:{intent:'Here is what I owe.',result:'The debt is closed. The object is no longer attached to it.'},
   auction_walk:{intent:'Not at that price.',result:'You leave without raising your hand.'},
-  juan_plan:{intent:'What is up that path?',result:'Juan looks toward the cliff before he answers.'},
-  assemble_onewheel:{intent:'Let’s fit these.',result:'The parts become one awkward wheel. The fittings need a night before the cliff.'},
-  cliff_commit:{intent:'The fittings are ready.',result:'The sea is below you now.'},
   lime_accept:{intent:'I’ll take the crate. · 5 tins',result:'The paper says twenty-four. The string is still tied.'},
   lime_inspect:{intent:'Let me count.',result:'Twenty. Three bruised. The paper says twenty-four.'},
   lime_refuse:{intent:'I’m returning it.',result:'Most of your money comes back. One tin stays spent on handling.'},
@@ -72,10 +79,11 @@ export function friendlyBlock(raw=''){
   if(/attention/i.test(s))return 'There is not enough time left today. You can still look around.';
   if(/cash|fund|tin|🥫/i.test(s))return 'You do not have enough unpromised money for that.';
   if(/not present|away|not available|without her|host present/i.test(s))return 'They are somewhere else now.';
-  if(/bench.*occupied/i.test(s))return 'The bench is in use.';
-  if(/Assembly needs/i.test(s))return 'You are missing parts.';
+  if(/not identified|not learned|not worked out/i.test(s))return 'You have not learned enough about that yet.';
+  if(/lime shortfall|honest lime|honestly/i.test(s))return 'Aspen is waiting to see how you handle the short lime crate.';
+  if(/Assembly needs|parts.*missing|compatible.*missing/i.test(s))return 'You are missing usable, unpromised parts.';
+  if(/same-day reroll/i.test(s))return 'Juan will not run the same wager again today.';
   if(/storm|unsafe/i.test(s))return 'The path is too wet.';
-  if(/fittings|cycle/i.test(s))return 'The fittings need a night.';
   if(/already been taken|no longer hold/i.test(s))return 'That is no longer yours to act on.';
   if(/preview closed/i.test(s))return 'You missed this preview.';
   if(/preview access/i.test(s))return 'You have not been invited close enough to inspect it.';
@@ -86,6 +94,7 @@ export const NEWSPAPER_OVERRIDES = {
   'news-opening':{headline:'Parcels accepted',report:'The parcel shop is accepting parcels. Bring yours to the counter.'},
   'news-supper':{headline:'Borrowed chairs',report:'Several chairs crossed the square this morning. Nobody agrees yet who they are for.'},
   'news-auction':{headline:'A bowl for sale',report:'A private preview opens before the sale. Looking is free.'},
+  'news-hardware':{headline:'Mixed cargo at the berth',report:'Hardware, packing material and repair stock came off the morning boats. The manifests are more specific than the notice.'},
   'news-tide':{headline:'Above the wet path',report:'Someone carried a little jar uphill. Nobody would explain.'}
 };
 
@@ -104,50 +113,51 @@ export const UI_COPY = {
 
 // Terms are shown before accepting a material promise, alongside the authored intent.
 const TERMS={
- lime_accept:'Pay 5 tins now. Return the crate within two days. The paper says 24 limes; you can count before saying what you will deliver.',
- auction_bid:'16 tins are held until tomorrow. The highest offer wins the bowl. If someone offers more, you keep your money.',
- auction_finance:'Receive 8 tins now; repay 9. One of your objects is promised until repayment. The due date and object are written below.',
- source_orgeat:'One sealed bottle of almond syrup costs 6 tins. You can bring it to the bar.',
- joel_patronage:'One drink costs 3 tins.',
- invest_nursery:'Pay 6 now. In five days you receive a share of the crop sale. It may return less than you paid.',
- finance_receivable:'Pay Juan 5 now. He promises you 7 from the crop sale in four days. A promise is not money you can spend today.',
- speculate_lot:'Pay 8 now. Your share sells in three days. You may get back less than 8.',
- private_proxy:'Pay 3 tins to arrange a private sale. This does not reopen the public counter.',
- trade_bridge:'Buy the packing bundle for 2 tins. Someone may pay more later; a sale is not promised.',
- assemble_onewheel:'Pay 3 tins. Your rim, chain link, brake cable and finishing piece become one wheel. Wait a night before taking the cliff.',
- juan_plan:'“A sunflower, up there. Bring a steel rim, chain link, brake cable and handlebar tape to the parcel bench. Let the wheel settle overnight. Wait for a dry path.”',
- misstate_public_listing:'You know the object is not as described. A complaint can make the clerk refuse your next offers.'
+  lime_accept:'Pay 5 tins now. Return the crate within two days. The paper says 24 limes; you can count before saying what you will deliver.',
+  auction_bid:'16 tins are held until tomorrow. The highest offer wins the bowl. If someone offers more, you keep your money.',
+  auction_finance:'Receive 8 tins now; repay 9. One of your objects is promised until repayment. The due date and object are written below.',
+  source_orgeat:'One real bottle of Orgeat costs 6 tins. The supplier loses that bottle when you buy it.',
+  joel_patronage:'One drink costs 3 tins.',
+  invest_nursery:'Pay 6 now. In five days you receive a share of the crop sale. It may return less than you paid.',
+  finance_receivable:'Pay Juan 5 now. He promises you 7 from the crop sale in four days. A promise is not money you can spend today.',
+  speculate_lot:'Pay 8 now. Your share sells in three days. You may get back less than 8.',
+  private_proxy:'Pay 3 tins to arrange a private sale. This does not reopen the public counter.',
+  trade_bridge:'Buy the packing bundle for 2 tins. Someone may pay more later; a sale is not promised.',
+  assemble_onewheel:'Your unreserved rim, chain link, brake cable and one compatible finishing piece are consumed into one physical Onewheel. Aspen only takes the job after the lime shortfall was handled honestly.',
+  race_juan:'If you win, Juan takes you to the sunflower field. If you lose, you cover drinks for everyone actually at Joel’s Bar that day. The race uses time and there is no free same-day reroll.',
+  repay_race_drinks:'The remaining race-drinks balance leaves your free cash and goes to Joel.',
+  misstate_public_listing:'You know the object is not as described. A complaint can make the clerk refuse your next offers.'
 };
-for(const [id,terms] of Object.entries(TERMS))ACTION_COPY[id].terms=terms;
+for(const [id,terms] of Object.entries(TERMS))if(ACTION_COPY[id])ACTION_COPY[id].terms=terms;
 
 // Display copy only: causal triggers and evidence remain in playerDiagnosis.js.
 export const SCAR_COPY = {
- 'FIRST THROUGH THE GAP':['Before the price changed','You completed a sale while two prices still differed.'],
- 'CLOSED THE SPREAD':['A price someone accepted','You left an offer, and someone traded at it.'],
- 'WRONG SIGN':['Bought, then spoiled','Something you bought went bad before it could help you.'],
- 'CUT THE MIDDLE':['Dealt directly','You bought goods yourself and completed the crate exchange.'],
- 'SOLD IT BEFORE YOU HAD IT':['An unkept promise','You left an offer and later missed a promise.'],
- 'RICH, BROKE':['Money out of reach','You tied up money in a bid and missed another promise.'],
- 'FIRE SALE':['Sold in a hurry','With a payment pressing, you accepted a sale.'],
- 'BORROWED TRUST':['The crate between you','Someone trusted your delivery. The result stayed with both of you.'],
- 'EXCLUSIVE':['Looked before bidding','You compared the photograph before committing your money.'],
- 'SOLD THE MAP':['A useful introduction','You passed on information that helped a trade happen.'],
- 'TAUGHT YOUR RIVAL':['A shared clue','You shared what you found, then lost the sale.'],
- 'PAID FOR THE STORY':['Believed enough to bid','You saw the bowl and promised money for it.'],
- 'SNAKE OIL':['You knew the count','You counted the shortage, then said the crate was full.'],
- 'TECHNICALLY TRUE':['The part left unsaid','Your words left out what the buyer needed to know.'],
- 'MADE A MARKET IN LEMONS':['Twenty, then','You showed the damaged limes and agreed on a different price.'],
- 'CAUGHT BEFORE DELIVERY':['Opened the crate','You counted the limes before deciding what to say.'],
- 'RUN ON YOU':['Asked for cash','People stopped accepting your word, and you had to sell.'],
- 'BOUGHT THE PAPER':['The old photograph','What you found in the picture helped you choose the bowl.'],
- 'ROLLED IT FORWARD':['Asked for more time','You spoke about the payment and agreed on another date.'],
- 'KEPT THE COLLATERAL':['The object stayed','The promised payment did not come; the object was kept instead.'],
- 'THE GUARANTEE WAS CALLED':['Your promise cost money','You had vouched for a delivery. When it failed, you paid.'],
- "WINNER'S CURSE":['Paid more to win','You won the bowl, but paid more than your checks supported.'],
- 'WALKED AWAY':['Left the bowl there','You saw the asking price and chose to keep your money.'],
- 'PYRRHIC BLOOM':['Something left unfinished','You reached the sunflower, but another promise was missed.']
+  'FIRST THROUGH THE GAP':['Before the price changed','You completed a sale while two prices still differed.'],
+  'CLOSED THE SPREAD':['A price someone accepted','You left an offer, and someone traded at it.'],
+  'WRONG SIGN':['Bought, then spoiled','Something you bought went bad before it could help you.'],
+  'CUT THE MIDDLE':['Dealt directly','You bought goods yourself and completed the crate exchange.'],
+  'SOLD IT BEFORE YOU HAD IT':['An unkept promise','You left an offer and later missed a promise.'],
+  'RICH, BROKE':['Money out of reach','You tied up money in a bid and missed another promise.'],
+  'FIRE SALE':['Sold in a hurry','With a payment pressing, you accepted a sale.'],
+  'BORROWED TRUST':['The crate between you','Someone trusted your delivery. The result stayed with both of you.'],
+  'EXCLUSIVE':['Looked before bidding','You compared the photograph before committing your money.'],
+  'SOLD THE MAP':['A useful introduction','You passed on information that helped a trade happen.'],
+  'TAUGHT YOUR RIVAL':['A shared clue','You shared what you found, then lost the sale.'],
+  'PAID FOR THE STORY':['Believed enough to bid','You saw the bowl and promised money for it.'],
+  'SNAKE OIL':['You knew the count','You counted the shortage, then said the crate was full.'],
+  'TECHNICALLY TRUE':['The part left unsaid','Your words left out what the buyer needed to know.'],
+  'MADE A MARKET IN LEMONS':['Twenty, then','You showed the damaged limes and agreed on a different price.'],
+  'CAUGHT BEFORE DELIVERY':['Opened the crate','You counted the limes before deciding what to say.'],
+  'RUN ON YOU':['Asked for cash','People stopped accepting your word, and you had to sell.'],
+  'BOUGHT THE PAPER':['The old photograph','What you found in the picture helped you choose the bowl.'],
+  'ROLLED IT FORWARD':['Asked for more time','You spoke about the payment and agreed on another date.'],
+  'KEPT THE COLLATERAL':['The object stayed','The promised payment did not come; the object was kept instead.'],
+  'THE GUARANTEE WAS CALLED':['Your promise cost money','You had vouched for a delivery. When it failed, you paid.'],
+  "WINNER'S CURSE":['Paid more to win','You won the bowl, but paid more than your checks supported.'],
+  'WALKED AWAY':['Left the bowl there','You saw the asking price and chose to keep your money.'],
+  'PYRRHIC BLOOM':['Something left unfinished','You reached the sunflower, but another promise was missed.']
 };
 
-export const itemLabel=kind=>({'Exceptional Invitation Fish':'Fresh supper catch','Built Onewheel':'Onewheel','Orgeat':'Almond syrup'})[kind]||kind;
+export const itemLabel=kind=>({'Exceptional Invitation Fish':'Fresh supper catch','Built Onewheel':'Onewheel','Orgeat':'Orgeat'})[kind]||kind;
 
 export function spokenLines(text){return String(text).match(/[^.!?。！？\n]+(?:[.!?。！？]+[”"']?|$)/gu)?.map(s=>s.trim()).filter(s=>/[\p{L}\p{N}]/u.test(s))||[''];}
