@@ -7,6 +7,7 @@ import {crowdForWorld,creaturesForWorld,namedActorPoint} from './harbourTableau.
 import {HARBOUR_WORLD,legacyPoint} from './harbourWorld.js';
 import {clampCamera,centeredCamera,coverScale,focusCamera,zoomCamera} from './harbourCamera.js';
 import {CrowdFigure,CreatureFigure} from './HarbourTableauLayer.jsx';
+import {DISTRICT_LOCATION_POINTS,DISTRICT_PROP_POINTS} from './harbourDistrict.js';
 import {DistrictOccluder,HarbourDistrictBase,HarbourWeatherOverlay,districtOccludersForWorld} from './HarbourDistrictLayer.jsx';
 
 export const PLACES = {
@@ -14,7 +15,7 @@ export const PLACES = {
  nursery:[285,290,'Growing yard'], viewing_room:[720,130,'Gallery'], back_room:[1160,150,'Side room'],
  sonyas_kitchen:[370,120,'Kitchen'], cliff_path:[120,520,'Cliff path'], public_clearing:[750,520,'Exchange'], old_hall:[480,540,'Screening hall']
 };
-const WORLD_PLACES=Object.fromEntries(Object.entries(PLACES).map(([id,[x,y,name]])=>{const p=legacyPoint(x,y);return [id,[p.x,p.y,name]]}));
+const MAP_PLACES=Object.fromEntries(Object.entries(PLACES).map(([id,[,,name]])=>{const p=DISTRICT_LOCATION_POINTS[id];return [id,[p.x,p.y,name]]}));
 export const PEOPLE = {
  aspen:{name:'Aspen',unknown:'Woman with a blue scarf',coat:'#345779',hair:'#422e29'},
  joel:{name:'Joel',unknown:'Man in a white apron',coat:'#eee4c9',hair:'#34332c'},
@@ -48,13 +49,10 @@ export function ObjectArt({kind=''}) {const k=kind.toLowerCase();return <svg wid
  </g></svg>}
 function Scenery({world}) {
  const boat=legacyPoint(...(world.aspenRoute?.status==='away'?[1330,850]:[1150,735]));
- return <g aria-hidden="true">
-  <HarbourDistrictBase world={world}/>
-  <g className="boat" transform={`translate(${boat.x} ${boat.y})`} stroke="#393d36" strokeWidth="2"><path d="M-40 0H45L30 22H-25Z" fill="#9f493a"/><path d="M-20-3V-24H20V-3Z" fill="#ded1ac"/><path d="M-12-19H10V-7H-12Z" fill="#406978"/></g>
- </g>
+ return <g aria-hidden="true"><HarbourDistrictBase world={world}/><g className="boat" transform={`translate(${boat.x} ${boat.y})`} stroke="#393d36" strokeWidth="2"><path d="M-40 0H45L30 22H-25Z" fill="#9f493a"/><path d="M-20-3V-24H20V-3Z" fill="#ded1ac"/><path d="M-12-19H10V-7H-12Z" fill="#406978"/></g></g>
 }
 export const PROPS=[['crate','harbour_berth',905,590,'Lime crate'],['cargo','harbour_berth',978,573,'Cargo'],['bottle','joels_bar',555,337,'Bottle'],['glass','joels_bar',644,357,'Glass'],['packing','joels_bar',498,364,'Packing bundle'],['parcel','parcel_counter',1095,309,'Parcel'],['parts','parcel_counter',1000,310,'Wheel parts'],['plants','nursery',258,297,'Plants'],['paper','nursery',337,278,'Paper'],['bowl','viewing_room',737,112,'Bowl'],['photo','viewing_room',799,114,'Photograph'],['envelope','back_room',1185,130,'Envelope'],['table','sonyas_kitchen',389,108,'Supper table'],['path','cliff_path',105,489,'Path'],['orders','public_clearing',737,478,'Posted offers']];
-const WORLD_PROPS=PROPS.map(([id,loc,x,y,label])=>{const p=legacyPoint(x,y);return [id,loc,p.x,p.y,label]});
+const MAP_PROPS=PROPS.map(([id,loc,,,label])=>{const p=DISTRICT_PROP_POINTS[id]||DISTRICT_LOCATION_POINTS[loc];return [id,loc,p.x,p.y,label]});
 export default function HarbourMap({world,onFocus,selected,activeProps}) {
  const ref=useRef(null), pointers=useRef(new Map()), gesture=useRef(null), moved=useRef(false), initialized=useRef(false);
  const [camera,setCamera]=useState({x:0,y:0,z:1}),[size,setSize]=useState({w:1,h:1});
@@ -68,16 +66,9 @@ export default function HarbourMap({world,onFocus,selected,activeProps}) {
  function focus(id,location,x,y){if(moved.current)return;if(camera.z<1.7)setCamera(focusCamera({x,y},size,HARBOUR_WORLD,2.15));onFocus({id,location,x,y});}
  const crowd=crowdForWorld(world),creatures=creaturesForWorld(world),occluders=districtOccludersForWorld(world);
  const named=Object.keys(PEOPLE).filter(id=>!world.actors[id].removed&&PLACES[world.actors[id].location]).map(id=>{const point=namedActorPoint(world,id);return {kind:'named',id,loc:world.actors[id].location,...point}});
- const props=WORLD_PROPS.filter(([id])=>!activeProps||activeProps.has(id)).map(([id,loc,x,y,label])=>({kind:'prop',id,loc,x,y,label}));
- const toads=world.production.toads.filter(t=>t.status==='hidden'&&world.day>=t.availableFrom&&WORLD_PLACES[t.location]).map(t=>{const [x,y]=WORLD_PLACES[t.location];return {kind:'toad',id:t.id,loc:t.location,x:x-48,y:y+27}});
- const depth=[
-  ...crowd.map(item=>({kind:'crowd',id:item.id,y:item.y,item})),
-  ...creatures.map(item=>({kind:'creature',id:item.id,y:item.y,item})),
-  ...occluders.map(item=>({kind:'occluder',id:item.id,y:item.depthY,item})),
-  ...named.map(item=>({...item,y:item.y})),
-  ...props.map(item=>({...item,y:item.y})),
-  ...toads.map(item=>({...item,y:item.y})),
- ].sort((a,b)=>a.y-b.y);
+ const props=MAP_PROPS.filter(([id])=>!activeProps||activeProps.has(id)).map(([id,loc,x,y,label])=>({kind:'prop',id,loc,x,y,label}));
+ const toads=world.production.toads.filter(t=>t.status==='hidden'&&world.day>=t.availableFrom&&MAP_PLACES[t.location]).map(t=>{const [x,y]=MAP_PLACES[t.location];return {kind:'toad',id:t.id,loc:t.location,x:x-48,y:y+27}});
+ const depth=[...crowd.map(item=>({kind:'crowd',id:item.id,y:item.y,item})),...creatures.map(item=>({kind:'creature',id:item.id,y:item.y,item})),...occluders.map(item=>({kind:'occluder',id:item.id,y:item.depthY,item})),...named.map(item=>({...item,y:item.y})),...props.map(item=>({...item,y:item.y})),...toads.map(item=>({...item,y:item.y}))].sort((a,b)=>a.y-b.y);
  const micro=availableMicroScenes(world).filter(scene=>scene.requires.some(([id])=>id===selected?.id))[0];
  const key=e=>{if(e.target!==ref.current)return;const d={ArrowLeft:[45,0],ArrowRight:[-45,0],ArrowUp:[0,45],ArrowDown:[0,-45]}[e.key];if(d){e.preventDefault();change(c=>({...c,x:c.x+d[0],y:c.y+d[1]}))}if(e.key==='+'||e.key==='=')zoom(1.2);if(e.key==='-')zoom(.8)};
  const renderEntry=entry=>{
@@ -92,8 +83,8 @@ export default function HarbourMap({world,onFocus,selected,activeProps}) {
  <svg width={HARBOUR_WORLD.width} height={HARBOUR_WORLD.height} viewBox={`0 0 ${HARBOUR_WORLD.width} ${HARBOUR_WORLD.height}`} className="harbour-world" style={{transform:`translate(${camera.x}px,${camera.y}px) scale(${scale})`}}><Scenery world={world}/>
  {depth.map(renderEntry)}
  <HarbourWeatherOverlay world={world}/>
- {Object.entries(WORLD_PLACES).map(([id,[x,y,name]])=><text className="local-label place-label" key={id} x={x} y={y+110} textAnchor="middle">{id==='cliff_path'&&!knows(world,'juan_route')?'Outer path':LOCATION_LABELS[id]||name}</text>)}
- {micro&&camera.z>1.7&&<g className="map-murmur" aria-hidden="true" transform={`translate(${WORLD_PLACES[micro.requires[0][1]][0]} ${WORLD_PLACES[micro.requires[0][1]][1]-50})`}><rect x="-130" y="-28" width="260" height="36" rx="8" fill="#f3e8d0"/><text textAnchor="middle" y="-7">{visibleNames(world,micro.lines[(world.relationshipEcology.beats?.length||0)%micro.lines.length])}</text></g>}
+ {Object.entries(MAP_PLACES).map(([id,[x,y,name]])=><text className="local-label place-label" key={id} x={x} y={y+110} textAnchor="middle">{id==='cliff_path'&&!knows(world,'juan_route')?'Outer path':LOCATION_LABELS[id]||name}</text>)}
+ {micro&&camera.z>1.7&&<g className="map-murmur" aria-hidden="true" transform={`translate(${MAP_PLACES[micro.requires[0][1]][0]} ${MAP_PLACES[micro.requires[0][1]][1]-50})`}><rect x="-130" y="-28" width="260" height="36" rx="8" fill="#f3e8d0"/><text textAnchor="middle" y="-7">{visibleNames(world,micro.lines[(world.relationshipEcology.beats?.length||0)%micro.lines.length])}</text></g>}
  </svg><div className="camera-tools"><button aria-label="Zoom in" onClick={()=>zoom(1.3)}>+</button><button aria-label="Zoom out" onClick={()=>zoom(.77)}>−</button><button aria-label="Reset harbour view" onClick={()=>setCamera(centeredCamera(size,HARBOUR_WORLD,1))}>↔</button></div>
  </section>
 }
