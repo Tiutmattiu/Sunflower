@@ -216,5 +216,10 @@ export function crowdForWorld(world={}){
 }
 
 export function creaturesForWorld(world={}){const state=districtStateForWorld(world),day=state.day;return CREATURES.filter(item=>!(state.storm&&item.species==='squirrel')).map(item=>{const zone=ZONES[item.zoneId],p=pointIn(zone,item.id,day+11);return{...item,kind:'creature',zoneKind:zone.kind,x:p.x,y:p.y,duration:5+(hash(item.id)%8)}})}
-export function namedActorPoint(world={},actorId){const location=world.actors?.[actorId]?.location,base=LOCATION_SLOTS[location]||LOCATION_SLOTS.harbour_berth,offset=NAMED_ACTOR_SLOTS[actorId]||{dx:0,dy:0};return{x:base.x+offset.dx,y:base.y+offset.dy,zoneId:base.zoneId}}
+export function namedActorPoint(world={},actorId){
+ const location=world.actors?.[actorId]?.location,base=LOCATION_SLOTS[location]||LOCATION_SLOTS.harbour_berth;
+ const peers=Object.keys(NAMED_ACTOR_SLOTS).filter(id=>world.actors?.[id]?.location===location&&!world.actors[id].removed);
+ const span=Math.max(0,peers.length-1)*85,start=Math.max(45,Math.min(base.x-span/2,HARBOUR_WORLD.width-45-span));
+ return{x:start+Math.max(0,peers.indexOf(actorId))*85,y:base.y,zoneId:base.zoneId};
+}
 export function pointInsideWorld({x,y}){return x>=0&&y>=0&&x<=HARBOUR_WORLD.width&&y<=HARBOUR_WORLD.height}

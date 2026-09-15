@@ -55,6 +55,97 @@
       },
       "fallback": "labelled-object",
       "mobile": "scale-85"
+    },
+    {
+      "id": "character-juan",
+      "file": "/art/characters/juan.png",
+      "kind": "character",
+      "anchor": [
+        50,
+        100
+      ],
+      "z": 20,
+      "variant": "present",
+      "fallback": "none",
+      "mobile": "world-scale"
+    },
+    {
+      "id": "character-joel",
+      "file": "/art/characters/joel.png",
+      "kind": "character",
+      "anchor": [
+        50,
+        100
+      ],
+      "z": 20,
+      "variant": "present",
+      "fallback": "none",
+      "mobile": "world-scale"
+    },
+    {
+      "id": "character-aspen",
+      "file": "/art/characters/aspen.png",
+      "kind": "character",
+      "anchor": [
+        50,
+        100
+      ],
+      "z": 20,
+      "variant": "present",
+      "fallback": "none",
+      "mobile": "world-scale"
+    },
+    {
+      "id": "character-yasmin",
+      "file": "/art/characters/yasmin.png",
+      "kind": "character",
+      "anchor": [
+        50,
+        100
+      ],
+      "z": 20,
+      "variant": "present",
+      "fallback": "none",
+      "mobile": "world-scale"
+    },
+    {
+      "id": "character-dima",
+      "file": "/art/characters/dima.png",
+      "kind": "character",
+      "anchor": [
+        50,
+        100
+      ],
+      "z": 20,
+      "variant": "present",
+      "fallback": "none",
+      "mobile": "world-scale"
+    },
+    {
+      "id": "character-wong",
+      "file": "/art/characters/wong.svg",
+      "kind": "character",
+      "anchor": [
+        50,
+        100
+      ],
+      "z": 20,
+      "variant": "present",
+      "fallback": "none",
+      "mobile": "world-scale"
+    },
+    {
+      "id": "character-sonya",
+      "file": "/art/characters/sonya.svg",
+      "kind": "character",
+      "anchor": [
+        50,
+        100
+      ],
+      "z": 20,
+      "variant": "present",
+      "fallback": "none",
+      "mobile": "world-scale"
     }
   ],
   "scenes": {

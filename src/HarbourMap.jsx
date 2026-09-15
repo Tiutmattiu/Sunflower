@@ -1,3 +1,4 @@
+import {characterGeometry,LOCATION_CHARACTER_SCALE} from './characterPresentation.js';
 import {knows} from './playerKnowledge.js';
 import React, {useEffect, useRef, useState} from 'react';
 import {LOCATION_LABELS} from './presentationCopy.js';
@@ -25,17 +26,9 @@ export const PEOPLE = {
  dima:{name:'Dima',unknown:'Fair-haired man',coat:'#4d5954',hair:'#272b29'}
 };
 export const personName=(w,id)=>w.actors.player.contacts.includes(id)?PEOPLE[id]?.name:UNKNOWN_PEOPLE[id];
-const CAST = {
- juan:[0,433,74],
- joel:[433,332,94,'polygon(0 0,94% 0,94% 84%,100% 90%,100% 100%,0 100%)'],
- aspen:[748,340,84,'polygon(0 0,86% 0,86% 80%,100% 100%,22% 100%,15% 72%,0 62%)'],
- yasmin:[1040,405,87,'polygon(0 0,100% 0,100% 100%,12% 100%,5% 93%,0 87%)'],
- dima:[1445,329,89]
-};
-export function Figure({id,scale:placeScale=1}) {
- const crop=CAST[id];
- if(crop){const [x,width,baseHeight,clipPath]=crop,height=baseHeight*2.5*placeScale,scale=height/887;return <foreignObject aria-hidden="true" pointerEvents="none" x={-width*scale/2} y={-height} width={width*scale} height={height}><div style={{width:'100%',height:'100%',clipPath,backgroundImage:'url(/art/cast-working.png)',backgroundSize:`${1774*scale}px ${height}px`,backgroundPosition:`${-x*scale}px 0`,backgroundRepeat:'no-repeat'}}/></foreignObject>}
- return <g aria-hidden="true" stroke="#3a332b" strokeWidth="1.5">{id==='wong'?<><path d="M-23-24Q-4-42 17-26L25-48L32-42L28-24L17-17L12 0H8L8-21L-12-20L-15 0H-20L-19-22Q-31-12-33-30" fill="#b47b47"/><path d="M25-47L19-49L22-38" fill="#805333"/></>:<><ellipse cy="-23" rx="16" ry="24" fill="#35383a"/><ellipse cy="-18" rx="10" ry="17" fill="#e6ded0"/><path d="M8-37L22-32L10-28" fill="#bd8547"/></>}</g>;
+export function Figure({id,scale=1}) {
+ const c=characterGeometry(id,scale);if(!c)return null;
+ return <image aria-hidden="true" pointerEvents="none" href={c.file} x={-c.renderWidth*c.feet[0]} y={-c.renderHeight*c.feet[1]} width={c.renderWidth} height={c.renderHeight}/>;
 }
 export function ObjectArt({kind=''}) {const k=kind.toLowerCase();return <svg width="46" height="48" viewBox="-25 -28 50 56" aria-hidden="true" className="object-art"><g stroke="#414438" strokeWidth="1.4">
  {k.includes('fish')||k.includes('mackerel')?<><path d="M-20 2 Q0-20 19 0 Q0 18-20 2L-24-7V10Z" fill="#8ba5a0"/><circle cx="12" cy="-2" r="1.5"/><path d="M4-8 2 7M-10-2 0 0" fill="none"/></>:
@@ -75,13 +68,14 @@ export default function HarbourMap({world,onFocus,selected,activeProps}) {
   if(entry.kind==='crowd')return <CrowdFigure key={`crowd-${entry.id}`} item={entry.item} data-crowd-id={entry.id}/>;
   if(entry.kind==='creature')return <CreatureFigure key={`creature-${entry.id}`} item={entry.item} data-creature-id={entry.id}/>;
   if(entry.kind==='occluder')return <DistrictOccluder key={`occluder-${entry.id}`} item={entry.item}/>;
-  if(entry.kind==='prop'){const {id,loc,x,y,label}=entry;return <g key={id} role="button" tabIndex="0" aria-label={label} className={`map-target prop ${selected?.id===id?'focused':''}`} transform={`translate(${x} ${y})`} onClick={()=>focus(id,loc,x,y)} onKeyDown={e=>{if(e.key==='Enter')focus(id,loc,x,y)}}><circle r="25" fill="transparent"/><g transform="scale(.7)"><ObjectArt kind={label}/></g><title>{label}</title></g>}
+  if(entry.kind==='prop'||entry.kind==='prop-hit'){const {id,loc,x,y,label}=entry,hit=entry.kind==='prop-hit';return <g key={`${entry.kind}-${id}`} role={hit?'button':undefined} tabIndex={hit?0:undefined} aria-label={hit?label:undefined} aria-hidden={hit?undefined:true} pointerEvents={hit?'all':'none'} className={hit?`map-target prop ${selected?.id===id?'focused':''}`:undefined} transform={`translate(${x} ${y})`} onClick={hit?()=>focus(id,loc,x,y):undefined} onKeyDown={hit?e=>{if(e.key==='Enter')focus(id,loc,x,y)}:undefined}>{hit?<circle r="25" fill="transparent"/>:<g transform="scale(.7)"><ObjectArt kind={label}/></g>}</g>}
   if(entry.kind==='toad'){const {id,loc,x,y}=entry;return <g key={id} role="button" tabIndex="0" aria-label="Something near the ground" className="map-target toad" transform={`translate(${x} ${y})`} onClick={()=>focus('toad',loc,x,y)} onKeyDown={e=>{if(e.key==='Enter')focus('toad',loc,x,y)}}><circle r="18" fill="transparent"/><ellipse rx="6" ry="4" fill="#768454"/><circle cx="-3" cy="-3" r="2" fill="#a3a266"/><circle cx="3" cy="-3" r="2" fill="#a3a266"/></g>}
-  const {id,loc,x,y}=entry;return <g key={id} data-actor={id} data-location={loc} role="button" tabIndex="0" aria-label={personName(world,id)} className="map-target person" style={{transform:`translate(${x}px,${y}px)`}} onClick={()=>focus(id,loc,x,y-80)} onKeyDown={e=>{if(e.key==='Enter')focus(id,loc,x,y-80)}}><rect x="-28" y="-235" width="56" height="242" fill="transparent"/><Figure id={id} scale={({viewing_room:.82,sonyas_kitchen:.82,back_room:.85,joels_bar:1,nursery:.95,harbour_berth:1.08,cliff_path:1.1})[loc]||1} pose={world.actors[id].busy?'working':'neutral'}/>{world.actors.player.contacts.includes(id)&&<text className="local-label" y="24" textAnchor="middle">{PEOPLE[id].name}</text>}</g>;
+  const {id,loc,x,y}=entry,placeScale=LOCATION_CHARACTER_SCALE[loc]||1,geometry=characterGeometry(id,placeScale);return <g key={id} data-actor={id} data-location={loc} role="button" tabIndex="0" aria-label={personName(world,id)} className="map-target person" style={{transform:`translate(${x}px,${y}px)`}} onClick={()=>focus(id,loc,x,y-80)} onKeyDown={e=>{if(e.key==='Enter')focus(id,loc,x,y-80)}}><path d={geometry.hit} fill="transparent"/><Figure id={id} scale={placeScale} pose={world.actors[id].busy?'working':'neutral'}/>{world.actors.player.contacts.includes(id)&&<text className="local-label" y="24" textAnchor="middle">{PEOPLE[id].name}</text>}</g>;
  };
  return <section ref={ref} className={`harbour-camera ${camera.z>1.7?'near':''}`} aria-label="Harbour map" tabIndex="0" onKeyDown={key} onPointerDown={down} onPointerMove={move} onPointerUp={e=>{pointers.current.delete(e.pointerId);gesture.current=null}} onPointerCancel={e=>{pointers.current.delete(e.pointerId);gesture.current=null}}>
  <svg width={HARBOUR_WORLD.width} height={HARBOUR_WORLD.height} viewBox={`0 0 ${HARBOUR_WORLD.width} ${HARBOUR_WORLD.height}`} className="harbour-world" style={{transform:`translate(${camera.x}px,${camera.y}px) scale(${scale})`}}><Scenery world={world}/>
  {depth.map(renderEntry)}
+ {props.map(item=>renderEntry({...item,kind:"prop-hit"}))}
  <HarbourWeatherOverlay world={world}/>
  {Object.entries(MAP_PLACES).map(([id,[x,y,name]])=><text className="local-label place-label" key={id} x={x} y={y+110} textAnchor="middle">{id==='cliff_path'&&!knows(world,'juan_route')?'Outer path':LOCATION_LABELS[id]||name}</text>)}
  {micro&&camera.z>1.7&&<g className="map-murmur" aria-hidden="true" transform={`translate(${MAP_PLACES[micro.requires[0][1]][0]} ${MAP_PLACES[micro.requires[0][1]][1]-50})`}><rect x="-130" y="-28" width="260" height="36" rx="8" fill="#f3e8d0"/><text textAnchor="middle" y="-7">{visibleNames(world,micro.lines[(world.relationshipEcology.beats?.length||0)%micro.lines.length])}</text></g>}
