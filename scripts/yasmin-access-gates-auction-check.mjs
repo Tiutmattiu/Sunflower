@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {createHarbourWorld} from '../src/harbourSpine.js';
-import {visibleActions,performPlayerAction} from '../src/playerGame.js';
+import {visibleActions,performPlayerAction,resolvePlayerDay} from '../src/playerGame.js';
 import {
   initializeYasminAccess,
   requestDimaFilmBrief,
@@ -29,6 +29,20 @@ assert.equal(visible.length,0,'calendar alone must not expose the legacy auction
 let blocked=performPlayerAction(w,'auction_preview');
 assert.equal(blocked.playerGame.routes.yasmin.preview,false,'direct invocation cannot bypass the invitation/capacity gate');
 assert.match(blocked.playerGame.lastBlock||'',/invitation|access|settlement/i,'blocked auction action should explain the missing access condition without leaking the sourcing solution');
+
+// A pre-migration save cannot bypass the new access authority by carrying an old pending bid.
+let legacy=createHarbourWorld(143,{attentionPerDay:99});
+initializeYasminAccess(legacy);
+legacy.day=7;
+legacy.playerGame.routes.yasmin.preview=true;
+legacy.playerGame.routes.yasmin.bid=16;
+legacy.playerGame.routes.yasmin.stage='bid';
+legacy.playerGame.commitments.push({id:'auction-bid',title:'Hammer-night bid',dueDay:7,status:'open',lockedCash:16,location:'viewing_room'});
+const cashBeforeLegacy=legacy.actors.player.cash;
+resolvePlayerDay(legacy);
+assert.equal(legacy.playerGame.sunflower.owned,false,'legacy pending auction bid cannot award the sunflower without earned private access');
+assert.equal(legacy.actors.player.cash,cashBeforeLegacy,'blocked legacy auction settlement cannot take player cash');
+assert.notEqual(legacy.playerGame.commitments.find(c=>c.id==='auction-bid')?.status,'fulfilled','legacy unauthorised bid must not settle as fulfilled');
 
 // Earn the real route after the old fixed preview dates have already passed.
 w=createHarbourWorld(142,{attentionPerDay:99});
