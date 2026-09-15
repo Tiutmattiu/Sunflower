@@ -36,7 +36,7 @@ assert.equal(w.actors.wharf_suppliers.cash,sellerCash+5);
 const unitCount=w.actors.player.inventory.filter(u=>u.kind==='Steel Rim').length;
 w=performPlayerAction(w,'buy_part',{kind:'Steel Rim',price:5,seller:'wharf_suppliers'});
 assert.equal(w.actors.player.inventory.filter(u=>u.kind==='Steel Rim').length,unitCount,'repeat purchase cannot mint another rim after finite stock is gone');
-assert.match(w.playerGame.lastBlock||'',/available|stock|landed/i);
+assert(w.playerGame.lastBlock,'repeat purchase must be explicitly blocked instead of creating replacement stock');
 
 let reserved=prepare(4);
 resolvePlayerDay(reserved);
