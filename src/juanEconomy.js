@@ -4,6 +4,23 @@ function outputFor(asset){return LIVING_ASSET_FAMILIES[asset.species]?.outputs?.
 function emit(w,type,data={}){const row={id:`ev${++w.nextEvent}`,day:w.day,type,...data};w.evidence??=[];w.evidence.push(row);return row;}
 function unitOrdinal(unit){const match=String(unit.unitId||'').match(/^u(\d+)$/);return match?Number(match[1]):-1;}
 
+// Transitional reconciliation: harbourSpine's legacy Juan job still owns the
+// maturity/harvest trigger, but crop health and cultivation costs now belong to
+// JUAN_CROP_PROFILES. When the legacy job actually ran this day, remove only its
+// generic economics before the profile model applies. This keeps one economic
+// authority without duplicating the much larger harbour day scheduler.
+function undoLegacyJuanCropEconomics(w){
+ if(w.actors?.juan?.busy!==2)return;
+ const stress=w.weather==='storm'?.08:.02;
+ for(const asset of (w.livingAssets||[]).filter(a=>a.ownerId==='juan'))asset.health=Math.min(1,(asset.health??1)+stress);
+ const legacyFlows=(w.externalFlows||[]).filter(f=>f.day===w.day&&f.actorId==='juan'&&f.sector==='growing_inputs'&&f.reason==='plant_inputs');
+ const refund=legacyFlows.reduce((sum,f)=>sum+(Number(f.amount)||0),0);
+ if(refund){w.actors.juan.cash+=refund;w.actors.juan.costs=Math.max(0,(w.actors.juan.costs||0)-refund);w.externalFlows=w.externalFlows.filter(f=>!legacyFlows.includes(f));}
+ const compostEvents=(w.evidence||[]).filter(e=>e.day===w.day&&e.type==='compost_used_for_cultivation');
+ for(const event of compostEvents){const batch=w.materials?.compostBatches?.find(b=>b.id===event.batchId);if(batch)batch.remainingUses=(batch.remainingUses||0)+1;}
+ if(compostEvents.length){const ids=new Set(compostEvents.map(e=>e.id));w.evidence=w.evidence.filter(e=>!ids.has(e.id));if(w.activityLog)w.activityLog=w.activityLog.filter(e=>!ids.has(e.id));}
+}
+
 function cancelTransferredReservations(w,unitIds){
  const moved=new Set(unitIds);
  for(const order of w.market?.orders||[]){
@@ -39,6 +56,7 @@ function allocateFutureOutput(w,asset,kind,quantity){
 }
 
 export function reconcileJuanHarvestEconomics(w,profiles){
+ undoLegacyJuanCropEconomics(w);
  const harvestRows=(w.returnLedger||[]).filter(row=>row.day===w.day&&row.actorId==='juan'&&row.context==='crop_yield'&&!row.profileReconciled);
  if(!harvestRows.length)return w;
  const harvested=(w.livingAssets||[]).filter(asset=>
