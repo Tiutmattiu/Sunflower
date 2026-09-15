@@ -2,6 +2,7 @@ import { ECONOMIC_GOODS } from './economicContent.js';
 import {initializeNpcEconomy,npcEconomyDay} from './npcEconomy.js';
 import {settleDimaGuarantees} from './privateCapital.js';
 import {advanceRouteSources} from './routeSources.js';
+import {advanceSocialRiskEconomy,availableAspenFavors,consumeAspenFavor,initializeSocialRisk,openAspenPrivacyRequests,performAspenPrivacyFavor} from './socialRiskEconomy.js';
 
 const clone=x=>structuredClone(x);
 const CLASSES=['TRADE','OPERATE','INVEST','FINANCE','INTERMEDIATE','SPECULATE'];
@@ -28,6 +29,7 @@ export function initializeProductionGame(w){
  w.production={realised:Object.fromEntries(CLASSES.map(x=>[x,0])),playerActions:[],positions:[],claims:[],leads:[],tradeStock:[],equipmentLease:{available:true},marketStanding:{status:'OPEN',strikes:0,verificationLevel:0,depositRate:0,listingLimit:null,fines:0,restitution:0},misconduct:[],toads:[{id:'toad-1',location:'nursery',ownerId:null,custodianId:null,availableFrom:3,status:'hidden',reappearDay:null,appearances:1}],toadChat:null,sceneVisits:{},namedPlayerTransactions:[]};
  ensurePhysicalTool(w,'aspen','Tiny Torque Wrench');
  initializeNpcEconomy(w);
+ initializeSocialRisk(w);
  return w;
 }
 
@@ -58,9 +60,14 @@ export function availableProductionActions(w){
  add('share_provenance','Share your provenance comparison with a rival','viewing_room',!w.playerGame.routes.yasmin.provenance?'No provenance comparison to disclose':null);
  add('restitution','File restitution and certification','public_clearing',s.strikes<1?'No discovered case to repair':freeCash(w,'player')<4?'Need 4🥫':null);
 
+ const privacyRequest=openAspenPrivacyRequests(w)[0];
+ if(privacyRequest)add('aspen_distract_wong','Keep Wong occupied for Aspen','parcel_counter',w.actors.wong.location!=='parcel_counter'?'Wong is not at the counter right now':null);
+
  const juan=w.playerGame.routes.juan;
  const aspenAttended=w.production.toadChat?.members?.includes('aspen');
- if(w.playerGame.knowledge?.includes('onewheel_plan')&&juan?.built&&aspenAttended&&!juan.toadFavorUsed){
+ const toadFavorAvailable=aspenAttended&&!juan?.toadFavorUsed;
+ const socialFavorAvailable=availableAspenFavors(w).length>0;
+ if(w.playerGame.knowledge?.includes('onewheel_plan')&&juan?.built&&(toadFavorAvailable||socialFavorAvailable)){
   const wheel=freeUnits(w,'player').find(u=>u.kind==='Built Onewheel');
   const wrench=freeUnits(w,'aspen').find(u=>u.kind==='Tiny Torque Wrench');
   add('aspen_modify_onewheel','Ask Aspen to true the wheel','harbour_berth',w.actors.aspen.location!=='harbour_berth'?'Aspen is away from the berth':!wheel?'The Onewheel is unavailable or promised elsewhere':!wrench?'Aspen’s adjustment tool is unavailable':null);
@@ -86,21 +93,32 @@ export function performProductionAction(current,id){
  if(id==='intermediate_lead'&&w.playerGame.location==='joels_bar'){const fact=w.publicFacts.find(f=>!w.production.leads.some(x=>x.factId===f.id));if(fact&&freeCash(w,'joel')>=3){w.actors.joel.cash-=3;p.cash+=3;w.production.leads.push({factId:fact.id,buyer:'joel',day:w.day,exclusiveUntil:w.day+2});record(w,id,'INTERMEDIATE',3,0,'joel');evt(w,'private_lead_sold',{summary:`Sold ${fact.headline} as a timely lead before it went stale.`,situation:'THE_PRIVATE_LEAD'});}}
  if(id==='speculate_lot'&&w.playerGame.location==='viewing_room'&&transfer(w,'player','yasmin',8)){w.production.positions.push({id:`consignment-${w.day}`,class:'SPECULATE',opened:w.day,due:w.day+3,cost:8,status:'open',counterparty:'yasmin'});record(w,id,'SPECULATE',0,8,'yasmin','illiquid');}
  if(id==='private_proxy'&&w.playerGame.location==='back_room'&&w.production.marketStanding.status==='SUSPENDED'){const item=freeUnits(w,'player')[0];if(item&&freeCash(w,'player')>=3){const buyer=w.actors.households,gross=Math.max(1,Math.floor((ECONOMIC_GOODS[item.kind]?.value||4)*.75));if(freeCash(w,'households')>=gross&&transfer(w,'player','dima',3)){p.inventory.splice(p.inventory.indexOf(item),1);item.owner='households';buyer.inventory.push(item);buyer.cash-=gross;p.cash+=gross;record(w,id,'INTERMEDIATE',gross,3,'dima',gross>=3?'realised':'loss');evt(w,'private_venue_used',{summary:`Dima placed ${item.kind} with a private household buyer for ${gross}🥫 after a 3🥫 fee.`,goods:[item.kind],situation:'THE_WRONG_VENUE'});}}}
- if(id==='misstate_public_listing'&&w.playerGame.location==='public_clearing'&&w.actors.player.inventory.length&&once(w,id)){const item=w.actors.player.inventory[0];const evidence=evt(w,'public_misstatement_discovered',{summary:`Octopus verification found the listed condition of ${item.kind} materially false.`,goods:[item.kind],situation:'THE_RUN'});recordDiscoveredMisconduct(w,'public_listing',evidence.id);w.production.playerActions.push({id,day:w.day,returnClass:'TRADE',revenue:0,cost:0,profit:0,counterparty:'octopus_clearing',outcome:'discovered'});}
+ if(id==='misstate_public_listing'&&w.playerGame.location==='public_clearing'&&w.actors.player.inventory.length&&once(w,id)){const item=w.actors.player.inventory[0];const evidence=evt(w,'public_misstatement_discovered',{summary:`Octopus verification found the listed condition of ${item.kind} materially false.`,goods:[item.kind],situation:'THE_RUN',public:true});recordDiscoveredMisconduct(w,'public_listing',evidence.id);w.production.playerActions.push({id,day:w.day,returnClass:'TRADE',revenue:0,cost:0,profit:0,counterparty:'octopus_clearing',outcome:'discovered'});}
  if(id==='fire_sale'&&w.playerGame.location==='public_clearing'&&w.production.marketStanding.status==='SUSPENDED'&&w.production.tradeStock.length&&freeCash(w,'households')>=1){const stock=w.production.tradeStock.shift();w.actors.households.cash-=1;p.cash+=1;record(w,id,'TRADE',1,stock.cost,'households','forced_loss');evt(w,'liquidity_sale',{summary:'Sold controlled stock below cost after public confidence disappeared.',situation:'THE_RUN'});evt(w,'market_fill',{summary:'The forced sale found only thin background demand.',situation:'THIN_BOOK'});}
  if(id==='share_provenance'&&w.playerGame.location==='viewing_room'&&w.playerGame.routes.yasmin.provenance){evt(w,'provenance_shared',{summary:'Shared the documentary edge with a competing bidder.',people:['yasmin'],situation:'HAMMER_NIGHT'});}
  if(id==='restitution'&&w.playerGame.location==='public_clearing'&&w.production.marketStanding.strikes&&freeCash(w,'player')>=4){p.cash-=4;const s=w.production.marketStanding;s.restitution+=4;s.strikes--;s.status=s.strikes>=2?'RESTRICTED':'OPEN';s.listingLimit=s.strikes>=2?1:null;s.depositRate=s.strikes*.2;record(w,id,'OPERATE',0,4,'octopus_clearing','reputation_repair');}
+ if(id==='aspen_distract_wong'&&w.playerGame.location==='parcel_counter'){
+  const request=openAspenPrivacyRequests(w)[0];
+  if(request&&w.actors.wong.location==='parcel_counter'){
+   const result=performAspenPrivacyFavor(w,request.id,{method:'conversation'});
+   if(result.ok)w.production.playerActions.push({id,day:w.day,returnClass:'INTERMEDIATE',revenue:0,cost:0,profit:0,counterparty:'aspen',outcome:'relationship_favor'});
+  }
+ }
 
  if(id==='aspen_modify_onewheel'&&w.playerGame.location==='harbour_berth'){
   const r=w.playerGame.routes.juan;
   const aspenAttended=w.production.toadChat?.members?.includes('aspen');
+  const toadFavorAvailable=aspenAttended&&!r.toadFavorUsed;
+  const socialFavorAvailable=availableAspenFavors(w).length>0;
   const wheel=freeUnits(w,'player').find(u=>u.kind==='Built Onewheel');
   const wrench=freeUnits(w,'aspen').find(u=>u.kind==='Tiny Torque Wrench');
-  if(r?.built&&aspenAttended&&!r.toadFavorUsed&&w.actors.aspen.location==='harbour_berth'&&wheel&&wrench){
+  if(r?.built&&(toadFavorAvailable||socialFavorAvailable)&&w.actors.aspen.location==='harbour_berth'&&wheel&&wrench){
+   let favor='toad_circle';
+   if(toadFavorAvailable)r.toadFavorUsed=true;
+   else{const spent=consumeAspenFavor(w,'onewheel_adjustment');if(!spent.ok)return w;favor='privacy_help';}
    r.upgrades=(r.upgrades||0)+1;
-   r.toadFavorUsed=true;
    w.production.playerActions.push({id,day:w.day,returnClass:'OPERATE',revenue:0,cost:0,profit:0,counterparty:'aspen',outcome:'relationship_favor'});
-   evt(w,'onewheel_aspen_adjustment',{summary:'Aspen used her own torque wrench to true the built Onewheel after the toad-circle favor. The wrench stayed hers.',people:['aspen'],goods:['Built Onewheel','Tiny Torque Wrench'],process:{execution:.8,commitments:.6},context:{upgrade:r.upgrades,favor:'toad_circle'}});
+   evt(w,'onewheel_aspen_adjustment',{summary:`Aspen used her own torque wrench to true the built Onewheel after the ${favor==='toad_circle'?'toad-circle':'privacy'} favor. The wrench stayed hers.`,people:['aspen'],goods:['Built Onewheel','Tiny Torque Wrench'],process:{execution:.8,commitments:.6},context:{upgrade:r.upgrades,favor}});
   }
  }
  return w;
@@ -120,6 +138,7 @@ export function advanceProductionGame(w){
  advanceRouteSources(w);
  npcEconomyDay(w);
  settleDimaGuarantees(w);
+ advanceSocialRiskEconomy(w);
  return w;
 }
 
@@ -143,4 +162,4 @@ export function useToad(current,mode,target='juan'){
  return w;
 }
 
-export function productionDiagnostics(w){return{realised:w.production.realised,actions:w.production.playerActions,standing:w.production.marketStanding,toads:w.production.toads,toadChat:w.production.toadChat,namedPlayerTransactions:w.production.playerActions.length}}
+export function productionDiagnostics(w){return{realised:w.production.realised,actions:w.production.playerActions,standing:w.production.marketStanding,toads:w.production.toads,toadChat:w.production.toadChat,namedPlayerTransactions:w.production.playerActions.length,socialRisk:w.socialRisk}}
