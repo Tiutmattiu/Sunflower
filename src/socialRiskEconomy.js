@@ -77,16 +77,45 @@ export function consumeAspenFavor(w,purpose){
 export function availableAspenFavors(w){initializeSocialRisk(w);return w.socialRisk.aspenFavors.filter(f=>f.status==='available');}
 export function openAspenPrivacyRequests(w){initializeSocialRisk(w);return w.socialRisk.privacyRequests.filter(r=>r.status==='open'&&r.dueDay>=w.day);}
 
+function publicTradeAmount(row){
+ const unit=Number(row.price??row.unitPrice??row.cash??row.amount??0);
+ const quantity=Math.max(1,Number(row.quantity??1));
+ return Math.max(0,unit*quantity);
+}
+function publicTradeActor(row,id){return [row.buyerId,row.sellerId,row.buyer,row.seller,row.actorId].includes(id);}
+
+export function observeWongVisibleMarket(w,{largeThreshold=12}={}){
+ const state=initializeSocialRisk(w),known=new Set(state.wong.observations.map(o=>o.observationKey));
+ for(const [index,row] of (w.market?.tape||[]).entries()){
+  if(!publicTradeActor(row,'player'))continue;
+  const amount=publicTradeAmount(row);if(amount<largeThreshold)continue;
+  const key=`public_tape:${row.day??w.day}:${row.id??index}:${amount}`;if(known.has(key))continue;
+  const observation={day:w.day,observationKey:key,kind:'large_public_trade',source:'public_tape',amount,item:row.item??row.kind??row.good??null,reportable:false,reported:false};
+  state.wong.observations.push(observation);known.add(key);
+  emit(w,'wong_heard_large_public_trade',{amount,item:observation.item,source:'public_tape'});
+ }
+ return state.wong.observations;
+}
+
+export function wongLiquidityPitchEligible(w){
+ const state=initializeSocialRisk(w);
+ return state.wong.observations.some(o=>o.kind==='large_public_trade'&&!o.pitchUsed);
+}
+export function consumeWongLiquiditySignal(w){
+ const state=initializeSocialRisk(w),signal=state.wong.observations.find(o=>o.kind==='large_public_trade'&&!o.pitchUsed);
+ if(!signal)return null;signal.pitchUsed=true;signal.pitchUsedDay=w.day;return signal;
+}
+
 export function observeReportablePlayerConduct(w){
  const state=initializeSocialRisk(w);
- const known=new Set(state.wong.observations.map(o=>o.evidenceId));
+ const known=new Set(state.wong.observations.map(o=>o.evidenceId).filter(Boolean));
  for(const misconduct of w.production?.misconduct||[]){
   if(!misconduct.discovered||known.has(misconduct.evidenceId))continue;
   const evidence=(w.evidence||[]).find(e=>e.id===misconduct.evidenceId);
   const publicKnowable=Boolean(evidence?.public||['public_misstatement_discovered','institutional_warning'].includes(evidence?.type));
   const wongWitness=Boolean(evidence?.people?.includes?.('wong')||evidence?.witnesses?.includes?.('wong'));
   if(!publicKnowable&&!wongWitness)continue;
-  const observation={day:w.day,evidenceId:misconduct.evidenceId,kind:misconduct.kind,source:publicKnowable?'public_record':'witnessed',reportable:true,reported:false};
+  const observation={day:w.day,evidenceId:misconduct.evidenceId,observationKey:`misconduct:${misconduct.evidenceId}`,kind:misconduct.kind,source:publicKnowable?'public_record':'witnessed',reportable:true,reported:false};
   state.wong.observations.push(observation);known.add(observation.evidenceId);
   emit(w,'wong_observed_player_misconduct',{...observation});
  }
@@ -111,5 +140,5 @@ export function advanceSocialRiskEconomy(w){
  for(const gift of w.relationshipEcology?.gifts||[]){
   if(gift.status==='in_transit'&&gift.privacy&&!gift.privacyProtected&&!state.privacyRequests.some(r=>r.giftId===gift.id&&['open','completed'].includes(r.status)))createAspenPrivacyRequest(w,gift.id);
  }
- observeReportablePlayerConduct(w);processWongRetaliation(w);return w;
+ observeWongVisibleMarket(w);observeReportablePlayerConduct(w);processWongRetaliation(w);return w;
 }
