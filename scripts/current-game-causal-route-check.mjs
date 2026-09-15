@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {createHarbourWorld} from '../src/harbourSpine.js';
-import {performPlayerAction,visibleActions,PLAYER_COUNTERPARTIES,juanRaceChance,juanRaceRoll} from '../src/playerGame.js';
+import {performPlayerAction,visibleActions,PLAYER_COUNTERPARTIES,juanRaceChance,juanRaceRoll,resolvePlayerDay} from '../src/playerGame.js';
 import {knows,PLAYER_KNOWLEDGE as K} from '../src/playerKnowledge.js';
 
 const setLocation=(w,location)=>{w.playerGame.location=location;w.actors.player.location=location;return w};
@@ -56,8 +56,10 @@ assert(knows(w,K.onewheel_plan));
 assert(visibleActions(w).some(a=>a.id==='buy_part'),'earned Aspen assessment should unlock sourcing');
 assert.equal(PLAYER_COUNTERPARTIES.assemble_onewheel,'aspen','Wong must not remain the assembler');
 
-// Use real inventory objects; honest lime delivery is the current earned assembly condition.
-w.day=6;w.playerGame.lime={...w.playerGame.lime,stage:'complete',representation:'disclose',inspected:true};
+// Let authored cargo days actually occur. Parts must already exist in the world
+// before purchase; the route test may not teleport straight to day 6 anymore.
+for(let d=1;d<=6;d++){w.day=d;resolvePlayerDay(w);}
+w.playerGame.lime={...w.playerGame.lime,stage:'complete',representation:'disclose',inspected:true};
 for(const [kind,price] of [['Steel Rim',5],['Chain Quick-Link',2],['Brake Cable',2],['Handlebar Tape',2]])w=act(w,'buy_part',{kind,price});
 w=act(w,'assemble_onewheel');
 assert(w.actors.player.inventory.some(x=>x.kind==='Built Onewheel'));
