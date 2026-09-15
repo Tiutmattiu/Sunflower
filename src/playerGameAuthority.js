@@ -92,7 +92,7 @@ function landOnewheelCargo(w){
   if(w.day!==terms.arrivalDay)continue;
   const alreadyRecorded=(w.evidence||[]).some(e=>e.type==='onewheel_part_landed'&&e.item===kind&&e.arrivalDay===terms.arrivalDay);
   if(alreadyRecorded)continue;
-  const existing=supplier.inventory.find(u=>u.kind===kind);
+  const existing=availableSellerUnit(w,'wharf_suppliers',kind);
   if(existing){
    emitWorld(w,'onewheel_part_landed',{unitId:existing.unitId,item:kind,actorId:'wharf_suppliers',arrivalDay:terms.arrivalDay,existingStock:true});
    continue;
