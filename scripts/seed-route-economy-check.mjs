@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {createHarbourWorld,advanceHarbourWindow} from '../src/harbourSpine.js';
+import {ECONOMIC_GOODS} from '../src/economicContent.js';
 import {advanceRouteSources,ROUTE_SOURCE_CONFIG} from '../src/routeSources.js';
 import * as seeds from '../src/seedEconomy.js';
 
@@ -19,7 +20,7 @@ let w=createHarbourWorld(91,{attentionPerDay:99});
 fakeReturn(w,1,'short');
 let batch=w.npcEconomy.aspenCatalog.batches.at(-1);
 assert(batch.goods.every(kind=>!seeds.PROPAGULE_CATALOG[kind]),'short fresh route must not discover long-distance seed stock');
-assert(batch.goods.some(kind=>Number.isFinite((await import('../src/economicContent.js')).ECONOMIC_GOODS[kind]?.shelfLife)),'short route should expose genuinely time-sensitive/fresh goods');
+assert(batch.goods.some(kind=>Number.isFinite(ECONOMIC_GOODS[kind]?.shelfLife)),'short route should expose genuinely time-sensitive/fresh goods');
 
 fakeReturn(w,2,'outer');
 batch=w.npcEconomy.aspenCatalog.batches.at(-1);
@@ -44,7 +45,6 @@ assert.equal(asset.ownerId,'juan');
 assert.equal(asset.originPropaguleUnitId,seedUnitId);
 assert(asset.maturity<0,'newly planted seed/cutting must spend real germination/rooting time before normal crop maturity');
 
-// Force only the remaining pre-harvest time; the normal world tick must turn the consumed seed into real output.
 const crop=seeds.PROPAGULE_CATALOG[outerSeed];
 asset.maturity=crop.maturityDays-1;
 const outputBefore=w.actors.juan.inventory.filter(u=>u.kind===crop.output).length;
