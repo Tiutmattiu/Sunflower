@@ -3,6 +3,7 @@ import {initializeNpcEconomy,npcEconomyDay} from './npcEconomy.js';
 import {settleDimaGuarantees} from './privateCapital.js';
 import {advanceRouteSources} from './routeSources.js';
 import {advanceSocialRiskEconomy,availableAspenFavors,consumeAspenFavor,initializeSocialRisk,openAspenPrivacyRequests,performAspenPrivacyFavor} from './socialRiskEconomy.js';
+import {advanceAspenCommissions,fulfillAspenCommission,initializeAspenCommissions,openAspenCommissions} from './aspenCommissions.js';
 
 const clone=x=>structuredClone(x);
 const CLASSES=['TRADE','OPERATE','INVEST','FINANCE','INTERMEDIATE','SPECULATE'];
@@ -30,6 +31,7 @@ export function initializeProductionGame(w){
  ensurePhysicalTool(w,'aspen','Tiny Torque Wrench');
  initializeNpcEconomy(w);
  initializeSocialRisk(w);
+ initializeAspenCommissions(w);
  return w;
 }
 
@@ -60,6 +62,8 @@ export function availableProductionActions(w){
  add('share_provenance','Share your provenance comparison with a rival','viewing_room',!w.playerGame.routes.yasmin.provenance?'No provenance comparison to disclose':null);
  add('restitution','File restitution and certification','public_clearing',s.strikes<1?'No discovered case to repair':freeCash(w,'player')<4?'Need 4🥫':null);
 
+ const commission=openAspenCommissions(w)[0];
+ if(commission){const unit=freeUnits(w,'player').find(u=>u.kind===commission.good);add('aspen_fill_commission',`Deliver ${commission.good} to Aspen · ${commission.reward}🥫`,'harbour_berth',w.actors.aspen.location!=='harbour_berth'?'Aspen is away from the berth':!unit?`Need one uncommitted ${commission.good}`:null);}
  const privacyRequest=openAspenPrivacyRequests(w)[0];
  if(privacyRequest)add('aspen_distract_wong','Keep Wong occupied for Aspen','parcel_counter',w.actors.wong.location!=='parcel_counter'?'Wong is not at the counter right now':null);
 
@@ -97,6 +101,10 @@ export function performProductionAction(current,id){
  if(id==='fire_sale'&&w.playerGame.location==='public_clearing'&&w.production.marketStanding.status==='SUSPENDED'&&w.production.tradeStock.length&&freeCash(w,'households')>=1){const stock=w.production.tradeStock.shift();w.actors.households.cash-=1;p.cash+=1;record(w,id,'TRADE',1,stock.cost,'households','forced_loss');evt(w,'liquidity_sale',{summary:'Sold controlled stock below cost after public confidence disappeared.',situation:'THE_RUN'});evt(w,'market_fill',{summary:'The forced sale found only thin background demand.',situation:'THIN_BOOK'});}
  if(id==='share_provenance'&&w.playerGame.location==='viewing_room'&&w.playerGame.routes.yasmin.provenance){evt(w,'provenance_shared',{summary:'Shared the documentary edge with a competing bidder.',people:['yasmin'],situation:'HAMMER_NIGHT'});}
  if(id==='restitution'&&w.playerGame.location==='public_clearing'&&w.production.marketStanding.strikes&&freeCash(w,'player')>=4){p.cash-=4;const s=w.production.marketStanding;s.restitution+=4;s.strikes--;s.status=s.strikes>=2?'RESTRICTED':'OPEN';s.listingLimit=s.strikes>=2?1:null;s.depositRate=s.strikes*.2;record(w,id,'OPERATE',0,4,'octopus_clearing','reputation_repair');}
+ if(id==='aspen_fill_commission'&&w.playerGame.location==='harbour_berth'){
+  const commission=openAspenCommissions(w)[0],unit=commission&&freeUnits(w,'player').find(u=>u.kind===commission.good),cost=unit?.costBasis||0;
+  if(commission&&unit&&w.actors.aspen.location==='harbour_berth'){const result=fulfillAspenCommission(w,commission.id,'player');if(result.ok)record(w,id,'TRADE',result.reward,cost,'aspen','realised');}
+ }
  if(id==='aspen_distract_wong'&&w.playerGame.location==='parcel_counter'){
   const request=openAspenPrivacyRequests(w)[0];
   if(request&&w.actors.wong.location==='parcel_counter'){
@@ -138,6 +146,7 @@ export function advanceProductionGame(w){
  advanceRouteSources(w);
  npcEconomyDay(w);
  settleDimaGuarantees(w);
+ advanceAspenCommissions(w);
  advanceSocialRiskEconomy(w);
  return w;
 }
@@ -162,4 +171,4 @@ export function useToad(current,mode,target='juan'){
  return w;
 }
 
-export function productionDiagnostics(w){return{realised:w.production.realised,actions:w.production.playerActions,standing:w.production.marketStanding,toads:w.production.toads,toadChat:w.production.toadChat,namedPlayerTransactions:w.production.playerActions.length,socialRisk:w.socialRisk}}
+export function productionDiagnostics(w){return{realised:w.production.realised,actions:w.production.playerActions,standing:w.production.marketStanding,toads:w.production.toads,toadChat:w.production.toadChat,namedPlayerTransactions:w.production.playerActions.length,socialRisk:w.socialRisk,aspenCommissions:w.aspenCommissions}}
