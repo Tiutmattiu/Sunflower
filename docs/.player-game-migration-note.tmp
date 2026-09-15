@@ -1,1 +1,0 @@
-Migration checkpoint is assembled through Git tree so the previous playerGame blob is preserved byte-for-byte as playerGameLegacy.js while playerGame.js becomes the authority facade. This temporary marker is deleted in the same tree commit.
