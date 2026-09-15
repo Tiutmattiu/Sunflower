@@ -6,11 +6,13 @@ function unitOrdinal(unit){const match=String(unit.unitId||'').match(/^u(\d+)$/)
 
 // Transitional reconciliation: harbourSpine's legacy Juan job still owns the
 // maturity/harvest trigger, but crop health and cultivation costs now belong to
-// JUAN_CROP_PROFILES. When the legacy job actually ran this day, remove only its
-// generic economics before the profile model applies. This keeps one economic
-// authority without duplicating the much larger harbour day scheduler.
+// JUAN_CROP_PROFILES. A monotonically advancing day is the authority boundary;
+// shared-world social activity may change Juan's busy count after the old job ran,
+// so busy is deliberately not used as proof here.
 function undoLegacyJuanCropEconomics(w){
- if(w.actors?.juan?.busy!==2)return;
+ if(w.day<=0)return;
+ const last=w.npcEconomy?.cropAuthorityLastDay;
+ if(last!=null&&last!==w.day-1)return;
  const stress=w.weather==='storm'?.08:.02;
  for(const asset of (w.livingAssets||[]).filter(a=>a.ownerId==='juan'))asset.health=Math.min(1,(asset.health??1)+stress);
  const legacyFlows=(w.externalFlows||[]).filter(f=>f.day===w.day&&f.actorId==='juan'&&f.sector==='growing_inputs'&&f.reason==='plant_inputs');
@@ -57,6 +59,7 @@ function allocateFutureOutput(w,asset,kind,quantity){
 
 export function reconcileJuanHarvestEconomics(w,profiles){
  undoLegacyJuanCropEconomics(w);
+ w.npcEconomy??={};w.npcEconomy.cropAuthorityLastDay=w.day;
  const harvestRows=(w.returnLedger||[]).filter(row=>row.day===w.day&&row.actorId==='juan'&&row.context==='crop_yield'&&!row.profileReconciled);
  if(!harvestRows.length)return w;
  const harvested=(w.livingAssets||[]).filter(asset=>
