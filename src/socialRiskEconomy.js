@@ -19,8 +19,6 @@ export function reconcilePrivateGiftRoutes(w){
  initializeSocialRisk(w);
  for(const gift of w.relationshipEcology?.gifts||[]){
   if(!gift.privacy)continue;
-  // Wong is the physical courier/custodian. Dima may arrange private payment or
-  // counterparty trust, but does not magically replace the parcel business.
   gift.custodianId='wong';
   gift.settlementAgentId??='dima';
   gift.privacyLevel??='discreet';
@@ -77,6 +75,7 @@ export function consumeAspenFavor(w,purpose){
 }
 
 export function availableAspenFavors(w){initializeSocialRisk(w);return w.socialRisk.aspenFavors.filter(f=>f.status==='available');}
+export function openAspenPrivacyRequests(w){initializeSocialRisk(w);return w.socialRisk.privacyRequests.filter(r=>r.status==='open'&&r.dueDay>=w.day);}
 
 export function observeReportablePlayerConduct(w){
  const state=initializeSocialRisk(w);
@@ -84,8 +83,6 @@ export function observeReportablePlayerConduct(w){
  for(const misconduct of w.production?.misconduct||[]){
   if(!misconduct.discovered||known.has(misconduct.evidenceId))continue;
   const evidence=(w.evidence||[]).find(e=>e.id===misconduct.evidenceId);
-  // Publicly discovered misconduct is knowable to Wong. Private misconduct only
-  // becomes knowable when a later system explicitly records Wong as witness/custodian.
   const publicKnowable=Boolean(evidence?.public||['public_misstatement_discovered','institutional_warning'].includes(evidence?.type));
   const wongWitness=Boolean(evidence?.people?.includes?.('wong')||evidence?.witnesses?.includes?.('wong'));
   if(!publicKnowable&&!wongWitness)continue;
@@ -109,5 +106,10 @@ export function processWongRetaliation(w,{threshold=4}={}){
 }
 
 export function advanceSocialRiskEconomy(w){
- initializeSocialRisk(w);reconcilePrivateGiftRoutes(w);observeReportablePlayerConduct(w);processWongRetaliation(w);return w;
+ const state=initializeSocialRisk(w);reconcilePrivateGiftRoutes(w);
+ for(const request of state.privacyRequests.filter(r=>r.status==='open'&&r.dueDay<w.day))request.status='expired';
+ for(const gift of w.relationshipEcology?.gifts||[]){
+  if(gift.status==='in_transit'&&gift.privacy&&!gift.privacyProtected&&!state.privacyRequests.some(r=>r.giftId===gift.id&&['open','completed'].includes(r.status)))createAspenPrivacyRequest(w,gift.id);
+ }
+ observeReportablePlayerConduct(w);processWongRetaliation(w);return w;
 }
