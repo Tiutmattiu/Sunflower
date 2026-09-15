@@ -5,6 +5,7 @@ import {requestLocatedImport} from './routeSources.js';
 const WHALE_OIL='Sperm Whale Oil';
 const DEPOSIT_REQUIREMENT=8;
 const COLLATERAL_HAIRCUT=.6;
+const PRIVATE_PREVIEW_DAYS=3;
 
 function emit(w,type,data={}){w.evidence??=[];const row={id:`ev${++w.nextEvent}`,day:w.day,type,...data};w.evidence.push(row);w.activityLog?.push(row);return row;}
 function reservedUnits(w,actorId){return new Set((w.market?.reservations||[]).filter(r=>r.actorId===actorId&&r.kind==='unit').map(r=>r.unitId));}
@@ -94,6 +95,16 @@ export function shareWhaleOilSourceLead(w,{mode='share'}={}){
  return {ok:true,orderId:order.orderId,mode};
 }
 
+function openEarnedAuctionWindow(w){
+ const route=w.playerGame?.routes?.yasmin;if(!route||route.privateAccess)return;
+ route.privateAccess=true;
+ route.stage='qualified';route.preview=false;route.inspected=false;route.provenance=false;route.bid=null;route.resolved=false;
+ route.previewOpens=w.day;
+ route.previewCloses=w.day+PRIVATE_PREVIEW_DAYS-1;
+ route.auctionDay=route.previewCloses+1;
+ emit(w,'yasmin_private_auction_window_opened',{previewOpens:route.previewOpens,previewCloses:route.previewCloses,auctionDay:route.auctionDay});
+}
+
 export function proveSettlementCapacity(w){
  const state=initializeYasminAccess(w);
  if(!state.invited)return {ok:false,reason:'no valid film-night invitation'};
@@ -105,7 +116,7 @@ export function proveSettlementCapacity(w){
   if(!best||best.recovery<DEPOSIT_REQUIREMENT)return {ok:false,reason:'insufficient liquid cash or eligible collateral for auction settlement'};
   state.capacityApproved=true;state.capacityBasis='collateral';state.capacityValue=best.recovery;state.capacityUnitId=best.u.unitId;
  }
- if(w.playerGame?.routes?.yasmin)w.playerGame.routes.yasmin.privateAccess=true;
+ openEarnedAuctionWindow(w);
  emit(w,'yasmin_settlement_capacity_verified',{basis:state.capacityBasis,value:state.capacityValue,unitId:state.capacityUnitId||null});
  return {ok:true,basis:state.capacityBasis,value:state.capacityValue};
 }
@@ -127,4 +138,4 @@ export function advanceYasminAccess(w){
  return w;
 }
 
-export const YASMIN_FILM_ACCESS_TERMS=Object.freeze({whaleOil:WHALE_OIL,depositRequirement:DEPOSIT_REQUIREMENT,collateralHaircut:COLLATERAL_HAIRCUT});
+export const YASMIN_FILM_ACCESS_TERMS=Object.freeze({whaleOil:WHALE_OIL,depositRequirement:DEPOSIT_REQUIREMENT,collateralHaircut:COLLATERAL_HAIRCUT,privatePreviewDays:PRIVATE_PREVIEW_DAYS});
