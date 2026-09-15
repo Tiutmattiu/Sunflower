@@ -27,10 +27,6 @@ const UNLOCKABLE_SET=new Set(ASPEN_UNLOCKABLE_GOODS);
 
 function metaFor(good){return ECONOMIC_GOODS[good]||propaguleEconomicMeta(good);}
 
-// Distance matters. Very fresh goods are a short-route business; living
-// cuttings/divisions use medium reach; dry seeds and durable/provenance-heavy
-// objects survive outer routes. Every sourceable good belongs to at least one
-// route, but a player must actually use different reaches to reveal the full world.
 export function eligibleRoutesForGood(good){
  const propagule=PROPAGULE_CATALOG[good];
  if(propagule)return [propagule.route];
@@ -154,7 +150,7 @@ export function requestLocatedImport(w,good,actorId,{quantity=1}={}){
  const routeId=source.routes.find(id=>ROUTE_SOURCE_CONFIG[id]),config=routeId&&ROUTE_SOURCE_CONFIG[routeId],actor=w.actors?.[actorId];
  if(!config)return {ok:false,reason:'no route terms for located source'};
  if(!actor)return {ok:false,reason:'recipient missing'};
- const bounded=Math.max(1,Math.min(1,Math.floor(Number(quantity)||1));
+ const bounded=Math.max(1,Math.min(1,Math.floor(Number(quantity)||1)));
  const reference=Math.max(1,Number(metaFor(good)?.value)||config.sourceCost);
  const unitSourceCost=Math.min(config.sourceCost+5,Math.max(config.sourceCost,Math.ceil(reference*.45)));
  const sourceCost=bounded*unitSourceCost,serviceFee=actorId==='aspen'?0:Math.max(1,Math.ceil(sourceCost*.2)),totalCost=sourceCost+serviceFee;
