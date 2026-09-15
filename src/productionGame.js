@@ -4,6 +4,8 @@ import {settleDimaGuarantees} from './privateCapital.js';
 import {advanceRouteSources} from './routeSources.js';
 import {advanceSocialRiskEconomy,availableAspenFavors,consumeAspenFavor,initializeSocialRisk,openAspenPrivacyRequests,performAspenPrivacyFavor} from './socialRiskEconomy.js';
 import {advanceAspenCommissions,fulfillAspenCommission,initializeAspenCommissions,openAspenCommissions} from './aspenCommissions.js';
+import {advanceYasminAccess,initializeYasminAccess} from './yasminAccess.js';
+import {isYasminFilmProductionAction,performYasminFilmProductionAction,yasminFilmProductionActions} from './yasminProductionActions.js';
 
 const clone=x=>structuredClone(x);
 const CLASSES=['TRADE','OPERATE','INVEST','FINANCE','INTERMEDIATE','SPECULATE'];
@@ -32,6 +34,7 @@ export function initializeProductionGame(w){
  initializeNpcEconomy(w);
  initializeSocialRisk(w);
  initializeAspenCommissions(w);
+ initializeYasminAccess(w);
  return w;
 }
 
@@ -66,6 +69,7 @@ export function availableProductionActions(w){
  if(commission){const unit=freeUnits(w,'player').find(u=>u.kind===commission.good);add('aspen_fill_commission',`Deliver ${commission.good} to Aspen · ${commission.reward}🥫`,'harbour_berth',w.actors.aspen.location!=='harbour_berth'?'Aspen is away from the berth':!unit?`Need one uncommitted ${commission.good}`:null);}
  const privacyRequest=openAspenPrivacyRequests(w)[0];
  if(privacyRequest)add('aspen_distract_wong','Keep Wong occupied for Aspen','parcel_counter',w.actors.wong.location!=='parcel_counter'?'Wong is not at the counter right now':null);
+ a.push(...yasminFilmProductionActions(w));
 
  const juan=w.playerGame.routes.juan;
  const aspenAttended=w.production.toadChat?.members?.includes('aspen');
@@ -82,6 +86,11 @@ export function availableProductionActions(w){
 export function performProductionAction(current,id){
  const w=clone(current),p=w.actors.player;
  if(!once(w,id))return w;
+ if(isYasminFilmProductionAction(id)){
+  const result=performYasminFilmProductionAction(w,id);
+  if(result.ok)w.production.playerActions.push({id,day:w.day,returnClass:'INTERMEDIATE',revenue:0,cost:0,profit:0,counterparty:id.startsWith('dima_')?'dima':id.startsWith('wong_')?'wong':'yasmin',outcome:'realised'});
+  return w;
+ }
 
  if(id==='trade_bridge'&&w.playerGame.location==='joels_bar'){
   if(!w.production.tradeStock.length&&transfer(w,'player','wong',2)){
@@ -144,6 +153,7 @@ export function advanceProductionGame(w){
   let paid=Math.min(claim.face,Math.max(0,freeCash(w,'juan')-3));w.actors.juan.cash-=paid;const outputBuyer=w.actors.crews,shortfall=Math.min(claim.face-paid,Math.max(0,freeCash(w,'crews')-5));outputBuyer.cash-=shortfall;paid+=shortfall;claim.paid=paid;claim.shortfall=Math.max(0,claim.face-paid);w.actors.player.cash+=paid;claim.status=paid===claim.face?'settled':'default';record(w,`${claim.id}_collection`,'FINANCE',paid,0,'juan',claim.status);if(claim.status==='default')evt(w,'claim_default',{summary:`The factored output claim paid ${paid} of ${claim.face}🥫 and defaulted on the rest.`,situation:'JUAN_PAPER',claims:[claim.id]});
  }
  advanceRouteSources(w);
+ advanceYasminAccess(w);
  npcEconomyDay(w);
  settleDimaGuarantees(w);
  advanceAspenCommissions(w);
@@ -171,4 +181,4 @@ export function useToad(current,mode,target='juan'){
  return w;
 }
 
-export function productionDiagnostics(w){return{realised:w.production.realised,actions:w.production.playerActions,standing:w.production.marketStanding,toads:w.production.toads,toadChat:w.production.toadChat,namedPlayerTransactions:w.production.playerActions.length,socialRisk:w.socialRisk,aspenCommissions:w.aspenCommissions}}
+export function productionDiagnostics(w){return{realised:w.production.realised,actions:w.production.playerActions,standing:w.production.marketStanding,toads:w.production.toads,toadChat:w.production.toadChat,namedPlayerTransactions:w.production.playerActions.length,socialRisk:w.socialRisk,aspenCommissions:w.aspenCommissions,yasminAccess:w.yasminAccess}}
