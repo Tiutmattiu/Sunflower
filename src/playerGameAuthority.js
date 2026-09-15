@@ -8,6 +8,13 @@ const YASMIN_AUCTION_ACTIONS=new Set([
 const ACCESS_BLOCK='Private auction access requires Yasmin’s invitation and verified settlement capacity.';
 const INVITATION_FISH='Exceptional Invitation Fish';
 const INVITATION_FISH_PRICE=10;
+const ONEWHEEL_CARGO=Object.freeze({
+ 'Chain Quick-Link':Object.freeze({arrivalDay:2,price:2}),
+ 'Brake Cable':Object.freeze({arrivalDay:3,price:2}),
+ 'Steel Rim':Object.freeze({arrivalDay:4,price:5}),
+ 'Handlebar Tape':Object.freeze({arrivalDay:5,price:2}),
+ 'Presta Inner Tube':Object.freeze({arrivalDay:5,price:GOODS['Presta Inner Tube']?.value||8}),
+});
 
 function blockedCopy(current,message=ACCESS_BLOCK){
  const w=structuredClone(current);
@@ -29,17 +36,17 @@ function playerAvailableCash(w){
  return (w.actors?.player?.cash||0)-reserved-committed;
 }
 
+function availableSellerUnit(w,sellerId,kind){
+ const seller=w.actors?.[sellerId];if(!seller)return null;
+ const reserved=reservedUnitIds(w,sellerId);
+ return seller.inventory.find(u=>u.kind===kind&&!u.pledgedTo&&!reserved.has(u.unitId))||null;
+}
+
 function availableInvitationFish(w){
  const route=w.playerGame?.routes?.sonya;
- const boats=w.actors?.small_boats;
- if(!route||!boats)return null;
- const reserved=reservedUnitIds(w,'small_boats');
- return boats.inventory.find(u=>
-  u.kind===INVITATION_FISH&&
-  u.invitationSupperDay===route.supperDay&&
-  !u.pledgedTo&&
-  !reserved.has(u.unitId)
- );
+ if(!route)return null;
+ const fish=availableSellerUnit(w,'small_boats',INVITATION_FISH);
+ return fish?.invitationSupperDay===route.supperDay?fish:null;
 }
 
 function emitWorld(w,type,data={}){
@@ -53,8 +60,8 @@ function notePlayer(w,type,summary,data={}){
  const row={
   id:`player-${++w.nextEvent}`,day:w.day,type,summary,
   source:'local_observation',location:w.playerGame.location,confidence:1,freshness:'current',
-  people:data.people||[],goods:data.goods||[],claims:[],situation:null,process:data.process||{},style:{},weight:data.weight||1,returnClass:data.returnClass||null,
-  context:{cash:w.actors.player.cash,reserved:(w.market?.reservations||[]).filter(r=>r.actorId==='player'),commitments:(w.playerGame?.commitments||[]).filter(c=>c.status==='open')},
+  people:data.people||[],goods:data.goods||[],claims:[],situation:data.situation||null,process:data.process||{},style:data.style||{},weight:data.weight||1,returnClass:data.returnClass||null,
+  context:{cash:w.actors.player.cash,reserved:(w.market?.reservations||[]).filter(r=>r.actorId==='player'),commitments:(w.playerGame?.commitments||[]).filter(c=>c.status==='open'),...(data.context||{})},
  };
  w.evidence.push(row);w.playerGame.notebook??=[];w.playerGame.notebook.push(row.id);
  return row;
@@ -79,6 +86,27 @@ function landInvitationFish(w){
  return unit;
 }
 
+function landOnewheelCargo(w){
+ const supplier=w.actors?.wharf_suppliers;if(!supplier)return;
+ for(const [kind,terms] of Object.entries(ONEWHEEL_CARGO)){
+  if(w.day!==terms.arrivalDay)continue;
+  const alreadyRecorded=(w.evidence||[]).some(e=>e.type==='onewheel_part_landed'&&e.item===kind&&e.arrivalDay===terms.arrivalDay);
+  if(alreadyRecorded)continue;
+  const existing=supplier.inventory.find(u=>u.kind===kind);
+  if(existing){
+   emitWorld(w,'onewheel_part_landed',{unitId:existing.unitId,item:kind,actorId:'wharf_suppliers',arrivalDay:terms.arrivalDay,existingStock:true});
+   continue;
+  }
+  const unit={
+   unitId:`u${++w.nextUnit}`,kind,owner:'wharf_suppliers',age:0,costBasis:terms.price,
+   source:'onewheel_cargo_arrival',opened:false,remaining:GOODS[kind]?.servings||1,
+   cargoArrivalDay:terms.arrivalDay,
+  };
+  supplier.inventory.push(unit);
+  emitWorld(w,'onewheel_part_landed',{unitId:unit.unitId,item:kind,actorId:'wharf_suppliers',arrivalDay:terms.arrivalDay,existingStock:false});
+ }
+}
+
 function buyInvitationFish(current){
  const w=structuredClone(current),route=w.playerGame?.routes?.sonya;
  w.playerGame.lastBlock=null;
@@ -101,6 +129,28 @@ function buyInvitationFish(current){
  return w;
 }
 
+function buyOnewheelPart(current,payload={}){
+ const w=structuredClone(current),kind=String(payload.kind||''),terms=ONEWHEEL_CARGO[kind];
+ w.playerGame.lastBlock=null;
+ if(!w.playerGame?.knowledge?.includes('onewheel_plan'))return blockedCopy(current,'You have not worked out which parts fit this build.');
+ if(!terms)return blockedCopy(current,'That is not an authored component for Aspen’s one-wheel build.');
+ if(w.playerGame.location!=='harbour_berth')return blockedCopy(current,'Cargo purchase requires presence at the berth.');
+ if(w.day<terms.arrivalDay)return blockedCopy(current,`${kind} has not arrived; current notice expects day ${terms.arrivalDay}.`);
+ if(w.actors.player.inventory.some(u=>u.kind===kind))return blockedCopy(current,`${kind} is already in your owned inventory.`);
+ const unit=availableSellerUnit(w,'wharf_suppliers',kind);
+ if(!unit)return blockedCopy(current,`${kind} is not available as uncommitted physical stock at the berth.`);
+ if((w.attention?.used||0)>=(w.attention?.budget||0))return blockedCopy(current,'Not enough attention remains for this intervention.');
+ if(playerAvailableCash(w)<terms.price)return blockedCopy(current,`Not enough available cash: ${terms.price}🥫 required.`);
+ const supplier=w.actors.wharf_suppliers,index=supplier.inventory.findIndex(u=>u.unitId===unit.unitId);
+ if(index<0)return blockedCopy(current,`${kind} is no longer with the berth supplier.`);
+ w.attention.used+=1;w.actors.player.cash-=terms.price;supplier.cash+=terms.price;
+ const [moved]=supplier.inventory.splice(index,1);moved.owner='player';moved.costBasis=terms.price;w.actors.player.inventory.push(moved);
+ notePlayer(w,'onewheel_part_bought',`Bought the landed ${kind} from the berth supplier for ${terms.price}🥫.`,{
+  people:['wharf_suppliers'],goods:[kind],returnClass:'TRADE',process:{valuation:.2,execution:.7,liquidityCredit:.2},context:{unitId:moved.unitId,arrivalDay:terms.arrivalDay,price:terms.price},
+ });
+ return w;
+}
+
 export function visibleActions(w){
  let rows=legacy.visibleActions(w);
  if(!canEnterFilmAuction(w))rows=rows.filter(row=>!YASMIN_AUCTION_ACTIONS.has(row.id));
@@ -108,16 +158,25 @@ export function visibleActions(w){
  rows=rows.map(row=>row.id==='source_invitation_fish'&&!fish
   ? {...row,disabled:true,reason:'The exceptional catch has not landed with the small boats.'}
   : row);
+ rows=rows.map(row=>{
+  if(row.id!=='buy_part')return row;
+  const kind=row.payload?.kind,terms=ONEWHEEL_CARGO[kind];
+  if(!terms||w.day<terms.arrivalDay)return row;
+  const unit=availableSellerUnit(w,'wharf_suppliers',kind);
+  return unit?row:{...row,disabled:true,reason:`${kind} is not available as uncommitted physical stock.`};
+ });
  return rows;
 }
 
 export function performPlayerAction(current,id,payload={}){
  if(YASMIN_AUCTION_ACTIONS.has(id)&&!canEnterFilmAuction(current))return blockedCopy(current);
  if(id==='source_invitation_fish')return buyInvitationFish(current);
+ if(id==='buy_part')return buyOnewheelPart(current,payload);
  return legacy.performPlayerAction(current,id,payload);
 }
 
 export function resolvePlayerDay(w){
+ landOnewheelCargo(w);
  landInvitationFish(w);
  if(!canEnterFilmAuction(w)){
   const commitment=w.playerGame?.commitments?.find(c=>c.id==='auction-bid'&&c.status==='open');
