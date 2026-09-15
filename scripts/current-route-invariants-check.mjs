@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {createHarbourWorld} from '../src/harbourSpine.js';
-import {performPlayerAction,juanRaceChance,juanRaceRoll} from '../src/playerGame.js';
+import {performPlayerAction,juanRaceChance,juanRaceRoll,resolvePlayerDay} from '../src/playerGame.js';
 import {PLAYER_KNOWLEDGE as K} from '../src/playerKnowledge.js';
 
 const snapshot=w=>JSON.stringify({cash:w.actors.player.cash,inventory:w.actors.player.inventory,attention:w.attention,evidence:w.evidence,commitments:w.playerGame.commitments});
@@ -25,8 +25,10 @@ const playerBottle=bought.actors.player.inventory.find(x=>x.kind==='Orgeat');
 assert.equal(playerBottle.unitId,supplierBottle.unitId,'Orgeat purchase must move the existing physical unit');
 assert.equal(Object.values(bought.actors).flatMap(a=>a.inventory).filter(x=>x.unitId===supplierBottle.unitId).length,1,'the moved bottle must still exist exactly once');
 
-// Prepare the one-wheel build without using the happy-path test helper.
-w=bought;w.playerGame.knowledge.push(K.juan_route,K.onewheel_plan);w.day=6;w.actors.aspen.location='harbour_berth';
+// Prepare the one-wheel build without using the happy-path test helper. Cargo
+// must cross its real day boundaries before a physical part can be purchased.
+w=bought;w.playerGame.knowledge.push(K.juan_route,K.onewheel_plan);w.actors.aspen.location='harbour_berth';
+for(let d=1;d<=6;d++){w.day=d;resolvePlayerDay(w);}
 for(const [kind,price] of [['Steel Rim',5],['Chain Quick-Link',2],['Brake Cable',2],['Handlebar Tape',2]]){
  const n=performPlayerAction(w,'buy_part',{kind,price});assert(!n.playerGame.lastBlock,`${kind} setup failed: ${n.playerGame.lastBlock}`);w=n;
 }
